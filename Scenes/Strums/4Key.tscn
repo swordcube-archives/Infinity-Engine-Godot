@@ -1,0 +1,28 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Assets/Images/Notes/Default/strums.res" type="SpriteFrames" id=1]
+
+[node name="4Key" type="Node2D"]
+
+[node name="left_key" type="AnimatedSprite" parent="."]
+frames = ExtResource( 1 )
+animation = "arrowLEFT"
+playing = true
+
+[node name="down_key" type="AnimatedSprite" parent="."]
+position = Vector2( 160, 0 )
+frames = ExtResource( 1 )
+animation = "arrowDOWN"
+playing = true
+
+[node name="up_key" type="AnimatedSprite" parent="."]
+position = Vector2( 320, 0 )
+frames = ExtResource( 1 )
+animation = "arrowUP"
+playing = true
+
+[node name="right_key" type="AnimatedSprite" parent="."]
+position = Vector2( 479, 0 )
+frames = ExtResource( 1 )
+animation = "arrowRIGHT"
+playing = true

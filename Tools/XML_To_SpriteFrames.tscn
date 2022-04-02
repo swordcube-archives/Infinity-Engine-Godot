@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Tools/XML_To_SpriteFrames.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Fonts/font_alphabet.tres" type="BitmapFont" id=2]
 
 [sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 0, 0, 0, 1 )
@@ -45,6 +46,7 @@ margin_top = 23.0
 margin_right = 765.0
 margin_bottom = 110.0
 rect_scale = Vector2( 0.6, 0.6 )
+custom_fonts/font = ExtResource( 2 )
 text = "SPRITE"
 align = 1
 valign = 1
@@ -60,6 +62,7 @@ margin_top = 138.0
 margin_right = 975.0
 margin_bottom = 378.0
 rect_scale = Vector2( 0.5, 0.5 )
+custom_fonts/font = ExtResource( 2 )
 text = "LOADED"
 align = 1
 uppercase = true
@@ -90,6 +93,7 @@ margin_top = -54.0
 margin_right = 267.0
 margin_bottom = 33.0
 rect_scale = Vector2( 0.3, 0.3 )
+custom_fonts/font = ExtResource( 2 )
 text = "ENTER TO START"
 __meta__ = {
 "_edit_use_anchors_": false

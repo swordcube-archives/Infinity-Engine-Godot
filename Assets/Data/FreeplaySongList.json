@@ -1,0 +1,16 @@
+{
+    "songs": [
+        {
+            "name": "Tutorial",
+            "icon": "gf",
+            "color": "a5004d",
+            "difficulties": ["easy", "normal", "hard"]
+        },
+        {
+            "name": "Bopeebo",
+            "icon": "dad",
+            "color": "af66ce",
+            "difficulties": ["easy", "normal", "hard"]
+        }
+    ]
+}

@@ -8,14 +8,19 @@ var can_flash = true
 
 var progress = false
 
+var timer = Timer.new()
+var timer2 = Timer.new()
+
 func _ready():
 	change_selection(0)
+	
+	$Misc/Transition._fade_out()
 
 func _process(delta):
 	$Misc/Version.text = "v" + EngineSettings.game_version + " - " + EngineSettings.version_status
 	
 	if Input.is_action_just_pressed("ui_back"):
-		SceneManager.switch_scene("TitleScreen")
+		$Misc/Transition.transition_to_scene("TitleScreen")
 		
 	if canSelect:
 		if Input.is_action_just_pressed("ui_up"):
@@ -31,6 +36,7 @@ func _process(delta):
 		$Buttons.get_children()[curSelected].visible = button_visible
 	else:
 		$Buttons.get_children()[curSelected].visible = false
+		$BGShit/BGParallax/BGMagenta.visible = false
 		
 func select_menu():
 	AudioHandler.play_audio("confirmMenu")
@@ -55,14 +61,26 @@ func select_menu():
 	
 	flash_timer.connect("timeout", self, "stop_flashing")
 	
-	var timer = Timer.new()
 	timer.set_wait_time(0.05)
 	add_child(timer)
 	timer.start()
 	
+	timer2.set_wait_time(0.15)
+	add_child(timer2)
+	timer2.start()
+	
+	doFlash1()
+	doFlash2()
+	
+func doFlash1():
 	while can_flash:
 		yield(timer, "timeout")
 		button_visible = not button_visible
+		
+func doFlash2():
+	while can_flash:
+		yield(timer2, "timeout")
+		$BGShit/BGParallax/BGMagenta.visible = not button_visible
 		
 func stop_flashing():
 	can_flash = false
@@ -71,9 +89,9 @@ func stop_flashing():
 	
 	match($Buttons.get_children()[curSelected].name):
 		"StoryMode":
-			SceneManager.transition_to_scene("StoryMenu")
+			$Misc/Transition.transition_to_scene("StoryMenu")
 		"Freeplay":
-			SceneManager.transition_to_scene("FreeplayMenu")
+			$Misc/Transition.transition_to_scene("FreeplayMenu")
 			
 		
 func change_selection(amount):
