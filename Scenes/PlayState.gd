@@ -4,17 +4,28 @@ var health:float = 1.0
 
 var SONG
 
-var gfVersion:String
+var gf_version:String
 
 var dad:Node2D
 var gf:Node2D
 var boyfriend:Node2D
 
-var songScore:int = 0
-var songMisses:int = 0
-var songAccuracy:float = 0.0
+var song_score:int = 0
+var song_misses:int = 0
+var song_accuracy:float = 0.0
 
-var defaultCamZoom:float = 0.5
+var default_cam_zoom:float = 1.2
+
+var countdown_counter:int = -1
+
+var unspawnNotes:Array = []
+
+var speed:float = 1.0
+
+var in_cutscene:bool = false
+var countdown_active:bool = true
+
+var sing_anims = ["singLEFT", "singDOWN", "singUP", "singRIGHT"]
 
 func _ready():
 	if(Gameplay.SONG == null): # load tutorial if the song can't be found
@@ -23,11 +34,15 @@ func _ready():
 		Gameplay.SONG = JsonUtil.get_json(song)
 		
 	SONG = Gameplay.SONG.song
+	
+	speed = SONG.speed
 			
 	Conductor.songPosition = 0
 	Conductor.curBeat = 0
 	Conductor.curStep = 0
-	Conductor.change_bpm(Gameplay.SONG.song.bpm)
+	Conductor.change_bpm(SONG.bpm)
+	Conductor.recalculate_values()
+	
 	Conductor.connect("beat_hit", self, "beat_hit")
 	
 	$Misc/Transition._fade_out()
@@ -40,33 +55,33 @@ func _ready():
 	
 	dad = dadLoaded.instance()
 	dad.position = Vector2(640, 360)
-	$camHUD.get_node("BG").add_child(dad)
+	add_child(dad)
 	
 	# add gf
 	match(SONG.song.to_lower()):
 		"tutorial", "bopeebo", "fresh", "dad battle":
-			gfVersion = "gf"
+			gf_version = "gf"
 		"spookeez", "south", "monster":
-			gfVersion = "gf"
+			gf_version = "gf"
 		"pico", "philly nice", "blammed":
-			gfVersion = "gf"
+			gf_version = "gf"
 		"satin panties", "high", "m.i.l.f":
-			gfVersion = "gf"
+			gf_version = "gf"
 		"cocoa", "eggnog", "winter horrorland":
-			gfVersion = "gf"
+			gf_version = "gf-christmas"
 		"senpai", "roses", "thorns":
-			gfVersion = "gf-pixel"
+			gf_version = "gf-pixel"
 		_:
-			gfVersion = SONG.gfVersion
+			gf_version = SONG.gfVersion
 		
-	var gfLoaded = load("res://Characters/" + gfVersion.to_lower() + "/char.tscn")
+	var gfLoaded = load("res://Characters/" + gf_version.to_lower() + "/char.tscn")
 	
 	if gfLoaded == null:
 		gfLoaded = load("res://Characters/dad/char.tscn")
 	
 	gf = gfLoaded.instance()
 	gf.position = Vector2(640, 360)
-	$camHUD.get_node("BG").add_child(gf)
+	add_child(gf)
 	
 	# add boyfriend
 	var bfLoaded = load("res://Characters/" + SONG.player1.to_lower() + "/char.tscn")
@@ -76,9 +91,7 @@ func _ready():
 	
 	boyfriend = bfLoaded.instance()
 	boyfriend.position = Vector2(640, 360)
-	$camHUD.get_node("BG").add_child(boyfriend)
-	
-	dad.play_anim("idle")
+	add_child(boyfriend)
 	
 	change_dad_icon(dad.health_icon)
 	change_bf_icon(boyfriend.health_icon)
@@ -86,8 +99,12 @@ func _ready():
 	change_dad_health_color(dad.health_color)
 	change_bf_health_color(boyfriend.health_color)
 	
-	$camGame.position = Vector2((dad.position.x - 640) - dad.camera_pos_x, (dad.position.y - 360) + dad.camera_pos_y)
-	$camHUD.get_node("BG").scale = Vector2(defaultCamZoom, defaultCamZoom)
+	$camGame.position = Vector2((dad.position.x - 640) + dad.camera_pos_x, (dad.position.y - 640) - dad.camera_pos_y)
+	$camGame.zoom = Vector2(default_cam_zoom, default_cam_zoom)
+	
+	generate_notes()
+	
+	Conductor.songPosition = Conductor.timeBetweenBeats * -4
 	
 func change_dad_icon(texture):
 	$camHUD/HealthBar/IconP2.texture = texture
@@ -104,33 +121,180 @@ func change_bf_health_color(color):
 func _process(delta):
 	Conductor.songPosition += (delta * 1000)
 	
-	$camHUD/ScoreText.bbcode_text = "[center]Score: " + str(songScore) + " // Misses: " + str(songMisses) + " // Accuracy: " + str(Util.round_decimal(songAccuracy, 2)) + "%"
+	$camHUD/ScoreText.bbcode_text = "[center]Score: " + str(song_score) + " // Misses: " + str(song_misses) + " // Accuracy: " + str(Util.round_decimal(song_accuracy, 2)) + "%"
 	
 	$camHUD/HealthBar/BFColor.rect_scale.x = health / 2
 	
-	camera_zooms(delta)
-	icon_zooms(delta)
+	if len(unspawnNotes) > 0:
+		if (len(unspawnNotes) > 0 && unspawnNotes[0].strumTime - Conductor.songPosition < 3500):
+			var dunceNote:Node2D = unspawnNotes[0];
+			$camHUD/Notes.add_child(dunceNote);
+
+			unspawnNotes.remove(0) # wouldn't this work too? lmao??
+			
+	for note in $camHUD/Notes.get_children():
+		var strum
+		if note.mustPress:
+			strum = $camHUD/PlayerStrums.get_children()[note.noteData % 4]
+		else:
+			strum = $camHUD/OpponentStrums.get_children()[note.noteData % 4]
+			
+		if note.mustPress:
+			note.global_position.y = strum.global_position.y + (0.45 * (Conductor.songPosition - note.strumTime) * Util.round_decimal(speed, 2))
+		else:
+			note.global_position.y = strum.global_position.y + (0.45 * (Conductor.songPosition - note.strumTime) * Util.round_decimal(speed, 2))
+			
+			# opponent notes
+			if not countdown_active:
+				if Conductor.songPosition >= note.strumTime:
+					#AudioHandler.get_node("Voices").play()
+					#AudioHandler.get_node("Voices").seek(AudioHandler.get_node("Inst").get_playback_position())
+					
+					dad.get_node("frames").frame = 0
+					dad.play_anim(sing_anims[note.noteData % 4])
+					
+					strum.frame = 0
+					strum.play(letter_directions[note.noteData % 4] + " confirm")
+					note.get_node("Note").visible = false
+					
+					note.global_position.y = strum.global_position.y
+					note.sustainLength -= delta * 1000
+					if note.sustainLength <= 0:
+						$camHUD/Notes.remove_child(note)
+
+			
+		# missing
+		if note.mustPress and not pressed[note.noteData % 4]:
+			if Conductor.songPosition > note.strumTime + Conductor.safeZoneOffset:
+				song_score -= 10
+				song_misses += 1
+				combo = 0
+				health -= 0.0475
+				$camHUD/Notes.remove_child(note)
+			
+	var strum_confirm_i = 0
+	for strum in $camHUD/OpponentStrums.get_children():
+		if strum.frame == 3:
+			strum.play("arrow" + directions[strum_confirm_i])
+			
+		strum_confirm_i += 1
+		
+	# countdown shit
+	if countdown_active:
+		var prev_counter = countdown_counter
+		
+		if Conductor.songPosition >= Conductor.timeBetweenBeats * -4:
+			countdown_counter = 0
+		if Conductor.songPosition >= Conductor.timeBetweenBeats * -3:
+			countdown_counter = 1
+		if Conductor.songPosition >= Conductor.timeBetweenBeats * -2:
+			countdown_counter = 2
+		if Conductor.songPosition >= Conductor.timeBetweenBeats * -1:
+			countdown_counter = 3
+		if Conductor.songPosition >= 0:
+			countdown_counter = 4
+			
+		if prev_counter != countdown_counter:
+			match(countdown_counter):
+				0:
+					AudioHandler.play_countdown(countdown_counter)
+				1:
+					AudioHandler.play_countdown(countdown_counter)
+				2:
+					AudioHandler.play_countdown(countdown_counter)
+				3:
+					AudioHandler.play_countdown(countdown_counter)
+				4:
+					AudioHandler.stop_audio("freakyMenu")
+					
+					AudioHandler.play_inst(SONG.song)
+					AudioHandler.play_voices(SONG.song)
+					
+					AudioHandler.get_node("Inst").seek(0)
+					AudioHandler.get_node("Voices").seek(0)
+					
+					Conductor.songPosition = 0.0
+					countdown_active = false
+		
+	key_shit(delta)
 	
-	#health += 0.002
+	for note in $camHUD/Notes.get_children():
+		if note.mustPress and note.sustainLength > 0 and pressed[note.noteData % 4] and Conductor.songPosition >= note.strumTime:
+			var strum = $camHUD/PlayerStrums.get_children()[note.noteData % 4]
+			
+			strum.frame = 0
+			strum.play(letter_directions[note.noteData % 4] + " confirm")
+			
+			boyfriend.get_node("frames").frame = 0
+			boyfriend.play_anim(sing_anims[note.noteData % 4])
+			
+			health += 0.023 / 4
+			
+			note.global_position.y = strum.global_position.y
+			note.sustainLength -= delta * 1000
+			if note.sustainLength <= 0:
+				$camHUD/Notes.remove_child(note)
+				
 	if health < 0:
 		health = 0
 	if health > 2:
 		health = 2
-		
-	key_shit()
+	
+	camera_zooms(delta)
+	icon_zooms(delta)
+	
+func generate_notes():
+	for section in SONG.notes:
+		for songNotes in section.sectionNotes:
+			var daStrumTime:float = songNotes[0] # add offset bullshit here when options are real
+			var daNoteData:int = int(songNotes[1]) % 4
+			
+			var oldNote:Node2D
+			
+			if len(unspawnNotes) > 0:
+				oldNote = unspawnNotes[len(unspawnNotes) - 1]
+			else:
+				oldNote = null
+				
+			var gottaHitNote:bool = section.mustHitSection
+			
+			if songNotes[1] > 4:
+				gottaHitNote = !section.mustHitSection
+				
+			var swagNote = load("res://Scenes/Notes/Note.tscn").instance()
+			if gottaHitNote:
+				swagNote.global_position.x = $camHUD/PlayerStrums.get_children()[daNoteData].global_position.x
+			else:
+				swagNote.global_position.x = $camHUD/OpponentStrums.get_children()[daNoteData].global_position.x
+			swagNote.noteData = daNoteData
+			swagNote.strumTime = daStrumTime - Options.get_data("note-offset")
+			swagNote.mustPress = gottaHitNote
+			swagNote.sustainLength = songNotes[2] - 170
+			
+			if swagNote.sustainLength < 0:
+				swagNote.sustainLength = 0
+			
+			swagNote.set_direction()
+			swagNote.get_node("Line2D").texture = load("res://Assets/Images/UI Skins/" + Gameplay.ui_Skin + "/Sustains/" + swagNote.dir_string + " hold0000.png")
+			swagNote.get_node("End").play(swagNote.dir_string + " tail")
+			
+			unspawnNotes.append(swagNote)
+			
+	#print(unspawnNotes)
 	
 func camera_zooms(delta):
 	# cam game zoom
-	var camGameZoomX = lerp($camGame.zoom.x, 1, delta * 7)
-	var camGameZoomY = lerp($camGame.zoom.y, 1, delta * 7)
+	var camGameZoomX = lerp($camGame.zoom.x, default_cam_zoom, delta * 7)
+	var camGameZoomY = lerp($camGame.zoom.y, default_cam_zoom, delta * 7)
 	
 	$camGame.zoom = Vector2(camGameZoomX, camGameZoomY)
 	
 	# cam hud zoom
-	var camHUDZoomX = lerp($camHUD.zoom.x, 1, delta * 7)
-	var camHUDZoomY = lerp($camHUD.zoom.y, 1, delta * 7)
+	var camHUDZoom = lerp($camHUD.scale, Vector2(1, 1), delta * 7)
 	
-	$camHUD.zoom = Vector2(camHUDZoomX, camHUDZoomY)
+	$camHUD.scale = camHUDZoom
+	$camHUD.offset.x = (camHUDZoom.x - 1) * -640
+	$camHUD.offset.y = (camHUDZoom.x - 1) * -360
 	
 func icon_zooms(delta):
 	var iconScaleX = lerp($camHUD/HealthBar/IconP2.scale.x, 1, delta * 15)
@@ -147,21 +311,133 @@ func icon_zooms(delta):
 	$camHUD/HealthBar/IconP1.position.x = ((healthBar.rect_position.x + healthBar.rect_pivot_offset.x) - ((healthBar.rect_scale.x * 600) - 60)) + ((abs($camHUD/HealthBar/IconP1.scale.x) - 1) * 80)
 	$camHUD/HealthBar/IconP2.position.x = ($camHUD/HealthBar/IconP1.position.x - 105) - ((abs($camHUD/HealthBar/IconP1.scale.x) - 1) * 150)
 	
-func key_shit():
-	var directions = ["LEFT", "DOWN", "UP", "RIGHT"]
-	var letter_directions = ["A", "B", "C", "D"]
+var cur_rating = "marvelous"
 
-	var strum_index = 0
-	for strum in $camHUD/PlayerStrums.get_children():
-		if Input.is_action_just_pressed(strum.name):
-			strum.play(letter_directions[strum_index] + " press")
+var just_pressed = [false, false, false, false]
+var just_released = [false, false, false, false]
+var pressed = [false, false, false, false]
+var released = [false, false, false, false]
+
+var hits = 0
+
+var directions = ["LEFT", "DOWN", "UP", "RIGHT"]
+var letter_directions = ["A", "B", "C", "D"]
+
+var combo = 0
 	
-		if Input.is_action_just_released(strum.name):
-			strum.play("arrow" + directions[strum_index])
+func key_shit(delta):	
+	just_pressed = [false, false, false, false]
+	just_released = [false, false, false, false]
+	pressed = [false, false, false, false]
+	released = [false, false, false, false]
+	
+	if not Options.get_data("botplay"):
+		for i in 4:
+			just_pressed[i] = Input.is_action_just_pressed("gameplay_" + str(i))
+			pressed[i] = Input.is_action_pressed("gameplay_" + str(i))
+			released[i] = not Input.is_action_pressed("gameplay_" + str(i))
 			
-		strum_index += 1
+		for i in len(just_pressed):
+			if just_pressed[i] == true:
+				$camHUD/PlayerStrums.get_children()[i].play(letter_directions[i] + " press")
+				
+		for i in len(released):
+			if released[i] == true:
+				$camHUD/PlayerStrums.get_children()[i].play("arrow" + directions[i])
+	else:
+		for i in len(released):
+			if $camHUD/PlayerStrums.get_children()[i].frame == 3:
+				$camHUD/PlayerStrums.get_children()[i].play("arrow" + directions[i])
+		
+	var possibleNotes = []
 	
-func beat_hit():
+	for note in $camHUD/Notes.get_children():
+		note.calculate_can_be_hit()
+		
+		if not Options.get_data("botplay"):
+			if note.canBeHit and note.mustPress and not note.tooLate and not note.isSustainNote:
+				possibleNotes.append(note)
+		else:
+			if note.strumTime <= Conductor.songPosition and note.mustPress:
+				possibleNotes.append(note)
+				
+	#possibleNotes.sort_custom(self, "sort_notes")
+	
+	var dont_hit = [false, false, false, false]
+	var note_data_times = [-1, -1, -1, -1]
+	
+	if len(possibleNotes) > 0:
+		for i in len(possibleNotes):
+			var note = possibleNotes[i]
+			
+			if (just_pressed[note.noteData % 4] and not dont_hit[note.noteData % 4] and not Options.get_data("botplay")) or Options.get_data("botplay"):
+				var rating_scores: = [350, 200, 100, 50]
+				
+				var note_ms = Conductor.songPosition - note.strumTime
+				
+				if Options.get_data("botplay"):
+					note_ms = 0
+					
+				note_ms = Util.round_decimal(note_ms, 3)
+				
+				var judgement_timings = [
+					22.5, # sick
+					45, # good
+					85, # bad
+					100 # shit
+				]
+				
+				cur_rating = "marvelous"
+				
+				if abs(note_ms) > judgement_timings[0]:
+					cur_rating = "sick"
+					song_score += rating_scores[0]
+					
+				if abs(note_ms) > judgement_timings[1]:
+					cur_rating = "good"
+					song_score += rating_scores[1]
+				
+				if abs(note_ms) > judgement_timings[2]:
+					cur_rating = "bad"
+					song_score += rating_scores[2]
+					
+				if abs(note_ms) > judgement_timings[3]:
+					cur_rating = "shit"
+					song_score += rating_scores[3]
+					
+				var rating = $camHUD/RatingTemplate.duplicate()
+				rating.name = "Rating" + str(hits)
+				rating.get_node("Sprite").texture = load("res://Assets/Images/UI Skins/" + Gameplay.ui_Skin + "/" + cur_rating + ".png")
+				rating.modulate.a = 1
+				rating.visible = true
+				rating.combo = combo
+				hits += 1
+				combo += 1
+				$camHUD.add_child(rating)
+				
+				health += 0.023
+					
+				dont_hit[note.noteData % 4] = true
+				pressed[note.noteData % 4] = true
+				
+				boyfriend.get_node("frames").frame = 0
+				boyfriend.play_anim(sing_anims[note.noteData % 4])
+				
+				var strum = $camHUD/PlayerStrums.get_children()[note.noteData % 4]
+				strum.play(letter_directions[note.noteData % 4] + " confirm")
+				
+				note.get_node("Note").visible = false
+				
+				if note.sustainLength <= 0:
+					$camHUD/Notes.remove_child(note)
+				
+				if note.sustainLength > 0:
+					note.beingPressed = true
+				
+func sort_notes(a, b):
+	return int(a.strumTime - b.strumTime)
+	
+func beat_hit():			
 	if !dad.get_node("anim").is_playing():
 		dad.dance()
 		
@@ -174,7 +450,8 @@ func beat_hit():
 	$camHUD/HealthBar/IconP1.scale = Vector2(-1.2, 1.2)
 	
 	if Conductor.curBeat % 4 == 0:
-		$camHUD.zoom = Vector2(0.97, 0.97)
+		$camGame.zoom = Vector2(default_cam_zoom, default_cam_zoom) * 0.98
+		$camHUD.scale = Vector2(1.05, 1.05)
 		
 func remap_to_range(value, start1, stop1, start2, stop2):
 	return start2 + (value - start1) * ((stop2 - start2) / (stop1 - start1))

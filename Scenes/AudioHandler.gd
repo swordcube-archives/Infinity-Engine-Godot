@@ -42,3 +42,17 @@ func unpause_voices():
 	
 func stop_voices():
 	$Voices.stop()
+	
+# countdown shit
+func play_countdown(num):
+	match num:
+		0:
+			$Countdown.stream = load("res://Assets/Sounds/intro3.ogg")
+		1:
+			$Countdown.stream = load("res://Assets/Sounds/intro2.ogg")
+		2:
+			$Countdown.stream = load("res://Assets/Sounds/intro1.ogg")
+		3:
+			$Countdown.stream = load("res://Assets/Sounds/introGo.ogg")
+			
+	$Countdown.play()

@@ -1,5 +1,12 @@
 extends Node
 
+# ORIGINAL CONDUCTOR CODE BY LEATHER LOL!!!!
+# HE IS ACTUALLY SMARTER THAN ME (fact) SO I HAD TO COPY PASTE!!
+# LMAO!!!
+
+# CREDITS TO HIM!!!!
+# https://github.com/Leather128/LeatherEngineGodot/
+
 var songPosition:float = 0.0
 var bpm:float = 100.0
 var speed:float = 1.0
@@ -11,7 +18,8 @@ var curBeat:int = 0
 var curStep:int = 0
 
 # basically amount of MS you can have for safe frames
-var safeZoneOffset:float = 166
+var safeFrames:int = 10
+var safeZoneOffset:float = 246
 
 # funny array of [position_in_song, bpm, step_change_is_at]
 var bpm_changes:Array = []

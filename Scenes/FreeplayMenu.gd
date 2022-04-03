@@ -5,7 +5,7 @@ var bg_tween = Tween.new()
 
 var curSelected = 0
 
-var playing = false
+var playing = ""
 
 func _ready():
 	# read the json
@@ -31,10 +31,7 @@ func _ready():
 		
 	change_selection(0)
 	
-	var bg_color = Color(json.songs[curSelected].color)
-	$BG/BG.modulate.r = bg_color.r
-	$BG/BG.modulate.g = bg_color.g
-	$BG/BG.modulate.b = bg_color.b
+	$BG/BG.modulate = Color(json.songs[curSelected].color)
 		
 func change_selection(amount):
 	AudioHandler.play_audio("scrollMenu")
@@ -69,19 +66,28 @@ func _process(delta):
 	if Input.is_action_just_pressed("ui_down"):
 		change_selection(1)
 		
-	if Input.is_action_just_pressed("ui_accept"):
-		if not playing:
-			playing = true
+	if Input.is_action_just_pressed("space"):
+		if not playing == json.songs[curSelected].name:
+			playing = json.songs[curSelected].name
 			AudioHandler.stop_audio("freakyMenu")
 			AudioHandler.play_inst(json.songs[curSelected].name)
 			AudioHandler.play_voices(json.songs[curSelected].name)
-		else:
-			AudioHandler.stop_audio("freakyMenu")
-			AudioHandler.stop_inst()
-			AudioHandler.stop_voices()
 			
-			var song = "res://Assets/Songs/" + json.songs[curSelected].name + "/hard"
-			print("SONG TO LOAD: " + song)
-			Gameplay.SONG = JsonUtil.get_json(song)
-			#print(Gameplay.SONG)
-			$Misc/Transition.transition_to_scene("PlayState")
+			AudioHandler.get_node("Inst").seek(0)
+			AudioHandler.get_node("Voices").seek(0)
+		else:
+			start_song()
+			
+	if Input.is_action_just_pressed("ui_confirm"):
+		start_song()
+			
+func start_song():
+	AudioHandler.stop_audio("freakyMenu")
+	AudioHandler.stop_inst()
+	AudioHandler.stop_voices()
+	
+	var song = "res://Assets/Songs/" + json.songs[curSelected].name + "/hard"
+	print("SONG TO LOAD: " + song)
+	Gameplay.SONG = JsonUtil.get_json(song)
+	#print(Gameplay.SONG)
+	$Misc/Transition.transition_to_scene("PlayState")

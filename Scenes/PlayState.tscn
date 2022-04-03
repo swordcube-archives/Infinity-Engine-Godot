@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Assets/Fonts/vcr.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Scenes/PlayState.gd" type="Script" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://Assets/Images/healthBar.png" type="Texture" id=5]
 [ext_resource path="res://Scenes/Strums/4Key.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Transition/Transition.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Scenes/Rating.tscn" type="PackedScene" id=8]
 
 [sub_resource type="DynamicFont" id=1]
 size = 18
@@ -19,13 +20,19 @@ script = ExtResource( 2 )
 
 [node name="camGame" type="Camera2D" parent="."]
 offset = Vector2( 640, 360 )
+current = true
 smoothing_enabled = true
 
-[node name="camHUD" type="Camera2D" parent="."]
-offset = Vector2( 640, 360 )
-current = true
+[node name="camHUD" type="CanvasLayer" parent="."]
+layer = 128
 
-[node name="BG" type="Node2D" parent="camHUD"]
+[node name="OpponentStrums" parent="camHUD" instance=ExtResource( 6 )]
+position = Vector2( 162, 608 )
+
+[node name="PlayerStrums" parent="camHUD" instance=ExtResource( 6 )]
+position = Vector2( 782, 608 )
+
+[node name="Notes" type="Node2D" parent="camHUD"]
 
 [node name="HealthBar" type="Node2D" parent="camHUD"]
 
@@ -70,13 +77,9 @@ bbcode_enabled = true
 bbcode_text = "[center]Score: 69420 // Misses: 0 // Accuracy: 100%"
 text = "Score: 69420 // Misses: 0 // Accuracy: 100%"
 
-[node name="OpponentStrums" parent="camHUD" instance=ExtResource( 6 )]
-position = Vector2( 162, 608 )
-scale = Vector2( 0.7, 0.7 )
-
-[node name="PlayerStrums" parent="camHUD" instance=ExtResource( 6 )]
-position = Vector2( 782, 608 )
-scale = Vector2( 0.7, 0.7 )
+[node name="RatingTemplate" parent="camHUD" instance=ExtResource( 8 )]
+visible = false
+position = Vector2( 844, 288 )
 
 [node name="Misc" type="CanvasLayer" parent="."]
 

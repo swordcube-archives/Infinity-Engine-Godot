@@ -92,6 +92,10 @@ func stop_flashing():
 			$Misc/Transition.transition_to_scene("StoryMenu")
 		"Freeplay":
 			$Misc/Transition.transition_to_scene("FreeplayMenu")
+		"Mods":
+			$Misc/Transition.transition_to_scene("ModsMenu")
+		"Options":
+			$Misc/Transition.transition_to_scene("Options/OptionsMenu")
 			
 		
 func change_selection(amount):

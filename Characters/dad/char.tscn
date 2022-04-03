@@ -263,8 +263,8 @@ tracks/3/keys = {
 script = ExtResource( 3 )
 health_color = Color( 0.686275, 0.4, 0.807843, 1 )
 health_icon = ExtResource( 1 )
-camera_pos_x = 50
-camera_pos_y = 70
+camera_pos_x = 150
+camera_pos_y = 150
 
 [node name="frames" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -388 )

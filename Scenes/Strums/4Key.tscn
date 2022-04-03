@@ -1,8 +1,9 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://Assets/Images/Notes/Default/strums.res" type="SpriteFrames" id=1]
+[ext_resource path="res://Assets/Images/UI Skins/Default/strums.res" type="SpriteFrames" id=1]
 
 [node name="4Key" type="Node2D"]
+scale = Vector2( 0.7, 0.7 )
 
 [node name="left_key" type="AnimatedSprite" parent="."]
 frames = ExtResource( 1 )

@@ -25,3 +25,5 @@ stream = ExtResource( 5 )
 [node name="Inst" type="AudioStreamPlayer" parent="."]
 
 [node name="Voices" type="AudioStreamPlayer" parent="."]
+
+[node name="Countdown" type="AudioStreamPlayer" parent="."]

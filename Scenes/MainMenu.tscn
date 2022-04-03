@@ -27,7 +27,7 @@ smoothing_enabled = true
 [node name="BGShit" type="ParallaxBackground" parent="."]
 
 [node name="BGParallax" type="ParallaxLayer" parent="BGShit"]
-motion_scale = Vector2( 1, 0.2 )
+motion_scale = Vector2( 1, 0.15 )
 motion_offset = Vector2( 0, -270 )
 
 [node name="BG" type="Sprite" parent="BGShit/BGParallax"]
@@ -48,7 +48,6 @@ texture = ExtResource( 9 )
 position = Vector2( 548, 339 )
 frames = ExtResource( 5 )
 animation = "basic"
-frame = 2
 playing = true
 offset = Vector2( 92, -209 )
 
@@ -56,7 +55,7 @@ offset = Vector2( 92, -209 )
 position = Vector2( 548, 491 )
 frames = ExtResource( 6 )
 animation = "basic"
-frame = 3
+frame = 1
 playing = true
 offset = Vector2( 92, -209 )
 
@@ -64,7 +63,7 @@ offset = Vector2( 92, -209 )
 position = Vector2( 548, 643 )
 frames = ExtResource( 3 )
 animation = "basic"
-frame = 6
+frame = 4
 playing = true
 offset = Vector2( 92, -209 )
 
@@ -72,7 +71,7 @@ offset = Vector2( 92, -209 )
 position = Vector2( 548, 795 )
 frames = ExtResource( 4 )
 animation = "basic"
-frame = 5
+frame = 3
 playing = true
 offset = Vector2( 92, -209 )
 

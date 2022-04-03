@@ -6,6 +6,7 @@ export(Color) var health_color
 export(Texture) var health_icon
 export(int) var camera_pos_x = 0
 export(int) var camera_pos_y = 0
+export(float) var sing_duration = 6.1
 
 func play_anim(anim):
 	$anim.play(anim)
