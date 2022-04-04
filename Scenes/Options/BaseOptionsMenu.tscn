@@ -12,7 +12,7 @@ script = ExtResource( 3 )
 [node name="BG" type="ParallaxBackground" parent="."]
 
 [node name="BG" type="Sprite" parent="BG"]
-modulate = Color( 1, 0.286275, 0.654902, 1 )
+modulate = Color( 0.917647, 0.443137, 0.992157, 1 )
 position = Vector2( 640, 360 )
 texture = ExtResource( 1 )
 

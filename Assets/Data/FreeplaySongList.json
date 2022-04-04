@@ -11,6 +11,18 @@
             "icon": "dad",
             "color": "af66ce",
             "difficulties": ["easy", "normal", "hard"]
+        },
+        {
+            "name": "Fresh",
+            "icon": "dad",
+            "color": "af66ce",
+            "difficulties": ["easy", "normal", "hard"]
+        },
+        {
+            "name": "Dad Battle",
+            "icon": "dad",
+            "color": "af66ce",
+            "difficulties": ["easy", "normal", "hard"]
         }
     ]
 }

@@ -23,7 +23,7 @@ var total_notes_hit = 0
 
 var song_accuracy:float = 0.0
 
-var default_cam_zoom:float = 1.2
+var default_cam_zoom:float = 1.1
 
 var countdown_counter:int = -1
 
@@ -42,6 +42,9 @@ var goods:int = 0
 var bads:int = 0
 var shits:int = 0
 var misses:int = 0
+
+var inst_time:float = 0.0
+var voices_time:float = 0.0
 
 func _ready():
 	if(Gameplay.SONG == null): # load tutorial if the song can't be found
@@ -122,6 +125,10 @@ func _ready():
 	gf.global_position = stage.get_node("gf_pos").position
 	add_child(gf)
 	
+	if dadLoaded == gfLoaded:
+		dad.global_position = stage.get_node("gf_pos").position
+		gf.visible = false
+	
 	# add boyfriend
 	var bfLoaded = load("res://Characters/" + SONG.player1.to_lower() + "/char.tscn")
 	
@@ -133,7 +140,7 @@ func _ready():
 	add_child(boyfriend)
 	
 	$camHUD/TimeBar/FGColor.color = dad.health_color
-	$camGame.position = stage.get_node("dad_pos").position + dad.get_node("camera_pos").position	
+	$camGame.position = dad.global_position + dad.get_node("camera_pos").position	
 	
 	change_dad_icon(dad.health_icon)
 	change_bf_icon(boyfriend.health_icon)
@@ -173,15 +180,17 @@ func _process(delta):
 		$camHUD/BotplayText.modulate.a = 1
 	
 	if not countdown_active:
-		var time = AudioHandler.get_node("Inst").get_playback_position() * 1000
+		inst_time = AudioHandler.get_node("Inst").get_playback_position() * 1000
+		voices_time = AudioHandler.get_node("Voices").get_playback_position() * 1000
+		
 		var length = AudioHandler.get_node("Inst").stream.get_length() * 1000
 		
 		#print(format_time(time / 1000, false))
-		$camHUD/TimeBar/TimeText.text = Util.format_time(time / 1000, false) + " / " + Util.format_time(length / 1000, false)
+		$camHUD/TimeBar/TimeText.text = Util.format_time(inst_time / 1000, false) + " / " + Util.format_time(length / 1000, false)
 		
-		$camHUD/TimeBar/FGColor.rect_scale.x = (time / length)
+		$camHUD/TimeBar/FGColor.rect_scale.x = (inst_time / length)
 
-		if time >= length:
+		if inst_time >= length:
 			AudioHandler.play_audio("freakyMenu")
 			$Misc/Transition.transition_to_scene("FreeplayMenu")
 
@@ -218,7 +227,8 @@ func _process(delta):
 					#AudioHandler.get_node("Voices").play()
 					#AudioHandler.get_node("Voices").seek(AudioHandler.get_node("Inst").get_playback_position())
 					
-					dad.play_anim(sing_anims[note.noteData % 4], true)
+					if not dad.special_anim:
+						dad.play_anim(sing_anims[note.noteData % 4], true)
 					
 					AudioHandler.get_node("Voices").volume_db = 0
 					
@@ -227,7 +237,7 @@ func _process(delta):
 					note.get_node("Note").visible = false
 					
 					note.global_position.y = strum.global_position.y
-					note.sustainLength -= (delta * 1000) / speed
+					note.sustainLength -= (delta * (650 * speed))
 					if note.sustainLength <= 0:
 						$camHUD/Notes.remove_child(note)
 
@@ -243,7 +253,8 @@ func _process(delta):
 				
 				calculate_accuracy()
 				
-				boyfriend.play_anim(sing_anims[note.noteData % 4] + "miss", true)
+				if not boyfriend.special_anim:
+					boyfriend.play_anim(sing_anims[note.noteData % 4] + "miss", true)
 				
 				AudioHandler.get_node("Voices").volume_db = -999
 				$camHUD/Notes.remove_child(note)
@@ -320,8 +331,11 @@ func _process(delta):
 					
 	key_shit(delta)
 	
-	if boyfriend.hold_timer > Conductor.timeBetweenSteps * 0.001 * boyfriend.sing_duration and boyfriend.get_node("anim").current_animation.begins_with("sing") and not boyfriend.get_node("anim").current_animation.ends_with("miss"):
-		boyfriend.dance()
+	if not pressed.has(true):
+		if boyfriend.hold_timer > Conductor.timeBetweenSteps * 0.001 * boyfriend.sing_duration and boyfriend.get_node("frames").animation.begins_with("sing") and not boyfriend.get_node("frames").animation.ends_with("miss"):
+			boyfriend.dance()
+	else:
+		boyfriend.hold_timer = 0
 	
 	for note in $camHUD/Notes.get_children():
 		if note.mustPress and note.sustainLength > 0 and pressed[note.noteData % 4] and Conductor.songPosition >= note.strumTime or Options.get_data("botplay") and note.mustPress and note.sustainLength > 0 and Conductor.songPosition >= note.strumTime:
@@ -330,14 +344,15 @@ func _process(delta):
 			strum.frame = 0
 			strum.play(letter_directions[note.noteData % 4] + " confirm")
 			
-			boyfriend.play_anim(sing_anims[note.noteData % 4], true)
+			if not boyfriend.special_anim:
+				boyfriend.play_anim(sing_anims[note.noteData % 4], true)
 			
 			AudioHandler.get_node("Voices").volume_db = 0
 			
 			health += 0.023 / 5
 			
 			note.global_position.y = strum.global_position.y
-			note.sustainLength -= (delta * 1000) / speed
+			note.sustainLength -= (delta * (650 * speed))
 			if note.sustainLength <= 0:
 				$camHUD/Notes.remove_child(note)
 				
@@ -350,10 +365,19 @@ func _process(delta):
 	icon_zooms(delta)
 	
 func generate_notes():
-	for section in SONG.notes:
+	var noteData:Array
+	
+	noteData = SONG.notes
+	
+	for section in noteData:
 		for songNotes in section.sectionNotes:
 			var daStrumTime:float = songNotes[0] + Options.get_data("note-offset")
 			var daNoteData:int = int(songNotes[1]) % 4
+			
+			var gottaHitNote:bool = section.mustHitSection
+			
+			if songNotes[1] > 3:
+				gottaHitNote = !section.mustHitSection
 			
 			var oldNote:Node2D
 			
@@ -361,11 +385,6 @@ func generate_notes():
 				oldNote = unspawnNotes[len(unspawnNotes) - 1]
 			else:
 				oldNote = null
-				
-			var gottaHitNote:bool = section.mustHitSection
-			
-			if songNotes[1] > 4:
-				gottaHitNote = !section.mustHitSection
 				
 			var swagNote = load("res://Scenes/Notes/Note.tscn").instance()
 			if gottaHitNote:
@@ -375,7 +394,7 @@ func generate_notes():
 			swagNote.noteData = daNoteData
 			swagNote.strumTime = daStrumTime
 			swagNote.mustPress = gottaHitNote
-			swagNote.sustainLength = songNotes[2] - 200
+			swagNote.sustainLength = songNotes[2] - 240
 			
 			if swagNote.sustainLength < 0:
 				swagNote.sustainLength = 0
@@ -554,7 +573,8 @@ func key_shit(delta):
 					dont_hit[note.noteData % 4] = true
 					pressed[note.noteData % 4] = true
 					
-					boyfriend.play_anim(sing_anims[note.noteData % 4], true)
+					if not boyfriend.special_anim:
+						boyfriend.play_anim(sing_anims[note.noteData % 4], true)
 					
 					AudioHandler.get_node("Voices").volume_db = 0
 					
@@ -583,14 +603,18 @@ func calculate_accuracy():
 func sort_notes(a, b):
 	return int(a.strumTime - b.strumTime)
 	
-func beat_hit():	
-	if not dad.get_node("anim").current_animation.begins_with("sing"):
-		dad.dance()
-		
-	gf.dance()
-	
-	if not boyfriend.get_node("anim").current_animation.begins_with("sing"):
-		boyfriend.dance()
+func beat_hit():
+	if boyfriend != null:
+		if not boyfriend.get_node("anim").current_animation.begins_with("sing"):
+			boyfriend.dance()
+			
+	if dad != null:
+		if dad.is_dancing():
+			dad.dance()
+			
+	if gf != null:
+		if gf.is_dancing() and dad != gf:
+			gf.dance()
 			
 	if not countdown_active:
 		$camHUD/HealthBar/IconP2.scale = Vector2(1.2, 1.2)
@@ -599,12 +623,38 @@ func beat_hit():
 		if Conductor.curBeat % 4 == 0:
 			$camGame.zoom = Vector2(default_cam_zoom, default_cam_zoom) * 0.98
 			$camHUD.scale = Vector2(1.03, 1.03)
+			
+	# HARDCODED EVENTS UNTIL I ADD UNHARDCODED ONES!!!
+	if Conductor.curBeat % 8 == 7 && SONG.song.to_lower() == 'bopeebo':
+		boyfriend.special_anim = true
+		boyfriend.play_anim('hey', true)
+
+	if Conductor.curBeat % 16 == 15 && SONG.song.to_lower() == 'tutorial' && Conductor.curBeat > 16 && Conductor.curBeat < 48:
+		boyfriend.special_anim = true
+		boyfriend.play_anim('hey', true)
+		
+		dad.special_anim = true
+		dad.play_anim('cheer', true)
+	
+	elif Conductor.curBeat % 16 == 15 && SONG.song.to_lower() == 'tutorial' && Conductor.curBeat > 16 && Conductor.curBeat < 48:
+		boyfriend.special_anim = true
+		boyfriend.play_anim('hey', true)
+		
+		gf.special_anim = true
+		gf.play_anim('cheer', true)
 
 var curSection:int = 0
 
 var mustHitSection = false
 
+func resync_vocals():
+	AudioHandler.get_node("Inst").seek(Conductor.songPosition / 1000)
+	AudioHandler.get_node("Voices").seek(Conductor.songPosition / 1000)
+
 func step_hit():
+	if abs(inst_time - (Conductor.songPosition)) > 20 || (SONG.needsVoices && abs(voices_time - (Conductor.songPosition)) > 20):
+		resync_vocals()
+		
 	var prevSection = curSection
 
 	curSection = floor(Conductor.curStep / 16)
@@ -614,8 +664,8 @@ func step_hit():
 			if SONG["notes"][curSection]["mustHitSection"]:
 				mustHitSection = true
 				$camHUD/TimeBar/FGColor.color = boyfriend.health_color
-				$camGame.position = stage.get_node("bf_pos").position + boyfriend.get_node("camera_pos").position
+				$camGame.position = boyfriend.global_position + boyfriend.get_node("camera_pos").position
 			else:
 				mustHitSection = false
 				$camHUD/TimeBar/FGColor.color = dad.health_color
-				$camGame.position = stage.get_node("dad_pos").position + dad.get_node("camera_pos").position
+				$camGame.position = dad.global_position + dad.get_node("camera_pos").position

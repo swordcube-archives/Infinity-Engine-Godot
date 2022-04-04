@@ -31,7 +31,7 @@ texture = ExtResource( 2 )
 motion_scale = Vector2( 1.2, 1.2 )
 
 [node name="spr" type="Sprite" parent="StageCurtains/parallax"]
-position = Vector2( 657, 259 )
+position = Vector2( 657, 315 )
 scale = Vector2( 0.927625, 0.927625 )
 texture = ExtResource( 3 )
 

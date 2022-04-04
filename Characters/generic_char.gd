@@ -4,6 +4,8 @@ var danced:bool = false
 
 var hold_timer = 0
 
+var last_anim:String = ""
+
 export(Color) var health_color
 export(Texture) var health_icon
 export(bool) var dances_left_right
@@ -12,29 +14,56 @@ export(bool) var dances_left_right
 export(float) var sing_duration = 6.1
 export(bool) var is_player = false
 
+var special_anim = false
+
+func _ready():
+	dance(true)
+
 func play_anim(anim, force = false):
-	if not $anim.current_animation == anim or ($anim.current_animation == anim and $anim.is_playing()) or force:
-		$frames.frame = 0
+	if name != "_":
+		special_anim = false
+		last_anim = anim
 		
-	$anim.play(anim)
+		$anim.stop()
+		
+		if get_node("frames") != null:
+			get_node("frames").stop()
+		
+		$anim.play(anim)
 	
 func _process(delta):
-	print($anim.current_animation.begins_with('sing'))
 	if not is_player:
-		if $anim.current_animation.begins_with('sing'):
+		if $frames.animation.begins_with('sing'):
 			hold_timer += delta
 
 		if hold_timer >= Conductor.timeBetweenSteps * 0.001 * sing_duration:
 			dance()
 			hold_timer = 0	
-	
-func dance():
-	if dances_left_right:
-		if danced:
-			$anim.play("danceLeft")
-		else:
-			$anim.play("danceRight")
-			
-		danced = not danced
 	else:
-		$anim.play("idle")
+		if $frames.animation.begins_with('sing'):
+			hold_timer += delta
+		else:
+			hold_timer = 0
+	
+func dance(force = null):
+	if force == null:
+		force = dances_left_right
+	
+	if force or $anim.current_animation == "":
+		if dances_left_right:
+			danced = not danced
+				
+			if danced:
+				play_anim("danceLeft", force)
+			else:
+				play_anim("danceRight", force)
+		else:
+			play_anim("idle", force)
+			
+func is_dancing():
+	var dancing = true
+		
+	if last_anim != "idle" and !last_anim.begins_with("dance"):
+		dancing = false
+	
+	return dancing
