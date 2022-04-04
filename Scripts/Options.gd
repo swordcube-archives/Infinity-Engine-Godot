@@ -7,10 +7,12 @@ var og_save = {
 	"note-offset": 0,
 	"botplay": false,
 	"keybind-reminders": false,
+	"optimization": false,
 	"hitsound": "None",
 	"note-splashes": true,
 	"ghost-tapping": false,
 	"keybinds": ["D", "F", "J", "K"],
+	"ui-skin": "Default",
 	"vsync": true,
 	"rating-position": [760, 270]
 }

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Assets/Fonts/vcr.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Scenes/PlayState.gd" type="Script" id=2]
@@ -7,9 +7,26 @@
 [ext_resource path="res://Assets/Images/healthBar.png" type="Texture" id=5]
 [ext_resource path="res://Scenes/Strums/4Key.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Transition/Transition.tscn" type="PackedScene" id=7]
-[ext_resource path="res://Scenes/Rating.tscn" type="PackedScene" id=8]
 
 [sub_resource type="DynamicFont" id=1]
+size = 18
+outline_size = 2
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 18
+outline_size = 2
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 32
+outline_size = 3
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=4]
 size = 18
 outline_size = 2
 outline_color = Color( 0, 0, 0, 1 )
@@ -19,7 +36,6 @@ font_data = ExtResource( 1 )
 script = ExtResource( 2 )
 
 [node name="camGame" type="Camera2D" parent="."]
-offset = Vector2( 640, 360 )
 current = true
 smoothing_enabled = true
 
@@ -77,11 +93,62 @@ bbcode_enabled = true
 bbcode_text = "[center]Score: 69420 // Misses: 0 // Accuracy: 100%"
 text = "Score: 69420 // Misses: 0 // Accuracy: 100%"
 
-[node name="RatingTemplate" parent="camHUD" instance=ExtResource( 8 )]
+[node name="TimeBar" type="Node2D" parent="camHUD"]
+modulate = Color( 1, 1, 1, 0 )
+
+[node name="TimeBarBG" type="Sprite" parent="camHUD/TimeBar"]
+position = Vector2( 640, 689 )
+scale = Vector2( 0.450499, 1 )
+texture = ExtResource( 5 )
+
+[node name="BGColor" type="ColorRect" parent="camHUD/TimeBar"]
+margin_left = 507.0
+margin_top = 683.0
+margin_right = 773.0
+margin_bottom = 696.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="FGColor" type="ColorRect" parent="camHUD/TimeBar"]
+margin_left = 509.0
+margin_top = 684.0
+margin_right = 771.0
+margin_bottom = 694.0
+rect_scale = Vector2( 1e-05, 1 )
+color = Color( 0.188235, 0.862745, 0.54902, 1 )
+
+[node name="TimeText" type="Label" parent="camHUD/TimeBar"]
+margin_top = 680.0
+margin_right = 1278.0
+margin_bottom = 701.0
+custom_fonts/font = SubResource( 2 )
+text = "0:00 / ?:??"
+align = 1
+
+[node name="BotplayText" type="Label" parent="camHUD"]
 visible = false
-position = Vector2( 844, 288 )
+margin_left = 575.0
+margin_top = 592.0
+margin_right = 708.0
+margin_bottom = 621.0
+custom_fonts/font = SubResource( 3 )
+text = "BOTPLAY"
+align = 1
+
+[node name="RatingText" type="Label" parent="camHUD"]
+margin_left = 29.0
+margin_top = 307.0
+margin_right = 161.0
+margin_bottom = 418.0
+custom_fonts/font = SubResource( 4 )
+text = "Marvelous: 0
+Sicks: 0
+Goods: 0
+Bads: 0
+Shits: 0
+Misses: 0"
 
 [node name="Misc" type="CanvasLayer" parent="."]
+layer = 128
 
 [node name="Transition" parent="Misc" instance=ExtResource( 7 )]
 visible = false

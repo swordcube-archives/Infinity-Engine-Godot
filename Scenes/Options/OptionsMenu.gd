@@ -23,21 +23,56 @@ func _process(delta):
 				OptionsMenuShit.cur_options = [
 					[
 						"Downscroll", # title
+						"downscroll", # actual thing in save data
 						"Makes your notes scroll downwards instead of upwards.", # desc
 						"bool", # type
 					],
 					[
 						"Middlescroll", # title
+						"middlescroll", # actual thing in save data
 						"Makes your notes centered on-screen.", # desc
 						"bool", # type
 					],
 					[
 						"Note Offset", # title
+						"note-offset", # actual thing in save data
 						"Change how late or early your notes spawn.\nNegative = Earlier - Positive = Later", # desc
 						"float", # type
-						0.5, # multiplier
+						0.1, # multiplier
 						[-1000, 1000], # min and max
 						1, # decimals to display
+					],
+					[
+						"Botplay", # title
+						"botplay", # actual thing in save data
+						"When enabled, the game plays itself for you.", # desc
+						"bool", # type
+					],
+					[
+						"Keybind Reminders", # title
+						"keybind-reminders", # actual thing in save data
+						"When enabled, The game will tell you what your keybinds are when a song starts.", # desc
+						"bool", # type
+					],
+					[
+						"Hitsound", # title
+						"hitsound", # actual thing in save data
+						"Make notes do funny sound when hit", # desc
+						"string", # type
+						["None", "osu!", "Dave and Bambi", "Vine Boom"],
+					],
+					[
+						"Note Splashes", # title
+						"note-splashes", # actual thing in save data
+						'When enabled, The game will play a firework-like effect when you hit a note and get a "SiCK!!"', # desc
+						"bool", # type
+					],
+					[
+						"UI Skin", # title
+						"ui-skin", # actual thing in save data
+						"Change how everything looks with a new skin!", # desc
+						"string", # type
+						["Default", "Circles"], # values
 					]
 				]
 				$Misc/Transition.transition_to_scene("Options/BaseOptionsMenu")

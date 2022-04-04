@@ -33,9 +33,9 @@ func _process(delta):
 			select_menu()
 			
 	if not progress:
-		$Buttons.get_children()[curSelected].visible = button_visible
+		$Buttons/ButtonsParallax.get_children()[curSelected].visible = button_visible
 	else:
-		$Buttons.get_children()[curSelected].visible = false
+		$Buttons/ButtonsParallax.get_children()[curSelected].visible = false
 		$BGShit/BGParallax/BGMagenta.visible = false
 		
 func select_menu():
@@ -46,9 +46,9 @@ func select_menu():
 	# fade out the buttons that aren't selected
 	var tween = Tween.new()
 	
-	for i in $Buttons.get_child_count():
+	for i in $Buttons/ButtonsParallax.get_child_count():
 		if not curSelected == i:
-			tween.interpolate_property($Buttons.get_children()[i], "modulate", Color(1, 1, 1, 1), Color(1, 1, 1, 0), 0.65)
+			tween.interpolate_property($Buttons/ButtonsParallax.get_children()[i], "modulate", Color(1, 1, 1, 1), Color(1, 1, 1, 0), 0.65)
 		
 	add_child(tween)
 	tween.start()
@@ -87,7 +87,7 @@ func stop_flashing():
 	button_visible = false
 	progress = true
 	
-	match($Buttons.get_children()[curSelected].name):
+	match($Buttons/ButtonsParallax.get_children()[curSelected].name):
 		"StoryMode":
 			$Misc/Transition.transition_to_scene("StoryMenu")
 		"Freeplay":
@@ -100,16 +100,16 @@ func stop_flashing():
 		
 func change_selection(amount):
 	AudioHandler.play_audio("scrollMenu")
-	$Buttons.get_children()[curSelected].play("basic")
+	$Buttons/ButtonsParallax.get_children()[curSelected].play("basic")
 	
 	curSelected += amount
 	
 	if curSelected < 0:
-		curSelected = $Buttons.get_child_count() - 1
+		curSelected = $Buttons/ButtonsParallax.get_child_count() - 1
 		
-	if curSelected > $Buttons.get_child_count() - 1:
+	if curSelected > $Buttons/ButtonsParallax.get_child_count() - 1:
 		curSelected = 0
 		
-	$Cam.position.y = $Buttons.get_children()[curSelected].position.y
+	$Cam.position.y = $Buttons/ButtonsParallax.get_children()[curSelected].position.y
 		
-	$Buttons.get_children()[curSelected].play("white")
+	$Buttons/ButtonsParallax.get_children()[curSelected].play("white")

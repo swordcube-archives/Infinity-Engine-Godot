@@ -8,7 +8,10 @@ func _process(delta):
 	if not old_checked == checked:
 		old_checked = checked
 		
-		if checked:
-			$Box.anim.play("checked")
-		else:
-			$Box.anim.play("unchecked")
+		refresh()
+		
+func refresh():
+	if checked:
+		$Box/anim.play("checked")
+	else:
+		$Box/anim.play("unchecked")

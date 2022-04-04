@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Assets/Images/menuBG.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/MainMenu.gd" type="Script" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://Assets/Fonts/vcr.ttf" type="DynamicFontData" id=7]
 [ext_resource path="res://Transition/Transition.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Assets/Images/menuDesat.png" type="Texture" id=9]
+[ext_resource path="res://Assets/Images/MainMenu/credits.res" type="SpriteFrames" id=10]
 
 [sub_resource type="DynamicFont" id=1]
 size = 18
@@ -42,36 +43,47 @@ position = Vector2( 640, 360 )
 scale = Vector2( 1.16678, 1.16678 )
 texture = ExtResource( 9 )
 
-[node name="Buttons" type="CanvasLayer" parent="."]
+[node name="Buttons" type="ParallaxBackground" parent="."]
 
-[node name="StoryMode" type="AnimatedSprite" parent="Buttons"]
-position = Vector2( 548, 339 )
+[node name="ButtonsParallax" type="ParallaxLayer" parent="Buttons"]
+motion_scale = Vector2( 1, 0.6 )
+
+[node name="StoryMode" type="AnimatedSprite" parent="Buttons/ButtonsParallax"]
+position = Vector2( 548, 275 )
 frames = ExtResource( 5 )
 animation = "basic"
+frame = 2
 playing = true
 offset = Vector2( 92, -209 )
 
-[node name="Freeplay" type="AnimatedSprite" parent="Buttons"]
-position = Vector2( 548, 491 )
+[node name="Freeplay" type="AnimatedSprite" parent="Buttons/ButtonsParallax"]
+position = Vector2( 548, 427 )
 frames = ExtResource( 6 )
 animation = "basic"
-frame = 1
+frame = 3
 playing = true
 offset = Vector2( 92, -209 )
 
-[node name="Mods" type="AnimatedSprite" parent="Buttons"]
-position = Vector2( 548, 643 )
+[node name="Mods" type="AnimatedSprite" parent="Buttons/ButtonsParallax"]
+position = Vector2( 548, 579 )
 frames = ExtResource( 3 )
 animation = "basic"
-frame = 4
 playing = true
 offset = Vector2( 92, -209 )
 
-[node name="Options" type="AnimatedSprite" parent="Buttons"]
-position = Vector2( 548, 795 )
+[node name="Credits" type="AnimatedSprite" parent="Buttons/ButtonsParallax"]
+position = Vector2( 548, 731 )
+frames = ExtResource( 10 )
+animation = "basic"
+frame = 7
+playing = true
+offset = Vector2( 92, -209 )
+
+[node name="Options" type="AnimatedSprite" parent="Buttons/ButtonsParallax"]
+position = Vector2( 548, 875 )
 frames = ExtResource( 4 )
 animation = "basic"
-frame = 3
+frame = 4
 playing = true
 offset = Vector2( 92, -209 )
 

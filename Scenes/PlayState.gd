@@ -2,9 +2,15 @@ extends Node2D
 
 var health:float = 1.0
 
+var countdown_tween:Tween = Tween.new()
+var timebar_tween:Tween = Tween.new()
+
 var SONG
 
-var gf_version:String
+var gf_version:String = "gf"
+var curStage:String = "stage"
+
+var stage:Node2D
 
 var dad:Node2D
 var gf:Node2D
@@ -12,6 +18,9 @@ var boyfriend:Node2D
 
 var song_score:int = 0
 var song_misses:int = 0
+
+var total_notes_hit = 0
+
 var song_accuracy:float = 0.0
 
 var default_cam_zoom:float = 1.2
@@ -26,6 +35,13 @@ var in_cutscene:bool = false
 var countdown_active:bool = true
 
 var sing_anims = ["singLEFT", "singDOWN", "singUP", "singRIGHT"]
+
+var marvelous:int = 0
+var sicks:int = 0
+var goods:int = 0
+var bads:int = 0
+var shits:int = 0
+var misses:int = 0
 
 func _ready():
 	if(Gameplay.SONG == null): # load tutorial if the song can't be found
@@ -44,8 +60,47 @@ func _ready():
 	Conductor.recalculate_values()
 	
 	Conductor.connect("beat_hit", self, "beat_hit")
+	Conductor.connect("step_hit", self, "step_hit")
 	
 	$Misc/Transition._fade_out()
+	
+	# add the stage
+	match(SONG.song.to_lower()):
+		"tutorial", "bopeebo", "fresh", "dad battle":
+			gf_version = "gf"
+			curStage = "stage"
+		"spookeez", "south", "monster":
+			gf_version = "gf"
+			curStage = "spooky"
+		"pico", "philly nice", "blammed":
+			gf_version = "gf"
+			curStage = "philly"
+		"satin panties", "high", "m.i.l.f":
+			gf_version = "gf"
+			curStage = "limo"
+		"cocoa", "eggnog", "winter horrorland":
+			gf_version = "gf-christmas"
+			curStage = "mall"
+		"winter horrorland":
+			curStage = "mallEvil"
+		"senpai", "roses", "thorns":
+			gf_version = "gf-pixel"
+			curStage = "school"
+		"roses":
+			curStage = "schoolAngry"
+		"thorns":
+			curStage = "schoolEvil"
+		_:
+			gf_version = SONG.gfVersion
+			curStage = "stage"
+			
+	var stageLoaded = load("res://Stages/" + curStage + "/stage.tscn")
+	
+	if stageLoaded == null:
+		stageLoaded = load("res://Stages/stage/stage.tscn")
+	
+	stage = stageLoaded.instance()
+	add_child(stage)
 	
 	# add dad
 	var dadLoaded = load("res://Characters/" + SONG.player2.to_lower() + "/char.tscn")
@@ -54,44 +109,31 @@ func _ready():
 		dadLoaded = load("res://Characters/dad/char.tscn")
 	
 	dad = dadLoaded.instance()
-	dad.position = Vector2(640, 360)
+	dad.global_position = stage.get_node("dad_pos").position
 	add_child(dad)
 	
-	# add gf
-	match(SONG.song.to_lower()):
-		"tutorial", "bopeebo", "fresh", "dad battle":
-			gf_version = "gf"
-		"spookeez", "south", "monster":
-			gf_version = "gf"
-		"pico", "philly nice", "blammed":
-			gf_version = "gf"
-		"satin panties", "high", "m.i.l.f":
-			gf_version = "gf"
-		"cocoa", "eggnog", "winter horrorland":
-			gf_version = "gf-christmas"
-		"senpai", "roses", "thorns":
-			gf_version = "gf-pixel"
-		_:
-			gf_version = SONG.gfVersion
-		
+	# add gf		
 	var gfLoaded = load("res://Characters/" + gf_version.to_lower() + "/char.tscn")
 	
 	if gfLoaded == null:
-		gfLoaded = load("res://Characters/dad/char.tscn")
+		gfLoaded = load("res://Characters/gf/char.tscn")
 	
 	gf = gfLoaded.instance()
-	gf.position = Vector2(640, 360)
+	gf.global_position = stage.get_node("gf_pos").position
 	add_child(gf)
 	
 	# add boyfriend
 	var bfLoaded = load("res://Characters/" + SONG.player1.to_lower() + "/char.tscn")
 	
 	if bfLoaded == null:
-		bfLoaded = load("res://Characters/dad/char.tscn")
+		bfLoaded = load("res://Characters/bf/char.tscn")
 	
 	boyfriend = bfLoaded.instance()
-	boyfriend.position = Vector2(640, 360)
+	boyfriend.global_position = stage.get_node("bf_pos").position
 	add_child(boyfriend)
+	
+	$camHUD/TimeBar/FGColor.color = dad.health_color
+	$camGame.position = stage.get_node("dad_pos").position + dad.get_node("camera_pos").position	
 	
 	change_dad_icon(dad.health_icon)
 	change_bf_icon(boyfriend.health_icon)
@@ -99,12 +141,11 @@ func _ready():
 	change_dad_health_color(dad.health_color)
 	change_bf_health_color(boyfriend.health_color)
 	
-	$camGame.position = Vector2((dad.position.x - 640) + dad.camera_pos_x, (dad.position.y - 640) - dad.camera_pos_y)
 	$camGame.zoom = Vector2(default_cam_zoom, default_cam_zoom)
 	
 	generate_notes()
 	
-	Conductor.songPosition = Conductor.timeBetweenBeats * -4
+	Conductor.songPosition = Conductor.timeBetweenBeats * -4.5
 	
 func change_dad_icon(texture):
 	$camHUD/HealthBar/IconP2.texture = texture
@@ -118,10 +159,37 @@ func change_dad_health_color(color):
 func change_bf_health_color(color):
 	$camHUD/HealthBar/BFColor.color = color
 	
+var botplay_text_sine = 0.0
+	
 func _process(delta):
 	Conductor.songPosition += (delta * 1000)
 	
-	$camHUD/ScoreText.bbcode_text = "[center]Score: " + str(song_score) + " // Misses: " + str(song_misses) + " // Accuracy: " + str(Util.round_decimal(song_accuracy, 2)) + "%"
+	$camHUD/BotplayText.visible = Options.get_data("botplay")
+	
+	botplay_text_sine += 180 * delta;
+	$camHUD/BotplayText.modulate.a = 1 - sin((PI * botplay_text_sine) / 180);
+	
+	if $camHUD/BotplayText.modulate.a > 1:
+		$camHUD/BotplayText.modulate.a = 1
+	
+	if not countdown_active:
+		var time = AudioHandler.get_node("Inst").get_playback_position() * 1000
+		var length = AudioHandler.get_node("Inst").stream.get_length() * 1000
+		
+		#print(format_time(time / 1000, false))
+		$camHUD/TimeBar/TimeText.text = Util.format_time(time / 1000, false) + " / " + Util.format_time(length / 1000, false)
+		
+		$camHUD/TimeBar/FGColor.rect_scale.x = (time / length)
+
+		if time >= length:
+			AudioHandler.play_audio("freakyMenu")
+			$Misc/Transition.transition_to_scene("FreeplayMenu")
+
+	$camHUD/ScoreText.bbcode_text = "[center]Score: " + str(song_score) + " // Misses: " + str(song_misses) + " // Accuracy: " + str(Util.round_decimal(song_accuracy * 100, 2)) + "%"
+	
+	if Options.get_data("botplay"):
+		$camHUD/ScoreText.bbcode_text += " // BOTPLAY"
+		$camHUD/TimeBar/TimeText.text += " [BOT]"
 	
 	$camHUD/HealthBar/BFColor.rect_scale.x = health / 2
 	
@@ -150,26 +218,34 @@ func _process(delta):
 					#AudioHandler.get_node("Voices").play()
 					#AudioHandler.get_node("Voices").seek(AudioHandler.get_node("Inst").get_playback_position())
 					
-					dad.get_node("frames").frame = 0
-					dad.play_anim(sing_anims[note.noteData % 4])
+					dad.play_anim(sing_anims[note.noteData % 4], true)
+					
+					AudioHandler.get_node("Voices").volume_db = 0
 					
 					strum.frame = 0
 					strum.play(letter_directions[note.noteData % 4] + " confirm")
 					note.get_node("Note").visible = false
 					
 					note.global_position.y = strum.global_position.y
-					note.sustainLength -= delta * 1000
+					note.sustainLength -= (delta * 1000) / speed
 					if note.sustainLength <= 0:
 						$camHUD/Notes.remove_child(note)
 
 			
 		# missing
-		if note.mustPress and not pressed[note.noteData % 4]:
+		if note.mustPress and not pressed[note.noteData % 4] and not Options.get_data("botplay"):
 			if Conductor.songPosition > note.strumTime + Conductor.safeZoneOffset:
 				song_score -= 10
 				song_misses += 1
+				#total_notes_hit += 1
 				combo = 0
 				health -= 0.0475
+				
+				calculate_accuracy()
+				
+				boyfriend.play_anim(sing_anims[note.noteData % 4] + "miss", true)
+				
+				AudioHandler.get_node("Voices").volume_db = -999
 				$camHUD/Notes.remove_child(note)
 			
 	var strum_confirm_i = 0
@@ -200,10 +276,29 @@ func _process(delta):
 					AudioHandler.play_countdown(countdown_counter)
 				1:
 					AudioHandler.play_countdown(countdown_counter)
+					
+					var ready = load("res://Scenes/Gameplay/Ready.tscn").instance()
+					ready.texture = load("res://Assets/Images/UI Skins/" + Gameplay.ui_Skin + "/ready.png")
+					countdown_tween.interpolate_property(ready, "modulate", Color(1, 1, 1, 1), Color(1, 1, 1, 0), Conductor.timeBetweenBeats / 1000, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
+					add_child(countdown_tween)
+					countdown_tween.start()
+					$camHUD.add_child(ready)
 				2:
 					AudioHandler.play_countdown(countdown_counter)
+					
+					var set = load("res://Scenes/Gameplay/Set.tscn").instance()
+					set.texture = load("res://Assets/Images/UI Skins/" + Gameplay.ui_Skin + "/set.png")
+					countdown_tween.interpolate_property(set, "modulate", Color(1, 1, 1, 1), Color(1, 1, 1, 0), Conductor.timeBetweenBeats / 1000, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
+					countdown_tween.start()
+					$camHUD.add_child(set)
 				3:
 					AudioHandler.play_countdown(countdown_counter)
+					
+					var go = load("res://Scenes/Gameplay/Go.tscn").instance()
+					go.texture = load("res://Assets/Images/UI Skins/" + Gameplay.ui_Skin + "/go.png")
+					countdown_tween.interpolate_property(go, "modulate", Color(1, 1, 1, 1), Color(1, 1, 1, 0), Conductor.timeBetweenBeats / 1000, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
+					countdown_tween.start()
+					$camHUD.add_child(go)
 				4:
 					AudioHandler.stop_audio("freakyMenu")
 					
@@ -213,25 +308,36 @@ func _process(delta):
 					AudioHandler.get_node("Inst").seek(0)
 					AudioHandler.get_node("Voices").seek(0)
 					
+					AudioHandler.get_node("Inst").volume_db = 0
+					AudioHandler.get_node("Voices").volume_db = 0
+					
 					Conductor.songPosition = 0.0
 					countdown_active = false
 		
+					timebar_tween.interpolate_property($camHUD/TimeBar, "modulate", $camHUD/TimeBar.modulate, Color(1, 1, 1, 1), 0.5, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
+					add_child(timebar_tween)
+					timebar_tween.start()
+					
 	key_shit(delta)
 	
+	if boyfriend.hold_timer > Conductor.timeBetweenSteps * 0.001 * boyfriend.sing_duration and boyfriend.get_node("anim").current_animation.begins_with("sing") and not boyfriend.get_node("anim").current_animation.ends_with("miss"):
+		boyfriend.dance()
+	
 	for note in $camHUD/Notes.get_children():
-		if note.mustPress and note.sustainLength > 0 and pressed[note.noteData % 4] and Conductor.songPosition >= note.strumTime:
+		if note.mustPress and note.sustainLength > 0 and pressed[note.noteData % 4] and Conductor.songPosition >= note.strumTime or Options.get_data("botplay") and note.mustPress and note.sustainLength > 0 and Conductor.songPosition >= note.strumTime:
 			var strum = $camHUD/PlayerStrums.get_children()[note.noteData % 4]
 			
 			strum.frame = 0
 			strum.play(letter_directions[note.noteData % 4] + " confirm")
 			
-			boyfriend.get_node("frames").frame = 0
-			boyfriend.play_anim(sing_anims[note.noteData % 4])
+			boyfriend.play_anim(sing_anims[note.noteData % 4], true)
 			
-			health += 0.023 / 4
+			AudioHandler.get_node("Voices").volume_db = 0
+			
+			health += 0.023 / 5
 			
 			note.global_position.y = strum.global_position.y
-			note.sustainLength -= delta * 1000
+			note.sustainLength -= (delta * 1000) / speed
 			if note.sustainLength <= 0:
 				$camHUD/Notes.remove_child(note)
 				
@@ -246,7 +352,7 @@ func _process(delta):
 func generate_notes():
 	for section in SONG.notes:
 		for songNotes in section.sectionNotes:
-			var daStrumTime:float = songNotes[0] # add offset bullshit here when options are real
+			var daStrumTime:float = songNotes[0] + Options.get_data("note-offset")
 			var daNoteData:int = int(songNotes[1]) % 4
 			
 			var oldNote:Node2D
@@ -267,9 +373,9 @@ func generate_notes():
 			else:
 				swagNote.global_position.x = $camHUD/OpponentStrums.get_children()[daNoteData].global_position.x
 			swagNote.noteData = daNoteData
-			swagNote.strumTime = daStrumTime - Options.get_data("note-offset")
+			swagNote.strumTime = daStrumTime
 			swagNote.mustPress = gottaHitNote
-			swagNote.sustainLength = songNotes[2] - 170
+			swagNote.sustainLength = songNotes[2] - 200
 			
 			if swagNote.sustainLength < 0:
 				swagNote.sustainLength = 0
@@ -325,6 +431,8 @@ var letter_directions = ["A", "B", "C", "D"]
 
 var combo = 0
 	
+var brum = 0
+	
 func key_shit(delta):	
 	just_pressed = [false, false, false, false]
 	just_released = [false, false, false, false]
@@ -371,87 +479,143 @@ func key_shit(delta):
 			var note = possibleNotes[i]
 			
 			if (just_pressed[note.noteData % 4] and not dont_hit[note.noteData % 4] and not Options.get_data("botplay")) or Options.get_data("botplay"):
-				var rating_scores: = [350, 200, 100, 50]
-				
-				var note_ms = Conductor.songPosition - note.strumTime
-				
-				if Options.get_data("botplay"):
-					note_ms = 0
+				if not note.beingPressed:
+					var rating_scores = [350, 200, 100, 50]
 					
-				note_ms = Util.round_decimal(note_ms, 3)
-				
-				var judgement_timings = [
-					22.5, # sick
-					45, # good
-					85, # bad
-					100 # shit
-				]
-				
-				cur_rating = "marvelous"
-				
-				if abs(note_ms) > judgement_timings[0]:
-					cur_rating = "sick"
-					song_score += rating_scores[0]
+					var note_ms = Conductor.songPosition - note.strumTime
 					
-				if abs(note_ms) > judgement_timings[1]:
-					cur_rating = "good"
-					song_score += rating_scores[1]
-				
-				if abs(note_ms) > judgement_timings[2]:
-					cur_rating = "bad"
-					song_score += rating_scores[2]
+					if Options.get_data("botplay"):
+						note_ms = 0
+						
+					note_ms = Util.round_decimal(note_ms, 3)
 					
-				if abs(note_ms) > judgement_timings[3]:
-					cur_rating = "shit"
-					song_score += rating_scores[3]
+					var judgement_timings = [
+						22.5, # sick
+						45, # good
+						85, # bad
+						100 # shit
+					]
 					
-				var rating = $camHUD/RatingTemplate.duplicate()
-				rating.name = "Rating" + str(hits)
-				rating.get_node("Sprite").texture = load("res://Assets/Images/UI Skins/" + Gameplay.ui_Skin + "/" + cur_rating + ".png")
-				rating.modulate.a = 1
-				rating.visible = true
-				rating.combo = combo
-				hits += 1
-				combo += 1
-				$camHUD.add_child(rating)
-				
-				health += 0.023
+					cur_rating = "marvelous"
 					
-				dont_hit[note.noteData % 4] = true
-				pressed[note.noteData % 4] = true
-				
-				boyfriend.get_node("frames").frame = 0
-				boyfriend.play_anim(sing_anims[note.noteData % 4])
-				
-				var strum = $camHUD/PlayerStrums.get_children()[note.noteData % 4]
-				strum.play(letter_directions[note.noteData % 4] + " confirm")
-				
-				note.get_node("Note").visible = false
-				
-				if note.sustainLength <= 0:
-					$camHUD/Notes.remove_child(note)
-				
-				if note.sustainLength > 0:
-					note.beingPressed = true
+					if abs(note_ms) > judgement_timings[0]:
+						cur_rating = "sick"
+						song_score += rating_scores[0]
+						
+					if abs(note_ms) > judgement_timings[1]:
+						cur_rating = "good"
+						song_score += rating_scores[1]
+					
+					if abs(note_ms) > judgement_timings[2]:
+						cur_rating = "bad"
+						song_score += rating_scores[2]
+						
+					if abs(note_ms) > judgement_timings[3]:
+						cur_rating = "shit"
+						song_score += rating_scores[3]
+						
+					match(cur_rating):
+						"marvelous", "sick":
+							total_notes_hit += 1
+							
+							if cur_rating == "marvelous":
+								marvelous += 1
+							else:
+								sicks += 1
+							
+							var note_splash = preload("res://Scenes/Gameplay/NoteSplash.tscn").instance()
+							note_splash.noteData = note.noteData % 4
+							note_splash.global_position = $camHUD/PlayerStrums.get_children()[note.noteData % 4].global_position
+							$camHUD.add_child(note_splash)
+						"good":
+							total_notes_hit += 0.75
+							goods += 1
+						"bad":
+							total_notes_hit += 0.5
+							bads += 1
+						"shit":
+							total_notes_hit += 0
+							shits += 1
+						
+					var rating = preload("res://Scenes/Gameplay/Rating.tscn").instance()
+					rating.name = "Rating" + str(hits)
+					rating.get_node("Sprite").texture = load("res://Assets/Images/UI Skins/" + Gameplay.ui_Skin + "/" + cur_rating + ".png")
+					rating.modulate.a = 1
+					rating.visible = true
+					rating.combo = combo
+					hits += 1
+					combo += 1
+					$camHUD.add_child(rating)
+					
+					calculate_accuracy()
+					
+					health += 0.023
+						
+					dont_hit[note.noteData % 4] = true
+					pressed[note.noteData % 4] = true
+					
+					boyfriend.play_anim(sing_anims[note.noteData % 4], true)
+					
+					AudioHandler.get_node("Voices").volume_db = 0
+					
+					var strum = $camHUD/PlayerStrums.get_children()[note.noteData % 4]
+					strum.play(letter_directions[note.noteData % 4] + " confirm")
+					
+					note.get_node("Note").visible = false
+					
+					if note.sustainLength <= 0:
+						$camHUD/Notes.remove_child(note)
+					
+					if note.sustainLength > 0:
+						note.beingPressed = true
+					
+func calculate_accuracy():
+	if (hits + song_misses) > 0:
+		song_accuracy = min(1, max(0, total_notes_hit / (hits + song_misses)))
+		
+	$camHUD/RatingText.text = "Marvelous: " + str(marvelous)
+	$camHUD/RatingText.text += "\nSicks: " + str(sicks)
+	$camHUD/RatingText.text += "\nGoods: " + str(goods)
+	$camHUD/RatingText.text += "\nBads: " + str(bads)
+	$camHUD/RatingText.text += "\nShits: " + str(shits)
+	$camHUD/RatingText.text += "\nMisses: " + str(song_misses)
 				
 func sort_notes(a, b):
 	return int(a.strumTime - b.strumTime)
 	
-func beat_hit():			
-	if !dad.get_node("anim").is_playing():
+func beat_hit():	
+	if not dad.get_node("anim").current_animation.begins_with("sing"):
 		dad.dance()
 		
 	gf.dance()
 	
-	if !boyfriend.get_node("anim").is_playing():
+	if not boyfriend.get_node("anim").current_animation.begins_with("sing"):
 		boyfriend.dance()
-	
-	$camHUD/HealthBar/IconP2.scale = Vector2(1.2, 1.2)
-	$camHUD/HealthBar/IconP1.scale = Vector2(-1.2, 1.2)
-	
-	if Conductor.curBeat % 4 == 0:
-		$camGame.zoom = Vector2(default_cam_zoom, default_cam_zoom) * 0.98
-		$camHUD.scale = Vector2(1.05, 1.05)
+			
+	if not countdown_active:
+		$camHUD/HealthBar/IconP2.scale = Vector2(1.2, 1.2)
+		$camHUD/HealthBar/IconP1.scale = Vector2(-1.2, 1.2)
 		
-func remap_to_range(value, start1, stop1, start2, stop2):
-	return start2 + (value - start1) * ((stop2 - start2) / (stop1 - start1))
+		if Conductor.curBeat % 4 == 0:
+			$camGame.zoom = Vector2(default_cam_zoom, default_cam_zoom) * 0.98
+			$camHUD.scale = Vector2(1.03, 1.03)
+
+var curSection:int = 0
+
+var mustHitSection = false
+
+func step_hit():
+	var prevSection = curSection
+
+	curSection = floor(Conductor.curStep / 16)
+	
+	if curSection != prevSection:
+		if len(SONG["notes"]) - 1 >= curSection:
+			if SONG["notes"][curSection]["mustHitSection"]:
+				mustHitSection = true
+				$camHUD/TimeBar/FGColor.color = boyfriend.health_color
+				$camGame.position = stage.get_node("bf_pos").position + boyfriend.get_node("camera_pos").position
+			else:
+				mustHitSection = false
+				$camHUD/TimeBar/FGColor.color = dad.health_color
+				$camGame.position = stage.get_node("dad_pos").position + dad.get_node("camera_pos").position
