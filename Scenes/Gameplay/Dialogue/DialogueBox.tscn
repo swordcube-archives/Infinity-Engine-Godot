@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Assets/Images/Dialogue/Boxes/Default/assets.res" type="SpriteFrames" id=1]
+[ext_resource path="res://Scenes/Gameplay/Dialogue/DialogueBox.gd" type="Script" id=2]
+[ext_resource path="res://Assets/Fonts/funkin.ttf" type="DynamicFontData" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+size = 48
+font_data = ExtResource( 3 )
+
+[node name="DialogueBox" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="bg" type="ColorRect" parent="."]
+margin_right = 1280.0
+margin_bottom = 720.0
+color = Color( 1, 1, 1, 0.196078 )
+
+[node name="chars" type="Node2D" parent="."]
+
+[node name="box" type="AnimatedSprite" parent="."]
+position = Vector2( 640, 510 )
+frames = ExtResource( 1 )
+animation = "normal idle"
+
+[node name="text" type="Label" parent="."]
+visible = false
+modulate = Color( 0, 0, 0, 1 )
+margin_left = 132.0
+margin_top = 464.0
+margin_right = 1155.0
+margin_bottom = 631.0
+custom_fonts/font = SubResource( 1 )
+text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna..."
+autowrap = true
+
+[connection signal="animation_finished" from="box" to="." method="_on_box_animation_finished"]

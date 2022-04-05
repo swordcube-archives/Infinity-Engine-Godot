@@ -1,13 +1,20 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Assets/Music/freakyMenu.ogg" type="AudioStream" id=1]
 [ext_resource path="res://Scenes/AudioHandler.gd" type="Script" id=2]
 [ext_resource path="res://Assets/Sounds/scrollMenu.ogg" type="AudioStream" id=3]
 [ext_resource path="res://Assets/Sounds/cancelMenu.ogg" type="AudioStream" id=4]
 [ext_resource path="res://Assets/Sounds/confirmMenu.ogg" type="AudioStream" id=5]
+[ext_resource path="res://Assets/Sounds/clickText.ogg" type="AudioStream" id=6]
+[ext_resource path="res://Assets/Sounds/pixelText.ogg" type="AudioStream" id=7]
+[ext_resource path="res://Assets/Music/breakfast.ogg" type="AudioStream" id=8]
 
 [node name="AudioHandler" type="Node2D"]
+pause_mode = 2
 script = ExtResource( 2 )
+
+[node name="breakfast" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
 
 [node name="freakyMenu" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 1 )
@@ -27,3 +34,9 @@ stream = ExtResource( 5 )
 [node name="Voices" type="AudioStreamPlayer" parent="."]
 
 [node name="Countdown" type="AudioStreamPlayer" parent="."]
+
+[node name="clickText" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+
+[node name="pixelText" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )

@@ -16,6 +16,8 @@ var dad:Node2D
 var gf:Node2D
 var boyfriend:Node2D
 
+var dialogue_box:Node2D
+
 var song_score:int = 0
 var song_misses:int = 0
 
@@ -31,7 +33,7 @@ var unspawnNotes:Array = []
 
 var speed:float = 1.0
 
-var in_cutscene:bool = false
+var in_cutscene:bool = true
 var countdown_active:bool = true
 
 var sing_anims = ["singLEFT", "singDOWN", "singUP", "singRIGHT"]
@@ -169,7 +171,8 @@ func change_bf_health_color(color):
 var botplay_text_sine = 0.0
 	
 func _process(delta):
-	Conductor.songPosition += (delta * 1000)
+	if not in_cutscene:
+		Conductor.songPosition += (delta * 1000)
 	
 	$camHUD/BotplayText.visible = Options.get_data("botplay")
 	
@@ -328,8 +331,9 @@ func _process(delta):
 					timebar_tween.interpolate_property($camHUD/TimeBar, "modulate", $camHUD/TimeBar.modulate, Color(1, 1, 1, 1), 0.5, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
 					add_child(timebar_tween)
 					timebar_tween.start()
-					
-	key_shit(delta)
+				
+	if not in_cutscene:	
+		key_shit(delta)
 	
 	if not pressed.has(true):
 		if boyfriend.hold_timer > Conductor.timeBetweenSteps * 0.001 * boyfriend.sing_duration and boyfriend.get_node("frames").animation.begins_with("sing") and not boyfriend.get_node("frames").animation.ends_with("miss"):
@@ -351,6 +355,7 @@ func _process(delta):
 			
 			health += 0.023 / 5
 			
+			note.get_node("Note").visible = false
 			note.global_position.y = strum.global_position.y
 			note.sustainLength -= (delta * (650 * speed))
 			if note.sustainLength <= 0:

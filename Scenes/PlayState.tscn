@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Assets/Fonts/vcr.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Scenes/PlayState.gd" type="Script" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://Assets/Images/healthBar.png" type="Texture" id=5]
 [ext_resource path="res://Scenes/Strums/4Key.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Transition/Transition.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Scenes/Gameplay/Dialogue/DialogueBox.tscn" type="PackedScene" id=8]
 
 [sub_resource type="DynamicFont" id=1]
 size = 18
@@ -146,6 +147,9 @@ Goods: 0
 Bads: 0
 Shits: 0
 Misses: 0"
+
+[node name="DialogueBox" parent="camHUD" instance=ExtResource( 8 )]
+visible = false
 
 [node name="Misc" type="CanvasLayer" parent="."]
 layer = 128

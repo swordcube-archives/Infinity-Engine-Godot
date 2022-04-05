@@ -24,7 +24,7 @@ func play_voices(name):
 # misc
 	
 func pause_inst():
-	$Inst.pause()
+	$Inst.stop()
 	
 func unpause_inst():
 	$Inst.play()
@@ -35,7 +35,7 @@ func stop_inst():
 # misc but for voices
 	
 func pause_voices():
-	$Voices.pause()
+	$Voices.stop()
 	
 func unpause_voices():
 	$Voices.play()

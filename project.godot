@@ -16,9 +16,10 @@ config/icon="res://icon.png"
 
 [autoload]
 
-Fps="*res://Scenes/FPS.tscn"
 AudioHandler="*res://Scenes/AudioHandler.tscn"
 SceneManager="*res://Scripts/SceneManager.gd"
+PauseMenu="*res://Scenes/Gameplay/PauseMenu.tscn"
+Fps="*res://Scenes/FPS.tscn"
 EngineSettings="*res://Scripts/EngineSettings.gd"
 JsonUtil="*res://Scripts/JSONUtil.gd"
 Conductor="*res://Scripts/Conductor.gd"

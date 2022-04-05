@@ -1,6 +1,6 @@
 extends Node2D
 
-var y_vel = 4
+var y_vel = 3
 var br = 0
 
 var combo = 0
