@@ -49,6 +49,12 @@ func _process(delta):
 						"bool", # type
 					],
 					[
+						"VSync", # title
+						"vsync", # actual thing in save data
+						"When enabled, the game limits the FPS to your monitor's refresh rate.", # desc
+						"bool", # type
+					],
+					[
 						"Keybind Reminders", # title
 						"keybind-reminders", # actual thing in save data
 						"When enabled, The game will tell you what your keybinds are when a song starts.", # desc
