@@ -400,7 +400,7 @@ func generate_notes():
 	
 	for section in noteData:
 		for songNotes in section.sectionNotes:
-			var daStrumTime:float = songNotes[0] + Options.get_data("note-offset")
+			var daStrumTime:float = songNotes[0] + Options.get_data("note-offset") + (AudioServer.get_output_latency() * 1000)
 			var daNoteData:int = int(songNotes[1]) % 4
 			
 			var gottaHitNote:bool = section.mustHitSection
@@ -681,7 +681,7 @@ func resync_vocals():
 	AudioHandler.get_node("Voices").seek(Conductor.songPosition / 1000)
 
 func step_hit():
-	if abs(inst_time - (Conductor.songPosition)) > 20 || (SONG.needsVoices && abs(voices_time - (Conductor.songPosition)) > 20):
+	if abs(inst_time + (AudioServer.get_time_since_last_mix() * 1000) - (Conductor.songPosition)) > 20 || (SONG.needsVoices && abs(voices_time + (AudioServer.get_time_since_last_mix() * 1000) - (Conductor.songPosition)) > 20):
 		resync_vocals()
 		
 	var prevSection = curSection
