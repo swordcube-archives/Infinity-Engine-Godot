@@ -49,6 +49,14 @@ var inst_time:float = 0.0
 var voices_time:float = 0.0
 
 func _ready():
+	# story mode shit
+	if not Gameplay.story_mode:
+		in_cutscene = false
+	
+	# pause menu shit
+	AudioHandler.get_node("Inst").stream = null
+	AudioHandler.get_node("Voices").stream = null
+	
 	if(Gameplay.SONG == null): # load tutorial if the song can't be found
 		var song = "res://Assets/Songs/Tutorial/hard"
 		print("SONG TO LOAD: " + song)
@@ -115,7 +123,6 @@ func _ready():
 	
 	dad = dadLoaded.instance()
 	dad.global_position = stage.get_node("dad_pos").position
-	add_child(dad)
 	
 	# add gf		
 	var gfLoaded = load("res://Characters/" + gf_version.to_lower() + "/char.tscn")
@@ -125,7 +132,6 @@ func _ready():
 	
 	gf = gfLoaded.instance()
 	gf.global_position = stage.get_node("gf_pos").position
-	add_child(gf)
 	
 	if dadLoaded == gfLoaded:
 		dad.global_position = stage.get_node("gf_pos").position
@@ -139,6 +145,9 @@ func _ready():
 	
 	boyfriend = bfLoaded.instance()
 	boyfriend.global_position = stage.get_node("bf_pos").position
+	
+	add_child(gf)
+	add_child(dad)
 	add_child(boyfriend)
 	
 	$camHUD/TimeBar/FGColor.color = dad.health_color
@@ -212,6 +221,17 @@ func _process(delta):
 
 			unspawnNotes.remove(0) # wouldn't this work too? lmao??
 			
+	if health < 0.4150:
+		$camHUD/HealthBar/IconP2.frame = 2
+		$camHUD/HealthBar/IconP1.frame = 1
+	else:
+		$camHUD/HealthBar/IconP2.frame = 0
+		$camHUD/HealthBar/IconP1.frame = 0
+		
+	if health > 1.625:
+		$camHUD/HealthBar/IconP2.frame = 1
+		$camHUD/HealthBar/IconP1.frame = 2
+			
 	for note in $camHUD/Notes.get_children():
 		var strum
 		if note.mustPress:
@@ -252,7 +272,11 @@ func _process(delta):
 				song_misses += 1
 				#total_notes_hit += 1
 				combo = 0
-				health -= 0.0475
+				
+				if note.sustainLength >= 150:
+					health -= 0.2475
+				else:
+					health -= 0.0475
 				
 				calculate_accuracy()
 				

@@ -3,6 +3,8 @@ extends Node
 var SONG = null
 var ui_Skin = "Default"
 
+var story_mode:bool = false
+
 func _process(delta):
 	if SONG != null and SONG.song.get("ui_Skin") != null:
 		ui_Skin = SONG.song.ui_Skin

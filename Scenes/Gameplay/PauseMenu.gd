@@ -10,6 +10,8 @@ var pause_options = []
 
 var curSelected = 0
 
+var tween = Tween.new()
+
 func _ready():
 	visible = false
 	pause_options = default_pause_options
@@ -17,35 +19,61 @@ func _ready():
 	
 func _process(delta):
 	if Input.is_action_just_pressed("ui_accept") and get_tree().current_scene.name == "PlayState":
-		get_tree().paused = not get_tree().paused
-		
-		if get_tree().paused == false:
-			curSelected = 0
-			
-			pause_options = default_pause_options
-			spawn_options()
-		
-		match(pause_options[curSelected]):
-			"Resume":
-				if get_tree().paused == true:
-					AudioHandler.play_audio("breakfast")
-					AudioHandler.get_node("breakfast").seek(0)
+		if get_tree().paused == true:
+			match(pause_options[curSelected]):
+				"Resume":
+					get_tree().paused = not get_tree().paused
 					
-					var tween = Tween.new()
-					tween.interpolate_property(AudioHandler.get_node("breakfast"), "volume_db", -50, 0, rand_range(0, AudioHandler.get_node("breakfast").stream.get_length() / 2))
-					add_child(tween)
-					tween.start()
+					var inst_pos = AudioHandler.get_node("Inst").get_playback_position()
+					var voices_pos = AudioHandler.get_node("Voices").get_playback_position()
 					
-					if AudioHandler.get_node("Inst").playing:
-						AudioHandler.pause_inst()
-					
-					if AudioHandler.get_node("Voices").playing:
-						AudioHandler.pause_voices()
-				else:
-					AudioHandler.get_node("Inst").play()
-					AudioHandler.get_node("Voices").play()
+					if AudioHandler.get_node("Inst").stream != null:
+						AudioHandler.unpause_inst()
+						AudioHandler.get_node("Inst").seek(inst_pos)
+						
+					if AudioHandler.get_node("Voices").stream != null:
+						AudioHandler.unpause_voices()
+						AudioHandler.get_node("Voices").seek(voices_pos)
 					
 					AudioHandler.stop_audio("breakfast")
+				"Restart Song":
+					AudioHandler.stop_audio("breakfast")
+					
+					get_tree().reload_current_scene()
+					get_tree().paused = not get_tree().paused
+				"Exit To Menu":
+					AudioHandler.stop_audio("breakfast")
+					AudioHandler.play_audio("freakyMenu")
+					
+					if Gameplay.story_mode:
+						SceneManager.switch_scene("StoryMenu")
+					else:
+						SceneManager.switch_scene("FreeplayMenu")
+						
+					get_tree().paused = not get_tree().paused
+		else:
+			get_tree().paused = not get_tree().paused
+			
+			AudioHandler.play_audio("breakfast")
+			AudioHandler.get_node("breakfast").seek(0)
+			
+			remove_child(tween)
+			tween.stop_all()
+			tween = Tween.new()
+			tween.interpolate_property(AudioHandler.get_node("breakfast"), "volume_db", -50, 0, AudioHandler.get_node("breakfast").stream.get_length() / 2)
+			$BG.modulate.a = 0
+			tween.interpolate_property($BG, "modulate", Color(1, 1, 1, 0), Color(1, 1, 1, 1), 0.2)
+			add_child(tween)
+			tween.start()
+			
+			if AudioHandler.get_node("Inst").playing:
+				AudioHandler.pause_inst()
+			
+			if AudioHandler.get_node("Voices").playing:
+				AudioHandler.pause_voices()
+				
+			pause_options = default_pause_options
+			spawn_options()
 			
 	if get_tree().paused == true:
 		visible = true
@@ -60,7 +88,7 @@ func _process(delta):
 		
 	var index = 0
 	for option in $Options.get_children():
-		option.rect_position = lerp(option.rect_position, Vector2(60 + (20 * index) - (20 * curSelected), (350 + (160 * index)) - (160 * curSelected)), delta * 7)
+		option.rect_position = lerp(option.rect_position, Vector2(60 + (20 * index) - (20 * curSelected), (350 + (160 * index)) - (160 * curSelected)), delta * 10)
 		index += 1
 		
 func change_selection(amount):
