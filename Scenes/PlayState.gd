@@ -377,7 +377,7 @@ func _process(delta):
 			
 			AudioHandler.get_node("Voices").volume_db = 0
 			
-			health += 0.023 / 5
+			health += 0.023 / delta * 5
 			
 			note.get_node("Note").visible = false
 			note.global_position.y = strum.global_position.y

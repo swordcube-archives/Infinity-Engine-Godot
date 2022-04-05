@@ -18,7 +18,7 @@ func _ready():
 	spawn_options()
 	
 func _process(delta):
-	if Input.is_action_just_pressed("ui_accept") and get_tree().current_scene.name == "PlayState":
+	if Input.is_action_just_pressed("ui_confirm") and get_tree().current_scene.name == "PlayState":
 		if get_tree().paused == true:
 			match(pause_options[curSelected]):
 				"Resume":
