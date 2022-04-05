@@ -82,6 +82,8 @@ func _process(delta):
 		start_song()
 			
 func start_song():
+	Gameplay.story_mode = false
+	
 	AudioHandler.stop_audio("freakyMenu")
 	AudioHandler.stop_inst()
 	AudioHandler.stop_voices()

@@ -53,9 +53,12 @@ position = Vector2( 782, 608 )
 
 [node name="HealthBar" type="Node2D" parent="camHUD"]
 
-[node name="HealthBarBG" type="Sprite" parent="camHUD/HealthBar"]
-position = Vector2( 640, 57 )
-texture = ExtResource( 5 )
+[node name="HealthBarBG" type="ColorRect" parent="camHUD/HealthBar"]
+margin_left = 341.0
+margin_top = 47.0
+margin_right = 940.0
+margin_bottom = 67.0
+color = Color( 0, 0, 0, 1 )
 
 [node name="DadColor" type="ColorRect" parent="camHUD/HealthBar"]
 margin_left = 346.0

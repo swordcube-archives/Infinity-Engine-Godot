@@ -36,7 +36,7 @@ func _ready():
 	
 	global_position = Vector2(rating_position[0], rating_position[1])
 
-func _process(delta):
+func _physics_process(delta):
 	$Sprite.position.y -= y_vel
 	
 	for i in len(rand_array):

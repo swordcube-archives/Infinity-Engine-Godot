@@ -14,7 +14,7 @@ func _ready():
 	var song = Gameplay.SONG.song
 	json = JsonUtil.get_json("res://Assets/Songs/" + song.song + "/dialogue")
 	
-	if json == null:
+	if json == null or not Gameplay.story_mode:
 		end_dialogue()
 	else:
 		visible = true
