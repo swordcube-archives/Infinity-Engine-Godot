@@ -40,10 +40,9 @@ func _process(delta):
 	line.modulate.a = 0.6
 	
 	$End.modulate.a = 0.6
-	$End.position.y = line.points[1].y - 30
+	$End.position.y = line.points[1].y - ($End.texture.get_height() / 2)
 	
 	if downscroll:
-		$End.flip_h = true
 		$End.flip_v = true
 		
 func calculate_can_be_hit():

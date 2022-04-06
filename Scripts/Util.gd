@@ -1,5 +1,35 @@
 extends Node
 
+func list_files_in_directory(path):
+	var files = []
+	var dir = Directory.new()
+	dir.open(path)
+	dir.list_dir_begin()
+
+	while true:
+		var file = dir.get_next()
+		if file == "":
+			break
+		elif not file.begins_with("."):
+			files.append(file)
+
+	dir.list_dir_end()
+
+	return files
+
+func get_txt(path):
+	var text_array = []
+	var f = File.new()
+	f.open(path + ".txt", File.READ)
+	var index = 1
+	while not f.eof_reached(): # iterate through all lines until the end of file is reached
+		var line = f.get_line()
+		text_array.append(line)
+
+		index += 1
+	f.close()
+	return text_array
+
 func round_decimal(num, digit):
 	return round(num * pow(10.0, digit)) / pow(10.0, digit)
 	

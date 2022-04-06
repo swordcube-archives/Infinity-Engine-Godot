@@ -11,8 +11,8 @@ func _ready():
 			var checkbox = $CheckboxTemplate.duplicate()
 			checkbox.checked = Options.get_data(option[1])
 			checkbox.get_node("Text").text = option[0]
-			checkbox.global_position.x = (20 * option_i)
-			checkbox.global_position.y = 350 + (160 * option_i)
+			checkbox.global_position.x = 20
+			checkbox.global_position.y = 60 + (50 * option_i)
 			checkbox.refresh()
 			checkbox.visible = true
 			$Options.add_child(checkbox)
@@ -28,8 +28,8 @@ func _ready():
 				value.decimal_shit = 1
 				
 			value.visible = true
-			value.global_position.x = (20 * option_i)
-			value.global_position.y = 350 + (160 * option_i)
+			value.global_position.x = 20
+			value.global_position.y = 60 + (50 * option_i)
 			$Options.add_child(value)
 			
 		option_i += 1
@@ -39,6 +39,11 @@ func _ready():
 var hold_time = 0.0
 
 func _process(delta):		
+	var index = 0
+	for option in $Options.get_children():
+		option.global_position = lerp(option.global_position, Vector2(160 + (20 * index) - (20 * curSelected), (350 + (160 * index)) - (160 * curSelected)), delta * 10)
+		index += 1
+		
 	if Input.is_action_just_pressed("ui_back"):
 		$Misc/Transition.transition_to_scene("Options/OptionsMenu")
 		
@@ -99,6 +104,9 @@ func _process(delta):
 		if option[3] == "bool":
 			Options.set_data(option[1], !Options.get_data(option[1]))
 			$Options.get_children()[curSelected].checked = Options.get_data(option[1])
+			
+			if option[1] == "vsync":
+				OS.set_use_vsync(Options.get_data("vsync"))
 			# toggles option on/off
 		
 func change_selection(amount):
@@ -114,6 +122,3 @@ func change_selection(amount):
 		song.modulate.a = 0.6
 		
 	$Options.get_children()[curSelected].modulate.a = 1
-		
-	$Cam.global_position.x = $Options.get_children()[curSelected].global_position.x - 140
-	$Cam.global_position.y = $Options.get_children()[curSelected].global_position.y - 370

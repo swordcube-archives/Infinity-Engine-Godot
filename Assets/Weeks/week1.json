@@ -1,0 +1,31 @@
+{
+    "songs": [
+        {
+            "name": "Bopeebo",
+            "icon": "dad",
+            "color": "af66ce",
+            "difficulties": ["easy", "normal", "hard"]
+        },
+        {
+            "name": "Fresh",
+            "icon": "dad",
+            "color": "af66ce",
+            "difficulties": ["easy", "normal", "hard"]
+        },
+        {
+            "name": "Dad Battle",
+            "icon": "dad",
+            "color": "af66ce",
+            "difficulties": ["easy", "normal", "hard"]
+        }
+    ],
+    "difficulties": ["easy", "normal", "hard"],
+    "characters": ["dad", "bf", "gf"],
+    "description": "DADDY DEAREST",
+    "texture": "week1",
+    "background_image": "",
+    "background_color": "f9cf51",
+    "locked_before": "",
+    "shows_in_freeplay": true,
+    "shows_in_story_mode": true
+}

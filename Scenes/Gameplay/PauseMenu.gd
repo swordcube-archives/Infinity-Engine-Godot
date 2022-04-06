@@ -54,6 +54,8 @@ func _process(delta):
 		else:
 			get_tree().paused = not get_tree().paused
 			
+			get_tree().current_scene.get_node("Misc/Transition").visible = false
+			
 			AudioHandler.play_audio("breakfast")
 			AudioHandler.get_node("breakfast").seek(0)
 			
@@ -65,12 +67,9 @@ func _process(delta):
 			tween.interpolate_property($BG, "modulate", Color(1, 1, 1, 0), Color(1, 1, 1, 1), 0.2)
 			add_child(tween)
 			tween.start()
-			
-			if AudioHandler.get_node("Inst").playing:
-				AudioHandler.pause_inst()
-			
-			if AudioHandler.get_node("Voices").playing:
-				AudioHandler.pause_voices()
+
+			AudioHandler.pause_inst()
+			AudioHandler.pause_voices()
 				
 			pause_options = default_pause_options
 			spawn_options()

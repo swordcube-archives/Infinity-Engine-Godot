@@ -21,8 +21,7 @@ texture = ExtResource( 1 )
 [node name="parallax" type="ParallaxLayer" parent="StageFront"]
 
 [node name="spr" type="Sprite" parent="StageFront/parallax"]
-position = Vector2( 653.345, 779.263 )
-scale = Vector2( 0.921644, 0.921644 )
+position = Vector2( 653.345, 796.263 )
 texture = ExtResource( 2 )
 
 [node name="StageCurtains" type="ParallaxBackground" parent="."]
@@ -42,4 +41,4 @@ position = Vector2( 175, 686 )
 position = Vector2( 602, 640 )
 
 [node name="bf_pos" type="Node2D" parent="."]
-position = Vector2( 1017, 678 )
+position = Vector2( 981, 682 )

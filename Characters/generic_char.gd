@@ -36,9 +36,9 @@ func _process(delta):
 		if $frames.animation.begins_with('sing'):
 			hold_timer += delta
 
-		if hold_timer >= Conductor.timeBetweenSteps * 0.001 * sing_duration:
-			dance()
-			hold_timer = 0	
+			if hold_timer >= Conductor.timeBetweenSteps * 0.001 * sing_duration:
+				dance()
+				hold_timer = 0	
 	else:
 		if $frames.animation.begins_with('sing'):
 			hold_timer += delta
@@ -63,7 +63,11 @@ func dance(force = null):
 func is_dancing():
 	var dancing = true
 		
-	if last_anim != "idle" and !last_anim.begins_with("dance"):
+	if !last_anim.begins_with("idle") and !last_anim.begins_with("dance"):
 		dancing = false
 	
 	return dancing
+
+func _on_frames_animation_finished():
+	if $anim.has_animation(last_anim + "-loop"):
+		play_anim(last_anim + "-loop")

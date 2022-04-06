@@ -83,7 +83,7 @@ func _process(delta):
 				]
 				$Misc/Transition.transition_to_scene("Options/BaseOptionsMenu")
 			"Controls":
-				$Misc/Transition.transition_to_scene("Options/BaseOptionsMenu")
+				$Misc/Transition.transition_to_scene("Options/ControlsMenu")
 			"Exit":
 				$Misc/Transition.transition_to_scene("MainMenu")
 			

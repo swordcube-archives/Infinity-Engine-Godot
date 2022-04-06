@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Assets/Images/UI Skins/Default/notes.res" type="SpriteFrames" id=1]
 [ext_resource path="res://Scenes/Notes/Note.gd" type="Script" id=2]
 [ext_resource path="res://Assets/Images/UI Skins/Default/Sustains/A hold0000.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Images/UI Skins/Default/Sustains/A tail0000.png" type="Texture" id=4]
 
 [node name="Note" type="Node2D"]
 scale = Vector2( 0.7, 0.7 )
@@ -15,10 +16,8 @@ default_color = Color( 1, 1, 1, 1 )
 texture = ExtResource( 3 )
 texture_mode = 1
 
-[node name="End" type="AnimatedSprite" parent="."]
-frames = ExtResource( 1 )
-animation = "A tail"
-playing = true
+[node name="End" type="Sprite" parent="."]
+texture = ExtResource( 4 )
 
 [node name="Note" type="AnimatedSprite" parent="."]
 frames = ExtResource( 1 )

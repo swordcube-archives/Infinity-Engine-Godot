@@ -1,0 +1,94 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://Transition/Transition.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/StoryMenu.gd" type="Script" id=2]
+[ext_resource path="res://Assets/Fonts/vcr.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://Assets/Images/StoryMode/tutorial.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Images/Menu_Tracks.png" type="Texture" id=5]
+[ext_resource path="res://Scenes/StoryMode/Difficulty.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Scenes/StoryMode/StoryWeek.gd" type="Script" id=7]
+
+[sub_resource type="DynamicFont" id=1]
+size = 32
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 32
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 32
+font_data = ExtResource( 3 )
+
+[node name="StoryMenu" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="BG" type="ColorRect" parent="."]
+margin_right = 1280.0
+margin_bottom = 720.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="WeekTemplate" type="Sprite" parent="."]
+visible = false
+position = Vector2( 640, 514 )
+texture = ExtResource( 4 )
+script = ExtResource( 7 )
+
+[node name="Weeks" type="Node2D" parent="."]
+
+[node name="Cover" type="ColorRect" parent="."]
+margin_top = -4.0
+margin_right = 1280.0
+margin_bottom = 52.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="ColoredBG" type="ColorRect" parent="."]
+margin_top = 46.0
+margin_right = 1280.0
+margin_bottom = 446.0
+color = Color( 0.976471, 0.811765, 0.317647, 1 )
+
+[node name="PersonalBest" type="Label" parent="."]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 312.0
+margin_bottom = 37.0
+custom_fonts/font = SubResource( 1 )
+text = "PERSONAL BEST: 0"
+
+[node name="WeekDescription" type="Label" parent="."]
+modulate = Color( 1, 1, 1, 0.6 )
+margin_left = -351.0
+margin_right = 1272.0
+margin_bottom = 29.0
+custom_fonts/font = SubResource( 2 )
+text = "..."
+align = 2
+
+[node name="TracksSprite" type="Sprite" parent="."]
+position = Vector2( 198, 500 )
+scale = Vector2( 0.9, 0.9 )
+texture = ExtResource( 5 )
+
+[node name="TrackList" type="Label" parent="."]
+margin_left = -102.0
+margin_top = 536.0
+margin_right = 495.0
+margin_bottom = 629.0
+custom_colors/font_color = Color( 0.898039, 0.341176, 0.466667, 1 )
+custom_fonts/font = SubResource( 3 )
+text = "???
+???
+???"
+align = 1
+
+[node name="Difficulty" parent="." instance=ExtResource( 6 )]
+position = Vector2( 891, 510 )
+
+[node name="Misc" type="CanvasLayer" parent="."]
+
+[node name="Transition" parent="Misc" instance=ExtResource( 1 )]
+visible = false

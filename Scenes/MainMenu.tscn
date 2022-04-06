@@ -75,7 +75,7 @@ offset = Vector2( 92, -209 )
 position = Vector2( 548, 731 )
 frames = ExtResource( 10 )
 animation = "basic"
-frame = 7
+frame = 1
 playing = true
 offset = Vector2( 92, -209 )
 
