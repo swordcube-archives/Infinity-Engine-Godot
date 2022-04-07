@@ -48,6 +48,8 @@ var misses:int = 0
 var inst_time:float = 0.0
 var voices_time:float = 0.0
 
+var inst_length:float = 0.0
+
 func _ready():
 	# story mode shit
 	if not Gameplay.story_mode:
@@ -77,12 +79,13 @@ func _ready():
 				noteDataArray.push_back([float(note[0]) + Options.get_data("note-offset") + (AudioServer.get_output_latency() * 1000), note[1], note[2], bool(section["mustHitSection"]), int(note[3])])
 	
 	speed = SONG.speed
+	speed /= Gameplay.song_multiplier
 			
 	Conductor.songPosition = 0
 	Conductor.curBeat = 0
 	Conductor.curStep = 0
-	Conductor.change_bpm(SONG.bpm)
-	Conductor.recalculate_values()
+	Conductor.change_bpm(SONG.bpm, Gameplay.song_multiplier)
+	Conductor.recalculate_values(Gameplay.song_multiplier)
 	
 	Conductor.connect("beat_hit", self, "beat_hit")
 	Conductor.connect("step_hit", self, "step_hit")
@@ -145,7 +148,7 @@ func _ready():
 		stageLoaded = load("res://Stages/stage/stage.tscn")
 	
 	stage = stageLoaded.instance()
-	add_child(stage)
+	$Stage.add_child(stage)
 	
 	# add dad
 	var dadLoaded = load("res://Characters/" + SONG.player2.to_lower() + "/char.tscn")
@@ -154,6 +157,7 @@ func _ready():
 		dadLoaded = load("res://Characters/dad/char.tscn")
 	
 	dad = dadLoaded.instance()
+	dad.name = "dad"
 	dad.global_position = stage.get_node("dad_pos").position
 	
 	# add gf		
@@ -163,6 +167,7 @@ func _ready():
 		gfLoaded = load("res://Characters/gf/char.tscn")
 	
 	gf = gfLoaded.instance()
+	gf.name = "gf"
 	gf.global_position = stage.get_node("gf_pos").position
 	
 	if dadLoaded == gfLoaded:
@@ -176,11 +181,12 @@ func _ready():
 		bfLoaded = load("res://Characters/bf/char.tscn")
 	
 	boyfriend = bfLoaded.instance()
+	boyfriend.name = "boyfriend"
 	boyfriend.global_position = stage.get_node("bf_pos").position
 	
-	add_child(gf)
-	add_child(dad)
-	add_child(boyfriend)
+	$Characters.add_child(gf)
+	$Characters.add_child(dad)
+	$Characters.add_child(boyfriend)
 	
 	$camHUD/TimeBar/FGColor.color = dad.health_color
 	$camGame.position = dad.global_position + dad.get_node("camera_pos").position	
@@ -196,7 +202,7 @@ func _ready():
 	#generate_notes()
 	# now this is stupid, we're gonna generate the notes as the song goes now
 	
-	Conductor.songPosition = Conductor.timeBetweenBeats * -4.5
+	Conductor.songPosition = (Conductor.timeBetweenBeats * -5) * Gameplay.song_multiplier
 	
 func change_dad_icon(texture):
 	$camHUD/HealthBar/IconP2.texture = texture
@@ -214,7 +220,7 @@ var botplay_text_sine = 0.0
 	
 func _process(delta):
 	if not in_cutscene:
-		Conductor.songPosition += (delta * 1000)
+		Conductor.songPosition += (delta * 1000) * Gameplay.song_multiplier
 		
 	if Input.is_action_just_pressed("chart_editor"):		
 		$Misc/Transition.transition_to_scene("ChartEditor")
@@ -231,14 +237,14 @@ func _process(delta):
 		inst_time = AudioHandler.get_node("Inst").get_playback_position() * 1000
 		voices_time = AudioHandler.get_node("Voices").get_playback_position() * 1000
 		
-		var length = AudioHandler.get_node("Inst").stream.get_length() * 1000
+		inst_length = AudioHandler.get_node("Inst").stream.get_length() * 1000
 		
 		#print(format_time(time / 1000, false))
-		$camHUD/TimeBar/TimeText.text = Util.format_time(inst_time / 1000, false) + " / " + Util.format_time(length / 1000, false)
+		$camHUD/TimeBar/TimeText.text = Util.format_time(inst_time / 1000, false) + " / " + Util.format_time(inst_length / 1000, false)
 		
-		$camHUD/TimeBar/FGColor.rect_scale.x = (inst_time / length)
+		$camHUD/TimeBar/FGColor.rect_scale.x = (inst_time / inst_length)
 
-		if inst_time >= length:
+		if Conductor.songPosition >= inst_length:
 			end_song()
 
 	$camHUD/ScoreText.bbcode_text = "[center]Score: " + str(song_score) + " // Misses: " + str(song_misses) + " // Accuracy: " + str(Util.round_decimal(song_accuracy * 100, 2)) + "%"
@@ -251,11 +257,11 @@ func _process(delta):
 	
 	var index = 0
 	for note in noteDataArray:
-		if (note[0] - Conductor.songPosition < 1500):
+		if (note[0] - Conductor.songPosition < (1500 * Gameplay.song_multiplier)):
 			var dunceNote:Node2D = preload("res://Scenes/Notes/Note.tscn").instance()
 			dunceNote.strumTime = note[0]
 			dunceNote.noteData = int(note[1]) % 4
-			dunceNote.sustainLength = note[2] - 240
+			dunceNote.sustainLength = (note[2] - 240) / Gameplay.song_multiplier
 			
 			if dunceNote.sustainLength <= 0:
 				dunceNote.sustainLength = 0
@@ -320,7 +326,7 @@ func _process(delta):
 					note.get_node("Note").visible = false
 					
 					note.global_position.y = strum.global_position.y
-					note.sustainLength -= (delta * (650 * speed))
+					note.sustainLength -= (delta * (650 * speed)) * Gameplay.song_multiplier
 					if note.sustainLength <= 0:
 						note.queue_free()
 
@@ -409,6 +415,9 @@ func _process(delta):
 					AudioHandler.get_node("Inst").volume_db = 0
 					AudioHandler.get_node("Voices").volume_db = 0
 					
+					AudioHandler.get_node("Inst").pitch_scale = Gameplay.song_multiplier
+					AudioHandler.get_node("Voices").pitch_scale = Gameplay.song_multiplier
+					
 					Conductor.songPosition = 0.0
 					countdown_active = false
 		
@@ -441,7 +450,7 @@ func _process(delta):
 			
 			note.get_node("Note").visible = false
 			note.global_position.y = strum.global_position.y
-			note.sustainLength -= (delta * (650 * speed))
+			note.sustainLength -= (delta * (650 * speed)) * Gameplay.song_multiplier
 			if note.sustainLength <= 0:
 				note.queue_free()
 				
@@ -454,21 +463,25 @@ func _process(delta):
 	icon_zooms(delta)
 	
 func end_song():
-	if(song_score > SongHighscore.get_score(SONG.song.to_lower().replace(" ", "-") + "-" + Gameplay.difficulty)):
-		SongHighscore.set_score(SONG.song.to_lower().replace(" ", "-") + "-" + Gameplay.difficulty, song_score)
-		SongAccuracy.set_acc(SONG.song.to_lower().replace(" ", "-") + "-" + Gameplay.difficulty, Util.round_decimal(song_accuracy * 100, 2))
+	if Gameplay.song_multiplier >= 1:
+		if(song_score > SongHighscore.get_score(SONG.song.to_lower().replace(" ", "-") + "-" + Gameplay.difficulty)):
+			SongHighscore.set_score(SONG.song.to_lower().replace(" ", "-") + "-" + Gameplay.difficulty, song_score)
+			SongAccuracy.set_acc(SONG.song.to_lower().replace(" ", "-") + "-" + Gameplay.difficulty, Util.round_decimal(song_accuracy * 100, 2))
 			
 	if Gameplay.story_mode:
 		Gameplay.story_playlist.remove(0)
-		Gameplay.story_score += song_score
+		
+		if Gameplay.song_multiplier >= 1:
+			Gameplay.story_score += song_score
 		
 		if len(Gameplay.story_playlist) > 0:
 			var song = "res://Assets/Songs/" + Gameplay.story_playlist[0] + "/" + Gameplay.difficulty
 			Gameplay.SONG = JsonUtil.get_json(song)
 			get_tree().reload_current_scene()
 		else:
-			if Gameplay.story_score > WeekHighscore.get_score(Gameplay.week_name):
-				WeekHighscore.set_score(Gameplay.week_name, Gameplay.story_score)
+			if Gameplay.song_multiplier >= 1:
+				if Gameplay.story_score > WeekHighscore.get_score(Gameplay.week_name):
+					WeekHighscore.set_score(Gameplay.week_name, Gameplay.story_score)
 			
 			AudioHandler.play_audio("freakyMenu")
 			$Misc/Transition.transition_to_scene("StoryMenu")
@@ -570,7 +583,7 @@ func key_shit(delta):
 				if not note.beingPressed:
 					var rating_scores = [350, 200, 100, 50]
 					
-					var note_ms = Conductor.songPosition - note.strumTime
+					var note_ms = (Conductor.songPosition - note.strumTime) / Gameplay.song_multiplier
 					
 					if Options.get_data("botplay"):
 						note_ms = 0
@@ -678,11 +691,11 @@ func beat_hit():
 			boyfriend.dance()
 			
 	if dad != null:
-		if dad.is_dancing():
+		if mustHitSection and dad.is_dancing(): # so the opponent doesn't interrupt their notes
 			dad.dance()
 			
 	if gf != null:
-		if gf.is_dancing() and dad != gf:
+		if (gf.is_dancing() or gf.last_anim == "cheer" or gf.last_anim == "scared") and dad != gf:
 			gf.dance()
 			
 	if not countdown_active:
@@ -717,12 +730,12 @@ var curSection:int = 0
 var mustHitSection = false
 
 func resync_vocals():
-	AudioHandler.get_node("Inst").seek(Conductor.songPosition / 1000)
-	AudioHandler.get_node("Voices").seek(Conductor.songPosition / 1000)
+	Conductor.songPosition = (AudioHandler.get_node("Inst").get_playback_position() * 1000)
 
 func step_hit():
-	if abs(inst_time + (AudioServer.get_time_since_last_mix() * 1000) - (Conductor.songPosition)) > 20 || (SONG.needsVoices && abs(voices_time + (AudioServer.get_time_since_last_mix() * 1000) - (Conductor.songPosition)) > 20):
-		resync_vocals()
+	if not countdown_active:
+		if not Conductor.songPosition >= inst_length and abs(inst_time + (AudioServer.get_time_since_last_mix() * 1000) - (Conductor.songPosition)) > 20 || (SONG.needsVoices && abs(voices_time + (AudioServer.get_time_since_last_mix() * 1000) - (Conductor.songPosition)) > 20):
+			resync_vocals()
 		
 	var prevSection = curSection
 

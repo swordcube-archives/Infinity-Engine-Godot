@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Transition/Transition.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/StoryMenu.gd" type="Script" id=2]
@@ -7,6 +7,9 @@
 [ext_resource path="res://Assets/Images/Menu_Tracks.png" type="Texture" id=5]
 [ext_resource path="res://Scenes/StoryMode/Difficulty.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Scenes/StoryMode/StoryWeek.gd" type="Script" id=7]
+[ext_resource path="res://Scenes/StoryMode/Characters/bf.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Scenes/StoryMode/Characters/dad.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Scenes/StoryMode/Characters/gf.tscn" type="PackedScene" id=10]
 
 [sub_resource type="DynamicFont" id=1]
 size = 32
@@ -21,6 +24,7 @@ size = 32
 font_data = ExtResource( 3 )
 
 [node name="StoryMenu" type="Node2D"]
+position = Vector2( 0, -1 )
 script = ExtResource( 2 )
 
 [node name="BG" type="ColorRect" parent="."]
@@ -51,6 +55,17 @@ margin_right = 1280.0
 margin_bottom = 446.0
 color = Color( 0.976471, 0.811765, 0.317647, 1 )
 
+[node name="Characters" type="Node2D" parent="."]
+
+[node name="dad" parent="Characters" instance=ExtResource( 9 )]
+position = Vector2( 236, 443 )
+
+[node name="bf" parent="Characters" instance=ExtResource( 8 )]
+position = Vector2( 613, 435 )
+
+[node name="gf" parent="Characters" instance=ExtResource( 10 )]
+position = Vector2( 1019, 411 )
+
 [node name="PersonalBest" type="Label" parent="."]
 margin_left = 8.0
 margin_top = 8.0
@@ -62,8 +77,9 @@ text = "PERSONAL BEST: 0"
 [node name="WeekDescription" type="Label" parent="."]
 modulate = Color( 1, 1, 1, 0.6 )
 margin_left = -351.0
+margin_top = 8.0
 margin_right = 1272.0
-margin_bottom = 29.0
+margin_bottom = 37.0
 custom_fonts/font = SubResource( 2 )
 text = "..."
 align = 2

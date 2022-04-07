@@ -51,11 +51,11 @@ func _process(_delta):
 	if curBeat != oldBeat and curBeat > oldBeat:
 		emit_signal("beat_hit")
 
-func recalculate_values():
+func recalculate_values(multi = 1.0):
 	timeBetweenBeats = ((60 / bpm) * 1000)
 	timeBetweenSteps = timeBetweenBeats / 4
 
-func change_bpm(new_bpm, changes = []):
+func change_bpm(new_bpm, mult = 1.0, changes = []):
 	if len(changes) == 0:
 		changes = [[0, new_bpm, 0]]
 	

@@ -1,0 +1,31 @@
+{
+    "songs": [
+        {
+            "name": "Spookeez",
+            "icon": "spooky",
+            "color": "d57e00",
+            "difficulties": ["easy", "normal", "hard"]
+        },
+        {
+            "name": "South",
+            "icon": "spooky",
+            "color": "d57e00",
+            "difficulties": ["easy", "normal", "hard"]
+        },
+        {
+            "name": "Monster",
+            "icon": "monster",
+            "color": "f3ff6e",
+            "difficulties": ["easy", "normal", "hard"]
+        }
+    ],
+    "difficulties": ["easy", "normal", "hard"],
+    "characters": ["spooky", "bf", "gf"],
+    "description": "SPOOKY MONTH",
+    "texture": "week2",
+    "background_image": "",
+    "background_color": "f9cf51",
+    "locked_before": "",
+    "shows_in_freeplay": true,
+    "shows_in_story_mode": true
+}

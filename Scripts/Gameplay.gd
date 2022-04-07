@@ -10,6 +10,8 @@ var story_playlist = []
 var difficulty:String = "normal"
 var week_name:String = "week1"
 
+var song_multiplier:float = 1.0
+
 func _process(delta):
 	if SONG != null and "ui_Skin" in SONG.song:
 		ui_Skin = SONG.song.ui_Skin

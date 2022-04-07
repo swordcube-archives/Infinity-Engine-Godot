@@ -14,7 +14,23 @@ var tracks = []
 
 var difficulties = []
 
+var can_select = true
+
+# characters
+onready var dad = $Characters/dad
+onready var bf = $Characters/bf
+onready var gf = $Characters/gf
+
 func _ready():
+	Conductor.songPosition = 0
+	Conductor.curBeat = 0
+	Conductor.curStep = 0
+	Conductor.change_bpm(102)
+	Conductor.recalculate_values()
+	
+	Conductor.connect("beat_hit", self, "beat_hit")
+	#Conductor.connect("step_hit", self, "step_hit")
+	
 	$Misc/Transition._fade_out()
 	
 	for file in Util.list_files_in_directory("res://Assets/Weeks"):
@@ -30,8 +46,6 @@ func _ready():
 			weeks.insert(order, fuck)
 			
 		order += 1
-		
-	print("WEEKS: " + str(weeks))
 	
 	create_weeks()
 	change_selection(0)
@@ -48,6 +62,56 @@ func change_selection(amount):
 		
 	week_json = JsonUtil.get_json("res://Assets/Weeks/" + weeks[curSelected])
 	
+	$BG.modulate = Color(week_json.background_color)
+	
+	if week_json.characters[0] == "":
+		week_json.characters[0] = "blank"
+		
+	if week_json.characters[1] == "":
+		week_json.characters[1] = "blank"
+		
+	if week_json.characters[2] == "":
+		week_json.characters[2] = "blank"
+		
+	var dad_load = load("res://Scenes/StoryMode/Characters/" + week_json.characters[0] + ".tscn")
+	var bf_load = load("res://Scenes/StoryMode/Characters/" + week_json.characters[1] + ".tscn")
+	var gf_load = load("res://Scenes/StoryMode/Characters/" + week_json.characters[2] + ".tscn")
+	
+	if dad_load != null and dad.name != week_json.characters[0]:
+		dad.queue_free()
+	else:
+		dad_load = null
+	if bf_load != null and bf.name != week_json.characters[1]:
+		bf.queue_free()
+	else:
+		bf_load = null
+	if gf_load != null and gf.name != week_json.characters[2]:
+		gf.queue_free()
+	else:
+		gf_load = null
+	
+	if dad_load != null:
+		dad = dad_load.instance()
+	if bf_load != null:
+		bf = bf_load.instance()
+	if gf_load != null:
+		gf = gf_load.instance()
+	
+	if dad_load != null:
+		$Characters.add_child(dad)
+	if bf_load != null:
+		$Characters.add_child(bf)
+	if gf_load != null:
+		$Characters.add_child(gf)
+		
+	var index = 0
+	var dumbasses = [dad, bf, gf]
+	
+	for character in dumbasses:
+		character.global_position.x = 265 + (365 * index)
+		character.global_position.y = 435
+		index += 1
+	
 	difficulties = week_json.difficulties
 	
 	tracks = []
@@ -60,8 +124,54 @@ func change_selection(amount):
 		$TrackList.text += track + "\n"
 		
 var lerpScore = 0
+
+func beat_hit():
+	if dad.is_dancing():
+		dad.dance()
+
+	if bf.is_dancing():
+		bf.dance()
+
+	if gf.is_dancing():
+		gf.dance()
+	
+func select_week():
+	can_select = false
+	AudioHandler.play_audio("confirmMenu")
+	
+	$Weeks.get_children()[curSelected].start_flashing()
+	$Characters/bf.play_anim("confirm")
+	
+	var timer = Timer.new()
+	timer.set_wait_time(1)
+	add_child(timer)
+	timer.start()
+	timer.set_one_shot(true)
+	
+	print("DIFFICULTY SELECTED: " + difficulties[curDifficulty])
+	
+	yield(timer, "timeout")
+	AudioHandler.stop_audio("freakyMenu")
+	AudioHandler.stop_audio("Inst")
+	AudioHandler.stop_audio("Voices")
+	
+	Gameplay.song_multiplier = 1
+	Gameplay.story_score = 0
+	Gameplay.story_mode = true
+	Gameplay.story_playlist = tracks
+	Gameplay.difficulty = difficulties[curDifficulty]
+	Gameplay.SONG = JsonUtil.get_json("res://Assets/Songs/" + Gameplay.story_playlist[0] + "/" + difficulties[curDifficulty].to_lower())
+	$Misc/Transition.transition_to_scene("PlayState")
 		
 func _process(delta):
+	if can_select and Input.is_action_just_pressed("ui_accept"):
+		select_week()
+		
+	if AudioHandler.get_node("freakyMenu").playing:
+		Conductor.songPosition = (AudioHandler.get_node("freakyMenu").get_playback_position() * 1000)
+	else:
+		Conductor.songPosition += (delta * 1000)
+		
 	if curDifficulty > len(difficulties) - 1:
 		curDifficulty = 0
 		change_difficulty(0)
@@ -76,23 +186,28 @@ func _process(delta):
 			
 		index += 1
 		
-	if Input.is_action_just_pressed("ui_back"):
-		$Misc/Transition.transition_to_scene("MainMenu")
-		
-	if Input.is_action_just_pressed("ui_up"):
-		change_selection(-1)
-		
-	if Input.is_action_just_pressed("ui_down"):
-		change_selection(1)
-		
-	if Input.is_action_just_pressed("ui_left"):
-		change_difficulty(-1)
-		
-	if Input.is_action_just_pressed("ui_right"):
-		change_difficulty(1)
+	if can_select:
+		if Input.is_action_just_pressed("ui_back"):
+			can_select = false
+			AudioHandler.play_audio("cancelMenu")
+			$Misc/Transition.transition_to_scene("MainMenu")
+			
+		if Input.is_action_just_pressed("ui_up"):
+			change_selection(-1)
+			
+		if Input.is_action_just_pressed("ui_down"):
+			change_selection(1)
+			
+		if Input.is_action_just_pressed("ui_left"):
+			change_difficulty(-1)
+			
+		if Input.is_action_just_pressed("ui_right"):
+			change_difficulty(1)
 		
 	lerpScore = lerp(lerpScore, WeekHighscore.get_score(weeks[curSelected].to_lower().replace(" ", "-")), delta * 20)
-	$PersonalBest.text = "PERSONAL BEST: " + str(round(lerpScore))
+	$PersonalBest.text = "PERSONAL BEST: " + str(abs(round(lerpScore)))
+	
+	$WeekDescription.text = week_json.description
 		
 func change_difficulty(amount):
 	curDifficulty += amount
@@ -107,10 +222,11 @@ func change_difficulty(amount):
 func create_weeks():
 	var index = 0
 	for week in weeks:
+		var json = JsonUtil.get_json("res://Assets/Weeks/" + weeks[index])
 		var newWeek = $WeekTemplate.duplicate()
 		newWeek.visible = true
 		newWeek.week_name = week
-		newWeek.texture = load("res://Assets/Images/StoryMode/" + weeks[index] + ".png")
+		newWeek.texture = load("res://Assets/Images/StoryMode/" + json.texture + ".png")
 		newWeek.global_position = Vector2(640, (514 * 0.5))
 		$Weeks.add_child(newWeek)
 		

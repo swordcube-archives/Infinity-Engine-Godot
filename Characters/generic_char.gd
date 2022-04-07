@@ -33,14 +33,14 @@ func play_anim(anim, force = false):
 	
 func _process(delta):
 	if not is_player:
-		if $frames.animation.begins_with('sing'):
+		if last_anim.begins_with('sing'):
 			hold_timer += delta
-
-			if hold_timer >= Conductor.timeBetweenSteps * 0.001 * sing_duration:
-				dance()
-				hold_timer = 0	
+			
+			if hold_timer >= Conductor.timeBetweenSteps * sing_duration * 0.001:
+				dance(true)
+				hold_timer = 0.0
 	else:
-		if $frames.animation.begins_with('sing'):
+		if last_anim.begins_with('sing'):
 			hold_timer += delta
 		else:
 			hold_timer = 0

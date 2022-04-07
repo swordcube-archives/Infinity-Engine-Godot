@@ -1,0 +1,7 @@
+{
+    "idle_anim": ["Mom Idle BLACK LINES", 24, [0, 0]],
+    "confirm_anim": ["Mom Idle BLACK LINES", 24, [0, 0]],
+    "scale": 0.5,
+    "flip_x": false,
+    "position": [-105, -215]
+}

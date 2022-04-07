@@ -1,0 +1,7 @@
+{
+    "idle_anim": ["Parent Christmas Idle Black Lines", 24, [0, 0]],
+    "confirm_anim": ["Parent Christmas Idle Black Lines", 24, [0, 0]],
+    "scale": 0.45,
+    "flip_x": false,
+    "position": [-390, -200]
+}

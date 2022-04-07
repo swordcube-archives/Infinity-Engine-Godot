@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Assets/Music/freakyMenu.ogg" type="AudioStream" id=1]
 [ext_resource path="res://Scenes/AudioHandler.gd" type="Script" id=2]
@@ -8,6 +8,16 @@
 [ext_resource path="res://Assets/Sounds/clickText.ogg" type="AudioStream" id=6]
 [ext_resource path="res://Assets/Sounds/pixelText.ogg" type="AudioStream" id=7]
 [ext_resource path="res://Assets/Music/breakfast.ogg" type="AudioStream" id=8]
+[ext_resource path="res://Assets/Sounds/intro3-default.ogg" type="AudioStream" id=9]
+[ext_resource path="res://Assets/Sounds/intro3-pixel.ogg" type="AudioStream" id=10]
+[ext_resource path="res://Assets/Sounds/introGo-pixel.ogg" type="AudioStream" id=11]
+[ext_resource path="res://Assets/Sounds/introGo-default.ogg" type="AudioStream" id=12]
+[ext_resource path="res://Assets/Sounds/intro1-pixel.ogg" type="AudioStream" id=13]
+[ext_resource path="res://Assets/Sounds/intro2-default.ogg" type="AudioStream" id=14]
+[ext_resource path="res://Assets/Sounds/intro1-default.ogg" type="AudioStream" id=15]
+[ext_resource path="res://Assets/Sounds/intro2-pixel.ogg" type="AudioStream" id=16]
+[ext_resource path="res://Assets/Sounds/thunder_1.ogg" type="AudioStream" id=17]
+[ext_resource path="res://Assets/Sounds/thunder_2.ogg" type="AudioStream" id=18]
 
 [node name="AudioHandler" type="Node2D"]
 pause_mode = 2
@@ -33,10 +43,38 @@ stream = ExtResource( 5 )
 
 [node name="Voices" type="AudioStreamPlayer" parent="."]
 
-[node name="Countdown" type="AudioStreamPlayer" parent="."]
+[node name="intro3-default" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 9 )
+
+[node name="intro3-pixel" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 10 )
+
+[node name="intro2-default" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 14 )
+
+[node name="intro2-pixel" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 16 )
+
+[node name="intro1-default" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 15 )
+
+[node name="intro1-pixel" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 13 )
+
+[node name="introGo-default" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 12 )
+
+[node name="introGo-pixel" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 11 )
 
 [node name="clickText" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 6 )
 
 [node name="pixelText" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 7 )
+
+[node name="thunder_1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 17 )
+
+[node name="thunder_2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 18 )

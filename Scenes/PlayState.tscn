@@ -36,12 +36,16 @@ font_data = ExtResource( 1 )
 [node name="PlayState" type="Node2D"]
 script = ExtResource( 2 )
 
+[node name="Stage" type="Node2D" parent="."]
+
+[node name="Characters" type="Node2D" parent="."]
+
 [node name="camGame" type="Camera2D" parent="."]
 current = true
 smoothing_enabled = true
 
 [node name="camHUD" type="CanvasLayer" parent="."]
-layer = 128
+layer = 125
 
 [node name="OpponentStrums" parent="camHUD" instance=ExtResource( 6 )]
 position = Vector2( 162, 608 )
@@ -94,8 +98,8 @@ margin_bottom = 116.0
 rect_pivot_offset = Vector2( 640, 10 )
 custom_fonts/normal_font = SubResource( 1 )
 bbcode_enabled = true
-bbcode_text = "[center]Score: 69420 // Misses: 0 // Accuracy: 100%"
-text = "Score: 69420 // Misses: 0 // Accuracy: 100%"
+bbcode_text = "[center]Score: 0 // Misses: 0 // Accuracy: N/A"
+text = "Score: 0 // Misses: 0 // Accuracy: N/A"
 
 [node name="TimeBar" type="Node2D" parent="camHUD"]
 modulate = Color( 1, 1, 1, 0 )

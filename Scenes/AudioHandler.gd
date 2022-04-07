@@ -47,12 +47,22 @@ func stop_voices():
 func play_countdown(num):
 	match num:
 		0:
-			$Countdown.stream = load("res://Assets/Sounds/intro3.ogg")
-		1:
-			$Countdown.stream = load("res://Assets/Sounds/intro2.ogg")
-		2:
-			$Countdown.stream = load("res://Assets/Sounds/intro1.ogg")
-		3:
-			$Countdown.stream = load("res://Assets/Sounds/introGo.ogg")
+			var sound = get_node("intro3-" + Gameplay.ui_Skin.to_lower())
 			
-	$Countdown.play()
+			sound.play()
+			sound.seek(0)
+		1:
+			var sound = get_node("intro2-" + Gameplay.ui_Skin.to_lower())
+			
+			sound.play()
+			sound.seek(0)
+		2:
+			var sound = get_node("intro1-" + Gameplay.ui_Skin.to_lower())
+			
+			sound.play()
+			sound.seek(0)
+		3:
+			var sound = get_node("introGo-" + Gameplay.ui_Skin.to_lower())
+			
+			sound.play()
+			sound.seek(0)

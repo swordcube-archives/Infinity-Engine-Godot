@@ -93,12 +93,17 @@ func change_difficulty(amount):
 		curDifficulty = 0
 		
 	$Difficulty.text = "< " + songs[curSelected].difficulties[curDifficulty].to_upper() + " >"
+	$Difficulty.text += " - Speed: " + str(Gameplay.song_multiplier)
 	position_highscore()
 	
 var lerpScore = 0
 var lerpAcc = 0
 
+var hold_time = 0.0
+
 func _process(delta):	
+	var shift = Input.is_action_pressed("shift")
+	
 	if Input.is_action_just_pressed("ui_back"):
 		AudioHandler.play_audio("cancelMenu")
 		$Misc/Transition.transition_to_scene("MainMenu")
@@ -109,11 +114,24 @@ func _process(delta):
 	if Input.is_action_just_pressed("ui_down"):
 		change_selection(1)
 		
-	if Input.is_action_just_pressed("ui_left"):
-		change_difficulty(-1)
+	if shift:
+		if Input.is_action_pressed("ui_left") or Input.is_action_pressed("ui_right"):
+			hold_time += delta
+			
+			if hold_time > 0.5 or Input.is_action_just_pressed("ui_left") or Input.is_action_just_pressed("ui_right"):
+				var mult = 0.05
+				if Input.is_action_pressed("ui_left"):
+					mult = -0.05
+				
+				change_speed(mult)
+	else:
+		hold_time = 0
 		
-	if Input.is_action_just_pressed("ui_right"):
-		change_difficulty(1)
+		if Input.is_action_just_pressed("ui_left"):
+			change_difficulty(-1)
+				
+		if Input.is_action_just_pressed("ui_right"):
+			change_difficulty(1)
 		
 	if Input.is_action_just_pressed("space"):
 		if not playing == songs[curSelected].name:
@@ -141,8 +159,21 @@ func _process(delta):
 		
 	lerpScore = lerp(lerpScore, SongHighscore.get_score(songs[curSelected].name.to_lower().replace(" ", "-") + "-" + songs[curSelected].difficulties[curDifficulty].to_lower()), delta * 15)
 	lerpAcc = lerp(lerpAcc, SongAccuracy.get_acc(songs[curSelected].name.to_lower().replace(" ", "-") + "-" + songs[curSelected].difficulties[curDifficulty].to_lower()), delta * 15)
-	$PersonalBest.text = "PERSONAL BEST: " + str(round(lerpScore)) + " (" + str(Util.round_decimal(lerpAcc, 2)) + "%)"
+	$PersonalBest.text = "PERSONAL BEST: " + str(abs(round(lerpScore))) + " (" + str(abs(Util.round_decimal(lerpAcc, 2))) + "%)"
 	position_highscore()
+	
+func change_speed(amount):
+	Gameplay.song_multiplier += amount
+	
+	if Gameplay.song_multiplier < 0.1:
+		Gameplay.song_multiplier = 0.1
+		
+	Gameplay.song_multiplier = Util.round_decimal(Gameplay.song_multiplier, 2)
+		
+	AudioHandler.get_node("Inst").pitch_scale = Gameplay.song_multiplier
+	AudioHandler.get_node("Voices").pitch_scale = Gameplay.song_multiplier
+	
+	change_difficulty(0)
 	
 func position_highscore():
 	$PersonalBest.rect_size.x = 0
