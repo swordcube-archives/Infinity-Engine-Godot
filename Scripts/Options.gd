@@ -14,8 +14,12 @@ var og_save = {
 	"keybinds": ["D", "F", "J", "K"],
 	"ui-skin": "Default",
 	"vsync": true,
-	"rating-position": [760, 270]
+	"rating-position": [760, 270],
+	"volume": 0,
+	"muted": false
 }
+
+var initialized = false
 
 var save = {}
 
@@ -36,6 +40,9 @@ func _ready():
 	save_file.close()
 	
 	OS.set_use_vsync(save["vsync"])
+	initialized = true
+	
+	VolumeControl.init()
 
 func save_dict():
 	return save

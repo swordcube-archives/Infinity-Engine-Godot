@@ -35,7 +35,10 @@ func _ready():
 	
 	for file in Util.list_files_in_directory("res://Assets/Weeks"):
 		if ".json" in file:
-			weeks.append(file.split(".json")[0])
+			var json = JsonUtil.get_json("res://Assets/Weeks/" + file.split(".json")[0])
+
+			if json.shows_in_story_mode:
+				weeks.append(file.split(".json")[0])
 			
 	var txt = Util.get_txt("res://Assets/Weeks/WeekList")
 	

@@ -1,0 +1,31 @@
+{
+    "songs": [
+        {
+            "name": "Pico",
+            "icon": "pico",
+            "color": "b7d855",
+            "difficulties": ["easy", "normal", "hard"]
+        },
+        {
+            "name": "Philly Nice",
+            "icon": "pico",
+            "color": "b7d855",
+            "difficulties": ["easy", "normal", "hard"]
+        },
+        {
+            "name": "Blammed",
+            "icon": "pico",
+            "color": "b7d855",
+            "difficulties": ["easy", "normal", "hard"]
+        }
+    ],
+    "difficulties": ["easy", "normal", "hard"],
+    "characters": ["pico", "bf", "gf"],
+    "description": "PICO",
+    "texture": "week3",
+    "background_image": "",
+    "background_color": "f9cf51",
+    "locked_before": "",
+    "shows_in_freeplay": true,
+    "shows_in_story_mode": true
+}

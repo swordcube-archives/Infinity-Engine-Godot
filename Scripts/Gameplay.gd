@@ -1,6 +1,6 @@
 extends Node
 
-var SONG = null
+var SONG = JsonUtil.get_json("res://Assets/Songs/Tutorial/hard")
 var ui_Skin = "Default"
 
 var story_mode:bool = false

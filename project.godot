@@ -19,6 +19,7 @@ config/icon="res://icon.png"
 AudioHandler="*res://Scenes/AudioHandler.tscn"
 SceneManager="*res://Scripts/SceneManager.gd"
 PauseMenu="*res://Scenes/Gameplay/PauseMenu.tscn"
+VolumeControl="*res://Scenes/VolumeControl.tscn"
 Fps="*res://Scenes/FPS.tscn"
 EngineSettings="*res://Scripts/EngineSettings.gd"
 JsonUtil="*res://Scripts/JSONUtil.gd"
@@ -37,9 +38,12 @@ SongAccuracy="*res://Scripts/SongAccuracy.gd"
 
 window/size/width=1280
 window/size/height=720
-window/vsync/use_vsync=false
 window/stretch/mode="2d"
 window/stretch/aspect="keep"
+
+[gdnative]
+
+singletons=[  ]
 
 [global]
 
@@ -92,6 +96,21 @@ chart_editor={
 shift={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777237,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+volume_up={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":61,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+volume_down={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":45,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+volume_switch={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":48,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
 

@@ -28,6 +28,8 @@ signal beat_hit
 signal step_hit
 
 func _process(_delta):
+	safeZoneOffset = 246 * Gameplay.song_multiplier
+	
 	var oldBeat = curBeat
 	var oldStep = curStep
 

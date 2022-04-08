@@ -261,6 +261,7 @@ tracks/3/keys = {
 script = ExtResource( 3 )
 health_color = Color( 0.952941, 1, 0.431373, 1 )
 health_icon = ExtResource( 1 )
+sing_duration = 4.0
 
 [node name="frames" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -335 )

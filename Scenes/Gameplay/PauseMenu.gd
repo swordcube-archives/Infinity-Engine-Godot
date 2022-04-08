@@ -19,60 +19,61 @@ func _ready():
 	
 func _process(delta):
 	if Input.is_action_just_pressed("ui_confirm") and get_tree().current_scene.name == "PlayState":
-		if get_tree().paused == true:
-			match(pause_options[curSelected]):
-				"Resume":
-					get_tree().paused = not get_tree().paused
-					
-					var inst_pos = AudioHandler.get_node("Inst").get_playback_position()
-					var voices_pos = AudioHandler.get_node("Voices").get_playback_position()
-					
-					if AudioHandler.get_node("Inst").stream != null:
-						AudioHandler.unpause_inst()
-						AudioHandler.get_node("Inst").seek(inst_pos)
+		if get_tree().current_scene.can_pause:
+			if get_tree().paused == true:
+				match(pause_options[curSelected]):
+					"Resume":
+						get_tree().paused = not get_tree().paused
 						
-					if AudioHandler.get_node("Voices").stream != null:
-						AudioHandler.unpause_voices()
-						AudioHandler.get_node("Voices").seek(voices_pos)
-					
-					AudioHandler.stop_audio("breakfast")
-				"Restart Song":
-					AudioHandler.stop_audio("breakfast")
-					
-					get_tree().reload_current_scene()
-					get_tree().paused = not get_tree().paused
-				"Exit To Menu":
-					AudioHandler.stop_audio("breakfast")
-					AudioHandler.play_audio("freakyMenu")
-					
-					if Gameplay.story_mode:
-						SceneManager.switch_scene("StoryMenu")
-					else:
-						SceneManager.switch_scene("FreeplayMenu")
+						var inst_pos = AudioHandler.get_node("Inst").get_playback_position()
+						var voices_pos = AudioHandler.get_node("Voices").get_playback_position()
 						
-					get_tree().paused = not get_tree().paused
-		else:
-			get_tree().paused = not get_tree().paused
-			
-			get_tree().current_scene.get_node("Misc/Transition").visible = false
-			
-			AudioHandler.play_audio("breakfast")
-			AudioHandler.get_node("breakfast").seek(0)
-			
-			remove_child(tween)
-			tween.stop_all()
-			tween = Tween.new()
-			tween.interpolate_property(AudioHandler.get_node("breakfast"), "volume_db", -50, 0, AudioHandler.get_node("breakfast").stream.get_length() / 2)
-			$BG.modulate.a = 0
-			tween.interpolate_property($BG, "modulate", Color(1, 1, 1, 0), Color(1, 1, 1, 1), 0.2)
-			add_child(tween)
-			tween.start()
-
-			AudioHandler.pause_inst()
-			AudioHandler.pause_voices()
+						if AudioHandler.get_node("Inst").stream != null:
+							AudioHandler.unpause_inst()
+							AudioHandler.get_node("Inst").seek(inst_pos)
+							
+						if AudioHandler.get_node("Voices").stream != null:
+							AudioHandler.unpause_voices()
+							AudioHandler.get_node("Voices").seek(voices_pos)
+						
+						AudioHandler.stop_audio("breakfast")
+					"Restart Song":
+						AudioHandler.stop_audio("breakfast")
+						
+						get_tree().reload_current_scene()
+						get_tree().paused = not get_tree().paused
+					"Exit To Menu":
+						AudioHandler.stop_audio("breakfast")
+						AudioHandler.play_audio("freakyMenu")
+						
+						if Gameplay.story_mode:
+							SceneManager.switch_scene("StoryMenu")
+						else:
+							SceneManager.switch_scene("FreeplayMenu")
+							
+						get_tree().paused = not get_tree().paused
+			else:
+				get_tree().paused = not get_tree().paused
 				
-			pause_options = default_pause_options
-			spawn_options()
+				get_tree().current_scene.get_node("Misc/Transition").visible = false
+				
+				AudioHandler.play_audio("breakfast")
+				AudioHandler.get_node("breakfast").seek(0)
+				
+				remove_child(tween)
+				tween.stop_all()
+				tween = Tween.new()
+				tween.interpolate_property(AudioHandler.get_node("breakfast"), "volume_db", -50, 0, AudioHandler.get_node("breakfast").stream.get_length() / 2)
+				$BG.modulate.a = 0
+				tween.interpolate_property($BG, "modulate", Color(1, 1, 1, 0), Color(1, 1, 1, 1), 0.2)
+				add_child(tween)
+				tween.start()
+
+				AudioHandler.pause_inst()
+				AudioHandler.pause_voices()
+					
+				pause_options = default_pause_options
+				spawn_options()
 			
 	if get_tree().paused == true:
 		visible = true

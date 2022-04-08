@@ -1,10 +1,9 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Assets/Fonts/vcr.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Scenes/PlayState.gd" type="Script" id=2]
 [ext_resource path="res://Assets/Images/Icons/dad.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Images/Icons/bf.png" type="Texture" id=4]
-[ext_resource path="res://Assets/Images/healthBar.png" type="Texture" id=5]
 [ext_resource path="res://Scenes/Strums/4Key.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Transition/Transition.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Scenes/Gameplay/Dialogue/DialogueBox.tscn" type="PackedScene" id=8]
@@ -58,10 +57,10 @@ position = Vector2( 782, 608 )
 [node name="HealthBar" type="Node2D" parent="camHUD"]
 
 [node name="HealthBarBG" type="ColorRect" parent="camHUD/HealthBar"]
-margin_left = 341.0
-margin_top = 47.0
-margin_right = 940.0
-margin_bottom = 67.0
+margin_left = 342.0
+margin_top = 48.0
+margin_right = 939.0
+margin_bottom = 66.0
 color = Color( 0, 0, 0, 1 )
 
 [node name="DadColor" type="ColorRect" parent="camHUD/HealthBar"]
@@ -91,7 +90,7 @@ scale = Vector2( -1, 1 )
 texture = ExtResource( 4 )
 hframes = 3
 
-[node name="ScoreText" type="RichTextLabel" parent="camHUD"]
+[node name="ScoreText" type="RichTextLabel" parent="camHUD/HealthBar"]
 margin_top = 96.0
 margin_right = 1280.0
 margin_bottom = 116.0
@@ -104,16 +103,11 @@ text = "Score: 0 // Misses: 0 // Accuracy: N/A"
 [node name="TimeBar" type="Node2D" parent="camHUD"]
 modulate = Color( 1, 1, 1, 0 )
 
-[node name="TimeBarBG" type="Sprite" parent="camHUD/TimeBar"]
-position = Vector2( 640, 689 )
-scale = Vector2( 0.450499, 1 )
-texture = ExtResource( 5 )
-
 [node name="BGColor" type="ColorRect" parent="camHUD/TimeBar"]
-margin_left = 507.0
-margin_top = 683.0
-margin_right = 773.0
-margin_bottom = 696.0
+margin_left = 505.0
+margin_top = 680.0
+margin_right = 775.0
+margin_bottom = 698.0
 color = Color( 0, 0, 0, 1 )
 
 [node name="FGColor" type="ColorRect" parent="camHUD/TimeBar"]

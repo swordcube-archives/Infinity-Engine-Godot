@@ -15,8 +15,6 @@ var swagWidth:float = 160 * 0.7
 
 var dir_string = "A"
 
-var downscroll = true#Options.get_data("downscroll")
-
 var beingPressed = false
 var shouldHit = true
 
@@ -36,14 +34,20 @@ func set_direction():
 	$Note.play(dir_string)
 			
 func _process(delta):
-	line.points[1].y = 0 - sustainLength
 	line.modulate.a = 0.6
-	
 	$End.modulate.a = 0.6
-	$End.position.y = line.points[1].y - ($End.texture.get_height() / 2)
 	
-	if downscroll:
+	if get_tree().current_scene.downscroll:
+		line.points[1].y = 0 - sustainLength
+		$End.position.y = line.points[1].y - ($End.texture.get_height() / 2)
+	else:
+		line.points[1].y = 0 + sustainLength
+		$End.position.y = line.points[1].y + ($End.texture.get_height() / 2)
+	
+	if get_tree().current_scene.downscroll:
 		$End.flip_v = true
+	else:
+		$End.flip_v = false
 		
 func calculate_can_be_hit():
 	if(mustPress):

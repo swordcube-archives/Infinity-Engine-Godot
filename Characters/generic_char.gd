@@ -6,12 +6,10 @@ var hold_timer = 0
 
 var last_anim:String = ""
 
-export(Color) var health_color
-export(Texture) var health_icon
-export(bool) var dances_left_right
-#export(int) var camera_pos_x = 0
-#export(int) var camera_pos_y = 0
-export(float) var sing_duration = 6.1
+export(Color) var health_color = Color("A1A1A1")
+export(Texture) var health_icon = preload("res://Assets/Images/Icons/placeholder.png")
+export(bool) var dances_left_right = false
+export(float) var sing_duration = 4
 export(bool) var is_player = false
 
 var special_anim = false

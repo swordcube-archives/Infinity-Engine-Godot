@@ -1,0 +1,19 @@
+{
+    "songs": [
+        {
+            "name": "Test",
+            "icon": "bf-pixel",
+            "color": "7bc5e3",
+            "difficulties": ["normal"]
+        }
+    ],
+    "difficulties": ["normal"],
+    "characters": ["pico", "bf", "gf"],
+    "description": "PICO",
+    "texture": "week1",
+    "background_image": "",
+    "background_color": "f9cf51",
+    "locked_before": "",
+    "shows_in_freeplay": true,
+    "shows_in_story_mode": false
+}

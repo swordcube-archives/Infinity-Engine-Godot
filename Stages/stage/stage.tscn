@@ -1,10 +1,13 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Stages/stage/stageback.png" type="Texture" id=1]
 [ext_resource path="res://Stages/stage/stagefront.png" type="Texture" id=2]
 [ext_resource path="res://Stages/stage/stagecurtains.png" type="Texture" id=3]
+[ext_resource path="res://Stages/stage.gd" type="Script" id=4]
 
 [node name="stage" type="Node2D"]
+script = ExtResource( 4 )
+default_cam_zoom = 1.1
 
 [node name="StageBack" type="ParallaxBackground" parent="."]
 
@@ -41,4 +44,4 @@ position = Vector2( 175, 686 )
 position = Vector2( 602, 640 )
 
 [node name="bf_pos" type="Node2D" parent="."]
-position = Vector2( 981, 682 )
+position = Vector2( 929, 682 )

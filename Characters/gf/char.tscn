@@ -417,7 +417,6 @@ script = ExtResource( 3 )
 health_color = Color( 0.643137, 0, 0.301961, 1 )
 health_icon = ExtResource( 1 )
 dances_left_right = true
-sing_duration = 15.1
 
 [node name="frames" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -326 )

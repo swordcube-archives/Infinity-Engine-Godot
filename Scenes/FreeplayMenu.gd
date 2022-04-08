@@ -38,7 +38,8 @@ func _ready():
 		json = JsonUtil.get_json("res://Assets/Weeks/" + week)
 		
 		for song in json.songs:
-			songs.append(song)
+			if json.shows_in_freeplay:			
+				songs.append(song)
 			
 		week_index += 1
 	
@@ -101,6 +102,15 @@ var lerpAcc = 0
 
 var hold_time = 0.0
 
+func _input(event):
+	var shift = Input.is_action_pressed("shift")
+	var just_pressed = event.is_pressed() and not event.is_echo()
+	
+	if just_pressed and event is InputEventKey and event.pressed:
+		if shift and event.scancode == KEY_R:
+			Gameplay.song_multiplier = 1
+			change_speed(0)
+
 func _process(delta):	
 	var shift = Input.is_action_pressed("shift")
 	
@@ -124,6 +134,8 @@ func _process(delta):
 					mult = -0.05
 				
 				change_speed(mult)
+		else:
+			hold_time = 0
 	else:
 		hold_time = 0
 		
