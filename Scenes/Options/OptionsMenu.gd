@@ -61,6 +61,22 @@ func _process(delta):
 						"bool", # type
 					],
 					[
+						"Scroll Speed", # title
+						"scroll-speed", # actual thing in save data
+						"Change how fast your notes scroll!\nScroll Type is how speed is applied.", # desc
+						"float", # type
+						0.1, # multiplier
+						[0, 10], # min and max
+						1, # decimals to display
+					],
+					[
+						"Scroll Type", # title
+						"scroll-type", # actual thing in save data
+						"Multiplicative = Adds to the song's scroll speed | Constant = One speed for every song", # desc
+						"string", # type
+						["Multiplicative", "Constant"],
+					],
+					[
 						"Hitsound", # title
 						"hitsound", # actual thing in save data
 						"Make notes do funny sound when hit", # desc

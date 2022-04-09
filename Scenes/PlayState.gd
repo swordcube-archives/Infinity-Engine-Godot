@@ -57,17 +57,22 @@ var loaded_modchart = null
 onready var downscroll = Options.get_data("downscroll")
 onready var middlescroll = Options.get_data("middlescroll")
 
+onready var opponent_strums = $camHUD/OpponentStrums
+onready var player_strums = $camHUD/PlayerStrums
+
+onready var game_notes = $camHUD/Notes
+
 func _ready():
 	if not downscroll:
-		$camHUD/OpponentStrums.global_position.y = 100
-		$camHUD/PlayerStrums.global_position.y = 100
+		opponent_strums.global_position.y = 100
+		player_strums.global_position.y = 100
 		
 		$camHUD/HealthBar.global_position.y = 580
 		$camHUD/TimeBar.global_position.y = -660
 		
 	if middlescroll:
-		$camHUD/OpponentStrums.global_position.x = -9999
-		$camHUD/PlayerStrums.global_position.x = ScreenRes.screen_width / 2.72
+		opponent_strums.global_position.x = -9999
+		player_strums.global_position.x = ScreenRes.screen_width / 2.72
 		
 	# story mode shit
 	if not Gameplay.story_mode:
@@ -84,19 +89,23 @@ func _ready():
 		
 	SONG = Gameplay.SONG.song
 	
-	var directory = Directory.new();
-	var modchart_exists = directory.file_exists("res://Assets/Songs/" + SONG.song + "/modchart.gd")
+	# LOADING MODCHARTS
 	
-	print("MODCHART EXISTS: " + str(modchart_exists))
+	# lists every file in the song directory
+	var song_files = Util.list_files_in_directory(Paths.song_path(SONG.song))
+	var modchart_files = []
 	
-	if modchart_exists:
-		loaded_modchart = load("res://Assets/Songs/" + SONG.song + "/modchart.gd").new()
-		
-	print(loaded_modchart)
-	
-	if loaded_modchart != null:
-		loaded_modchart.scene = self
-		loaded_modchart._ready()
+	# if the file is a .gd file and isn't a hidden file, add it
+	# to modchart_files
+	for file in song_files:
+		if not file.begins_with(".") and file.ends_with(".gd"):
+			modchart_files.append(file)
+			
+	# go through each modchart file, then load and start them
+	for modchart in modchart_files:
+		var loaded = load(Paths.song_path(SONG.song) + "/" + modchart).new()
+		loaded.PlayState = self
+		add_child(loaded)
 		
 	# don't ask
 	for section in SONG["notes"]:
@@ -108,9 +117,17 @@ func _ready():
 				if note[3] is Array:
 					note[3] = note[3][0]
 				
-				noteDataArray.push_back([float(note[0]) + Options.get_data("note-offset") + (AudioServer.get_output_latency() * 1000), note[1], note[2], bool(section["mustHitSection"]), int(note[3])])
+				noteDataArray.push_back([float(note[0]) + (Options.get_data("note-offset") + (AudioServer.get_output_latency() * 1000) * Gameplay.song_multiplier), note[1], note[2], bool(section["mustHitSection"]), int(note[3])])
 	
 	speed = SONG.speed
+	
+	if Options.get_data("scroll-speed") > 0:
+		match Options.get_data("scroll-speed-type").to_lower():
+			"multiplicative":
+				speed *= Options.get_data("scroll-speed")
+			"constant":
+				speed = Options.get_data("scroll-speed")
+	
 	speed /= Gameplay.song_multiplier
 			
 	Conductor.songPosition = 0
@@ -188,11 +205,16 @@ func _ready():
 	var dadLoaded = load("res://Characters/" + SONG.player2.to_lower() + "/char.tscn")
 	
 	if dadLoaded == null:
-		dadLoaded = load("res://Characters/dad/char.tscn")
+		dadLoaded = load("res://Characters/bf/char.tscn")
 	
 	dad = dadLoaded.instance()
 	dad.name = "dad"
 	dad.global_position = stage.get_node("dad_pos").position
+	
+	if dad.is_player:
+		dad.is_player = false
+		dad.get_node("camera_pos").position.x *= -1
+		dad.get_node("frames").flip_h = true
 	
 	# add gf		
 	var gfLoaded = load("res://Characters/" + gf_version.to_lower() + "/char.tscn")
@@ -298,7 +320,7 @@ func _process(delta):
 			var dunceNote:Node2D = preload("res://Scenes/Notes/Note.tscn").instance()
 			dunceNote.strumTime = note[0]
 			dunceNote.noteData = int(note[1]) % 4
-			dunceNote.sustainLength = (note[2] - 200) / Gameplay.song_multiplier
+			dunceNote.sustainLength = (note[2] - 150) / Gameplay.song_multiplier
 			
 			if dunceNote.sustainLength <= 0:
 				dunceNote.sustainLength = 0
@@ -313,12 +335,12 @@ func _process(delta):
 			dunceNote.get_node("Line2D").texture = load("res://Assets/Images/UI Skins/" + Gameplay.ui_Skin + "/Sustains/" + dunceNote.dir_string + " hold0000.png")
 			dunceNote.get_node("End").texture = load("res://Assets/Images/UI Skins/" + Gameplay.ui_Skin + "/Sustains/" + dunceNote.dir_string + " tail0000.png")
 			
-			$camHUD/Notes.add_child(dunceNote)
+			game_notes.add_child(dunceNote)
 			
 			if dunceNote.mustPress:
-				dunceNote.global_position.x = $camHUD/PlayerStrums.get_children()[int(note[1]) % 4].global_position.x
+				dunceNote.global_position.x = player_strums.get_children()[int(note[1]) % 4].global_position.x
 			else:
-				dunceNote.global_position.x = $camHUD/OpponentStrums.get_children()[int(note[1]) % 4].global_position.x
+				dunceNote.global_position.x = opponent_strums.get_children()[int(note[1]) % 4].global_position.x
 				
 			noteDataArray.remove(index)
 	
@@ -335,12 +357,12 @@ func _process(delta):
 		$camHUD/HealthBar/IconP2.frame = 1
 		$camHUD/HealthBar/IconP1.frame = 2
 			
-	for note in $camHUD/Notes.get_children():
+	for note in game_notes.get_children():
 		var strum
 		if note.mustPress:
-			strum = $camHUD/PlayerStrums.get_children()[note.noteData % 4]
+			strum = player_strums.get_children()[note.noteData % 4]
 		else:
-			strum = $camHUD/OpponentStrums.get_children()[note.noteData % 4]
+			strum = opponent_strums.get_children()[note.noteData % 4]
 			
 		note.global_position.x = strum.global_position.x
 			
@@ -394,7 +416,7 @@ func _process(delta):
 				note.queue_free()
 			
 	var strum_confirm_i = 0
-	for strum in $camHUD/OpponentStrums.get_children():
+	for strum in opponent_strums.get_children():
 		if strum.frame == 3:
 			strum.play("arrow" + directions[strum_confirm_i])
 			
@@ -476,9 +498,9 @@ func _process(delta):
 	else:
 		boyfriend.hold_timer = 0
 	
-	for note in $camHUD/Notes.get_children():
+	for note in game_notes.get_children():
 		if note.mustPress and note.sustainLength > 0 and pressed[note.noteData % 4] and Conductor.songPosition >= note.strumTime or Options.get_data("botplay") and note.mustPress and note.sustainLength > 0 and Conductor.songPosition >= note.strumTime:
-			var strum = $camHUD/PlayerStrums.get_children()[note.noteData % 4]
+			var strum = player_strums.get_children()[note.noteData % 4]
 			
 			strum.frame = 0
 			strum.play(letter_directions[note.noteData % 4] + " confirm")
@@ -496,18 +518,25 @@ func _process(delta):
 			if note.sustainLength <= 0:
 				note.queue_free()
 				
-	if health < 0:
+	if health <= 0:
 		health = 0
+		Gameplay.death_character = boyfriend.death_character
+		Gameplay.death_character_pos = boyfriend.global_position
+		Gameplay.death_camera_pos = $camGame.position
+		
+		Gameplay.blueballed += 1
+		
+		SceneManager.switch_scene("Gameover")
+		
 	if health > 2:
 		health = 2
 	
 	camera_zooms(delta)
 	icon_zooms(delta)
 	
-	if loaded_modchart != null:
-		loaded_modchart._process(delta)
-	
 func end_song():
+	can_pause = false
+	
 	if Gameplay.song_multiplier >= 1:
 		if(song_score > SongHighscore.get_score(SONG.song.to_lower().replace(" ", "-") + "-" + Gameplay.difficulty)):
 			SongHighscore.set_score(SONG.song.to_lower().replace(" ", "-") + "-" + Gameplay.difficulty, song_score)
@@ -593,19 +622,19 @@ func key_shit(delta):
 			
 		for i in len(just_pressed):
 			if just_pressed[i] == true:
-				$camHUD/PlayerStrums.get_children()[i].play(letter_directions[i] + " press")
+				player_strums.get_children()[i].play(letter_directions[i] + " press")
 				
 		for i in len(released):
 			if released[i] == true:
-				$camHUD/PlayerStrums.get_children()[i].play("arrow" + directions[i])
+				player_strums.get_children()[i].play("arrow" + directions[i])
 	else:
 		for i in len(released):
-			if $camHUD/PlayerStrums.get_children()[i].frame == 3:
-				$camHUD/PlayerStrums.get_children()[i].play("arrow" + directions[i])
+			if player_strums.get_children()[i].frame == 3:
+				player_strums.get_children()[i].play("arrow" + directions[i])
 		
 	var possibleNotes = []
 	
-	for note in $camHUD/Notes.get_children():
+	for note in game_notes.get_children():
 		note.calculate_can_be_hit()
 		
 		if not Options.get_data("botplay"):
@@ -658,6 +687,9 @@ func key_shit(delta):
 						cur_rating = "shit"
 						song_score += rating_scores[3]
 						
+					if cur_rating == "marvelous":
+						song_score += rating_scores[0]
+						
 					match(cur_rating):
 						"marvelous", "sick":
 							total_notes_hit += 1
@@ -669,7 +701,7 @@ func key_shit(delta):
 							
 							var note_splash = preload("res://Scenes/Gameplay/NoteSplash.tscn").instance()
 							note_splash.noteData = note.noteData % 4
-							note_splash.global_position = $camHUD/PlayerStrums.get_children()[note.noteData % 4].global_position
+							note_splash.global_position = player_strums.get_children()[note.noteData % 4].global_position
 							$camHUD.add_child(note_splash)
 						"good":
 							total_notes_hit += 0.75
@@ -703,13 +735,18 @@ func key_shit(delta):
 					
 					AudioHandler.get_node("Voices").volume_db = 0
 					
-					var strum = $camHUD/PlayerStrums.get_children()[note.noteData % 4]
+					var strum = player_strums.get_children()[note.noteData % 4]
 					strum.play(letter_directions[note.noteData % 4] + " confirm")
 					
 					note.get_node("Note").visible = false
 					
 					if note.sustainLength <= 0:
 						note.queue_free()
+						
+					for real in possibleNotes:
+						if real.noteData == note.noteData:
+							if real.sustainLength <= 0 and floor(real.strumTime) == floor(note.strumTime):
+								real.queue_free()
 					
 					if note.sustainLength > 0:
 						note.beingPressed = true
@@ -777,9 +814,6 @@ func beat_hit():
 		
 		gf.play_anim('cheer', true)
 		gf.special_anim = true
-		
-	if loaded_modchart != null:
-		loaded_modchart._beat_hit()
 
 var curSection:int = 0
 
@@ -787,10 +821,18 @@ var mustHitSection = false
 
 func resync_vocals():
 	Conductor.songPosition = (AudioHandler.get_node("Inst").get_playback_position() * 1000)
+	AudioHandler.get_node("Voices").seek(Conductor.songPosition / 1000)
 
 func step_hit():
 	if not countdown_active:
-		if not Conductor.songPosition >= inst_length and abs(inst_time + (AudioServer.get_time_since_last_mix() * 1000) - (Conductor.songPosition)) > 20 || (SONG.needsVoices && abs(voices_time + (AudioServer.get_time_since_last_mix() * 1000) - (Conductor.songPosition)) > 20):
+		var gaming = 0
+		
+		if Conductor.songPosition >= 1:
+			gaming = 20 * Gameplay.song_multiplier
+		else:
+			gaming = 20
+		
+		if not Conductor.songPosition >= inst_length and abs(inst_time + (AudioServer.get_time_since_last_mix() * 1000) - (Conductor.songPosition)) > gaming || (SONG.needsVoices && abs(voices_time + (AudioServer.get_time_since_last_mix() * 1000) - (Conductor.songPosition)) > gaming):
 			resync_vocals()
 		
 	var prevSection = curSection
@@ -807,6 +849,3 @@ func step_hit():
 				mustHitSection = false
 				$camHUD/TimeBar/FGColor.color = dad.health_color
 				$camGame.position = dad.global_position + dad.get_node("camera_pos").position
-				
-	if loaded_modchart != null:
-		loaded_modchart._step_hit()

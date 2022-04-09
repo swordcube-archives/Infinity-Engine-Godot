@@ -33,6 +33,8 @@ ScreenRes="*res://Scripts/ScreenRes.gd"
 SongHighscore="*res://Scripts/SongHighscore.gd"
 WeekHighscore="*res://Scripts/WeekHighscore.gd"
 SongAccuracy="*res://Scripts/SongAccuracy.gd"
+Paths="*res://Scripts/Paths.gd"
+ModManager="*res://Scripts/ModManager.gd"
 
 [display]
 

@@ -14,6 +14,9 @@ var playing = ""
 var can_enter = true
 
 func _ready():
+	if not AudioHandler.get_node("freakyMenu").playing:
+		AudioHandler.play_audio("freakyMenu")
+		
 	$Misc/Transition._fade_out()
 	
 	for file in Util.list_files_in_directory("res://Assets/Weeks"):
@@ -217,6 +220,7 @@ func start_song():
 	if can_enter:
 		can_enter = false
 		Gameplay.story_mode = false
+		Gameplay.blueballed = 0
 		
 		AudioHandler.stop_audio("freakyMenu")
 		AudioHandler.stop_inst()

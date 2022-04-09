@@ -569,14 +569,13 @@ tracks/3/keys = {
 script = ExtResource( 1 )
 health_color = Color( 0.192157, 0.690196, 0.819608, 1 )
 health_icon = ExtResource( 3 )
-sing_duration = 4.0
 is_player = true
 
 [node name="frames" type="AnimatedSprite" parent="."]
 position = Vector2( 1, -207 )
 frames = ExtResource( 2 )
-animation = "hey"
-frame = 25
+animation = "idle"
+frame = 13
 playing = true
 
 [node name="anim" type="AnimationPlayer" parent="."]

@@ -22,6 +22,9 @@ onready var bf = $Characters/bf
 onready var gf = $Characters/gf
 
 func _ready():
+	if not AudioHandler.get_node("freakyMenu").playing:
+		AudioHandler.play_audio("freakyMenu")
+		
 	Conductor.songPosition = 0
 	Conductor.curBeat = 0
 	Conductor.curStep = 0
@@ -46,7 +49,7 @@ func _ready():
 	for fuck in txt:
 		if weeks.has(fuck):
 			weeks.erase(fuck)
-			weeks.insert(order, fuck)
+			weeks.append(fuck)
 			
 		order += 1
 	
@@ -140,6 +143,7 @@ func beat_hit():
 	
 func select_week():
 	can_select = false
+	Gameplay.blueballed = 0
 	AudioHandler.play_audio("confirmMenu")
 	
 	$Weeks.get_children()[curSelected].start_flashing()

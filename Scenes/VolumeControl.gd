@@ -8,6 +8,9 @@ var timer:float = 1.0
 func init():
 	volume = Options.get_data("volume")
 	muted = Options.get_data("muted")
+	
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), volume)
+	AudioServer.set_bus_mute(AudioServer.get_bus_index("Master"), muted)
 
 func _process(delta):
 	timer += delta

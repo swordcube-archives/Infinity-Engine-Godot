@@ -1,15 +1,15 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Stages/philly/sky.png" type="Texture" id=1]
 [ext_resource path="res://Stages/philly/city.png" type="Texture" id=2]
 [ext_resource path="res://Stages/philly/street.png" type="Texture" id=3]
 [ext_resource path="res://Stages/philly/win0.png" type="Texture" id=4]
 [ext_resource path="res://Stages/philly/behindTrain.png" type="Texture" id=5]
-[ext_resource path="res://Stages/stage.gd" type="Script" id=6]
+[ext_resource path="res://Stages/philly/stage.gd" type="Script" id=6]
+[ext_resource path="res://Stages/philly/train.png" type="Texture" id=7]
 
 [node name="stage" type="Node2D"]
 script = ExtResource( 6 )
-default_cam_zoom = 0.95
 
 [node name="sky" type="ParallaxBackground" parent="."]
 scale = Vector2( 1.1, 1.1 )
@@ -30,12 +30,12 @@ transform = Transform2D( 1.1, 0, 0, 1.1, 0, 0 )
 motion_scale = Vector2( 0.3, 0.3 )
 
 [node name="spr" type="Sprite" parent="city/parallax"]
-position = Vector2( -10, 0 )
+position = Vector2( -10, -50 )
 scale = Vector2( 0.85, 0.85 )
 texture = ExtResource( 2 )
 
 [node name="windows" type="Sprite" parent="city/parallax"]
-position = Vector2( -10, 0 )
+position = Vector2( -10, -50 )
 scale = Vector2( 0.85, 0.85 )
 texture = ExtResource( 4 )
 
@@ -50,6 +50,17 @@ position = Vector2( -40, 50 )
 scale = Vector2( 1.15366, 1.15366 )
 texture = ExtResource( 5 )
 
+[node name="train" type="ParallaxBackground" parent="."]
+scale = Vector2( 1.1, 1.1 )
+transform = Transform2D( 1.1, 0, 0, 1.1, 0, 0 )
+
+[node name="parallax" type="ParallaxLayer" parent="train"]
+
+[node name="spr" type="Sprite" parent="train/parallax"]
+position = Vector2( 3480, 60.9091 )
+scale = Vector2( 1.15366, 1.15366 )
+texture = ExtResource( 7 )
+
 [node name="street" type="ParallaxBackground" parent="."]
 scale = Vector2( 1.1, 1.1 )
 transform = Transform2D( 1.1, 0, 0, 1.1, 0, 0 )
@@ -62,10 +73,10 @@ scale = Vector2( 1.15366, 1.15366 )
 texture = ExtResource( 3 )
 
 [node name="dad_pos" type="Node2D" parent="."]
-position = Vector2( -529, 392 )
+position = Vector2( -449, 392 )
 
 [node name="gf_pos" type="Node2D" parent="."]
-position = Vector2( -102, 336 )
+position = Vector2( -22, 336 )
 
 [node name="bf_pos" type="Node2D" parent="."]
-position = Vector2( 225, 378 )
+position = Vector2( 305, 378 )

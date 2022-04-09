@@ -1,6 +1,6 @@
 extends Node
 
-var game_version = "0.1.0"
+var game_version = "1.0.0"
 
 var version_statuses = [
 	"ALPHA",

@@ -4,6 +4,9 @@ var canEnter = true
 var danced = false
 
 func _ready():
+	if not AudioHandler.get_node("freakyMenu").playing:
+		AudioHandler.play_audio("freakyMenu")
+	
 	Conductor.songPosition = 0
 	Conductor.curBeat = 0
 	Conductor.curStep = 0

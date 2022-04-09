@@ -12,6 +12,9 @@ var timer = Timer.new()
 var timer2 = Timer.new()
 
 func _ready():
+	if not AudioHandler.get_node("freakyMenu").playing:
+		AudioHandler.play_audio("freakyMenu")
+		
 	change_selection(0)
 	
 	$Misc/Transition._fade_out()
@@ -21,6 +24,7 @@ func _process(delta):
 	
 	if Input.is_action_just_pressed("ui_back"):
 		$Misc/Transition.transition_to_scene("TitleScreen")
+		AudioHandler.play_audio("cancelMenu")
 		
 	if canSelect:
 		if Input.is_action_just_pressed("ui_up"):

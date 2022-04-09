@@ -15,8 +15,11 @@ var og_save = {
 	"ui-skin": "Default",
 	"vsync": true,
 	"rating-position": [760, 270],
+	"active-mods": {},
 	"volume": 0,
-	"muted": false
+	"muted": false,
+	"scroll-speed": 0,
+	"scroll-type": "Multiplicative"
 }
 
 var initialized = false

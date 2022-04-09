@@ -29,7 +29,6 @@ stream = ExtResource( 8 )
 
 [node name="freakyMenu" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 1 )
-autoplay = true
 
 [node name="scrollMenu" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )

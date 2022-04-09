@@ -32,7 +32,7 @@ playing = true
 position = Vector2( 832, 636 )
 frames = ExtResource( 3 )
 animation = "unpressed"
-frame = 8
+frame = 1
 playing = true
 
 [node name="Flash" type="ColorRect" parent="."]

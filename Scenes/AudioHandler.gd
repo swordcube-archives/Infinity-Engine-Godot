@@ -14,11 +14,11 @@ func stop_audio(name):
 # loading
 
 func play_inst(name):
-	$Inst.stream = load("res://Assets/Songs/" + name + "/Inst.ogg")
+	$Inst.stream = load(Paths.inst(name))
 	$Inst.play()
 	
 func play_voices(name):
-	$Voices.stream = load("res://Assets/Songs/" + name + "/Voices.ogg")
+	$Voices.stream = load(Paths.voices(name))
 	$Voices.play()
 	
 # misc
