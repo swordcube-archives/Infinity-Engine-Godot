@@ -70,6 +70,8 @@ func _ready():
 		$camHUD/HealthBar.global_position.y = 580
 		$camHUD/TimeBar.global_position.y = -660
 		
+		$camHUD/BotplayText.rect_position.y = 85
+		
 	if middlescroll:
 		opponent_strums.global_position.x = -9999
 		player_strums.global_position.x = ScreenRes.screen_width / 2.72
@@ -309,7 +311,7 @@ func _process(delta):
 		inst_length = AudioHandler.get_node("Inst").stream.get_length() * 1000
 		
 		#print(format_time(time / 1000, false))
-		$camHUD/TimeBar/TimeText.text = Util.format_time(inst_time / 1000, false) + " / " + Util.format_time(inst_length / 1000, false)
+		$camHUD/TimeBar/TimeText.text = Util.format_time((inst_time / 1000) / Gameplay.song_multiplier, false) + " / " + Util.format_time((inst_length / 1000) / Gameplay.song_multiplier, false)
 		
 		$camHUD/TimeBar/FGColor.rect_scale.x = (inst_time / inst_length)
 
@@ -319,7 +321,7 @@ func _process(delta):
 	$camHUD/HealthBar/ScoreText.bbcode_text = "[center]Score: " + str(song_score) + " // Misses: " + str(song_misses) + " // Accuracy: " + str(Util.round_decimal(song_accuracy * 100, 2)) + "%"
 	
 	if Options.get_data("botplay"):
-		$camHUD/ScoreText.bbcode_text += " // BOTPLAY"
+		$camHUD/HealthBar/ScoreText.bbcode_text += " // BOTPLAY"
 		$camHUD/TimeBar/TimeText.text += " [BOT]"
 	
 	$camHUD/HealthBar/BFColor.rect_scale.x = health / 2
@@ -707,6 +709,9 @@ func key_shit(delta):
 						
 					if cur_rating == "marvelous":
 						song_score += rating_scores[0]
+						
+					if not Options.get_data("hitsound") == "None":
+						AudioHandler.play_hitsound(Options.get_data("hitsound"))
 						
 					var rating = preload("res://Scenes/Gameplay/Rating.tscn").instance()
 					rating.name = "Rating" + str(hits)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://Assets/Music/freakyMenu.ogg" type="AudioStream" id=1]
 [ext_resource path="res://Scenes/AudioHandler.gd" type="Script" id=2]
@@ -22,6 +22,9 @@
 [ext_resource path="res://Assets/Sounds/missnote2.ogg" type="AudioStream" id=20]
 [ext_resource path="res://Assets/Sounds/missnote1.ogg" type="AudioStream" id=21]
 [ext_resource path="res://Assets/Sounds/missnote3.ogg" type="AudioStream" id=22]
+[ext_resource path="res://Assets/Sounds/Hitsounds/osu!.ogg" type="AudioStream" id=23]
+[ext_resource path="res://Assets/Sounds/Hitsounds/Dave and Bambi.ogg" type="AudioStream" id=24]
+[ext_resource path="res://Assets/Sounds/Hitsounds/Vine Boom.ogg" type="AudioStream" id=25]
 
 [node name="AudioHandler" type="Node2D"]
 pause_mode = 2
@@ -96,3 +99,14 @@ volume_db = -17.479
 [node name="missnote3" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 22 )
 volume_db = -17.479
+
+[node name="Hitsounds" type="Node2D" parent="."]
+
+[node name="osu!" type="AudioStreamPlayer" parent="Hitsounds"]
+stream = ExtResource( 23 )
+
+[node name="Dave and Bambi" type="AudioStreamPlayer" parent="Hitsounds"]
+stream = ExtResource( 24 )
+
+[node name="Vine Boom" type="AudioStreamPlayer" parent="Hitsounds"]
+stream = ExtResource( 25 )

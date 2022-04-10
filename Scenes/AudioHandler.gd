@@ -8,6 +8,9 @@ func pause_audio(name):
 	
 func stop_audio(name):
 	get_node(name).stop()
+	
+func play_hitsound(name):
+	get_node("Hitsounds").get_node(name).play(0)
 
 # song bullshit
 

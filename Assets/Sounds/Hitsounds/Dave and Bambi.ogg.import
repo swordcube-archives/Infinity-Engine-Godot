@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Dave and Bambi.ogg-a64dff717e365a4557ac15433cf8d562.oggstr"
+
+[deps]
+
+source_file="res://Assets/Sounds/Hitsounds/Dave and Bambi.ogg"
+dest_files=[ "res://.import/Dave and Bambi.ogg-a64dff717e365a4557ac15433cf8d562.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0
