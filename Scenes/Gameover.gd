@@ -43,6 +43,12 @@ func _process(delta):
 		$music.stream = load(Paths.music(music))
 		$music.play()
 		
+	if Input.is_action_just_pressed("ui_back"):
+		if Gameplay.story_mode:
+			SceneManager.switch_scene("StoryMenu")
+		else:
+			SceneManager.switch_scene("FreeplayMenu")
+		
 	if Input.is_action_just_pressed("ui_accept"):
 		if not retried:
 			retried = true

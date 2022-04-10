@@ -34,6 +34,18 @@ func _process(delta):
 						"bool", # type
 					],
 					[
+						"Ghost Tapping", # title
+						"ghost-tapping", # actual thing in save data
+						"When enabled, pressing notes that don't exist won't give you a miss.", # desc
+						"bool", # type
+					],
+					[
+						"Pussy Mode", # title
+						"pussy-mode", # actual thing in save data
+						"enables shit like gaining health from sustains.\nif you enable this you're a pussy lmao", # desc
+						"bool", # type
+					],
+					[
 						"Note Offset", # title
 						"note-offset", # actual thing in save data
 						"Change how late or early your notes spawn.\nNegative = Earlier - Positive = Later", # desc

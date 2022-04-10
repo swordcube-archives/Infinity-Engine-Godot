@@ -93,19 +93,29 @@ func _ready():
 	
 	# lists every file in the song directory
 	var song_files = Util.list_files_in_directory(Paths.song_path(SONG.song))
+	
+	if len(song_files) <= 0:
+		song_files = Util.list_files_in_directory(Paths.song_path(SONG.song.to_lower()))
+		
+		if len(song_files) <= 0:
+			song_files = Util.list_files_in_directory(Paths.song_path(SONG.song.to_lower().replace(" ", "-")))
+	
 	var modchart_files = []
 	
 	# if the file is a .gd file and isn't a hidden file, add it
 	# to modchart_files
 	for file in song_files:
-		if not file.begins_with(".") and file.ends_with(".gd"):
+		if not file.begins_with(".") and ".gd" in file and not ".remap" in file:
 			modchart_files.append(file)
 			
 	# go through each modchart file, then load and start them
 	for modchart in modchart_files:
-		var loaded = load(Paths.song_path(SONG.song) + "/" + modchart).new()
-		loaded.PlayState = self
-		add_child(loaded)
+		var loaded = load(Paths.song_path(SONG.song) + "/" + modchart)
+		
+		if loaded != null:
+			var mc = loaded.new()
+			mc.PlayState = self
+			add_child(mc)
 		
 	# don't ask
 	for section in SONG["notes"]:
@@ -122,7 +132,7 @@ func _ready():
 	speed = SONG.speed
 	
 	if Options.get_data("scroll-speed") > 0:
-		match Options.get_data("scroll-speed-type").to_lower():
+		match Options.get_data("scroll-type").to_lower():
 			"multiplicative":
 				speed *= Options.get_data("scroll-speed")
 			"constant":
@@ -216,7 +226,7 @@ func _ready():
 		dad.get_node("camera_pos").position.x *= -1
 		dad.get_node("frames").flip_h = true
 	
-	# add gf		
+	# add gf
 	var gfLoaded = load("res://Characters/" + gf_version.to_lower() + "/char.tscn")
 	
 	if gfLoaded == null:
@@ -316,21 +326,26 @@ func _process(delta):
 	
 	var index = 0
 	for note in noteDataArray:
-		if (note[0] - Conductor.songPosition < (1500 * Gameplay.song_multiplier)):
+		if float(note[0]) > Conductor.songPosition + 5000:
+			break
+			
+		if float(note[0]) - Conductor.songPosition < (1500 * Gameplay.song_multiplier):
 			var dunceNote:Node2D = preload("res://Scenes/Notes/Note.tscn").instance()
 			dunceNote.strumTime = note[0]
 			dunceNote.noteData = int(note[1]) % 4
-			dunceNote.sustainLength = (note[2] - 150) / Gameplay.song_multiplier
+			dunceNote.sustainLength = (note[2] - 150) / (Gameplay.song_multiplier * 1)
 			
 			if dunceNote.sustainLength <= 0:
 				dunceNote.sustainLength = 0
 			
-			dunceNote.mustPress = note[3]
+			dunceNote.mustPress = true
 			
 			dunceNote.set_direction()
 			
-			if note[1] > 3:
-				dunceNote.mustPress = not note[3]
+			if note[3] and int(note[1]) % (4 * 2) >= 4:
+				dunceNote.mustPress = false
+			elif !note[3] and int(note[1]) % (4 * 2) <= 4 - 1:
+				dunceNote.mustPress = false
 				
 			dunceNote.get_node("Line2D").texture = load("res://Assets/Images/UI Skins/" + Gameplay.ui_Skin + "/Sustains/" + dunceNote.dir_string + " hold0000.png")
 			dunceNote.get_node("End").texture = load("res://Assets/Images/UI Skins/" + Gameplay.ui_Skin + "/Sustains/" + dunceNote.dir_string + " tail0000.png")
@@ -344,7 +359,7 @@ func _process(delta):
 				
 			noteDataArray.remove(index)
 	
-	index += 1
+		index += 1
 			
 	if health < 0.4150:
 		$camHUD/HealthBar/IconP2.frame = 2
@@ -406,6 +421,8 @@ func _process(delta):
 					health -= 0.2475
 				else:
 					health -= 0.0475
+					
+				AudioHandler.play_audio("missnote" + str(randi()%3 + 1))
 				
 				calculate_accuracy()
 				
@@ -510,7 +527,8 @@ func _process(delta):
 			
 			AudioHandler.get_node("Voices").volume_db = 0
 			
-			#health += 0.023 / delta * 105
+			if Options.get_data("pussy-mode"):
+				health += delta / 4
 			
 			note.get_node("Note").visible = false
 			note.global_position.y = strum.global_position.y
@@ -690,8 +708,19 @@ func key_shit(delta):
 					if cur_rating == "marvelous":
 						song_score += rating_scores[0]
 						
+					var rating = preload("res://Scenes/Gameplay/Rating.tscn").instance()
+					rating.name = "Rating" + str(hits)
+					rating.get_node("Sprite").texture = load("res://Assets/Images/UI Skins/" + Gameplay.ui_Skin + "/" + cur_rating + ".png")
+					rating.modulate.a = 1
+					rating.visible = true
+					rating.note_ms = note_ms
+					rating.combo = combo
+					hits += 1
+					combo += 1
+						
 					match(cur_rating):
 						"marvelous", "sick":
+							rating.get_node("MS").modulate = Color("42bcf5")
 							total_notes_hit += 1
 							
 							if cur_rating == "marvelous":
@@ -704,24 +733,25 @@ func key_shit(delta):
 							note_splash.global_position = player_strums.get_children()[note.noteData % 4].global_position
 							$camHUD.add_child(note_splash)
 						"good":
+							rating.get_node("MS").modulate = Color("42f584")
 							total_notes_hit += 0.75
 							goods += 1
 						"bad":
+							rating.get_node("MS").modulate = Color("f59e42")
 							total_notes_hit += 0.5
 							bads += 1
 						"shit":
+							rating.get_node("MS").modulate = Color("f54242")
 							total_notes_hit += 0
 							shits += 1
-						
-					var rating = preload("res://Scenes/Gameplay/Rating.tscn").instance()
-					rating.name = "Rating" + str(hits)
-					rating.get_node("Sprite").texture = load("res://Assets/Images/UI Skins/" + Gameplay.ui_Skin + "/" + cur_rating + ".png")
-					rating.modulate.a = 1
-					rating.visible = true
-					rating.combo = combo
-					hits += 1
-					combo += 1
-					$camHUD.add_child(rating)
+							
+							if not Options.get_data("pussy-mode"):
+								health -= 0.2
+								
+					for rating_spr in $camHUD/Ratings.get_children():
+						rating_spr.get_node("MS").visible = false
+
+					$camHUD/Ratings.add_child(rating)
 					
 					calculate_accuracy()
 					
@@ -750,6 +780,23 @@ func key_shit(delta):
 					
 					if note.sustainLength > 0:
 						note.beingPressed = true
+						
+	for i in len(just_pressed):
+		if just_pressed[i] == true:
+			if not Options.get_data("ghost-tapping") and not dont_hit[i]:
+				song_score -= 10
+				song_misses += 1
+				#total_notes_hit += 1
+				combo = 0
+				
+				health -= 0.0475
+					
+				if not boyfriend.special_anim:
+					boyfriend.play_anim(sing_anims[i] + "miss")
+					
+				AudioHandler.play_audio("missnote" + str(randi()%3 + 1))
+				
+				calculate_accuracy()
 					
 func calculate_accuracy():
 	if (hits + song_misses) > 0:

@@ -1,6 +1,9 @@
 extends Node
 
 var mods = []
+
+var old_active_mods = {}
+
 var active_mods = {}
 
 var mod_instances = {}
@@ -48,6 +51,11 @@ func init_mods():
 					else:
 						print("MOD: " + mod + " DOESN'T HAVE ANY DATA!")
 			
+	# remove non-existent mods
+	for mod in active_mods:
+		if not mods.has(mod):
+			active_mods.erase(mod)
+			Options.set_data("active-mods", active_mods)
 			
 	print("ALL MODS: " + str(mods))
 	print("ACTIVE MODS: " + str(active_mods))

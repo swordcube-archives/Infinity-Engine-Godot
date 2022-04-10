@@ -14,13 +14,13 @@ var playing = ""
 var can_enter = true
 
 func _ready():
-	if not AudioHandler.get_node("freakyMenu").playing:
+	if not AudioHandler.get_node("Inst").playing and not AudioHandler.get_node("Voices").playing and not AudioHandler.get_node("freakyMenu").playing:
 		AudioHandler.play_audio("freakyMenu")
 		
 	$Misc/Transition._fade_out()
 	
 	for file in Util.list_files_in_directory("res://Assets/Weeks"):
-		if ".json" in file:
+		if not file.begins_with(".") and file.ends_with(".json"):
 			weeks.append(file.split(".json")[0])
 			
 	var txt = Util.get_txt("res://Assets/Weeks/WeekList")
@@ -29,11 +29,22 @@ func _ready():
 	for fuck in txt:
 		if weeks.has(fuck):
 			weeks.erase(fuck)
-			weeks.insert(order, fuck)
+			weeks.append(fuck)
 			
 		order += 1
 		
-	print(weeks)
+	for mod in ModManager.active_mods:
+		var m_txt = Util.get_txt("res://Assets/Weeks/" + mod + "-WeekList")
+	
+		var m_order = 0
+		for fuck in m_txt:
+			if weeks.has(fuck):
+				weeks.erase(fuck)
+				weeks.append(fuck)
+				
+			m_order += 1
+		
+	#print(weeks)
 	
 	# read the json
 	var week_index = 0
@@ -48,7 +59,7 @@ func _ready():
 	
 	var index = 0
 	for song in songs:
-		print(song)
+		#print(song)
 		var newSong = $Template.duplicate()
 		newSong.visible = true
 		newSong.text = song.name.to_upper()
@@ -62,7 +73,7 @@ func _ready():
 		newSong.get_node("Icon").global_position.x = newSong.rect_position.x + newSong.rect_size.x + 90
 		index += 1
 		
-	print(songs[curSelected])
+	#print(songs[curSelected])
 		
 	change_selection(0)
 	

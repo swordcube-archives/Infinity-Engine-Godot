@@ -52,6 +52,8 @@ position = Vector2( 162, 608 )
 [node name="PlayerStrums" parent="camHUD" instance=ExtResource( 6 )]
 position = Vector2( 782, 608 )
 
+[node name="Ratings" type="Node2D" parent="camHUD"]
+
 [node name="Notes" type="Node2D" parent="camHUD"]
 
 [node name="HealthBar" type="Node2D" parent="camHUD"]

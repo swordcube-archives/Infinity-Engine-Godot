@@ -11,6 +11,7 @@ var og_save = {
 	"hitsound": "None",
 	"note-splashes": true,
 	"ghost-tapping": false,
+	"pussy-mode": false,
 	"keybinds": ["D", "F", "J", "K"],
 	"ui-skin": "Default",
 	"vsync": true,

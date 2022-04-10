@@ -7,9 +7,13 @@ var combo = 0
 
 var combo_array = [0, 0, 0, 0]
 
+var note_ms = 0.0
+
 var rand_array = []
 
 func _ready():
+	$MS.text = str(note_ms) + "ms"
+	
 	for i in 4:
 		rand_array.append(rand_range(3, 4))
 		

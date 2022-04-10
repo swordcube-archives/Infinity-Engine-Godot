@@ -20,7 +20,7 @@ func _physics_process(delta): # this is the update function, runs every frame.
 		
 		OS.window_position.y = window_pos.y - 10 + (sin(fuck / 2) + 1) * 10
 		
-		PlayState.health = (sin(fuck / 3.5) + 1) * 0.9
+		PlayState.health = (sin(fuck / 3.5) + 2) * 0.5
 		
 		var index = 0
 		o_strums.global_position.x = lerp(o_strums.global_position.x, -600, delta * 2)

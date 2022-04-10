@@ -22,7 +22,7 @@ onready var bf = $Characters/bf
 onready var gf = $Characters/gf
 
 func _ready():
-	if not AudioHandler.get_node("freakyMenu").playing:
+	if not AudioHandler.get_node("Inst").playing and not AudioHandler.get_node("Voices").playing and not AudioHandler.get_node("freakyMenu").playing:
 		AudioHandler.play_audio("freakyMenu")
 		
 	Conductor.songPosition = 0

@@ -17,6 +17,8 @@ func list_files_in_directory(path):
 
 	return files
 
+var timeout = 0
+
 func get_txt(path):
 	var text_array = []
 	var f = File.new()
@@ -27,6 +29,15 @@ func get_txt(path):
 		text_array.append(line)
 
 		index += 1
+		timeout += 1
+		
+		if line != "" and line != "null":
+			timeout = 0
+		
+		# if the file doesn't exist or has no contents
+		# then we cancel
+		if timeout >= 404:
+			break
 	f.close()
 	return text_array
 

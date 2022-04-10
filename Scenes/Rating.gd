@@ -7,6 +7,8 @@ var combo = 0
 
 var combo_array = [0, 0, 0, 0]
 
+var note_ms = 0.0
+
 var rand_array = []
 
 func _ready():
