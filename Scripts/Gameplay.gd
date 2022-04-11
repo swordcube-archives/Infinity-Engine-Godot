@@ -1,6 +1,6 @@
 extends Node
 
-var SONG = JsonUtil.get_json("res://Assets/Songs/Tutorial/hard")
+onready var SONG = JsonUtil.get_json("res://Assets/Songs/Bopeebo/hard")
 var ui_Skin = "Default"
 
 var death_character = "bf-dead"
@@ -9,6 +9,8 @@ var death_camera_pos = Vector2(0, 0)
 var death_character_pos = Vector2(0, 0)
 
 var blueballed:int = 0
+
+var used_practice:bool = false
 
 var story_mode:bool = false
 var story_score:int = 0

@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://Assets/Music/freakyMenu.ogg" type="AudioStream" id=1]
 [ext_resource path="res://Scenes/AudioHandler.gd" type="Script" id=2]
@@ -25,6 +25,7 @@
 [ext_resource path="res://Assets/Sounds/Hitsounds/osu!.ogg" type="AudioStream" id=23]
 [ext_resource path="res://Assets/Sounds/Hitsounds/Dave and Bambi.ogg" type="AudioStream" id=24]
 [ext_resource path="res://Assets/Sounds/Hitsounds/Vine Boom.ogg" type="AudioStream" id=25]
+[ext_resource path="res://Assets/Sounds/Hitsounds/Generic.ogg" type="AudioStream" id=26]
 
 [node name="AudioHandler" type="Node2D"]
 pause_mode = 2
@@ -110,3 +111,7 @@ stream = ExtResource( 24 )
 
 [node name="Vine Boom" type="AudioStreamPlayer" parent="Hitsounds"]
 stream = ExtResource( 25 )
+
+[node name="Generic" type="AudioStreamPlayer" parent="Hitsounds"]
+stream = ExtResource( 26 )
+volume_db = 6.12

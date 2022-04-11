@@ -63,6 +63,11 @@ onready var player_strums = $camHUD/PlayerStrums
 onready var game_notes = $camHUD/Notes
 
 func _ready():
+	if Options.get_data("botplay"):
+		Gameplay.used_practice = true
+	else:
+		Gameplay.used_practice = false
+		
 	if not downscroll:
 		opponent_strums.global_position.y = 100
 		player_strums.global_position.y = 100
@@ -332,7 +337,7 @@ func _process(delta):
 			break
 			
 		if float(note[0]) - Conductor.songPosition < (1500 * Gameplay.song_multiplier):
-			var dunceNote:Node2D = preload("res://Scenes/Notes/Note.tscn").instance()
+			var dunceNote:Node2D = load("res://Scenes/Notes/Default/Note.tscn").instance()
 			dunceNote.strumTime = note[0]
 			dunceNote.noteData = int(note[1]) % 4
 			dunceNote.sustainLength = (note[2] - 150) / (Gameplay.song_multiplier * 1)
@@ -557,7 +562,7 @@ func _process(delta):
 func end_song():
 	can_pause = false
 	
-	if Gameplay.song_multiplier >= 1:
+	if not Gameplay.used_practice and not Options.get_data("pussy-mode") and Gameplay.song_multiplier >= 1:
 		if(song_score > SongHighscore.get_score(SONG.song.to_lower().replace(" ", "-") + "-" + Gameplay.difficulty)):
 			SongHighscore.set_score(SONG.song.to_lower().replace(" ", "-") + "-" + Gameplay.difficulty, song_score)
 			SongAccuracy.set_acc(SONG.song.to_lower().replace(" ", "-") + "-" + Gameplay.difficulty, Util.round_decimal(song_accuracy * 100, 2))
@@ -565,7 +570,7 @@ func end_song():
 	if Gameplay.story_mode:
 		Gameplay.story_playlist.remove(0)
 		
-		if Gameplay.song_multiplier >= 1:
+		if not Gameplay.used_practice and not Options.get_data("pussy-mode") and Gameplay.song_multiplier >= 1:
 			Gameplay.story_score += song_score
 		
 		if len(Gameplay.story_playlist) > 0:

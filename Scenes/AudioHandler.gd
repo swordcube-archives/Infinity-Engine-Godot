@@ -1,7 +1,10 @@
 extends Node2D
 
-func play_audio(name):
-	get_node(name).play()
+func play_audio(name, pos = null):
+	if pos != null:
+		get_node(name).play(pos)
+	else:
+		get_node(name).play()
 	
 func pause_audio(name):
 	get_node(name).pause()

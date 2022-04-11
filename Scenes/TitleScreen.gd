@@ -22,7 +22,7 @@ func _process(delta):
 			canEnter = false
 			
 			$PressEnter.play("pressed")
-			$"/root/AudioHandler".play_audio("confirmMenu")
+			AudioHandler.play_audio("confirmMenu")
 			
 			$Flash.visible = true
 			var tween = Tween.new()

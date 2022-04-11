@@ -93,7 +93,7 @@ func _process(delta):
 						"hitsound", # actual thing in save data
 						"Make notes do funny sound when hit", # desc
 						"string", # type
-						["None", "osu!", "Dave and Bambi", "Vine Boom"],
+						["None", "osu!", "Dave and Bambi", "Vine Boom", "Generic"],
 					],
 					[
 						"Note Splashes", # title

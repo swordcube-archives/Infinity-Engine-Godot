@@ -1,5 +1,9 @@
 extends Node2D
 
+# for funnies
+export(float) var hit_damage = 0.0
+export(float) var miss_damage = 0.0
+
 var isSustainNote = false
 var mustPress = false
 
@@ -18,6 +22,8 @@ var dir_string = "A"
 var beingPressed = false
 var shouldHit = true
 
+var charter_note = false
+
 onready var line = $Line2D
 
 func set_direction():
@@ -34,20 +40,21 @@ func set_direction():
 	$Note.play(dir_string)
 			
 func _process(delta):
-	line.modulate.a = 0.6
-	$End.modulate.a = 0.6
-	
-	if get_tree().current_scene.downscroll:
-		line.points[1].y = 0 - sustainLength
-		$End.position.y = line.points[1].y - ($End.texture.get_height() / 2)
-	else:
-		line.points[1].y = 0 + sustainLength
-		$End.position.y = line.points[1].y + ($End.texture.get_height() / 2)
-	
-	if get_tree().current_scene.downscroll:
-		$End.flip_v = true
-	else:
-		$End.flip_v = false
+	if not charter_note:
+		line.modulate.a = 0.6
+		$End.modulate.a = 0.6
+		
+		if get_tree().current_scene.downscroll:
+			line.points[1].y = 0 - sustainLength
+			$End.position.y = line.points[1].y - ($End.texture.get_height() / 2)
+		else:
+			line.points[1].y = 0 + sustainLength
+			$End.position.y = line.points[1].y + ($End.texture.get_height() / 2)
+		
+		if get_tree().current_scene.downscroll:
+			$End.flip_v = true
+		else:
+			$End.flip_v = false
 		
 func calculate_can_be_hit():
 	if(mustPress):
