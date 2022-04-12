@@ -31,6 +31,11 @@ func _draw():
 			if (y * grid_size) + position.y < 0 - grid_size:
 				continue
 				
+	# separators
+	var c = (columns / 2) + 1
+	draw_rect(Rect2(Vector2(grid_size, position.y - grid_size), Vector2(2, rows * grid_size)), Color("000000"), true)
+	draw_rect(Rect2(Vector2(c * grid_size, position.y - grid_size), Vector2(2, rows * grid_size)), Color("000000"), true)
+				
 func _process(_delta):
 	$Line.rect_size.x = grid_size * (columns + 1)
 	$Line.rect_position.y = time_to_y(Conductor.songPosition - section_start_time())
@@ -79,7 +84,7 @@ func load_section(section):
 		})
 		
 	for note in Gameplay.SONG.song.notes[section].sectionNotes:
-		spawn_note(note[1] + 1, time_to_y(note[0] - section_start_time()), time_to_y(note[0] - section_start_time()), note[0])
+		spawn_note(note[1] + 1, time_to_y(note[0] - section_start_time()), time_to_y(note[0] - section_start_time()), note[0], note[2])
 		
 func section_start_time(section = null):
 	if section == null:
@@ -123,12 +128,13 @@ func add_note(x, y):
 	var strum_time = y_to_time($Selected.rect_position.y) + section_start_time()
 	var note_data = int(x - 1)
 	var note_length = 0.0
+	var sustain_length = 0.0
 	
-	spawn_note(x, y, null, strum_time)
+	spawn_note(x, y, null, strum_time, sustain_length)
 	
 	Gameplay.SONG.song.notes[$"../".curSection].sectionNotes.append([strum_time, note_data, note_length])
 	
-func spawn_note(x, y, custom_y = null, strum_time = 0):
+func spawn_note(x, y, custom_y = null, strum_time = 0, sustain_length = 0):
 	if custom_y == null:
 		custom_y = $Selected.rect_position.y
 	
@@ -141,6 +147,7 @@ func spawn_note(x, y, custom_y = null, strum_time = 0):
 	new_note.noteData = int(x - 1)
 	new_note.charter_note = true
 	new_note.strumTime = strum_time
+	new_note.sustainLength = sustain_length - (grid_size * 1.5)
 	new_note.set_direction()
 	
 	var anim_spr = new_note.get_node("Note")
@@ -148,7 +155,18 @@ func spawn_note(x, y, custom_y = null, strum_time = 0):
 	var end = new_note.get_node("End")
 	
 	anim_spr.centered = false
-	line_2d.visible = false
+	
+	line_2d.position.x += grid_size * 2
+	line_2d.position.y += grid_size * 2
+	
+	if sustain_length <= 0:
+		line_2d.visible = false
+	
+	line_2d.scale.x = 0.8
+	line_2d.modulate.r = 9999
+	line_2d.modulate.g = 9999
+	line_2d.modulate.b = 9999
+	
 	end.visible = false
 	
 	new_note.scale.x = 40.0 / anim_spr.frames.get_frame(anim_spr.animation, anim_spr.frame).get_width()

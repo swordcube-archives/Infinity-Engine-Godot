@@ -25,7 +25,8 @@ func _process(delta):
 					"Resume":
 						get_tree().paused = not get_tree().paused
 						
-						get_tree().current_scene.resync_vocals()
+						if not get_tree().current_scene.countdown_active:
+							get_tree().current_scene.resync_vocals()
 						
 						var inst_pos = AudioHandler.get_node("Inst").get_playback_position()
 						var voices_pos = AudioHandler.get_node("Voices").get_playback_position()

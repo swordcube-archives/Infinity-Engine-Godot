@@ -159,31 +159,29 @@ func _ready():
 	$Misc/Transition._fade_out()
 	
 	# add the stage
-	match(SONG.song.to_lower()):
-		"tutorial", "bopeebo", "fresh", "dad battle":
-			gf_version = "gf"
-			curStage = "stage"
+	var stage = "stage"
+	match(Gameplay.SONG.song.song.to_lower()):
 		"spookeez", "south", "monster":
-			gf_version = "gf"
-			curStage = "spooky"
+			stage = "spooky"
 		"pico", "philly nice", "blammed":
-			gf_version = "gf"
-			curStage = "philly"
+			stage = "philly"
 		"satin panties", "high", "m.i.l.f":
-			gf_version = "gf"
-			curStage = "limo"
-		"cocoa", "eggnog", "winter horrorland":
+			stage = "limo"
+		"cocoa", "eggnog":
+			stage = "mall"
 			gf_version = "gf-christmas"
-			curStage = "mall"
-		"winter horrorland":
-			curStage = "mallEvil"
-		"senpai", "roses", "thorns":
+		"winter-horrorland":
+			stage = "mallEvil"
+			gf_version = "gf-christmas"
+		"senpai":
+			stage = "school"
 			gf_version = "gf-pixel"
-			curStage = "school"
 		"roses":
-			curStage = "schoolAngry"
+			stage = "schoolAngry"
+			gf_version = "gf-pixel"
 		"thorns":
-			curStage = "schoolEvil"
+			stage = "schoolEvil"
+			gf_version = "gf-pixel"
 		_:
 			var real = "gf"
 			
@@ -206,7 +204,11 @@ func _ready():
 			# player3 = idfk, probably used in some other engines
 				
 			gf_version = real
-			curStage = "stage"
+			
+	curStage = stage
+	
+	if "stage" in SONG:
+		curStage = SONG.stage
 			
 	var stageLoaded = load("res://Stages/" + curStage + "/stage.tscn")
 	
@@ -587,6 +589,9 @@ func end_song():
 	else:
 		AudioHandler.play_audio("freakyMenu")			
 		$Misc/Transition.transition_to_scene("FreeplayMenu")
+		
+	AudioHandler.stop_inst()
+	AudioHandler.stop_voices()
 	
 func camera_zooms(delta):
 	# cam game zoom

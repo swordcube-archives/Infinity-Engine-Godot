@@ -55,6 +55,8 @@ func _process(delta):
 			$End.flip_v = true
 		else:
 			$End.flip_v = false
+	else:
+		line.points[1].y = 0 + sustainLength
 		
 func calculate_can_be_hit():
 	if(mustPress):

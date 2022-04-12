@@ -14,10 +14,13 @@ var characters = []
 var can_interact = true
 
 func _ready():
+	$Tabs.current_tab = 4
+	
 	$Tabs/Song/Song/SongInput.text = Gameplay.SONG.song.song
 	$Tabs/Song/Song/CheckBox.pressed = Gameplay.SONG.song["needsVoices"] == true
 	$Tabs/Song/Song/ScrollSpeed/SpeedInput.text = str(Gameplay.SONG.song.speed)
 	$Tabs/Song/Song/BPM/BPMInput.text = str(Gameplay.SONG.song.bpm)
+	$Tabs/Song/Difficulty/DiffInput.text = Gameplay.difficulty
 	
 	var char_list = Util.list_files_in_directory("res://Characters")
 	
@@ -27,14 +30,38 @@ func _ready():
 			$Tabs/Song/Characters/Opponent.add_item(character)
 			$Tabs/Song/Characters/GF.add_item(character)
 			$Tabs/Song/Characters/BF.add_item(character)
+			
+	var stage_list = Util.list_files_in_directory("res://Stages")
+	
+	for stage in stage_list:
+		if not "." in stage:
+			$Tabs/Song/Characters/Stage.add_item(stage)
 	
 	$Tabs/Song/Characters/Opponent.text = Gameplay.SONG.song.player2
 	
+	var stage = "stage"
 	var gf_version = "gf"
 	match(Gameplay.SONG.song.song.to_lower()):
-		"cocoa", "eggnog", "winter horrorland":
+		"spookeez", "south", "monster":
+			stage = "spooky"
+		"pico", "philly nice", "blammed":
+			stage = "philly"
+		"satin panties", "high", "m.i.l.f":
+			stage = "limo"
+		"cocoa", "eggnog":
+			stage = "mall"
 			gf_version = "gf-christmas"
-		"senpai", "roses", "thorns":
+		"winter-horrorland":
+			stage = "mallEvil"
+			gf_version = "gf-christmas"
+		"senpai":
+			stage = "school"
+			gf_version = "gf-pixel"
+		"roses":
+			stage = "schoolAngry"
+			gf_version = "gf-pixel"
+		"thorns":
+			stage = "schoolEvil"
 			gf_version = "gf-pixel"
 		_:
 			var real = "gf"
@@ -61,6 +88,8 @@ func _ready():
 	
 	$Tabs/Song/Characters/GF.text = gf_version
 	$Tabs/Song/Characters/BF.text = Gameplay.SONG.song.player1
+	
+	$Tabs/Song/Characters/Stage.text = stage
 	
 	$Misc/Transition._fade_out()
 	
@@ -136,6 +165,14 @@ func change_section(amount):
 	refresh_icons()
 		
 	$Grid.load_section(curSection)
+	
+func clear_notes():
+	for section in Gameplay.SONG.song.notes:
+		section["sectionNotes"].clear()
+		
+func clear_events():
+	if "events" in Gameplay.SONG.song:
+		Gameplay.SONG.song.events.clear()
 
 func refresh_icons():
 	if Gameplay.SONG.song.notes[curSection].mustHitSection:
@@ -196,3 +233,25 @@ func _on_BPMInput_text_changed():
 
 func _on_SaveChart_pressed():
 	print("DOESN'T WORK YET")
+
+func _on_ReloadJSON_pressed():
+	var json = JsonUtil.get_json("res://Assets/Songs/" + str($Tabs/Song/Song/SongInput.text) + "/" + str($Tabs/Song/Difficulty/DiffInput.text).to_lower())
+	
+	if json != null:
+		Gameplay.SONG = json
+		Gameplay.difficulty = str($Tabs/Song/Difficulty/DiffInput.text).to_lower()
+		$Misc/Transition.transition_to_scene("ChartEditor")
+	else:
+		AudioHandler.play_audio("cancelMenu")
+
+func _on_Stage_item_selected(index):
+	Gameplay.SONG.song.stage = $Tabs/Song/Characters/Stage.text
+
+
+func _on_ClearNotes_pressed():
+	clear_notes()
+	$Grid.load_section(curSection)
+
+func _on_ClearEvents_pressed():
+	clear_events()
+	$Grid.load_section(curSection)

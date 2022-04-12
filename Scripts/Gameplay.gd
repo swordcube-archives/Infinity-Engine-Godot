@@ -1,6 +1,6 @@
 extends Node
 
-onready var SONG = JsonUtil.get_json("res://Assets/Songs/Bopeebo/hard")
+onready var SONG = JsonUtil.get_json("res://Assets/Songs/Tutorial/hard")
 var ui_Skin = "Default"
 
 var death_character = "bf-dead"

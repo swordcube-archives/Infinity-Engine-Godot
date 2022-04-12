@@ -13,7 +13,7 @@ var playing = ""
 
 var can_enter = true
 
-func _ready():
+func _ready():	
 	if not AudioHandler.get_node("Inst").playing and not AudioHandler.get_node("Voices").playing and not AudioHandler.get_node("freakyMenu").playing:
 		AudioHandler.play_audio("freakyMenu")
 		

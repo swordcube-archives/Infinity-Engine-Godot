@@ -36,6 +36,42 @@ margin_top = 24.0
 margin_right = 1255.0
 margin_bottom = 692.0
 
+[node name="Charting" type="Tabs" parent="Tabs"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="Section" type="Tabs" parent="Tabs"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="Notes" type="Tabs" parent="Tabs"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="Events" type="Tabs" parent="Tabs"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
 [node name="Song" type="Tabs" parent="Tabs"]
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -84,6 +120,34 @@ margin_right = 67.0
 margin_bottom = -7.0
 text = "BF"
 
+[node name="Stage" type="OptionButton" parent="Tabs/Song/Characters"]
+margin_top = 221.0
+margin_right = 180.0
+margin_bottom = 246.0
+text = "stage"
+
+[node name="Label" type="Label" parent="Tabs/Song/Characters/Stage"]
+margin_top = -21.0
+margin_right = 67.0
+margin_bottom = -7.0
+text = "Stage"
+
+[node name="Difficulty" type="Label" parent="Tabs/Song"]
+margin_left = 100.0
+margin_top = 2.0
+margin_right = 157.0
+margin_bottom = 16.0
+text = "Difficulty"
+
+[node name="DiffInput" type="TextEdit" parent="Tabs/Song/Difficulty"]
+margin_left = 1.0
+margin_top = 20.0
+margin_right = 78.0
+margin_bottom = 41.0
+text = "normal"
+caret_blink = true
+script = ExtResource( 6 )
+
 [node name="Song" type="Label" parent="Tabs/Song"]
 margin_left = 6.0
 margin_top = 1.0
@@ -94,7 +158,7 @@ text = "Song"
 [node name="SongInput" type="TextEdit" parent="Tabs/Song/Song"]
 margin_left = -1.0
 margin_top = 21.0
-margin_right = 160.0
+margin_right = 76.0
 margin_bottom = 42.0
 text = "Test"
 caret_blink = true
@@ -102,17 +166,24 @@ script = ExtResource( 6 )
 
 [node name="LoadAudio" type="Button" parent="Tabs/Song/Song"]
 margin_left = 1.0
-margin_top = 131.0
+margin_top = 147.0
 margin_right = 84.0
-margin_bottom = 151.0
+margin_bottom = 167.0
 text = "Load Audio"
 
 [node name="SaveChart" type="Button" parent="Tabs/Song/Song"]
 margin_left = 95.0
-margin_top = 131.0
+margin_top = 147.0
 margin_right = 173.0
-margin_bottom = 151.0
+margin_bottom = 167.0
 text = "Save Chart"
+
+[node name="ReloadJSON" type="Button" parent="Tabs/Song/Song"]
+margin_left = 1.0
+margin_top = 175.0
+margin_right = 173.0
+margin_bottom = 195.0
+text = "Reload Chart JSON"
 
 [node name="CheckBox" type="CheckBox" parent="Tabs/Song/Song"]
 margin_left = -6.0
@@ -121,10 +192,21 @@ margin_right = 122.0
 margin_bottom = 70.0
 text = "Has Voice Track"
 
+[node name="SongSeparator" type="HSeparator" parent="Tabs/Song/Song"]
+margin_top = 73.0
+margin_right = 173.0
+margin_bottom = 77.0
+
+[node name="CharactersSeparator" type="HSeparator" parent="Tabs/Song/Song"]
+margin_left = 200.0
+margin_top = 25.0
+margin_right = 375.0
+margin_bottom = 29.0
+
 [node name="ScrollSpeed" type="Label" parent="Tabs/Song/Song"]
-margin_top = 80.0
+margin_top = 88.0
 margin_right = 78.0
-margin_bottom = 94.0
+margin_bottom = 102.0
 text = "Scroll Speed"
 
 [node name="SpeedInput" type="TextEdit" parent="Tabs/Song/Song/ScrollSpeed"]
@@ -138,9 +220,9 @@ script = ExtResource( 6 )
 
 [node name="BPM" type="Label" parent="Tabs/Song/Song"]
 margin_left = 96.0
-margin_top = 80.0
+margin_top = 88.0
 margin_right = 174.0
-margin_bottom = 94.0
+margin_bottom = 102.0
 text = "BPM"
 
 [node name="BPMInput" type="TextEdit" parent="Tabs/Song/Song/BPM"]
@@ -152,50 +234,35 @@ text = "150"
 caret_blink = true
 script = ExtResource( 6 )
 
-[node name="Section" type="Tabs" parent="Tabs"]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = 32.0
-margin_right = -4.0
-margin_bottom = -4.0
+[node name="ClearNotes" type="Button" parent="Tabs/Song"]
+modulate = Color( 1, 0, 0, 1 )
+margin_left = 298.0
+margin_top = 604.0
+margin_right = 384.0
+margin_bottom = 624.0
+text = "Clear Notes"
 
-[node name="Notes" type="Tabs" parent="Tabs"]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = 32.0
-margin_right = -4.0
-margin_bottom = -4.0
-
-[node name="Events" type="Tabs" parent="Tabs"]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = 32.0
-margin_right = -4.0
-margin_bottom = -4.0
-
-[node name="Charting" type="Tabs" parent="Tabs"]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = 32.0
-margin_right = -4.0
-margin_bottom = -4.0
+[node name="ClearEvents" type="Button" parent="Tabs/Song"]
+modulate = Color( 1, 0, 0, 1 )
+margin_left = 194.0
+margin_top = 604.0
+margin_right = 284.0
+margin_bottom = 624.0
+text = "Clear Events"
 
 [connection signal="item_selected" from="Tabs/Song/Characters/Opponent" to="." method="_on_Opponent_item_selected"]
 [connection signal="item_selected" from="Tabs/Song/Characters/GF" to="." method="_on_GF_item_selected"]
 [connection signal="item_selected" from="Tabs/Song/Characters/BF" to="." method="_on_BF_item_selected"]
+[connection signal="item_selected" from="Tabs/Song/Characters/Stage" to="." method="_on_Stage_item_selected"]
+[connection signal="focus_entered" from="Tabs/Song/Difficulty/DiffInput" to="." method="_on_SongInput_focus_entered"]
+[connection signal="focus_entered" from="Tabs/Song/Difficulty/DiffInput" to="." method="_on_TextEdit_focus_entered"]
+[connection signal="focus_exited" from="Tabs/Song/Difficulty/DiffInput" to="." method="_on_SongInput_focus_exited"]
 [connection signal="focus_entered" from="Tabs/Song/Song/SongInput" to="." method="_on_SongInput_focus_entered"]
 [connection signal="focus_entered" from="Tabs/Song/Song/SongInput" to="." method="_on_TextEdit_focus_entered"]
 [connection signal="focus_exited" from="Tabs/Song/Song/SongInput" to="." method="_on_SongInput_focus_exited"]
 [connection signal="pressed" from="Tabs/Song/Song/LoadAudio" to="." method="_on_LoadAudio_pressed"]
 [connection signal="pressed" from="Tabs/Song/Song/SaveChart" to="." method="_on_SaveChart_pressed"]
+[connection signal="pressed" from="Tabs/Song/Song/ReloadJSON" to="." method="_on_ReloadJSON_pressed"]
 [connection signal="pressed" from="Tabs/Song/Song/CheckBox" to="." method="_on_CheckBox_pressed"]
 [connection signal="focus_entered" from="Tabs/Song/Song/ScrollSpeed/SpeedInput" to="." method="_on_SongInput_focus_entered"]
 [connection signal="focus_entered" from="Tabs/Song/Song/ScrollSpeed/SpeedInput" to="." method="_on_TextEdit_focus_entered"]
@@ -206,3 +273,5 @@ margin_bottom = -4.0
 [connection signal="focus_exited" from="Tabs/Song/Song/BPM/BPMInput" to="." method="_on_SongInput_focus_exited"]
 [connection signal="text_changed" from="Tabs/Song/Song/BPM/BPMInput" to="." method="_on_SpeedInput_text_changed"]
 [connection signal="text_changed" from="Tabs/Song/Song/BPM/BPMInput" to="." method="_on_BPMInput_text_changed"]
+[connection signal="pressed" from="Tabs/Song/ClearNotes" to="." method="_on_ClearNotes_pressed"]
+[connection signal="pressed" from="Tabs/Song/ClearEvents" to="." method="_on_ClearEvents_pressed"]
