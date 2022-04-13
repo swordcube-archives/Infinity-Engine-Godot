@@ -13,7 +13,16 @@ var characters = []
 
 var can_interact = true
 
+var curEvent = 0
+
 func _ready():
+	Events.init_event_list()
+	
+	for event in Events.event_list:
+		$Tabs/Events/Event/EventDropdown.add_item(event[0])
+		
+	reload_event_description(0)
+	
 	$Tabs.current_tab = 4
 	
 	$Tabs/Song/Song/SongInput.text = Gameplay.SONG.song.song
@@ -116,7 +125,9 @@ func _ready():
 	
 	print(Gameplay.SONG.song.notes[curSection].mustHitSection)
 
-func _process(delta):		
+func _process(delta):	
+	Gameplay.SONG.song.events = $Grid.events
+		
 	if can_interact:	
 		if Input.is_action_just_pressed("ui_back"):
 			$Misc/Transition.transition_to_scene("MainMenu")
@@ -171,8 +182,7 @@ func clear_notes():
 		section["sectionNotes"].clear()
 		
 func clear_events():
-	if "events" in Gameplay.SONG.song:
-		Gameplay.SONG.song.events.clear()
+	$Grid.events.clear()
 
 func refresh_icons():
 	if Gameplay.SONG.song.notes[curSection].mustHitSection:
@@ -247,7 +257,6 @@ func _on_ReloadJSON_pressed():
 func _on_Stage_item_selected(index):
 	Gameplay.SONG.song.stage = $Tabs/Song/Characters/Stage.text
 
-
 func _on_ClearNotes_pressed():
 	clear_notes()
 	$Grid.load_section(curSection)
@@ -255,3 +264,42 @@ func _on_ClearNotes_pressed():
 func _on_ClearEvents_pressed():
 	clear_events()
 	$Grid.load_section(curSection)
+
+func _on_SaveEvents_pressed():
+	pass # Replace with function body.
+
+func _on_EventDropdown_item_selected(index):
+	reload_event_description(index)
+	
+func reload_event_description(index):
+	var description = ""
+	
+	curEvent = index
+		
+	for line in Events.event_list[index][1]:
+		description += str(line) + "\n"
+		
+	$Tabs/Events/Description.text = description
+
+func _on_Value1Input_focus_entered():
+	can_interact = false
+
+func _on_Value1Input_focus_exited():
+	can_interact = true
+
+func _on_Value2Input_focus_entered():
+	can_interact = false
+
+func _on_Value2Input_focus_exited():
+	can_interact = true
+
+func _on_Value1Input_text_changed():
+	if $Grid.selected_event != null:
+		$Grid.selected_event[1][0][1] = $Tabs/Events/Value1/Value1Input.text
+		#print($Grid.selected_event[1][0][1])
+
+func _on_Value2Input_text_changed():
+	if $Grid.selected_event != null:
+		$Grid.selected_event[1][0][2] = $Tabs/Events/Value2/Value2Input.text
+		#print($Grid.selected_event[1][0][2])
+	

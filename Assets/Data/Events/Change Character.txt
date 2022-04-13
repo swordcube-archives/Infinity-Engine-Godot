@@ -1,0 +1,2 @@
+Value 1 = Character to change (dad, gf, or bf)
+Value 2 = Character to change to (ex: Changes dad to pico)

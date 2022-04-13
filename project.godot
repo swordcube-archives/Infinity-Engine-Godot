@@ -35,6 +35,7 @@ WeekHighscore="*res://Scripts/WeekHighscore.gd"
 SongAccuracy="*res://Scripts/SongAccuracy.gd"
 Paths="*res://Scripts/Paths.gd"
 ModManager="*res://Scripts/ModManager.gd"
+Events="*res://Scripts/Events.gd"
 
 [display]
 

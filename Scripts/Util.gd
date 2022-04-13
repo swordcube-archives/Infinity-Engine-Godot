@@ -22,7 +22,11 @@ var timeout = 0
 func get_txt(path):
 	var text_array = []
 	var f = File.new()
-	f.open(path + ".txt", File.READ)
+	if path.ends_with(".txt"):
+		f.open(path, File.READ)
+	else:
+		f.open(path + ".txt", File.READ)
+		
 	var index = 1
 	while not f.eof_reached(): # iterate through all lines until the end of file is reached
 		var line = f.get_line()

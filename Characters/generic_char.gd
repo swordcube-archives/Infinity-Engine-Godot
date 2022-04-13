@@ -51,6 +51,12 @@ func dance(force = null):
 	if force or $anim.current_animation == "":
 		if dances_left_right:
 			danced = not danced
+			
+			if last_anim.begins_with("singLEFT"):
+				danced = true
+				
+			if last_anim.begins_with("singRIGHT"):
+				danced = false
 				
 			if danced:
 				play_anim("danceLeft", force)

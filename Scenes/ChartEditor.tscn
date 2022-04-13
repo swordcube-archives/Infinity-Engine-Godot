@@ -25,11 +25,6 @@ scale = Vector2( 0.393333, 0.393333 )
 texture = ExtResource( 5 )
 hframes = 3
 
-[node name="Misc" type="CanvasLayer" parent="."]
-
-[node name="Transition" parent="Misc" instance=ExtResource( 3 )]
-visible = false
-
 [node name="Tabs" type="TabContainer" parent="."]
 margin_left = 858.0
 margin_top = 24.0
@@ -41,7 +36,7 @@ visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
-margin_top = 32.0
+margin_top = 24.0
 margin_right = -4.0
 margin_bottom = -4.0
 
@@ -50,7 +45,7 @@ visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
-margin_top = 32.0
+margin_top = 24.0
 margin_right = -4.0
 margin_bottom = -4.0
 
@@ -59,12 +54,11 @@ visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
-margin_top = 32.0
+margin_top = 24.0
 margin_right = -4.0
 margin_bottom = -4.0
 
 [node name="Events" type="Tabs" parent="Tabs"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -72,7 +66,54 @@ margin_top = 32.0
 margin_right = -4.0
 margin_bottom = -4.0
 
+[node name="Event" type="Label" parent="Tabs/Events"]
+margin_left = 5.0
+margin_top = 3.0
+margin_right = 45.0
+margin_bottom = 17.0
+text = "Event"
+
+[node name="EventDropdown" type="OptionButton" parent="Tabs/Events/Event"]
+margin_top = 20.0
+margin_right = 166.0
+margin_bottom = 40.0
+
+[node name="Value1" type="Label" parent="Tabs/Events"]
+margin_left = 5.0
+margin_top = 59.0
+margin_right = 45.0
+margin_bottom = 73.0
+text = "Value 1"
+
+[node name="Value1Input" type="TextEdit" parent="Tabs/Events/Value1"]
+margin_top = 20.0
+margin_right = 165.0
+margin_bottom = 40.0
+script = ExtResource( 6 )
+
+[node name="Value2" type="Label" parent="Tabs/Events"]
+margin_left = 5.0
+margin_top = 107.0
+margin_right = 52.0
+margin_bottom = 121.0
+text = "Value 2"
+
+[node name="Value2Input" type="TextEdit" parent="Tabs/Events/Value2"]
+margin_top = 20.0
+margin_right = 165.0
+margin_bottom = 40.0
+script = ExtResource( 6 )
+
+[node name="Description" type="Label" parent="Tabs/Events"]
+margin_left = 5.0
+margin_top = 155.0
+margin_right = 383.0
+margin_bottom = 169.0
+text = "Description"
+autowrap = true
+
 [node name="Song" type="Tabs" parent="Tabs"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -180,10 +221,17 @@ text = "Save Chart"
 
 [node name="ReloadJSON" type="Button" parent="Tabs/Song/Song"]
 margin_left = 1.0
-margin_top = 175.0
+margin_top = 177.0
 margin_right = 173.0
-margin_bottom = 195.0
+margin_bottom = 197.0
 text = "Reload Chart JSON"
+
+[node name="SaveEvents" type="Button" parent="Tabs/Song/Song"]
+margin_left = 1.0
+margin_top = 207.0
+margin_right = 173.0
+margin_bottom = 227.0
+text = "Save Events"
 
 [node name="CheckBox" type="CheckBox" parent="Tabs/Song/Song"]
 margin_left = -6.0
@@ -250,6 +298,18 @@ margin_right = 284.0
 margin_bottom = 624.0
 text = "Clear Events"
 
+[node name="Misc" type="CanvasLayer" parent="."]
+
+[node name="Transition" parent="Misc" instance=ExtResource( 3 )]
+visible = false
+
+[connection signal="item_selected" from="Tabs/Events/Event/EventDropdown" to="." method="_on_EventDropdown_item_selected"]
+[connection signal="focus_entered" from="Tabs/Events/Value1/Value1Input" to="." method="_on_Value1Input_focus_entered"]
+[connection signal="focus_exited" from="Tabs/Events/Value1/Value1Input" to="." method="_on_Value1Input_focus_exited"]
+[connection signal="text_changed" from="Tabs/Events/Value1/Value1Input" to="." method="_on_Value1Input_text_changed"]
+[connection signal="focus_entered" from="Tabs/Events/Value2/Value2Input" to="." method="_on_Value2Input_focus_entered"]
+[connection signal="focus_exited" from="Tabs/Events/Value2/Value2Input" to="." method="_on_Value2Input_focus_exited"]
+[connection signal="text_changed" from="Tabs/Events/Value2/Value2Input" to="." method="_on_Value2Input_text_changed"]
 [connection signal="item_selected" from="Tabs/Song/Characters/Opponent" to="." method="_on_Opponent_item_selected"]
 [connection signal="item_selected" from="Tabs/Song/Characters/GF" to="." method="_on_GF_item_selected"]
 [connection signal="item_selected" from="Tabs/Song/Characters/BF" to="." method="_on_BF_item_selected"]
@@ -263,6 +323,7 @@ text = "Clear Events"
 [connection signal="pressed" from="Tabs/Song/Song/LoadAudio" to="." method="_on_LoadAudio_pressed"]
 [connection signal="pressed" from="Tabs/Song/Song/SaveChart" to="." method="_on_SaveChart_pressed"]
 [connection signal="pressed" from="Tabs/Song/Song/ReloadJSON" to="." method="_on_ReloadJSON_pressed"]
+[connection signal="pressed" from="Tabs/Song/Song/SaveEvents" to="." method="_on_SaveEvents_pressed"]
 [connection signal="pressed" from="Tabs/Song/Song/CheckBox" to="." method="_on_CheckBox_pressed"]
 [connection signal="focus_entered" from="Tabs/Song/Song/ScrollSpeed/SpeedInput" to="." method="_on_SongInput_focus_entered"]
 [connection signal="focus_entered" from="Tabs/Song/Song/ScrollSpeed/SpeedInput" to="." method="_on_TextEdit_focus_entered"]

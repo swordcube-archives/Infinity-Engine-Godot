@@ -1,0 +1,3 @@
+Value 1 = Character to use (BF = BF Only, GF = GF Only, Anything else = Both)
+
+Value 2 does nothing

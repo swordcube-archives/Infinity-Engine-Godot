@@ -54,6 +54,8 @@ var can_pause:bool = false
 
 var loaded_modchart = null
 
+var events = []
+
 onready var downscroll = Options.get_data("downscroll")
 onready var middlescroll = Options.get_data("middlescroll")
 
@@ -63,6 +65,9 @@ onready var player_strums = $camHUD/PlayerStrums
 onready var game_notes = $camHUD/Notes
 
 func _ready():
+	if "events" in Gameplay.SONG.song:
+		events = Gameplay.SONG.song.events.duplicate()
+	
 	if Options.get_data("botplay"):
 		Gameplay.used_practice = true
 	else:
@@ -159,28 +164,28 @@ func _ready():
 	$Misc/Transition._fade_out()
 	
 	# add the stage
-	var stage = "stage"
+	var gaming_stage = "stage"
 	match(Gameplay.SONG.song.song.to_lower()):
 		"spookeez", "south", "monster":
-			stage = "spooky"
+			gaming_stage = "spooky"
 		"pico", "philly nice", "blammed":
-			stage = "philly"
+			gaming_stage = "philly"
 		"satin panties", "high", "m.i.l.f":
-			stage = "limo"
+			gaming_stage = "limo"
 		"cocoa", "eggnog":
-			stage = "mall"
+			gaming_stage = "mall"
 			gf_version = "gf-christmas"
 		"winter-horrorland":
-			stage = "mallEvil"
+			gaming_stage = "mallEvil"
 			gf_version = "gf-christmas"
 		"senpai":
-			stage = "school"
+			gaming_stage = "school"
 			gf_version = "gf-pixel"
 		"roses":
-			stage = "schoolAngry"
+			gaming_stage = "schoolAngry"
 			gf_version = "gf-pixel"
 		"thorns":
-			stage = "schoolEvil"
+			gaming_stage = "schoolEvil"
 			gf_version = "gf-pixel"
 		_:
 			var real = "gf"
@@ -205,7 +210,7 @@ func _ready():
 				
 			gf_version = real
 			
-	curStage = stage
+	curStage = gaming_stage
 	
 	if "stage" in SONG:
 		curStage = SONG.stage
@@ -219,6 +224,16 @@ func _ready():
 	$Stage.add_child(stage)
 	
 	default_cam_zoom = stage.default_cam_zoom
+	
+	# add gf
+	var gfLoaded = load("res://Characters/" + gf_version.to_lower() + "/char.tscn")
+	
+	if gfLoaded == null:
+		gfLoaded = load("res://Characters/gf/char.tscn")
+	
+	gf = gfLoaded.instance()
+	gf.name = "gf"
+	gf.global_position = stage.get_node("gf_pos").position
 	
 	# add dad
 	var dadLoaded = load("res://Characters/" + SONG.player2.to_lower() + "/char.tscn")
@@ -234,16 +249,6 @@ func _ready():
 		dad.is_player = false
 		dad.get_node("camera_pos").position.x *= -1
 		dad.get_node("frames").flip_h = true
-	
-	# add gf
-	var gfLoaded = load("res://Characters/" + gf_version.to_lower() + "/char.tscn")
-	
-	if gfLoaded == null:
-		gfLoaded = load("res://Characters/gf/char.tscn")
-	
-	gf = gfLoaded.instance()
-	gf.name = "gf"
-	gf.global_position = stage.get_node("gf_pos").position
 	
 	if dadLoaded == gfLoaded:
 		dad.global_position = stage.get_node("gf_pos").position
@@ -292,7 +297,7 @@ func change_bf_health_color(color):
 	$camHUD/HealthBar/BFColor.color = color
 	
 var botplay_text_sine = 0.0
-	
+
 func _process(delta):
 	if not in_cutscene:
 		if not countdown_active:
@@ -369,6 +374,62 @@ func _process(delta):
 			noteDataArray.remove(index)
 	
 		index += 1
+		
+	for event in events:
+		if Conductor.songPosition >= event[0]:
+			for piss in event[1]:
+				var event_name = piss[0]
+				var value1 = piss[1]
+				var value2 = piss[2]
+				
+				match event_name:
+					"Change Stage":
+						print("lol no")
+					"Change Character":
+						$Characters.remove_child(dad)
+						$Characters.remove_child(gf)
+						$Characters.remove_child(boyfriend)
+						
+						match value1:
+							"dad":
+								var dadLoaded = load("res://Characters/" + value2 + "/char.tscn")
+		
+								if dadLoaded == null:
+									dadLoaded = load("res://Characters/bf/char.tscn")
+								
+								dad = dadLoaded.instance()
+								dad.name = "dad"
+								dad.global_position = stage.get_node("dad_pos").position
+								
+								change_dad_health_color(dad.health_color)
+								change_dad_icon(dad.health_icon)
+							"gf":
+								var gfLoaded = load("res://Characters/" + value2 + "/char.tscn")
+		
+								if gfLoaded == null:
+									gfLoaded = load("res://Characters/gf/char.tscn")
+								
+								gf = gfLoaded.instance()
+								gf.name = "gf"
+								gf.global_position = stage.get_node("gf_pos").position
+							"bf", _:
+								var bfLoaded = load("res://Characters/" + value2 + "/char.tscn")
+		
+								if bfLoaded == null:
+									bfLoaded = load("res://Characters/bf/char.tscn")
+								
+								boyfriend = bfLoaded.instance()
+								boyfriend.name = "boyfriend"
+								boyfriend.global_position = stage.get_node("bf_pos").position
+								
+								change_bf_health_color(boyfriend.health_color)
+								change_bf_icon(boyfriend.health_icon)
+							
+						$Characters.add_child(dad)
+						$Characters.add_child(gf)
+						$Characters.add_child(boyfriend)
+				
+			events.remove(0)
 			
 	if health < 0.4150:
 		$camHUD/HealthBar/IconP2.frame = 2
@@ -847,7 +908,7 @@ func beat_hit():
 			dad.dance()
 			
 	if gf != null:
-		if (gf.is_dancing() or gf.last_anim == "cheer" or gf.last_anim == "scared") and dad != gf:
+		if (gf.is_dancing() or gf.last_anim == "cheer" or gf.last_anim == "scared" or (gf.last_anim == "hairLand" and gf.get_node("anim").current_animation == "")) and dad != gf:
 			gf.dance()
 			
 	if not countdown_active:

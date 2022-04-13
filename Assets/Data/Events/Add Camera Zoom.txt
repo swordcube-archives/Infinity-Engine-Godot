@@ -1,0 +1,2 @@
+Value 1 = Game Camera Zoom (Default = 0.015)
+Value 2 = Game HUD Zoom (Default = 0.03)

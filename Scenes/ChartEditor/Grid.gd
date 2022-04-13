@@ -10,6 +10,23 @@ var selected_y:float = 0.0
 
 var note_snap = 16
 
+# events array
+var events = []
+
+var selected_event = null
+var selected_note = null
+
+var ctrl_pressed = false
+
+func _input(event):
+	if event is InputEventKey:
+		if event.scancode == KEY_CONTROL:
+			ctrl_pressed = event.pressed
+
+func _ready():
+	if "events" in Gameplay.SONG.song:
+		events = Gameplay.SONG.song.events
+
 func _draw():
 	var dark = false
 	
@@ -54,7 +71,7 @@ func _process(_delta):
 		if Conductor.songPosition >= note.strumTime:
 			note.modulate.a = 0.4
 			note.strumTime = 9999999
-			AudioHandler.play_hitsound(Options.get_data("hitsound"))
+			AudioHandler.play_hitsound("osu!")
 	
 	var cool_grid = grid_size / (note_snap / 16.0)
 	
@@ -69,12 +86,18 @@ func _process(_delta):
 	if Input.is_action_just_pressed("mouse_left"):
 		if selected_x >= 0 and selected_x <= columns:
 			if selected_y >= 0 and selected_y < rows:
-				add_note(selected_x, selected_y)
+				if ctrl_pressed:
+					select_note(selected_x, selected_y)
+				else:
+					add_note(selected_x, selected_y)
 				print("PLACED NOTE!")
 		
 func load_section(section):
 	for note in $Notes.get_children():
 		note.free()
+		
+	for event in $Events.get_children():
+		event.free()
 		
 	if Gameplay.SONG.song.notes[section] == null:
 		Gameplay.SONG.song.notes.append({
@@ -82,6 +105,9 @@ func load_section(section):
 			"lengthInSteps": 16,
 			"mustHitSection": true
 		})
+		
+	for event in events:
+		spawn_event(time_to_y(event[0] - section_start_time()), time_to_y(event[0] - section_start_time()), event[0], event[1])
 		
 	for note in Gameplay.SONG.song.notes[section].sectionNotes:
 		spawn_note(note[1] + 1, time_to_y(note[0] - section_start_time()), time_to_y(note[0] - section_start_time()), note[0], note[2])
@@ -108,12 +134,44 @@ func y_to_time(y):
 		
 func time_to_y(time):
 	return range_lerp(time - Conductor.timeBetweenSteps, 0, 16 * Conductor.timeBetweenSteps, position.y, position.y + (rows * grid_size))
+	
+func select_note(x, y):
+	var mouse_pos = get_global_mouse_position()
+	mouse_pos.x -= position.x
+	mouse_pos.y -= position.y
+	
+	# selecting notes
+	for note in $Notes.get_children():
+		if selected_x * grid_size == note.position.x:
+			if mouse_pos.y >= note.position.y and mouse_pos.y <= note.position.y + grid_size:
+				for note_object in Gameplay.SONG.song.notes[$"../".curSection].sectionNotes:
+					if note_object[1] == int(x - 1):
+						if int(note_object[0]) == int(y_to_time(note.position.y) + section_start_time()):
+							selected_note = note_object
+							print("SELECTED NOTE!")
+				
+				return
+				
+	# selecting events
+	for event in $Events.get_children():
+		if selected_x * grid_size == event.position.x:
+			if mouse_pos.y >= event.position.y and mouse_pos.y <= event.position.y + grid_size:
+				for note_object in events:
+					if int(note_object[0]) == int(y_to_time(event.position.y) + section_start_time()):
+						selected_event = note_object
+						$"../Tabs/Events/Event/EventDropdown".text = note_object[1][0][0]
+						$"../Tabs/Events/Value1/Value1Input".text = note_object[1][0][1]
+						$"../Tabs/Events/Value2/Value2Input".text = note_object[1][0][2]
+						print("SELECTED EVENT!")
+				
+				return
 				
 func add_note(x, y):
 	var mouse_pos = get_global_mouse_position()
 	mouse_pos.x -= position.x
 	mouse_pos.y -= position.y
 	
+	# deleting notes
 	for note in $Notes.get_children():
 		if selected_x * grid_size == note.position.x:
 			if mouse_pos.y >= note.position.y and mouse_pos.y <= note.position.y + grid_size:
@@ -125,14 +183,57 @@ func add_note(x, y):
 				note.queue_free()
 				return
 				
+	# deleting events
+	for event in $Events.get_children():
+		if selected_x * grid_size == event.position.x:
+			if mouse_pos.y >= event.position.y and mouse_pos.y <= event.position.y + grid_size:
+				for note_object in events:
+					if int(note_object[0]) == int(y_to_time(event.position.y) + section_start_time()):
+						events.erase(note_object)
+				
+				event.queue_free()
+				return
+				
 	var strum_time = y_to_time($Selected.rect_position.y) + section_start_time()
 	var note_data = int(x - 1)
 	var note_length = 0.0
 	var sustain_length = 0.0
 	
-	spawn_note(x, y, null, strum_time, sustain_length)
+	if note_data < 0:
+		var event_name = $"../Tabs/Events/Event/EventDropdown".text
+		var value1 = $"../Tabs/Events/Value1/Value1Input".text
+		var value2 = $"../Tabs/Events/Value2/Value2Input".text
+		
+		var events_array = [[event_name, value1, value2]]
+		
+		spawn_event(y, null, strum_time, events_array)
+		
+		var balls = [strum_time, events_array]
+		events.append(balls)
+		
+		selected_event = balls
+		print(selected_event)
+	else:
+		spawn_note(x, y, null, strum_time, sustain_length)
+		Gameplay.SONG.song.notes[$"../".curSection].sectionNotes.append([strum_time, note_data, note_length])
+		
+func spawn_event(y, custom_y = null, strum_time = 0, events_array = []):
+	if custom_y == null:
+		custom_y = $Selected.rect_position.y
 	
-	Gameplay.SONG.song.notes[$"../".curSection].sectionNotes.append([strum_time, note_data, note_length])
+	var mouse_pos = get_global_mouse_position()
+	mouse_pos.x -= position.x
+	mouse_pos.y -= position.y
+	
+	var new_note = load("res://Scenes/Notes/EventNote.tscn").instance()
+	new_note.position = Vector2(0, custom_y)
+	new_note.strumTime = strum_time
+	new_note.events = events
+	
+	new_note.scale.x = 40.0 / new_note.texture.get_width()
+	new_note.scale.y = 40.0 / new_note.texture.get_height()
+	
+	$Events.add_child(new_note)
 	
 func spawn_note(x, y, custom_y = null, strum_time = 0, sustain_length = 0):
 	if custom_y == null:
@@ -147,7 +248,7 @@ func spawn_note(x, y, custom_y = null, strum_time = 0, sustain_length = 0):
 	new_note.noteData = int(x - 1)
 	new_note.charter_note = true
 	new_note.strumTime = strum_time
-	new_note.sustainLength = sustain_length - (grid_size * 1.5)
+	new_note.sustainLength = sustain_length #- (grid_size * 1.5)
 	new_note.set_direction()
 	
 	var anim_spr = new_note.get_node("Note")

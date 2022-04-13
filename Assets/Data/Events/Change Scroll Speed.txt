@@ -1,0 +1,2 @@
+Value 1 = Scroll Speed to change to (Default = 0)
+Value 2 does nothing

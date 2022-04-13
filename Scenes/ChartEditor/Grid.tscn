@@ -11,6 +11,8 @@ margin_bottom = 40.0
 
 [node name="Notes" type="Node2D" parent="."]
 
+[node name="Events" type="Node2D" parent="."]
+
 [node name="Line" type="ColorRect" parent="."]
 margin_right = 40.0
 margin_bottom = 4.0

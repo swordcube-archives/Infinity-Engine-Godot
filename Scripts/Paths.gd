@@ -27,6 +27,14 @@ func music(music_path):
 func song_path(name):
 	return "res://Assets/Songs/" + name
 	
+func txt(txt_path, custom_path = false):
+	if custom_path:
+		return "res://" + txt_path + ".txt"
+	else:
+		return "res://Assets/" + txt_path + ".txt"
+		
+	return null
+	
 func inst(music_path):
 	return "res://Assets/Songs/" + music_path + "/Inst.ogg"
 	
