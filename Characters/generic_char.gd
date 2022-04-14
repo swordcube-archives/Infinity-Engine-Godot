@@ -12,11 +12,13 @@ export(bool) var dances_left_right = false
 export(float) var sing_duration = 4
 export(String) var death_character = "bf-dead"
 export(bool) var is_player = false
+export(bool) var dances = true
 
 var special_anim = false
 
 func _ready():
-	dance(true)
+	if dances:
+		dance(true)
 
 func play_anim(anim, force = false):
 	if name != "_":
@@ -31,18 +33,19 @@ func play_anim(anim, force = false):
 		$anim.play(anim)
 	
 func _process(delta):
-	if not is_player:
-		if last_anim.begins_with('sing'):
-			hold_timer += delta * Gameplay.song_multiplier
-			
-			if hold_timer >= Conductor.timeBetweenSteps * sing_duration * 0.001:
-				dance(true)
-				hold_timer = 0.0
-	else:
-		if last_anim.begins_with('sing'):
-			hold_timer += delta * Gameplay.song_multiplier
+	if dances:
+		if not is_player:
+			if last_anim.begins_with('sing'):
+				hold_timer += delta * Gameplay.song_multiplier
+				
+				if hold_timer >= Conductor.timeBetweenSteps * sing_duration * 0.001:
+					dance(true)
+					hold_timer = 0.0
 		else:
-			hold_timer = 0
+			if last_anim.begins_with('sing'):
+				hold_timer += delta * Gameplay.song_multiplier
+			else:
+				hold_timer = 0
 	
 func dance(force = null):
 	if force == null:

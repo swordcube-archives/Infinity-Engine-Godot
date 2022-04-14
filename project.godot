@@ -12,6 +12,7 @@ config_version=4
 
 config/name="Infinity Engine Godot"
 run/main_scene="res://Scenes/TitleScreen.tscn"
+boot_splash/image="res://boot_splash.png"
 config/icon="res://icon.png"
 
 [autoload]
@@ -36,6 +37,7 @@ SongAccuracy="*res://Scripts/SongAccuracy.gd"
 Paths="*res://Scripts/Paths.gd"
 ModManager="*res://Scripts/ModManager.gd"
 Events="*res://Scripts/Events.gd"
+MemoryLeaker="*res://Scripts/MemoryLeaker.gd"
 
 [display]
 

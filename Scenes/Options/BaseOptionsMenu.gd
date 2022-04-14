@@ -105,9 +105,17 @@ func _process(delta):
 			Options.set_data(option[1], !Options.get_data(option[1]))
 			$Options.get_children()[curSelected].checked = Options.get_data(option[1])
 			
-			if option[1] == "vsync":
-				OS.set_use_vsync(Options.get_data("vsync"))
 			# toggles option on/off
+			match option[1]:
+				"vsync":
+					OS.set_use_vsync(Options.get_data("vsync"))
+				"memory-leaks":
+					if Options.get_data("memory-leaks"):
+						print("HERE WE GO!")
+						MemoryLeaker.leak_memory()
+					else:
+						print("why is unleaking memory so funny to me")
+						MemoryLeaker.unleak_memory()
 		
 func change_selection(amount):
 	AudioHandler.play_audio("scrollMenu")

@@ -1,0 +1,56 @@
+{
+    "credits": [
+        {
+            "name": "swordcube",
+            "icon": "swordcube",
+            "description": "Owner of Infinity Engine Godot\nJust your average local dumbass",
+            "color": "83b4ec",
+            "page": "Infinity Engine",
+            "socials": {
+                "Twitter": "https://twitter.com/swordcube",
+                "YouTube": "https://www.youtube.com/channel/UC5rZZYuuHq7ltCZRxFctjIw",
+                "Scratch": "https://scratch.mit.edu/users/SwordSoftTV",
+                "Roblox": "https://www.roblox.com/users/1930683723/profile",
+                "GitHub": "https://github.com/swordcube"
+            }
+        },
+        {
+            "name": "Leather128",
+            "icon": "leather128",
+            "description": "Co-Owner of Infinity Engine Godot\nActually has a brain and knows how to code",
+            "color": "f0c454",
+            "page": "Infinity Engine",
+            "socials": {
+                "Twitter": "https://twitter.com/leather128",
+                "YouTube": "https://www.youtube.com/c/Leather128",
+                "Scratch": "https://scratch.mit.edu/users/RoiRoiPoosh2018/",
+                "Roblox": "https://www.roblox.com/users/121241024/profile",
+                "GitHub": "https://github.com/Leather128"
+            }
+        },
+        {
+            "name": "Raf",
+            "icon": "raf",
+            "description": "Worked on Infinity Engine (Haxe Version)\nHe's an epic cool gaming coder guy",
+            "color": "e6564c",
+            "page": "Infinity Engine",
+            "socials": {
+                "GitHub": "https://github.com/RafaelGiacom",
+                "GameJolt": "https://gamejolt.com/@RafaelGiacom",
+                "GameBanana": "https://gamebanana.com/members/1739332"
+            }
+        },
+        {
+            "name": "WizardMantis",
+            "icon": "wizardmantis",
+            "description": "He's so cool that he doesn't even need to\ncontribute to be credited",
+            "color": "379951",
+            "page": "Infinity Engine",
+            "socials": {
+                "Twitch": "https://www.twitch.tv/wizardmantis",
+                "Twitter": "https://twitter.com/WizardMantis441",
+                "YouTube": "https://www.youtube.com/c/WizardMantis441"
+            }
+        }
+    ]
+}

@@ -22,6 +22,8 @@ var dir_string = "A"
 var beingPressed = false
 var shouldHit = true
 
+var isGaming = false
+
 var charter_note = false
 
 onready var line = $Line2D

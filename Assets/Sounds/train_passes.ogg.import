@@ -11,5 +11,5 @@ dest_files=[ "res://.import/train_passes.ogg-69d9e7d5d34043719fe2b40eb74a5ed6.og
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0

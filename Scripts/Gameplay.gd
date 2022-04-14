@@ -21,8 +21,17 @@ var week_name:String = "week1"
 
 var song_multiplier:float = 1.0
 
+func _ready():
+	initialize_shit()
+
 func _process(delta):
 	if SONG != null and "ui_Skin" in SONG.song:
 		ui_Skin = SONG.song.ui_Skin
 	else:
 		ui_Skin = Options.get_data("ui-skin")
+		
+var skipped_title = false
+
+func initialize_shit():
+	if get_tree().current_scene.name != "TitleScreen":
+		skipped_title = true

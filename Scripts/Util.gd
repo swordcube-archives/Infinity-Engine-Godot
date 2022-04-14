@@ -19,6 +19,11 @@ func list_files_in_directory(path):
 
 var timeout = 0
 
+func sort_ascending(a, b):
+	if a < b:
+		return true
+	return false
+
 func get_txt(path):
 	var text_array = []
 	var f = File.new()

@@ -102,6 +102,12 @@ func _process(delta):
 						"bool", # type
 					],
 					[
+						"Memory Leaks", # title
+						"memory-leaks", # actual thing in save data
+						'loads literally everything in the game at once lol\nturn off to unleak your memory', # desc
+						"bool", # type
+					],
+					[
 						"UI Skin", # title
 						"ui-skin", # actual thing in save data
 						"Change how everything looks with a new skin!", # desc

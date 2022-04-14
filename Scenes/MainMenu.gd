@@ -98,6 +98,8 @@ func stop_flashing():
 			$Misc/Transition.transition_to_scene("FreeplayMenu")
 		"Mods":
 			$Misc/Transition.transition_to_scene("ModsMenu")
+		"Credits":
+			$Misc/Transition.transition_to_scene("CreditsMenu")
 		"Options":
 			$Misc/Transition.transition_to_scene("Options/OptionsMenu")
 			

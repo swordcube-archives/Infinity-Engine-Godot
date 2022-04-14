@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Assets/Images/Icons/gf.png" type="Texture" id=1]
 [ext_resource path="res://Characters/gf/assets.res" type="SpriteFrames" id=2]
@@ -157,8 +157,59 @@ tracks/3/keys = {
 "values": [ Vector2( 0, 0 ) ]
 }
 
+[sub_resource type="Animation" id=143]
+resource_name = "hairBlow"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "danceLeftblow" ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:playing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath(".:offset")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -22, 0 ) ]
+}
+
 [sub_resource type="Animation" id=142]
-resource_name = "hairLand"
+resource_name = "hairFall"
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:animation")
 tracks/0/interp = 1
@@ -472,8 +523,8 @@ dances_left_right = true
 [node name="frames" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -326 )
 frames = ExtResource( 2 )
-animation = "danceLeft"
-frame = 14
+animation = "hairLand"
+frame = 29
 playing = true
 
 [node name="anim" type="AnimationPlayer" parent="."]
@@ -481,7 +532,8 @@ root_node = NodePath("../frames")
 anims/cheer = SubResource( 140 )
 anims/danceLeft = SubResource( 134 )
 anims/danceRight = SubResource( 135 )
-anims/hairLand = SubResource( 142 )
+anims/hairBlow = SubResource( 143 )
+anims/hairFall = SubResource( 142 )
 anims/scared = SubResource( 141 )
 anims/singDOWN = SubResource( 138 )
 anims/singLEFT = SubResource( 136 )

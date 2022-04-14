@@ -18,6 +18,9 @@ func _ready():
 	spawn_options()
 	
 func _process(delta):
+	$SongName.text = Gameplay.SONG.song.song
+	$Difficulty.text = Gameplay.difficulty.to_upper()
+	
 	if Input.is_action_just_pressed("ui_confirm") and get_tree().current_scene.name == "PlayState":
 		if get_tree().current_scene.can_pause:
 			if get_tree().paused == true:
@@ -60,6 +63,13 @@ func _process(delta):
 				
 				get_tree().current_scene.get_node("Misc/Transition").visible = false
 				
+				$SongName.rect_position.y = 0
+				$SongName.modulate.a = 0
+				
+				$Difficulty.rect_position.y = 22
+				$Difficulty.modulate.a = 0
+				
+				AudioHandler.get_node("breakfast").volume_db = -50
 				AudioHandler.play_audio("breakfast")
 				AudioHandler.get_node("breakfast").seek(0)
 				
@@ -67,6 +77,12 @@ func _process(delta):
 				tween.stop_all()
 				tween = Tween.new()
 				tween.interpolate_property(AudioHandler.get_node("breakfast"), "volume_db", -50, 0, AudioHandler.get_node("breakfast").stream.get_length() / 2)
+				# 22 and 54
+				tween.interpolate_property($SongName, "rect_position", $SongName.rect_position, Vector2($SongName.rect_position.x, 22), 0.3, Tween.TRANS_CUBIC, Tween.EASE_OUT)
+				tween.interpolate_property($SongName, "modulate", Color(1, 1, 1, 0), Color(1, 1, 1, 1), 0.3, Tween.TRANS_CUBIC, Tween.EASE_OUT)
+				
+				piss()
+				
 				$BG.modulate.a = 0
 				tween.interpolate_property($BG, "modulate", Color(1, 1, 1, 0), Color(1, 1, 1, 1), 0.2)
 				add_child(tween)
@@ -93,6 +109,17 @@ func _process(delta):
 	for option in $Options.get_children():
 		option.rect_position = lerp(option.rect_position, Vector2(60 + (20 * index) - (20 * curSelected), (350 + (160 * index)) - (160 * curSelected)), delta * 10)
 		index += 1
+		
+func piss():
+	var timer = Timer.new()
+	timer.set_wait_time(0.3)
+	add_child(timer)
+	timer.start()
+	timer.set_one_shot(true)
+	
+	yield(timer, "timeout")
+	tween.interpolate_property($Difficulty, "rect_position", $Difficulty.rect_position, Vector2($Difficulty.rect_position.x, 54), 0.3, Tween.TRANS_CUBIC, Tween.EASE_OUT)
+	tween.interpolate_property($Difficulty, "modulate", Color(1, 1, 1, 0), Color(1, 1, 1, 1), 0.3, Tween.TRANS_CUBIC, Tween.EASE_OUT)
 		
 func change_selection(amount):
 	AudioHandler.play_audio("scrollMenu")

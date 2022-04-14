@@ -1,7 +1,12 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Scenes/Gameplay/PauseMenu.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Fonts/font_alphabet.tres" type="BitmapFont" id=2]
+[ext_resource path="res://Assets/Fonts/vcr.ttf" type="DynamicFontData" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+size = 32
+font_data = ExtResource( 3 )
 
 [node name="PauseMenu" type="CanvasLayer"]
 pause_mode = 2
@@ -29,3 +34,21 @@ text = "OPTION TEMPLATE"
 uppercase = true
 
 [node name="Options" type="Node2D" parent="Menu"]
+
+[node name="SongName" type="Label" parent="Menu"]
+margin_left = 30.0
+margin_top = 22.0
+margin_right = 1254.0
+margin_bottom = 51.0
+custom_fonts/font = SubResource( 1 )
+text = "Song Name"
+align = 2
+
+[node name="Difficulty" type="Label" parent="Menu"]
+margin_left = 30.0
+margin_top = 54.0
+margin_right = 1254.0
+margin_bottom = 83.0
+custom_fonts/font = SubResource( 1 )
+text = "HARD"
+align = 2

@@ -269,7 +269,7 @@ func _ready():
 	$Characters.add_child(boyfriend)
 	
 	$camHUD/TimeBar/FGColor.color = dad.health_color
-	$camGame.position = dad.global_position + dad.get_node("camera_pos").position	
+	$camGame.position = dad.global_position + dad.get_node("camera_pos").position
 	
 	change_dad_icon(dad.health_icon)
 	change_bf_icon(boyfriend.health_icon)
@@ -347,9 +347,9 @@ func _process(delta):
 			var dunceNote:Node2D = load("res://Scenes/Notes/Default/Note.tscn").instance()
 			dunceNote.strumTime = note[0]
 			dunceNote.noteData = int(note[1]) % 4
-			dunceNote.sustainLength = (note[2] - 150) / (Gameplay.song_multiplier * 1)
+			dunceNote.sustainLength = (note[2] / 1.7) * speed
 			
-			if dunceNote.sustainLength <= 0:
+			if dunceNote.sustainLength <= 50:
 				dunceNote.sustainLength = 0
 			
 			dunceNote.mustPress = true
@@ -384,14 +384,14 @@ func _process(delta):
 				
 				match event_name:
 					"Change Stage":
-						print("lol no")
+						$Stage.remove_child(stage)
 					"Change Character":
 						$Characters.remove_child(dad)
 						$Characters.remove_child(gf)
 						$Characters.remove_child(boyfriend)
 						
 						match value1:
-							"dad":
+							"dad", _:
 								var dadLoaded = load("res://Characters/" + value2 + "/char.tscn")
 		
 								if dadLoaded == null:
@@ -412,7 +412,7 @@ func _process(delta):
 								gf = gfLoaded.instance()
 								gf.name = "gf"
 								gf.global_position = stage.get_node("gf_pos").position
-							"bf", _:
+							"bf":
 								var bfLoaded = load("res://Characters/" + value2 + "/char.tscn")
 		
 								if bfLoaded == null:
@@ -474,33 +474,51 @@ func _process(delta):
 					note.get_node("Note").visible = false
 					
 					note.global_position.y = strum.global_position.y
-					note.sustainLength -= (delta * (650 * speed)) * Gameplay.song_multiplier
+					note.sustainLength -= (delta * 1000)
 					if note.sustainLength <= 0:
 						note.queue_free()
 
 			
 		# missing
-		if (note.mustPress and note.sustainLength <= 0 and not Options.get_data("botplay")) or (note.mustPress and note.sustainLength > 0 and not pressed[note.noteData % 4] and not Options.get_data("botplay")):
-			if Conductor.songPosition > note.strumTime + Conductor.safeZoneOffset:
-				song_score -= 10
-				song_misses += 1
-				#total_notes_hit += 1
-				combo = 0
-				
-				if note.sustainLength >= 150:
-					health -= 0.2475
-				else:
-					health -= 0.0475
-					
-				AudioHandler.play_audio("missnote" + str(randi()%3 + 1))
-				
-				calculate_accuracy()
-				
-				if boyfriend.special_anim != true:
-					boyfriend.play_anim(sing_anims[note.noteData % 4] + "miss", true)
-				
-				AudioHandler.get_node("Voices").volume_db = -999
+		
+		# made it so you don't get a miss for releasing
+		# a sustain ever so slightly early
+		
+		# edit this to edit how early you can release without
+		# getting punished
+		var sustainMissRange = 100
+		
+		var your = (note.mustPress and note.sustainLength <= 0 and not Options.get_data("botplay"))
+		var your2 = (note.mustPress and note.sustainLength >= 0 and not pressed[note.noteData % 4] and not Options.get_data("botplay"))
+		
+		if note.beingPressed and note.sustainLength <= sustainMissRange:
+			note.sustainLength -= (delta * 1000)
+			note.global_position.y = player_strums.get_children()[note.noteData % 4].global_position.y
+			
+			if note.sustainLength <= 0:
 				note.queue_free()
+		else:
+			if your or your2:
+				if Conductor.songPosition > note.strumTime + Conductor.safeZoneOffset:
+					song_score -= 10
+					song_misses += 1
+					#total_notes_hit += 1
+					combo = 0
+					
+					if note.sustainLength >= 150:
+						health -= 0.2475
+					else:
+						health -= 0.0475
+						
+					AudioHandler.play_audio("missnote" + str(randi()%3 + 1))
+					
+					calculate_accuracy()
+					
+					if boyfriend.special_anim != true:
+						boyfriend.play_anim(sing_anims[note.noteData % 4] + "miss", true)
+					
+					AudioHandler.get_node("Voices").volume_db = -999
+					note.queue_free()
 			
 	var strum_confirm_i = 0
 	for strum in opponent_strums.get_children():
@@ -602,7 +620,7 @@ func _process(delta):
 			
 			note.get_node("Note").visible = false
 			note.global_position.y = strum.global_position.y
-			note.sustainLength -= (delta * (650 * speed)) * Gameplay.song_multiplier
+			note.sustainLength -= (delta * 1000)
 			if note.sustainLength <= 0:
 				note.queue_free()
 				
@@ -908,7 +926,7 @@ func beat_hit():
 			dad.dance()
 			
 	if gf != null:
-		if (gf.is_dancing() or gf.last_anim == "cheer" or gf.last_anim == "scared" or (gf.last_anim == "hairLand" and gf.get_node("anim").current_animation == "")) and dad != gf:
+		if (gf.is_dancing() or gf.last_anim == "cheer" or gf.last_anim == "scared" or (gf.last_anim == "hairFall" and gf.get_node("anim").current_animation == "")) and dad != gf:
 			gf.dance()
 			
 	if not countdown_active:

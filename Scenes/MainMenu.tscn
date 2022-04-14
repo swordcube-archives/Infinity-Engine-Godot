@@ -52,7 +52,7 @@ motion_scale = Vector2( 1, 0.6 )
 position = Vector2( 548, 275 )
 frames = ExtResource( 5 )
 animation = "basic"
-frame = 2
+frame = 8
 playing = true
 offset = Vector2( 92, -209 )
 
@@ -60,7 +60,6 @@ offset = Vector2( 92, -209 )
 position = Vector2( 548, 427 )
 frames = ExtResource( 6 )
 animation = "basic"
-frame = 3
 playing = true
 offset = Vector2( 92, -209 )
 
@@ -68,6 +67,7 @@ offset = Vector2( 92, -209 )
 position = Vector2( 548, 579 )
 frames = ExtResource( 3 )
 animation = "basic"
+frame = 6
 playing = true
 offset = Vector2( 92, -209 )
 
@@ -75,7 +75,7 @@ offset = Vector2( 92, -209 )
 position = Vector2( 548, 731 )
 frames = ExtResource( 10 )
 animation = "basic"
-frame = 1
+frame = 3
 playing = true
 offset = Vector2( 92, -209 )
 
@@ -83,7 +83,7 @@ offset = Vector2( 92, -209 )
 position = Vector2( 548, 875 )
 frames = ExtResource( 4 )
 animation = "basic"
-frame = 4
+frame = 1
 playing = true
 offset = Vector2( 92, -209 )
 

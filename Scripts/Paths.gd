@@ -35,6 +35,14 @@ func txt(txt_path, custom_path = false):
 		
 	return null
 	
+func json(txt_path, custom_path = false):
+	if custom_path:
+		return "res://" + txt_path + ".json"
+	else:
+		return "res://Assets/" + txt_path + ".json"
+		
+	return null
+	
 func inst(music_path):
 	return "res://Assets/Songs/" + music_path + "/Inst.ogg"
 	

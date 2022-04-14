@@ -10,6 +10,7 @@ var og_save = {
 	"optimization": false,
 	"hitsound": "None",
 	"note-splashes": true,
+	"memory-leaks": false,
 	"ghost-tapping": false,
 	"pussy-mode": false,
 	"keybinds": ["D", "F", "J", "K"],
