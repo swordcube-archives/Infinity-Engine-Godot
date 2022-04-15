@@ -124,9 +124,16 @@ func _ready():
 	change_section(0)
 	
 	print(Gameplay.SONG.song.notes[curSection].mustHitSection)
+	
+var selected_event = 0
 
-func _process(delta):	
+func _process(delta):
 	Gameplay.SONG.song.events = $Grid.events
+	
+	if $Grid.selected_event != null:
+		$Tabs/Events/MergedEvents.text = "Selected Event (" + str(selected_event) + "/" + str(len($Grid.selected_event[1]) - 1) + ")"
+	else:
+		$Tabs/Events/MergedEvents.text = "Selected Event (" + str(selected_event) + "/0)"
 		
 	if can_interact:	
 		if Input.is_action_just_pressed("ui_back"):
@@ -295,11 +302,45 @@ func _on_Value2Input_focus_exited():
 
 func _on_Value1Input_text_changed():
 	if $Grid.selected_event != null:
-		$Grid.selected_event[1][0][1] = $Tabs/Events/Value1/Value1Input.text
+		$Grid.selected_event[1][selected_event][1] = $Tabs/Events/Value1/Value1Input.text
 		#print($Grid.selected_event[1][0][1])
 
 func _on_Value2Input_text_changed():
 	if $Grid.selected_event != null:
-		$Grid.selected_event[1][0][2] = $Tabs/Events/Value2/Value2Input.text
+		$Grid.selected_event[1][selected_event][2] = $Tabs/Events/Value2/Value2Input.text
 		#print($Grid.selected_event[1][0][2])
+		
+func change_event(amount):
+	var length = 0
 	
+	if $Grid.selected_event != null:
+		length = len($Grid.selected_event[1])
+		
+	selected_event += amount
+	if selected_event < 0:
+		selected_event = length - 1
+	if selected_event > length - 1:
+		selected_event = 0
+		
+	$Tabs/Events/Event/EventDropdown.text = $Grid.selected_event[1][selected_event][0]
+	var index = 0
+	for event in Events.event_list:
+		if event[0] == $Grid.selected_event[1][selected_event][0]:
+			reload_event_description(index)
+			
+		index += 1
+	
+func _on_MergedEventsLeft_pressed():
+	change_event(-1)
+	
+func _on_MergedEventsRight_pressed():
+	change_event(1)
+
+func _on_MergedEventsPlus_pressed():
+	if $Grid.selected_event != null:
+		$Grid.selected_event[1].append(["???", "", ""])
+		
+		selected_event = len($Grid.selected_event[1]) - 1
+		$Tabs/Events/Event/EventDropdown.text = $Grid.selected_event[1][selected_event][0]
+		
+		change_event(0)

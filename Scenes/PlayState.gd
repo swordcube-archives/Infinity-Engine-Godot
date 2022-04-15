@@ -52,9 +52,9 @@ var inst_length:float = 0.0
 
 var can_pause:bool = false
 
-var loaded_modchart = null
-
 var events = []
+
+var loaded_modcharts = []
 
 onready var downscroll = Options.get_data("downscroll")
 onready var middlescroll = Options.get_data("middlescroll")
@@ -127,6 +127,7 @@ func _ready():
 		if loaded != null:
 			var mc = loaded.new()
 			mc.PlayState = self
+			loaded_modcharts.append(mc)
 			add_child(mc)
 		
 	# don't ask
@@ -425,8 +426,8 @@ func _process(delta):
 								change_bf_health_color(boyfriend.health_color)
 								change_bf_icon(boyfriend.health_icon)
 							
-						$Characters.add_child(dad)
 						$Characters.add_child(gf)
+						$Characters.add_child(dad)
 						$Characters.add_child(boyfriend)
 				
 			events.remove(0)
@@ -466,6 +467,10 @@ func _process(delta):
 					if dad.special_anim != true:
 						dad.hold_timer = 0
 						dad.play_anim(sing_anims[note.noteData % 4], true)
+						
+					for modchart in loaded_modcharts:
+						if modchart.opponent_note_hit(note.noteData % 4) != null:
+							modchart.opponent_note_hit(note.noteData % 4)
 					
 					AudioHandler.get_node("Voices").volume_db = 0
 					
@@ -612,6 +617,10 @@ func _process(delta):
 			
 			if boyfriend.special_anim != true:
 				boyfriend.play_anim(sing_anims[note.noteData % 4], true)
+				
+			for modchart in loaded_modcharts:
+				if modchart.player_note_hit(note.noteData % 4) != null:
+					modchart.player_note_hit(note.noteData % 4)
 			
 			AudioHandler.get_node("Voices").volume_db = 0
 			
@@ -866,6 +875,10 @@ func key_shit(delta):
 					
 					if note.sustainLength <= 0:
 						note.queue_free()
+						
+					for modchart in loaded_modcharts:
+						if modchart.player_note_hit(note.noteData % 4) != null:
+							modchart.player_note_hit(note.noteData % 4)
 						
 					for real in possibleNotes:
 						if real.noteData == note.noteData:

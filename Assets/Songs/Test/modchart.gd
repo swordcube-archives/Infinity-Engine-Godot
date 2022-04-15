@@ -14,6 +14,12 @@ func _ready():
 	#Conductor.connect("step_hit", self, "step_hit")
 	pass
 	
+func opponent_note_hit(noteData):
+	pass
+	
+func player_note_hit(noteData):
+	pass
+	
 func _physics_process(delta): # this is the update function, runs every frame.
 	if not PlayState.countdown_active:
 		fuck += (delta * 5) * Gameplay.song_multiplier
