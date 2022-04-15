@@ -15,7 +15,7 @@ var og_save = {
 	"pussy-mode": false,
 	"keybinds": ["D", "F", "J", "K"],
 	"ui-skin": "Default",
-	"vsync": true,
+	"vsync": false,
 	"rating-position": [760, 270],
 	"active-mods": {},
 	"volume": 0,
