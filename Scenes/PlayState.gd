@@ -479,7 +479,7 @@ func _process(delta):
 					note.get_node("Note").visible = false
 					
 					note.global_position.y = strum.global_position.y
-					note.sustainLength -= (delta * 1000)
+					note.sustainLength -= (delta * 1000) * speed
 					if note.sustainLength <= 0:
 						note.queue_free()
 
@@ -497,7 +497,7 @@ func _process(delta):
 		var your2 = (note.mustPress and note.sustainLength >= 0 and not pressed[note.noteData % 4] and not Options.get_data("botplay"))
 		
 		if note.beingPressed and note.sustainLength <= sustainMissRange:
-			note.sustainLength -= (delta * 1000)
+			note.sustainLength -= (delta * 1000) * speed
 			note.global_position.y = player_strums.get_children()[note.noteData % 4].global_position.y
 			
 			if note.sustainLength <= 0:
@@ -629,7 +629,7 @@ func _process(delta):
 			
 			note.get_node("Note").visible = false
 			note.global_position.y = strum.global_position.y
-			note.sustainLength -= (delta * 1000)
+			note.sustainLength -= (delta * 1000) * speed
 			if note.sustainLength <= 0:
 				note.queue_free()
 				
