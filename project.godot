@@ -38,6 +38,8 @@ Paths="*res://Scripts/Paths.gd"
 ModManager="*res://Scripts/ModManager.gd"
 Events="*res://Scripts/Events.gd"
 MemoryLeaker="*res://Scripts/MemoryLeaker.gd"
+Achievements="*res://Scripts/Achievements.gd"
+AchievementThingie="*res://Scenes/Achievements/Popup/AchievementThingie.tscn"
 
 [display]
 

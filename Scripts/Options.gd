@@ -18,6 +18,7 @@ var og_save = {
 	"vsync": false,
 	"rating-position": [760, 270],
 	"active-mods": {},
+	"achievements": {},
 	"volume": 0,
 	"muted": false,
 	"scroll-speed": 0,

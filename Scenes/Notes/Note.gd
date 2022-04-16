@@ -11,6 +11,8 @@ var canBeHit:bool = false
 var tooLate:bool = false
 var wasGoodHit:bool = false
 var strumTime:float = 0.0
+
+var old_sus:float = 0.0
 var sustainLength:float = 0.0
 
 var noteData:int = 0
@@ -29,6 +31,8 @@ var charter_note = false
 onready var line = $Line2D
 
 func set_direction():
+	old_sus = sustainLength
+	
 	match(noteData % 4):
 		0:
 			dir_string = "A"
@@ -46,17 +50,23 @@ func _process(delta):
 		line.modulate.a = 0.6
 		$End.modulate.a = 0.6
 		
+		var y_pos = (sustainLength / 1.5) * Gameplay.scroll_speed
+		y_pos -= $Line2D.texture.get_height()
+		
 		if get_tree().current_scene.downscroll:
-			line.points[1].y = 0 - sustainLength
+			line.points[1].y = 0 - y_pos
 			$End.position.y = line.points[1].y - ($End.texture.get_height() / 2)
 		else:
-			line.points[1].y = 0 + sustainLength
+			line.points[1].y = 0 + y_pos
 			$End.position.y = line.points[1].y + ($End.texture.get_height() / 2)
 		
 		if get_tree().current_scene.downscroll:
 			$End.flip_v = true
 		else:
 			$End.flip_v = false
+			
+		if line.points[1].y <= 0:
+			$End.region_rect.size.y -= delta
 	else:
 		line.points[1].y = 0 + sustainLength
 		

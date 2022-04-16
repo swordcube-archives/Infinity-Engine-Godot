@@ -10,11 +10,13 @@ var curWacky = ["???", "???"]
 var tween = Tween.new()
 
 func _ready():
+	randomize()
+	
 	var txt = Util.get_txt(Paths.txt("Data/IntroText"))
 	
 	curWacky = txt[int(rand_range(0, len(txt) - 1))].split("--")
 	
-	if not AudioHandler.get_node("freakyMenu").playing:
+	if not AudioHandler.get_node("Inst").playing and not AudioHandler.get_node("Voices").playing and not AudioHandler.get_node("freakyMenu").playing:
 		AudioHandler.play_audio("freakyMenu")
 	
 	Conductor.songPosition = 0

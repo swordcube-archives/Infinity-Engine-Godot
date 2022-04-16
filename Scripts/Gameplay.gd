@@ -21,8 +21,12 @@ var week_name:String = "week1"
 
 var song_multiplier:float = 1.0
 
+var scroll_speed:float = 1.0
+
 func _ready():
 	initialize_shit()
+	
+	print("Current OS: " + OS.get_name())
 
 func _process(delta):
 	if SONG != null and "ui_Skin" in SONG.song:

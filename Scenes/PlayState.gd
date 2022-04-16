@@ -152,6 +152,8 @@ func _ready():
 				speed = Options.get_data("scroll-speed")
 	
 	speed /= Gameplay.song_multiplier
+	
+	Gameplay.scroll_speed = speed
 			
 	Conductor.songPosition = 0
 	Conductor.curBeat = 0
@@ -300,7 +302,7 @@ func change_bf_health_color(color):
 var botplay_text_sine = 0.0
 
 func _process(delta):
-	if not in_cutscene:
+	if not in_cutscene and not ending_song:
 		if not countdown_active:
 			Conductor.songPosition += (delta * 1000) * Gameplay.song_multiplier
 		else:
@@ -329,7 +331,7 @@ func _process(delta):
 		$camHUD/TimeBar/FGColor.rect_scale.x = (inst_time / inst_length)
 
 		if Conductor.songPosition >= inst_length:
-			end_song()
+			check_for_achievements()
 
 	$camHUD/HealthBar/ScoreText.bbcode_text = "[center]Score: " + str(song_score) + " // Misses: " + str(song_misses) + " // Accuracy: " + str(Util.round_decimal(song_accuracy * 100, 2)) + "%"
 	
@@ -348,7 +350,7 @@ func _process(delta):
 			var dunceNote:Node2D = load("res://Scenes/Notes/Default/Note.tscn").instance()
 			dunceNote.strumTime = note[0]
 			dunceNote.noteData = int(note[1]) % 4
-			dunceNote.sustainLength = (note[2] / 1.7) * speed
+			dunceNote.sustainLength = note[2]
 			
 			if dunceNote.sustainLength <= 50:
 				dunceNote.sustainLength = 0
@@ -479,7 +481,7 @@ func _process(delta):
 					note.get_node("Note").visible = false
 					
 					note.global_position.y = strum.global_position.y
-					note.sustainLength -= (delta * 1000) * speed
+					note.sustainLength -= (delta * 1000) * Gameplay.song_multiplier
 					if note.sustainLength <= 0:
 						note.queue_free()
 
@@ -497,7 +499,7 @@ func _process(delta):
 		var your2 = (note.mustPress and note.sustainLength >= 0 and not pressed[note.noteData % 4] and not Options.get_data("botplay"))
 		
 		if note.beingPressed and note.sustainLength <= sustainMissRange:
-			note.sustainLength -= (delta * 1000) * speed
+			note.sustainLength -= (delta * 1000) * Gameplay.song_multiplier
 			note.global_position.y = player_strums.get_children()[note.noteData % 4].global_position.y
 			
 			if note.sustainLength <= 0:
@@ -629,7 +631,7 @@ func _process(delta):
 			
 			note.get_node("Note").visible = false
 			note.global_position.y = strum.global_position.y
-			note.sustainLength -= (delta * 1000) * speed
+			note.sustainLength -= (delta * 1000) * Gameplay.song_multiplier
 			if note.sustainLength <= 0:
 				note.queue_free()
 				
@@ -649,35 +651,70 @@ func _process(delta):
 	camera_zooms(delta)
 	icon_zooms(delta)
 	
-func end_song():
+var ending_song = false
+
+var balls = false
+
+func check_for_achievements():
+	ending_song = true
 	can_pause = false
 	
-	if not Gameplay.used_practice and not Options.get_data("pussy-mode") and Gameplay.song_multiplier >= 1:
-		if(song_score > SongHighscore.get_score(SONG.song.to_lower().replace(" ", "-") + "-" + Gameplay.difficulty)):
-			SongHighscore.set_score(SONG.song.to_lower().replace(" ", "-") + "-" + Gameplay.difficulty, song_score)
-			SongAccuracy.set_acc(SONG.song.to_lower().replace(" ", "-") + "-" + Gameplay.difficulty, Util.round_decimal(song_accuracy * 100, 2))
+	for achievement in Achievements.achievements.keys():
+		check_for_achievement(achievement)
+		
+	AchievementThingie.unlock_achievements()
+	
+	if not AchievementThingie.listing_shit and not balls:
+		balls = true
+		end_song(true)
 			
-	if Gameplay.story_mode:
-		Gameplay.story_playlist.remove(0)
+func check_for_achievement(achievement):
+	var unlock = false
+	
+	if Achievements.achievements[achievement].unlocks_after_week != "":
+		if Gameplay.story_mode and not Gameplay.used_practice:
+			match Achievements.achievements[achievement].internal_name:
+				"tutorial":
+					unlock = true
+	else:
+		match Achievements.achievements[achievement].internal_name:
+			_:
+				pass # nothing here rn lo
+					
+	if unlock:
+		Achievements.unlock(achievement)
+		
+func end_song(force = false):
+	if not ending_song or force:
+		ending_song = true
+		can_pause = false
 		
 		if not Gameplay.used_practice and not Options.get_data("pussy-mode") and Gameplay.song_multiplier >= 1:
-			Gameplay.story_score += song_score
-		
-		if len(Gameplay.story_playlist) > 0:
-			var song = "res://Assets/Songs/" + Gameplay.story_playlist[0] + "/" + Gameplay.difficulty
-			Gameplay.SONG = JsonUtil.get_json(song)
-			get_tree().reload_current_scene()
-		else:
-			if Gameplay.song_multiplier >= 1:
-				if Gameplay.story_score > WeekHighscore.get_score(Gameplay.week_name):
-					WeekHighscore.set_score(Gameplay.week_name, Gameplay.story_score)
+			if(song_score > SongHighscore.get_score(SONG.song.to_lower().replace(" ", "-") + "-" + Gameplay.difficulty)):
+				SongHighscore.set_score(SONG.song.to_lower().replace(" ", "-") + "-" + Gameplay.difficulty, song_score)
+				SongAccuracy.set_acc(SONG.song.to_lower().replace(" ", "-") + "-" + Gameplay.difficulty, Util.round_decimal(song_accuracy * 100, 2))
+				
+		if Gameplay.story_mode:
+			Gameplay.story_playlist.remove(0)
 			
-			AudioHandler.play_audio("freakyMenu")
-			$Misc/Transition.transition_to_scene("StoryMenu")
-	else:
-		AudioHandler.play_audio("freakyMenu")			
-		$Misc/Transition.transition_to_scene("FreeplayMenu")
-		
+			if not Gameplay.used_practice and not Options.get_data("pussy-mode") and Gameplay.song_multiplier >= 1:
+				Gameplay.story_score += song_score
+			
+			if len(Gameplay.story_playlist) > 0:
+				var song = "res://Assets/Songs/" + Gameplay.story_playlist[0] + "/" + Gameplay.difficulty
+				Gameplay.SONG = JsonUtil.get_json(song)
+				get_tree().reload_current_scene()
+			else:
+				if Gameplay.song_multiplier >= 1:
+					if Gameplay.story_score > WeekHighscore.get_score(Gameplay.week_name):
+						WeekHighscore.set_score(Gameplay.week_name, Gameplay.story_score)
+				
+				AudioHandler.play_audio("freakyMenu")
+				$Misc/Transition.transition_to_scene("StoryMenu")
+		else:
+			AudioHandler.play_audio("freakyMenu")			
+			$Misc/Transition.transition_to_scene("FreeplayMenu")
+			
 	AudioHandler.stop_inst()
 	AudioHandler.stop_voices()
 	
@@ -979,14 +1016,16 @@ func resync_vocals():
 
 func step_hit():
 	if not countdown_active:
-		var gaming = 0
+		var gaming = 20
 		
-		if Conductor.songPosition >= 1:
-			gaming = 20 * Gameplay.song_multiplier
-		else:
-			gaming = 20
+		if OS.get_name() == "Windows":
+			gaming = 30
 		
-		if not Conductor.songPosition >= inst_length and abs(inst_time + (AudioServer.get_time_since_last_mix() * 1000) - (Conductor.songPosition)) > gaming || (SONG.needsVoices && abs(voices_time + (AudioServer.get_time_since_last_mix() * 1000) - (Conductor.songPosition)) > gaming):
+		# this was supposed to be song multiplier, i'm a dumbass.
+		if Gameplay.song_multiplier >= 1:
+			gaming *= Gameplay.song_multiplier
+		
+		if not ending_song and abs(inst_time + (AudioServer.get_time_since_last_mix() * 1000) - (Conductor.songPosition)) > gaming || (SONG.needsVoices && abs(voices_time + (AudioServer.get_time_since_last_mix() * 1000) - (Conductor.songPosition)) > gaming):
 			resync_vocals()
 		
 	var prevSection = curSection

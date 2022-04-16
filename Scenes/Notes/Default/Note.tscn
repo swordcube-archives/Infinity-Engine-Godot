@@ -17,6 +17,8 @@ texture = ExtResource( 4 )
 texture_mode = 1
 
 [node name="End" type="Sprite" parent="."]
+position = Vector2( 0.285713, -0.142869 )
+scale = Vector2( 1, 1 )
 texture = ExtResource( 3 )
 
 [node name="Note" type="AnimatedSprite" parent="."]
