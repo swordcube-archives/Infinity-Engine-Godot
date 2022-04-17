@@ -12,6 +12,8 @@ var fuck_you = false
 
 var tween = Tween.new()
 
+var funny_timer:Timer
+
 func _ready():
 	AudioHandler.stop_inst()
 	AudioHandler.stop_voices()
@@ -32,16 +34,17 @@ func _ready():
 	bf.global_position = Gameplay.death_character_pos
 	$Cam.position = Gameplay.death_camera_pos
 	
+	funny_timer = Timer.new()
+	funny_timer.set_wait_time(2.375)
+	funny_timer.set_one_shot(true)
+	add_child(funny_timer)
+	funny_timer.start()
+	funny_timer.connect("timeout", self, "start_death_stuff")
+	
 func _process(delta):
 	if bf.get_node("frames").animation == "firstDeath" and bf.get_node("frames").frame == 26:
 		$Cam.position = bf.global_position
 		$Cam.position.y -= 200
-		
-	if (bf.get_node("frames").animation == "firstDeath" or bf.get_node("frames").animation == "") and bf.get_node("frames").frame >= 57:
-		bf.get_node("anim").play("deathLoop")
-		
-		$music.stream = load(Paths.music(music))
-		$music.play()
 		
 	if Input.is_action_just_pressed("ui_back"):
 		if Gameplay.story_mode:
@@ -51,6 +54,8 @@ func _process(delta):
 		
 	if Input.is_action_just_pressed("ui_accept"):
 		if not retried:
+			funny_timer.stop()
+			
 			retried = true
 			
 			$music.stop()
@@ -64,8 +69,18 @@ func _process(delta):
 			
 			bf.get_node("anim").play("retry")
 			
-	yield(tween, "tween_all_completed")
-	if not fuck_you:
-		tween.stop_all()
-		SceneManager.switch_scene("PlayState")
-		fuck_you = true
+			funny_timer = Timer.new()
+			funny_timer.set_wait_time(4)
+			funny_timer.set_one_shot(true)
+			add_child(funny_timer)
+			funny_timer.start()
+			funny_timer.connect("timeout", self, "playstate")
+		
+func playstate():
+	SceneManager.switch_scene("PlayState")
+		
+func start_death_stuff():
+	bf.get_node("anim").play("deathLoop")
+	
+	$music.stream = load(Paths.music(music))
+	$music.play()	

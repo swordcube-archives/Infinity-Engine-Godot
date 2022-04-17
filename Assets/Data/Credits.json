@@ -63,6 +63,18 @@
                 "Twitter": "https://twitter.com/NotBadTie",
                 "GitHub": "https://github.com/BadTie"
             }
+        },
+        {
+            "name": "Jadyn",
+            "icon": "jadyn",
+            "description": "Lover",
+            "color": "fabce9",
+            "page": "Infinity Engine",
+            "socials": {
+                "Twiiter": "https://twitter.com/jadynsmells_",
+                "YouTube": "https://www.youtube.com/channel/UCYEJWbM966Sb6ku_PNHvPCA",
+                "Roblox": "https://www.roblox.com/users/1690755266/profile"
+            }
         }
     ]
 }

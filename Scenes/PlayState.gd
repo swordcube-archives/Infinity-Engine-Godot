@@ -655,14 +655,19 @@ var ending_song = false
 
 var balls = false
 
+var fuck_you_lmao = false
+
 func check_for_achievements():
 	ending_song = true
 	can_pause = false
-	
-	for achievement in Achievements.achievements.keys():
-		check_for_achievement(achievement)
 		
-	AchievementThingie.unlock_achievements()
+	if not fuck_you_lmao:
+		fuck_you_lmao = true
+		
+		for achievement in Achievements.achievements.keys():
+			check_for_achievement(achievement)
+		
+		AchievementThingie.unlock_achievements()
 	
 	if not AchievementThingie.listing_shit and not balls:
 		balls = true
