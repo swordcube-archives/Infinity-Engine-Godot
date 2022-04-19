@@ -1,7 +1,7 @@
 extends Node2D
 
-var columns = 8
-var rows = 16
+onready var columns = 8
+onready var rows = 16
 
 var grid_size = 40
 
@@ -10,11 +10,16 @@ var selected_y:float = 0.0
 
 var note_snap = 16
 
+var og_pos_x = 0.0
+
 # events array
 var events = []
 
 var selected_event = null
 var selected_note = null
+
+var selected_event_object = null
+var selected_note_object = null
 
 var ctrl_pressed = false
 
@@ -24,6 +29,8 @@ func _input(event):
 			ctrl_pressed = event.pressed
 
 func _ready():
+	og_pos_x = position.x
+	
 	if "events" in Gameplay.SONG.song:
 		events = Gameplay.SONG.song.events
 
@@ -54,6 +61,10 @@ func _draw():
 	draw_rect(Rect2(Vector2(c * grid_size, position.y - grid_size), Vector2(2, rows * grid_size)), Color("000000"), true)
 				
 func _process(_delta):
+	columns = Gameplay.SONG.song.keyCount * 2
+	
+	position.x = og_pos_x - ((Gameplay.SONG.song.keyCount - 4) * grid_size) * 2
+	
 	$Line.rect_size.x = grid_size * (columns + 1)
 	$Line.rect_position.y = time_to_y(Conductor.songPosition - section_start_time())
 	
@@ -80,8 +91,8 @@ func _process(_delta):
 	else:
 		$Selected.rect_position = Vector2(selected_x * grid_size, floor(mouse_pos.y / cool_grid) * cool_grid)
 		
-	if prev_selected_x != selected_x or prev_selected_y != selected_y:
-		update()
+	#if prev_selected_x != selected_x or prev_selected_y != selected_y:
+	update()
 		
 	if Input.is_action_just_pressed("mouse_left"):
 		if selected_x >= 0 and selected_x <= columns:
@@ -150,6 +161,7 @@ func select_note(x, y):
 							selected_note = note_object
 							print("SELECTED NOTE!")
 				
+				selected_note_object = note
 				return
 				
 	# selecting events
@@ -164,6 +176,7 @@ func select_note(x, y):
 						$"../Tabs/Events/Value2/Value2Input".text = note_object[1][0][2]
 						print("SELECTED EVENT!")
 				
+				selected_event_object = event
 				return
 				
 func add_note(x, y):
@@ -206,16 +219,21 @@ func add_note(x, y):
 		
 		var events_array = [[event_name, value1, value2]]
 		
-		spawn_event(y, null, strum_time, events_array)
+		var piss = spawn_event(y, null, strum_time, events_array)
 		
 		var balls = [strum_time, events_array]
 		events.append(balls)
 		
 		selected_event = balls
-		print(selected_event)
+		selected_event_object = piss
 	else:
-		spawn_note(x, y, null, strum_time, sustain_length)
-		Gameplay.SONG.song.notes[$"../".curSection].sectionNotes.append([strum_time, note_data, note_length])
+		var balls = spawn_note(x, y, null, strum_time, sustain_length)
+		
+		var bitch = [strum_time, note_data, note_length]
+		
+		Gameplay.SONG.song.notes[$"../".curSection].sectionNotes.append(bitch)
+		selected_note = bitch
+		selected_note_object = balls
 		
 func spawn_event(y, custom_y = null, strum_time = 0, events_array = []):
 	if custom_y == null:
@@ -274,6 +292,7 @@ func spawn_note(x, y, custom_y = null, strum_time = 0, sustain_length = 0):
 	new_note.scale.y = 40.0 / anim_spr.frames.get_frame(anim_spr.animation, anim_spr.frame).get_height()
 	
 	$Notes.add_child(new_note)
+	return new_note
 			
 func draw_box(x, y, is_dark):
 	var cool_color = Color(0.9, 0.9, 0.9)

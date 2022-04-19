@@ -1,0 +1,54 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Assets/Images/UI Skins/Default/strums.res" type="SpriteFrames" id=1]
+
+[node name="4Key" type="Node2D"]
+scale = Vector2( 0.5, 0.5 )
+
+[node name="left_key" type="AnimatedSprite" parent="."]
+position = Vector2( -176, 0 )
+frames = ExtResource( 1 )
+animation = "arrowLEFT"
+playing = true
+
+[node name="down_key" type="AnimatedSprite" parent="."]
+position = Vector2( -27.4286, 0 )
+frames = ExtResource( 1 )
+animation = "arrowDOWN"
+playing = true
+
+[node name="up_key" type="AnimatedSprite" parent="."]
+position = Vector2( 121.143, 0 )
+frames = ExtResource( 1 )
+animation = "arrowUP"
+playing = true
+
+[node name="right_key" type="AnimatedSprite" parent="."]
+position = Vector2( 268.714, 0 )
+frames = ExtResource( 1 )
+animation = "arrowRIGHT"
+playing = true
+
+[node name="left_key2" type="AnimatedSprite" parent="."]
+position = Vector2( 418.286, 0 )
+frames = ExtResource( 1 )
+animation = "arrowLEFT"
+playing = true
+
+[node name="down_key2" type="AnimatedSprite" parent="."]
+position = Vector2( 566.857, 0 )
+frames = ExtResource( 1 )
+animation = "arrowDOWN"
+playing = true
+
+[node name="up_key2" type="AnimatedSprite" parent="."]
+position = Vector2( 715.429, 0 )
+frames = ExtResource( 1 )
+animation = "arrowUP"
+playing = true
+
+[node name="right_key2" type="AnimatedSprite" parent="."]
+position = Vector2( 863, 0 )
+frames = ExtResource( 1 )
+animation = "arrowRIGHT"
+playing = true

@@ -75,6 +75,17 @@
                 "YouTube": "https://www.youtube.com/channel/UCYEJWbM966Sb6ku_PNHvPCA",
                 "Roblox": "https://www.roblox.com/users/1690755266/profile"
             }
+        },
+        {
+            "name": "enderience",
+            "icon": "enderience",
+            "description": "What about my brother in christ",
+            "color": "D17CFE",
+            "page": "Infinity Engine",
+            "socials": {
+                "Twitter": "https://twitter.com/bruhenderience",
+                "YouTube": "https://www.youtube.com/channel/UCqsMPbWfo15m_64UA43H5rg"
+            }
         }
     ]
 }

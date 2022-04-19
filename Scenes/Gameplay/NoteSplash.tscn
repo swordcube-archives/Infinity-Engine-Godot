@@ -8,6 +8,6 @@ script = ExtResource( 2 )
 
 [node name="spr" type="AnimatedSprite" parent="."]
 frames = ExtResource( 1 )
-animation = "note impact 1 purple"
+animation = "red2"
 
 [connection signal="animation_finished" from="spr" to="." method="_on_spr_animation_finished"]

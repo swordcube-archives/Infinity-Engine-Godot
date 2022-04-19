@@ -2,6 +2,17 @@ extends Node
 
 # default save values
 var og_save = {
+	# key bind bullshit
+	"keybinds_1": ["SPACE"],
+	"keybinds_2": ["D","K"],
+	"keybinds_3": ["D", "SPACE", "K"],
+	"keybinds_4": ["D", "F", "J", "K"],
+	"keybinds_5": ["D", "F", "SPACE", "J", "K"],
+	"keybinds_6": ["S", "D", "F", "J", "K", "L"],
+	"keybinds_7": ["S", "D", "F", "SPACE", "J", "K", "L"],
+	"keybinds_8": ["A", "S", "D", "F", "H", "J", "K", "L"],
+	"keybinds_9": ["A", "S", "D", "F", "SPACE", "H", "J", "K", "L"],
+	# the rest of the shit
 	"downscroll": false,
 	"middlescroll": false,
 	"note-offset": 0,
@@ -13,7 +24,6 @@ var og_save = {
 	"memory-leaks": false,
 	"ghost-tapping": false,
 	"pussy-mode": false,
-	"keybinds": ["D", "F", "J", "K"],
 	"ui-skin": "Default",
 	"vsync": false,
 	"rating-position": [760, 270],

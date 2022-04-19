@@ -1,10 +1,9 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Assets/Fonts/vcr.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Scenes/PlayState.gd" type="Script" id=2]
 [ext_resource path="res://Assets/Images/Icons/dad.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Images/Icons/bf.png" type="Texture" id=4]
-[ext_resource path="res://Scenes/Strums/4Key.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Transition/Transition.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Scenes/Gameplay/Dialogue/DialogueBox.tscn" type="PackedScene" id=8]
 
@@ -45,12 +44,6 @@ smoothing_enabled = true
 
 [node name="camHUD" type="CanvasLayer" parent="."]
 layer = 125
-
-[node name="OpponentStrums" parent="camHUD" instance=ExtResource( 6 )]
-position = Vector2( 162, 608 )
-
-[node name="PlayerStrums" parent="camHUD" instance=ExtResource( 6 )]
-position = Vector2( 782, 608 )
 
 [node name="Ratings" type="Node2D" parent="camHUD"]
 

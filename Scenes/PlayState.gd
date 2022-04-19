@@ -59,19 +59,51 @@ var loaded_modcharts = []
 onready var downscroll = Options.get_data("downscroll")
 onready var middlescroll = Options.get_data("middlescroll")
 
-onready var opponent_strums = $camHUD/OpponentStrums
-onready var player_strums = $camHUD/PlayerStrums
+onready var opponent_strums = null
+onready var player_strums = null
 
 onready var game_notes = $camHUD/Notes
 
 func _ready():
 	if "events" in Gameplay.SONG.song:
 		events = Gameplay.SONG.song.events.duplicate()
+		
+	if not "keyCount" in Gameplay.SONG.song:
+		Gameplay.SONG.song.keyCount = 4
+		
+	if "mania" in Gameplay.SONG.song:
+		match Gameplay.SONG.song.mania:
+			0:
+				Gameplay.SONG.song.keyCount = 4
+			1:
+				Gameplay.SONG.song.keyCount = 6
+			2: 
+				Gameplay.SONG.song.keyCount = 7
+			3: 
+				Gameplay.SONG.song.keyCount = 9
+				
+	Keybinds.setup_Binds()
+				
+	var loaded_o_strums = load("res://Scenes/Strums/" + str(Gameplay.SONG.song.keyCount) + "Key.tscn")
+	opponent_strums = loaded_o_strums.instance()
+	opponent_strums.name = "OpponentStrums"
+	$camHUD.add_child(opponent_strums)
+	
+	var loaded_p_strums = load("res://Scenes/Strums/" + str(Gameplay.SONG.song.keyCount) + "Key.tscn")
+	player_strums = loaded_p_strums.instance()
+	player_strums.name = "PlayerStrums"
+	$camHUD.add_child(player_strums)
+	
+	$camHUD.move_child(opponent_strums, 0)
+	$camHUD.move_child(player_strums, 0)
 	
 	if Options.get_data("botplay"):
 		Gameplay.used_practice = true
 	else:
 		Gameplay.used_practice = false
+		
+	opponent_strums.global_position.y = 608
+	player_strums.global_position.y = 608
 		
 	if not downscroll:
 		opponent_strums.global_position.y = 100
@@ -349,7 +381,7 @@ func _process(delta):
 		if float(note[0]) - Conductor.songPosition < (1500 * Gameplay.song_multiplier):
 			var dunceNote:Node2D = load("res://Scenes/Notes/Default/Note.tscn").instance()
 			dunceNote.strumTime = note[0]
-			dunceNote.noteData = int(note[1]) % 4
+			dunceNote.noteData = int(note[1]) % Gameplay.SONG.song.keyCount
 			dunceNote.sustainLength = note[2]
 			
 			if dunceNote.sustainLength <= 50:
@@ -359,10 +391,15 @@ func _process(delta):
 			
 			dunceNote.set_direction()
 			
-			if note[3] and int(note[1]) % (4 * 2) >= 4:
+			if note[3] and int(note[1]) % (Gameplay.SONG.song.keyCount * 2) >= Gameplay.SONG.song.keyCount:
 				dunceNote.mustPress = false
-			elif !note[3] and int(note[1]) % (4 * 2) <= 4 - 1:
+			elif !note[3] and int(note[1]) % (Gameplay.SONG.song.keyCount * 2) <= Gameplay.SONG.song.keyCount - 1:
 				dunceNote.mustPress = false
+				
+			if not dunceNote.mustPress:
+				dunceNote.scale = opponent_strums.scale
+			else:
+				dunceNote.scale = player_strums.scale
 				
 			dunceNote.get_node("Line2D").texture = load("res://Assets/Images/UI Skins/" + Gameplay.ui_Skin + "/Sustains/" + dunceNote.dir_string + " hold0000.png")
 			dunceNote.get_node("End").texture = load("res://Assets/Images/UI Skins/" + Gameplay.ui_Skin + "/Sustains/" + dunceNote.dir_string + " tail0000.png")
@@ -370,9 +407,9 @@ func _process(delta):
 			game_notes.add_child(dunceNote)
 			
 			if dunceNote.mustPress:
-				dunceNote.global_position.x = player_strums.get_children()[int(note[1]) % 4].global_position.x
+				dunceNote.global_position.x = player_strums.get_children()[int(note[1]) % Gameplay.SONG.song.keyCount].global_position.x
 			else:
-				dunceNote.global_position.x = opponent_strums.get_children()[int(note[1]) % 4].global_position.x
+				dunceNote.global_position.x = opponent_strums.get_children()[int(note[1]) % Gameplay.SONG.song.keyCount].global_position.x
 				
 			noteDataArray.remove(index)
 	
@@ -448,9 +485,9 @@ func _process(delta):
 	for note in game_notes.get_children():
 		var strum
 		if note.mustPress:
-			strum = player_strums.get_children()[note.noteData % 4]
+			strum = player_strums.get_children()[note.noteData % Gameplay.SONG.song.keyCount]
 		else:
-			strum = opponent_strums.get_children()[note.noteData % 4]
+			strum = opponent_strums.get_children()[note.noteData % Gameplay.SONG.song.keyCount]
 			
 		note.global_position.x = strum.global_position.x
 			
@@ -471,13 +508,13 @@ func _process(delta):
 						dad.play_anim(sing_anims[note.noteData % 4], true)
 						
 					for modchart in loaded_modcharts:
-						if modchart.opponent_note_hit(note.noteData % 4) != null:
-							modchart.opponent_note_hit(note.noteData % 4)
+						if modchart.opponent_note_hit(note.noteData % Gameplay.SONG.song.keyCount) != null:
+							modchart.opponent_note_hit(note.noteData % Gameplay.SONG.song.keyCoun)
 					
 					AudioHandler.get_node("Voices").volume_db = 0
 					
 					strum.frame = 0
-					strum.play(letter_directions[note.noteData % 4] + " confirm")
+					strum.play(Gameplay.note_letter_directions[Gameplay.SONG.song.keyCount - 1][note.noteData % Gameplay.SONG.song.keyCount] + " confirm")
 					note.get_node("Note").visible = false
 					
 					note.global_position.y = strum.global_position.y
@@ -496,11 +533,11 @@ func _process(delta):
 		var sustainMissRange = 100
 		
 		var your = (note.mustPress and note.sustainLength <= 0 and not Options.get_data("botplay"))
-		var your2 = (note.mustPress and note.sustainLength >= 0 and not pressed[note.noteData % 4] and not Options.get_data("botplay"))
+		var your2 = (note.mustPress and note.sustainLength >= 0 and not pressed[note.noteData % Gameplay.SONG.song.keyCount] and not Options.get_data("botplay"))
 		
 		if note.beingPressed and note.sustainLength <= sustainMissRange:
 			note.sustainLength -= (delta * 1000) * Gameplay.song_multiplier
-			note.global_position.y = player_strums.get_children()[note.noteData % 4].global_position.y
+			note.global_position.y = player_strums.get_children()[note.noteData % Gameplay.SONG.song.keyCount].global_position.y
 			
 			if note.sustainLength <= 0:
 				note.queue_free()
@@ -611,18 +648,18 @@ func _process(delta):
 		boyfriend.hold_timer = 0
 	
 	for note in game_notes.get_children():
-		if note.mustPress and note.sustainLength > 0 and pressed[note.noteData % 4] and Conductor.songPosition >= note.strumTime or Options.get_data("botplay") and note.mustPress and note.sustainLength > 0 and Conductor.songPosition >= note.strumTime:
-			var strum = player_strums.get_children()[note.noteData % 4]
+		if note.mustPress and note.sustainLength > 0 and pressed[note.noteData % Gameplay.SONG.song.keyCount] and Conductor.songPosition >= note.strumTime or Options.get_data("botplay") and note.mustPress and note.sustainLength > 0 and Conductor.songPosition >= note.strumTime:
+			var strum = player_strums.get_children()[note.noteData % Gameplay.SONG.song.keyCount]
 			
 			strum.frame = 0
-			strum.play(letter_directions[note.noteData % 4] + " confirm")
+			strum.play(Gameplay.note_letter_directions[Gameplay.SONG.song.keyCount - 1][note.noteData % Gameplay.SONG.song.keyCount] + " confirm")
 			
 			if boyfriend.special_anim != true:
-				boyfriend.play_anim(sing_anims[note.noteData % 4], true)
+				boyfriend.play_anim(sing_anims[note.noteData % Gameplay.SONG.song.keyCount], true)
 				
 			for modchart in loaded_modcharts:
-				if modchart.player_note_hit(note.noteData % 4) != null:
-					modchart.player_note_hit(note.noteData % 4)
+				if modchart.player_note_hit(note.noteData % Gameplay.SONG.song.keyCount) != null:
+					modchart.player_note_hit(note.noteData % Gameplay.SONG.song.keyCount)
 			
 			AudioHandler.get_node("Voices").volume_db = 0
 			
@@ -769,28 +806,34 @@ var combo = 0
 var brum = 0
 	
 func key_shit(delta):	
-	just_pressed = [false, false, false, false]
-	just_released = [false, false, false, false]
-	pressed = [false, false, false, false]
-	released = [false, false, false, false]
+	just_pressed = []
+	just_released = []
+	pressed = []
+	released = []
+	
+	for i in Gameplay.SONG.song.keyCount:
+		just_pressed.append(false)
+		just_released.append(false)
+		pressed.append(false)
+		released.append(false)
 	
 	if not Options.get_data("botplay"):
-		for i in 4:
+		for i in Gameplay.SONG.song.keyCount:
 			just_pressed[i] = Input.is_action_just_pressed("gameplay_" + str(i))
 			pressed[i] = Input.is_action_pressed("gameplay_" + str(i))
 			released[i] = not Input.is_action_pressed("gameplay_" + str(i))
 			
 		for i in len(just_pressed):
 			if just_pressed[i] == true:
-				player_strums.get_children()[i].play(letter_directions[i] + " press")
+				player_strums.get_children()[i].play(Gameplay.note_letter_directions[Gameplay.SONG.song.keyCount - 1][i] + " press")
 				
 		for i in len(released):
 			if released[i] == true:
-				player_strums.get_children()[i].play("arrow" + directions[i])
+				player_strums.get_children()[i].play("arrow" + Gameplay.note_directions[Gameplay.SONG.song.keyCount - 1][i])
 	else:
 		for i in len(released):
 			if player_strums.get_children()[i].frame == 3:
-				player_strums.get_children()[i].play("arrow" + directions[i])
+				player_strums.get_children()[i].play("arrow" + Gameplay.note_directions[Gameplay.SONG.song.keyCount - 1][i])
 		
 	var possibleNotes = []
 	
@@ -804,14 +847,18 @@ func key_shit(delta):
 			if note.strumTime <= Conductor.songPosition and note.mustPress:
 				possibleNotes.append(note)
 	
-	var dont_hit = [false, false, false, false]
-	var note_data_times = [-1, -1, -1, -1]
+	var dont_hit = []
+	var note_data_times = []
+	
+	for i in Gameplay.SONG.song.keyCount:
+		dont_hit.append(false)
+		note_data_times.append(-1)
 	
 	if len(possibleNotes) > 0:
 		for i in len(possibleNotes):
 			var note = possibleNotes[i]
 			
-			if (just_pressed[note.noteData % 4] and not dont_hit[note.noteData % 4] and not Options.get_data("botplay")) or Options.get_data("botplay"):
+			if (just_pressed[note.noteData % Gameplay.SONG.song.keyCount] and not dont_hit[note.noteData % Gameplay.SONG.song.keyCount] and not Options.get_data("botplay")) or Options.get_data("botplay"):
 				if not note.beingPressed:
 					var rating_scores = [350, 200, 100, 50]
 					
@@ -874,8 +921,8 @@ func key_shit(delta):
 								sicks += 1
 							
 							var note_splash = preload("res://Scenes/Gameplay/NoteSplash.tscn").instance()
-							note_splash.noteData = note.noteData % 4
-							note_splash.global_position = player_strums.get_children()[note.noteData % 4].global_position
+							note_splash.noteData = note.noteData % Gameplay.SONG.song.keyCount
+							note_splash.global_position = player_strums.get_children()[note.noteData % Gameplay.SONG.song.keyCount].global_position
 							$camHUD.add_child(note_splash)
 						"good":
 							rating.get_node("MS").modulate = Color("42f584")
@@ -902,16 +949,16 @@ func key_shit(delta):
 					
 					health += 0.023
 					
-					dont_hit[note.noteData % 4] = true
-					pressed[note.noteData % 4] = true
+					dont_hit[note.noteData % Gameplay.SONG.song.keyCount] = true
+					pressed[note.noteData % Gameplay.SONG.song.keyCount] = true
 					
 					if boyfriend.special_anim != true:
 						boyfriend.play_anim(sing_anims[note.noteData % 4], true)
 					
 					AudioHandler.get_node("Voices").volume_db = 0
 					
-					var strum = player_strums.get_children()[note.noteData % 4]
-					strum.play(letter_directions[note.noteData % 4] + " confirm")
+					var strum = player_strums.get_children()[note.noteData % Gameplay.SONG.song.keyCount]
+					strum.play(Gameplay.note_letter_directions[Gameplay.SONG.song.keyCount - 1][note.noteData % Gameplay.SONG.song.keyCount] + " confirm")
 					
 					note.get_node("Note").visible = false
 					
@@ -919,8 +966,8 @@ func key_shit(delta):
 						note.queue_free()
 						
 					for modchart in loaded_modcharts:
-						if modchart.player_note_hit(note.noteData % 4) != null:
-							modchart.player_note_hit(note.noteData % 4)
+						if modchart.player_note_hit(note.noteData % Gameplay.SONG.song.keyCount) != null:
+							modchart.player_note_hit(note.noteData % Gameplay.SONG.song.keyCount)
 						
 					for real in possibleNotes:
 						if real.noteData == note.noteData:

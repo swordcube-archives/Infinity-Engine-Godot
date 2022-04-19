@@ -23,6 +23,32 @@ var song_multiplier:float = 1.0
 
 var scroll_speed:float = 1.0
 
+var key_count:int = 4
+
+var note_directions = [ # goes from 1 - 9k
+	["SPACE"],
+	["LEFT", "RIGHT"],
+	["LEFT", "SPACE", "RIGHT"],
+	["LEFT", "DOWN", "UP", "RIGHT"],
+	["LEFT", "DOWN", "SPACE", "UP", "RIGHT"],
+	["LEFT", "DOWN", "RIGHT", "LEFT", "UP", "RIGHT"],
+	["LEFT", "DOWN", "RIGHT", "SPACE", "LEFT", "UP", "RIGHT"],
+	["LEFT", "DOWN", "UP", "RIGHT", "LEFT", "DOWN", "UP", "RIGHT"],
+	["LEFT", "DOWN", "UP", "RIGHT", "SPACE", "LEFT", "DOWN", "UP", "RIGHT"],
+]
+
+var note_letter_directions = [ # goes from 1 - 9k
+	["E"],
+	["A", "D"],
+	["A", "E", "D"],
+	["A", "B", "C", "D"],
+	["A", "B", "E", "C", "D"],
+	["A", "B", "D", "F", "C", "I"],
+	["A", "B", "D", "E", "F", "C", "I"],
+	["A", "B", "C", "D", "F", "G", "H", "I"],
+	["A", "B", "C", "D", "E", "F", "G", "H", "I"],
+]
+
 func _ready():
 	initialize_shit()
 	
@@ -33,6 +59,9 @@ func _process(delta):
 		ui_Skin = SONG.song.ui_Skin
 	else:
 		ui_Skin = Options.get_data("ui-skin")
+		
+	if "keyCount" in Gameplay.SONG.song:
+		key_count = Gameplay.SONG.song.keyCount
 		
 var skipped_title = false
 

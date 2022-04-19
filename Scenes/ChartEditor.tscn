@@ -10,6 +10,16 @@
 [node name="ChartEditor" type="Node2D"]
 script = ExtResource( 2 )
 
+[node name="Stats" type="Label" parent="."]
+margin_left = 8.0
+margin_top = 648.0
+margin_right = 171.0
+margin_bottom = 713.0
+text = "Song Position: 0:00 / 0:00
+Current Beat: 0
+Current Step: 0
+Current Section: 0"
+
 [node name="Grid" parent="." instance=ExtResource( 1 )]
 position = Vector2( 440, 40 )
 
@@ -59,6 +69,7 @@ margin_right = -4.0
 margin_bottom = -4.0
 
 [node name="Events" type="Tabs" parent="Tabs"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -149,7 +160,6 @@ text = "Description"
 autowrap = true
 
 [node name="Song" type="Tabs" parent="Tabs"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -222,6 +232,22 @@ margin_top = 20.0
 margin_right = 78.0
 margin_bottom = 41.0
 text = "normal"
+caret_blink = true
+script = ExtResource( 6 )
+
+[node name="KeyCount" type="Label" parent="Tabs/Song"]
+margin_left = 4.0
+margin_top = 242.0
+margin_right = 64.0
+margin_bottom = 256.0
+text = "KeyCount"
+
+[node name="KeyInput" type="TextEdit" parent="Tabs/Song/KeyCount"]
+margin_left = 1.0
+margin_top = 20.0
+margin_right = 78.0
+margin_bottom = 41.0
+text = "4"
 caret_blink = true
 script = ExtResource( 6 )
 
@@ -356,6 +382,10 @@ visible = false
 [connection signal="focus_entered" from="Tabs/Song/Difficulty/DiffInput" to="." method="_on_SongInput_focus_entered"]
 [connection signal="focus_entered" from="Tabs/Song/Difficulty/DiffInput" to="." method="_on_TextEdit_focus_entered"]
 [connection signal="focus_exited" from="Tabs/Song/Difficulty/DiffInput" to="." method="_on_SongInput_focus_exited"]
+[connection signal="focus_entered" from="Tabs/Song/KeyCount/KeyInput" to="." method="_on_SongInput_focus_entered"]
+[connection signal="focus_entered" from="Tabs/Song/KeyCount/KeyInput" to="." method="_on_TextEdit_focus_entered"]
+[connection signal="focus_exited" from="Tabs/Song/KeyCount/KeyInput" to="." method="_on_SongInput_focus_exited"]
+[connection signal="text_changed" from="Tabs/Song/KeyCount/KeyInput" to="." method="_on_KeyInput_text_changed"]
 [connection signal="focus_entered" from="Tabs/Song/Song/SongInput" to="." method="_on_SongInput_focus_entered"]
 [connection signal="focus_entered" from="Tabs/Song/Song/SongInput" to="." method="_on_TextEdit_focus_entered"]
 [connection signal="focus_exited" from="Tabs/Song/Song/SongInput" to="." method="_on_SongInput_focus_exited"]

@@ -21,6 +21,9 @@ func _ready():
 	for event in Events.event_list:
 		$Tabs/Events/Event/EventDropdown.add_item(event[0])
 		
+	if not "keyCount" in Gameplay.SONG.song:
+		Gameplay.SONG.song.keyCount = 4
+		
 	reload_event_description(0)
 	
 	$Tabs.current_tab = 4
@@ -30,6 +33,7 @@ func _ready():
 	$Tabs/Song/Song/ScrollSpeed/SpeedInput.text = str(Gameplay.SONG.song.speed)
 	$Tabs/Song/Song/BPM/BPMInput.text = str(Gameplay.SONG.song.bpm)
 	$Tabs/Song/Difficulty/DiffInput.text = Gameplay.difficulty
+	$Tabs/Song/KeyCount/KeyInput.text = str(Gameplay.SONG.song.keyCount)
 	
 	var char_list = Util.list_files_in_directory("res://Characters")
 	
@@ -102,11 +106,16 @@ func _ready():
 	
 	$Misc/Transition._fade_out()
 	
-	AudioHandler.stop_inst()
-	AudioHandler.stop_voices()
+	AudioHandler.get_node("Inst").stream = load(Paths.inst(Gameplay.SONG.song.song))
+	AudioHandler.get_node("Voices").stream = load(Paths.voices(Gameplay.SONG.song.song))
 	
 	AudioHandler.get_node("Inst").pitch_scale = 1
 	AudioHandler.get_node("Voices").pitch_scale = 1
+	
+	AudioHandler.get_node("Inst").seek(AudioHandler.get_node("Inst").stream.get_length())
+	
+	if AudioHandler.get_node("Voices").stream != null:
+		AudioHandler.get_node("Voices").seek(AudioHandler.get_node("Voices").stream.get_length())
 	
 	Conductor.songPosition = 0
 	
@@ -128,6 +137,21 @@ func _ready():
 var selected_event = 0
 
 func _process(delta):
+	var inst_length = 0
+	
+	if AudioHandler.get_node("Inst").stream != null:
+		inst_length = AudioHandler.get_node("Inst").stream.get_length()
+	else:
+		inst_length = 0
+		
+	$Stats.text = "Song Position: " + Util.format_time(Conductor.songPosition / 1000.0) + " / " + Util.format_time(inst_length)
+	$Stats.text += "\nCurrent Beat: " + str(Conductor.curBeat)
+	$Stats.text += "\nCurrent Step: " + str(Conductor.curStep)
+	$Stats.text += "\nCurrent Section: " + str(curSection)
+	
+	$IconP2.position.x = ($Grid.position.x - ($Grid.grid_size * (Gameplay.SONG.song.keyCount - 2))) + (Gameplay.SONG.song.keyCount * $Grid.grid_size)
+	$IconP1.position.x = $IconP2.position.x + (Gameplay.SONG.song.keyCount * $Grid.grid_size)
+	
 	Gameplay.SONG.song.events = $Grid.events
 	
 	if $Grid.selected_event != null:
@@ -144,6 +168,31 @@ func _process(delta):
 			
 		if Input.is_action_just_pressed("ui_right"):
 			change_section(1)
+			
+		if $Grid.selected_note != null:
+			if Input.is_action_just_pressed("charting_sustain_up"):
+				if $Grid.selected_note[2] <= 0:
+					$Grid.selected_note[2] += Conductor.timeBetweenSteps
+				else:
+					if Input.is_action_pressed("ui_shift"):
+						$Grid.selected_note[2] += Conductor.timeBetweenSteps
+					else:
+						$Grid.selected_note[2] += Conductor.timeBetweenSteps / 2
+						
+				$Grid.selected_note_object.sustainLength = $Grid.selected_note[2]
+				$Grid.selected_note_object.line.visible = true
+					
+			if Input.is_action_just_pressed("charting_sustain_down"):
+				if Input.is_action_pressed("ui_shift"):
+					$Grid.selected_note[2] -= Conductor.timeBetweenSteps
+				else:
+					$Grid.selected_note[2] -= Conductor.timeBetweenSteps / 2
+				
+				if $Grid.selected_note[2] <= 0:
+					$Grid.selected_note[2] = 0
+					$Grid.selected_note_object.line.visible = false
+			
+				$Grid.selected_note_object.sustainLength = $Grid.selected_note[2]
 			
 		if Input.is_action_just_pressed("space"):
 			playing = not playing
@@ -167,6 +216,31 @@ func _process(delta):
 		
 		if Conductor.songPosition >= $Grid.section_start_time() + (4 * (1000 * (60 / Conductor.bpm))):
 			change_section(1)
+			
+func _input(event):
+	if event is InputEventMouseButton:
+		if event.is_pressed():
+			if event.button_index == BUTTON_WHEEL_UP:
+				Conductor.songPosition -= 25
+				
+				if Conductor.songPosition < $Grid.section_start_time():
+					curSection -= 1
+					
+					if Conductor.songPosition < 0:
+						Conductor.songPosition = 0
+					
+					if curSection < 0:
+						curSection = 0
+					
+					$Grid.load_section(curSection)
+					update()
+			
+			if event.button_index == BUTTON_WHEEL_DOWN:
+				Conductor.songPosition += 25
+				
+				if Conductor.songPosition > $Grid.section_start_time() + (4 * (1000 * (60 / Conductor.bpm))):
+					change_section(1)
+					update()
 		
 func change_section(amount):
 	curSection += amount
@@ -177,8 +251,9 @@ func change_section(amount):
 		
 	Conductor.songPosition = $Grid.section_start_time()
 	
-	AudioHandler.get_node("Inst").seek(Conductor.songPosition / 1000)
-	AudioHandler.get_node("Voices").seek(Conductor.songPosition / 1000)			
+	if playing:
+		AudioHandler.get_node("Inst").play(Conductor.songPosition / 1000)
+		AudioHandler.get_node("Voices").play(Conductor.songPosition / 1000)			
 	
 	refresh_icons()
 		
@@ -344,3 +419,18 @@ func _on_MergedEventsPlus_pressed():
 		$Tabs/Events/Event/EventDropdown.text = $Grid.selected_event[1][selected_event][0]
 		
 		change_event(0)
+
+func _on_KeyInput_text_changed():
+	Gameplay.SONG.song.keyCount = int($Tabs/Song/KeyCount/KeyInput.text)
+	
+	if Gameplay.SONG.song.keyCount <= 1:
+		Gameplay.SONG.song.keyCount = 1
+		
+	# 0 keys would basically just be no chart
+	
+	if Gameplay.SONG.song.keyCount > 9:
+		Gameplay.SONG.song.keyCount = 9
+		
+	# if you want even more keys than this, i'll add it when i feel like it
+	
+	$Grid.load_section(curSection)
