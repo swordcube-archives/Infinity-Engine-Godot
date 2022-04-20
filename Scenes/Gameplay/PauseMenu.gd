@@ -21,6 +21,10 @@ func _process(delta):
 	$SongName.text = Gameplay.SONG.song.song
 	$Difficulty.text = Gameplay.difficulty.to_upper()
 	
+	if get_tree().paused == true:
+		AudioHandler.pause_inst()
+		AudioHandler.pause_voices()
+	
 	if Input.is_action_just_pressed("ui_confirm") and get_tree().current_scene.name == "PlayState":
 		if get_tree().current_scene.can_pause:
 			if get_tree().paused == true:
@@ -87,9 +91,6 @@ func _process(delta):
 				tween.interpolate_property($BG, "modulate", Color(1, 1, 1, 0), Color(1, 1, 1, 1), 0.2)
 				add_child(tween)
 				tween.start()
-
-				AudioHandler.pause_inst()
-				AudioHandler.pause_voices()
 					
 				pause_options = default_pause_options
 				spawn_options()

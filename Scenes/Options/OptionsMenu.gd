@@ -113,7 +113,43 @@ func _process(delta):
 						"Change how everything looks with a new skin!", # desc
 						"string", # type
 						["Default", "Circles"], # values
-					]
+					],
+					[
+						"Sick Timing", # title
+						"sick-timing", # actual thing in save data
+						'Change how much milliseconds it takes to get a "SiCK!!"', # desc
+						"float", # type
+						0.1, # multiplier
+						[-200, 200], # min and max
+						1, # decimals to display
+					],
+					[
+						"Good Timing", # title
+						"shit-timing", # actual thing in save data
+						'Change how much milliseconds it takes to get a "Good!"', # desc
+						"float", # type
+						0.1, # multiplier
+						[-200, 200], # min and max
+						1, # decimals to display
+					],
+					[
+						"Bad Timing", # title
+						"bad-timing", # actual thing in save data
+						'Change how much milliseconds it takes to get a "Bad"', # desc
+						"float", # type
+						0.1, # multiplier
+						[-200, 200], # min and max
+						1, # decimals to display
+					],
+					[
+						"Shit Timing", # title
+						"shit-timing", # actual thing in save data
+						'Change how much milliseconds it takes to get a "SHiT"', # desc
+						"float", # type
+						0.1, # multiplier
+						[-200, 200], # min and max
+						1, # decimals to display
+					],
 				]
 				$Misc/Transition.transition_to_scene("Options/BaseOptionsMenu")
 			"Controls":

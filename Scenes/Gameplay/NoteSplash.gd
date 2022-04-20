@@ -15,11 +15,7 @@ var colors = [
 ]
 
 func _ready():
-	# i will make the actual note splashes tmr, usign old shit from
-	# old infinity engine as a placeholder rn
-	
-	#$spr.play("note impact " + str(int(rand_range(1, 2))) + " " + colors[Gameplay.key_count - 1][noteData % Gameplay.key_count])
-	$spr.play(colors[Gameplay.key_count - 1][noteData % Gameplay.key_count])
+	$spr.play("note impact " + str(int(rand_range(1, 2))) + " " + colors[Gameplay.key_count - 1][noteData % Gameplay.key_count])
 	$spr.modulate.a = 0.6
 	
 	randomize()

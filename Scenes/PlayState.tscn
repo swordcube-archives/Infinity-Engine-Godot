@@ -45,9 +45,9 @@ smoothing_enabled = true
 [node name="camHUD" type="CanvasLayer" parent="."]
 layer = 125
 
-[node name="Ratings" type="Node2D" parent="camHUD"]
-
 [node name="Notes" type="Node2D" parent="camHUD"]
+
+[node name="Ratings" type="Node2D" parent="camHUD"]
 
 [node name="HealthBar" type="Node2D" parent="camHUD"]
 

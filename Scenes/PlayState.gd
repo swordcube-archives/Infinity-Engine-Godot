@@ -102,9 +102,6 @@ func _ready():
 	else:
 		Gameplay.used_practice = false
 		
-	opponent_strums.global_position.y = 608
-	player_strums.global_position.y = 608
-		
 	if not downscroll:
 		opponent_strums.global_position.y = 100
 		player_strums.global_position.y = 100
@@ -113,10 +110,20 @@ func _ready():
 		$camHUD/TimeBar.global_position.y = -660
 		
 		$camHUD/BotplayText.rect_position.y = 85
+	else:
+		opponent_strums.global_position.y = 608
+		player_strums.global_position.y = 608
 		
 	if middlescroll:
 		opponent_strums.global_position.x = -9999
 		player_strums.global_position.x = ScreenRes.screen_width / 2.72
+	else:
+		opponent_strums.global_position.x = 0
+		player_strums.global_position.x = ScreenRes.screen_width / 2
+		
+		var move_mult = 150
+		opponent_strums.global_position.x += move_mult
+		player_strums.global_position.x += move_mult
 		
 	# story mode shit
 	if not Gameplay.story_mode:
@@ -655,7 +662,7 @@ func _process(delta):
 			strum.play(Gameplay.note_letter_directions[Gameplay.SONG.song.keyCount - 1][note.noteData % Gameplay.SONG.song.keyCount] + " confirm")
 			
 			if boyfriend.special_anim != true:
-				boyfriend.play_anim(sing_anims[note.noteData % Gameplay.SONG.song.keyCount], true)
+				boyfriend.play_anim(sing_anims[note.noteData % 4], true)
 				
 			for modchart in loaded_modcharts:
 				if modchart.player_note_hit(note.noteData % Gameplay.SONG.song.keyCount) != null:
@@ -870,10 +877,10 @@ func key_shit(delta):
 					note_ms = Util.round_decimal(note_ms, 3)
 					
 					var judgement_timings = [
-						22.5, # sick
-						45, # good
-						85, # bad
-						100 # shit
+						Options.get_data("sick-timing"), # sick
+						Options.get_data("good-timing"), # good
+						Options.get_data("bad-timing"), # bad
+						Options.get_data("shit-timing") # shit
 					]
 					
 					cur_rating = "marvelous"
@@ -920,10 +927,11 @@ func key_shit(delta):
 							else:
 								sicks += 1
 							
-							var note_splash = preload("res://Scenes/Gameplay/NoteSplash.tscn").instance()
-							note_splash.noteData = note.noteData % Gameplay.SONG.song.keyCount
-							note_splash.global_position = player_strums.get_children()[note.noteData % Gameplay.SONG.song.keyCount].global_position
-							$camHUD.add_child(note_splash)
+							if Options.get_data("note-splashes"):
+								var note_splash = preload("res://Scenes/Gameplay/NoteSplash.tscn").instance()
+								note_splash.noteData = note.noteData % Gameplay.SONG.song.keyCount
+								note_splash.global_position = player_strums.get_children()[note.noteData % Gameplay.SONG.song.keyCount].global_position
+								$camHUD.add_child(note_splash)
 						"good":
 							rating.get_node("MS").modulate = Color("42f584")
 							total_notes_hit += 0.75

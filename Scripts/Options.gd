@@ -32,7 +32,11 @@ var og_save = {
 	"volume": 0,
 	"muted": false,
 	"scroll-speed": 0,
-	"scroll-type": "Multiplicative"
+	"scroll-type": "Multiplicative",
+	"sick-timing": 22.5,
+	"good-timing": 45,
+	"bad-timing": 85,
+	"shit-timing": 100
 }
 
 var initialized = false
