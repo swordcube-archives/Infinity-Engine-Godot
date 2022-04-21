@@ -24,6 +24,8 @@ var og_save = {
 	"memory-leaks": false,
 	"ghost-tapping": false,
 	"pussy-mode": false,
+	"strum-animations": true,
+	"enable-retry-button": true,
 	"ui-skin": "Default",
 	"vsync": false,
 	"rating-position": [760, 270],

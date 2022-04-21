@@ -132,7 +132,7 @@ func _ready():
 	
 	change_section(0)
 	
-	print(Gameplay.SONG.song.notes[curSection].mustHitSection)
+	#print(Gameplay.SONG.song.notes[curSection].mustHitSection)
 	
 var selected_event = 0
 
@@ -331,6 +331,10 @@ func _on_ReloadJSON_pressed():
 	
 	if json != null:
 		Gameplay.SONG = json
+		
+		if not "keyCount" in Gameplay.SONG.song:
+			Gameplay.SONG.song.keyCount = 4
+		
 		Gameplay.difficulty = str($Tabs/Song/Difficulty/DiffInput.text).to_lower()
 		$Misc/Transition.transition_to_scene("ChartEditor")
 	else:
@@ -360,6 +364,9 @@ func reload_event_description(index):
 		
 	for line in Events.event_list[index][1]:
 		description += str(line) + "\n"
+		
+	if $Grid.selected_event != null:
+		$Grid.selected_event[1][selected_event][0] = Events.event_list[index][0]
 		
 	$Tabs/Events/Description.text = description
 
@@ -402,6 +409,8 @@ func change_event(amount):
 	for event in Events.event_list:
 		if event[0] == $Grid.selected_event[1][selected_event][0]:
 			reload_event_description(index)
+			$Tabs/Events/Value1/Value1Input.text = $Grid.selected_event[1][selected_event][1]
+			$Tabs/Events/Value2/Value2Input.text = $Grid.selected_event[1][selected_event][2]
 			
 		index += 1
 	

@@ -86,7 +86,7 @@ func _process(_delta):
 	
 	var cool_grid = grid_size / (note_snap / 16.0)
 	
-	if Input.is_action_pressed("shift"):
+	if Input.is_action_pressed("ui_shift"):
 		$Selected.rect_position = Vector2(selected_x * grid_size, mouse_pos.y)
 	else:
 		$Selected.rect_position = Vector2(selected_x * grid_size, floor(mouse_pos.y / cool_grid) * cool_grid)

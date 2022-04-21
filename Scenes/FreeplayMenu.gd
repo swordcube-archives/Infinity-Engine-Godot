@@ -117,7 +117,7 @@ var lerpAcc = 0
 var hold_time = 0.0
 
 func _input(event):
-	var shift = Input.is_action_pressed("shift")
+	var shift = Input.is_action_pressed("ui_shift")
 	var just_pressed = event.is_pressed() and not event.is_echo()
 	
 	if just_pressed and event is InputEventKey and event.pressed:
@@ -126,7 +126,7 @@ func _input(event):
 			change_speed(0)
 
 func _process(delta):	
-	var shift = Input.is_action_pressed("shift")
+	var shift = Input.is_action_pressed("ui_shift")
 	
 	if Input.is_action_just_pressed("ui_back"):
 		AudioHandler.play_audio("cancelMenu")

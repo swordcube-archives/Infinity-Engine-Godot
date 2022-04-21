@@ -147,6 +147,8 @@ Misses: 0"
 [node name="DialogueBox" parent="camHUD" instance=ExtResource( 8 )]
 visible = false
 
+[node name="StrumTween" type="Tween" parent="camHUD"]
+
 [node name="Misc" type="CanvasLayer" parent="."]
 layer = 128
 

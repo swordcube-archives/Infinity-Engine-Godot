@@ -61,6 +61,18 @@ func _process(delta):
 						"bool", # type
 					],
 					[
+						"Strum Animations", # title
+						"strum-animations", # actual thing in save data
+						"When disabled, the strums stay static.", # desc
+						"bool", # type
+					],
+					[
+						"Enable Retry Button", # title
+						"enable-retry-button", # actual thing in save data
+						"When enabled, pressing R will insta-kill you.", # desc
+						"bool", # type
+					],
+					[
 						"VSync", # title
 						"vsync", # actual thing in save data
 						"When enabled, the game limits the FPS to your monitor's refresh rate.", # desc
