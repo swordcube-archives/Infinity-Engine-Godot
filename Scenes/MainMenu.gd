@@ -16,14 +16,12 @@ func _ready():
 		AudioHandler.play_audio("freakyMenu")
 		
 	change_selection(0)
-	
-	$Misc/Transition._fade_out()
 
 func _process(delta):
 	$Misc/Version.text = "v" + EngineSettings.game_version + " - " + EngineSettings.version_status
 	
 	if Input.is_action_just_pressed("ui_back"):
-		$Misc/Transition.transition_to_scene("TitleScreen")
+		SceneManager.switch_scene("TitleScreen")
 		AudioHandler.play_audio("cancelMenu")
 		
 	if canSelect:
@@ -93,15 +91,15 @@ func stop_flashing():
 	
 	match($Buttons/ButtonsParallax.get_children()[curSelected].name):
 		"StoryMode":
-			$Misc/Transition.transition_to_scene("StoryMenu")
+			SceneManager.switch_scene("StoryMenu")
 		"Freeplay":
-			$Misc/Transition.transition_to_scene("FreeplayMenu")
+			SceneManager.switch_scene("FreeplayMenu")
 		"Mods":
-			$Misc/Transition.transition_to_scene("ModsMenu")
+			SceneManager.switch_scene("ModsMenu")
 		"Credits":
-			$Misc/Transition.transition_to_scene("CreditsMenu")
+			SceneManager.switch_scene("CreditsMenu")
 		"Options":
-			$Misc/Transition.transition_to_scene("Options/OptionsMenu")
+			SceneManager.switch_scene("Options/OptionsMenu")
 			
 		
 func change_selection(amount):

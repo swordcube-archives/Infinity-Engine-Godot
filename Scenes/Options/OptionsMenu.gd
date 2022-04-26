@@ -3,13 +3,11 @@ extends Node2D
 var curSelected = 0
 
 func _ready():
-	$Misc/Transition._fade_out()
-	
 	change_selection(0)
 
 func _process(delta):
 	if Input.is_action_just_pressed("ui_back"):
-		$Misc/Transition.transition_to_scene("MainMenu")
+		SceneManager.switch_scene("MainMenu")
 		
 	if Input.is_action_just_pressed("ui_up"):
 		change_selection(-1)
@@ -163,11 +161,11 @@ func _process(delta):
 						1, # decimals to display
 					],
 				]
-				$Misc/Transition.transition_to_scene("Options/BaseOptionsMenu")
+				SceneManager.switch_scene("Options/BaseOptionsMenu", false)
 			"Controls":
-				$Misc/Transition.transition_to_scene("Options/ControlsMenu")
+				SceneManager.switch_scene("Options/ControlsMenu", false)
 			"Exit":
-				$Misc/Transition.transition_to_scene("MainMenu")
+				SceneManager.switch_scene("MainMenu")
 			
 		
 func change_selection(amount):

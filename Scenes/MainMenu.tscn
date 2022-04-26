@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Assets/Images/menuBG.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/MainMenu.gd" type="Script" id=2]
@@ -7,7 +7,6 @@
 [ext_resource path="res://Assets/Images/MainMenu/story-mode.res" type="SpriteFrames" id=5]
 [ext_resource path="res://Assets/Images/MainMenu/freeplay.res" type="SpriteFrames" id=6]
 [ext_resource path="res://Assets/Fonts/vcr.ttf" type="DynamicFontData" id=7]
-[ext_resource path="res://Transition/Transition.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Assets/Images/menuDesat.png" type="Texture" id=9]
 [ext_resource path="res://Assets/Images/MainMenu/credits.res" type="SpriteFrames" id=10]
 
@@ -75,7 +74,6 @@ offset = Vector2( 92, -209 )
 position = Vector2( 548, 731 )
 frames = ExtResource( 10 )
 animation = "basic"
-frame = 3
 playing = true
 offset = Vector2( 92, -209 )
 
@@ -97,6 +95,3 @@ margin_bottom = 711.0
 rect_pivot_offset = Vector2( 41, 16 )
 custom_fonts/font = SubResource( 1 )
 text = "v???"
-
-[node name="Transition" parent="Misc" instance=ExtResource( 8 )]
-visible = false

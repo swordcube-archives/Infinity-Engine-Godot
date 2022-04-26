@@ -34,8 +34,6 @@ func _ready():
 	Conductor.connect("beat_hit", self, "beat_hit")
 	#Conductor.connect("step_hit", self, "step_hit")
 	
-	$Misc/Transition._fade_out()
-	
 	for file in Util.list_files_in_directory("res://Assets/Weeks"):
 		if ".json" in file:
 			var json = JsonUtil.get_json("res://Assets/Weeks/" + file.split(".json")[0])
@@ -168,7 +166,7 @@ func select_week():
 	Gameplay.story_playlist = tracks
 	Gameplay.difficulty = difficulties[curDifficulty]
 	Gameplay.SONG = JsonUtil.get_json("res://Assets/Songs/" + Gameplay.story_playlist[0] + "/" + difficulties[curDifficulty].to_lower())
-	$Misc/Transition.transition_to_scene("PlayState")
+	SceneManager.switch_scene("PlayState")
 		
 func _process(delta):
 	if can_select and Input.is_action_just_pressed("ui_accept"):
@@ -197,7 +195,7 @@ func _process(delta):
 		if Input.is_action_just_pressed("ui_back"):
 			can_select = false
 			AudioHandler.play_audio("cancelMenu")
-			$Misc/Transition.transition_to_scene("MainMenu")
+			SceneManager.switch_scene("MainMenu")
 			
 		if Input.is_action_just_pressed("ui_up"):
 			change_selection(-1)

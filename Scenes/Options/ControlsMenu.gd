@@ -9,8 +9,6 @@ var key_count = 4
 var strums = null
 
 func _ready():
-	$Misc/Transition._fade_out()
-	
 	strums = load("res://Scenes/Strums/" + str(key_count) + "Key.tscn").instance()
 	strums.name = "Strums"
 	strums.global_position = Vector2(472, 360)
@@ -38,7 +36,7 @@ func _process(delta):
 	$CurrentKeycount.text = "Current Keycount: " + str(key_count) + "\nPress SHIFT + LEFT/RIGHT to change the keycount"
 	
 	if Input.is_action_just_pressed("ui_back"):
-		$Misc/Transition.transition_to_scene("Options/OptionsMenu")
+		SceneManager.switch_scene("Options/OptionsMenu", false)
 		
 	if not changing_bind:
 		if Input.is_action_pressed("ui_shift"):

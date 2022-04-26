@@ -3,8 +3,8 @@ extends Node
 var PlayState = null
 var fuck = 0.0
 
-onready var o_strums = PlayState.get_node("camHUD/OpponentStrums")
-onready var p_strums = PlayState.get_node("camHUD/PlayerStrums")
+onready var o_strums = PlayState.opponent_strums
+onready var p_strums = PlayState.player_strums
 
 onready var window_pos = OS.window_position
 
@@ -14,13 +14,7 @@ func _ready():
 	#Conductor.connect("step_hit", self, "step_hit")
 	pass
 	
-func opponent_note_hit(noteData):
-	pass
-	
-func player_note_hit(noteData):
-	pass
-	
-func _physics_process(delta): # this is the update function, runs every frame.
+func _physics_process(delta):
 	if not PlayState.countdown_active:
 		fuck += (delta * 5) * Gameplay.song_multiplier
 		
@@ -45,3 +39,17 @@ func screen_center(object):
 	print(ScreenRes.screen_width)
 	print(ScreenRes.screen_height)
 	object.global_position = Vector2(ScreenRes.screen_width / 2, ScreenRes.screen_height / 2)
+	
+func _process(delta):
+	for note in PlayState.game_notes.get_children():
+		if not note.mustPress and Conductor.songPosition >= note.strumTime:
+			opponent_note_hit(note)
+			
+		if note.mustPress and note.wasGoodHit:
+			player_note_hit(note)
+			
+func opponent_note_hit(note):
+	pass
+	
+func player_note_hit(note):
+	pass

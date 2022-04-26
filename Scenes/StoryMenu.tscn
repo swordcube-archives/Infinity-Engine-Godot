@@ -1,6 +1,5 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=13 format=2]
 
-[ext_resource path="res://Transition/Transition.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/StoryMenu.gd" type="Script" id=2]
 [ext_resource path="res://Assets/Fonts/vcr.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://Assets/Images/StoryMode/tutorial.png" type="Texture" id=4]
@@ -103,8 +102,3 @@ align = 1
 
 [node name="Difficulty" parent="." instance=ExtResource( 6 )]
 position = Vector2( 891, 510 )
-
-[node name="Misc" type="CanvasLayer" parent="."]
-
-[node name="Transition" parent="Misc" instance=ExtResource( 1 )]
-visible = false

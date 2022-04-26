@@ -1,8 +1,13 @@
 extends Node2D
 
+onready var PlayState = null
+
 # for funnies
+export(float) var dad_health_gain = 0
+export(float) var bf_health_gain = 0.023
 export(float) var hit_damage = 0.0
-export(float) var miss_damage = 0.0
+export(float) var miss_damage = 0.0475
+export(bool) var shouldHit = true
 
 var isSustainNote = false
 var mustPress = false
@@ -22,7 +27,6 @@ var swagWidth:float = 160 * 0.7
 var dir_string = "A"
 
 var beingPressed = false
-var shouldHit = true
 
 var isGaming = false
 
@@ -38,6 +42,9 @@ func set_direction():
 	$Note.play(dir_string)
 			
 func _process(delta):
+	if not charter_note:
+		PlayState = get_parent().get_parent().get_parent()
+		
 	if not charter_note:
 		line.modulate.a = 0.6
 		$End.modulate.a = 0.6
@@ -61,6 +68,16 @@ func _process(delta):
 			$End.region_rect.size.y -= delta
 	else:
 		line.points[1].y = 0 + sustainLength
+		
+func opponent_note_hit():
+	PlayState.health -= dad_health_gain
+	
+func player_note_hit():
+	PlayState.health += bf_health_gain
+	PlayState.health -= hit_damage
+	
+func player_note_miss():
+	PlayState.health -= miss_damage
 		
 func calculate_can_be_hit():
 	if(mustPress):

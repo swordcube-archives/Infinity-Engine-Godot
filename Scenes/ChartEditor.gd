@@ -15,11 +15,19 @@ var can_interact = true
 
 var curEvent = 0
 
+var note_types = []
+
 func _ready():
 	Events.init_event_list()
 	
 	for event in Events.event_list:
 		$Tabs/Events/Event/EventDropdown.add_item(event[0])
+	
+	var fuck = Util.list_files_in_directory("res://Scenes/Notes/")
+	for file in fuck:
+		if not "." in file:
+			note_types.append(file)
+			$Tabs/Notes/NoteType/NoteTypeDropdown.add_item(file)
 		
 	if not "keyCount" in Gameplay.SONG.song:
 		Gameplay.SONG.song.keyCount = 4
@@ -104,8 +112,6 @@ func _ready():
 	
 	$Tabs/Song/Characters/Stage.text = stage
 	
-	$Misc/Transition._fade_out()
-	
 	AudioHandler.get_node("Inst").stream = load(Paths.inst(Gameplay.SONG.song.song))
 	AudioHandler.get_node("Voices").stream = load(Paths.voices(Gameplay.SONG.song.song))
 	
@@ -161,7 +167,10 @@ func _process(delta):
 		
 	if can_interact:	
 		if Input.is_action_just_pressed("ui_back"):
-			$Misc/Transition.transition_to_scene("MainMenu")
+			playing = false
+			AudioHandler.stop_inst()
+			AudioHandler.stop_voices()
+			SceneManager.switch_scene("MainMenu")
 			
 		if Input.is_action_just_pressed("ui_left"):
 			change_section(-1)
@@ -209,7 +218,10 @@ func _process(delta):
 				AudioHandler.stop_voices()
 				
 		if Input.is_action_just_pressed("ui_confirm"):
-			$Misc/Transition.transition_to_scene("PlayState")
+			playing = false
+			AudioHandler.stop_inst()
+			AudioHandler.stop_voices()
+			SceneManager.switch_scene("PlayState")
 			
 	if playing:
 		Conductor.songPosition += delta * 1000
@@ -336,7 +348,7 @@ func _on_ReloadJSON_pressed():
 			Gameplay.SONG.song.keyCount = 4
 		
 		Gameplay.difficulty = str($Tabs/Song/Difficulty/DiffInput.text).to_lower()
-		$Misc/Transition.transition_to_scene("ChartEditor")
+		SceneManager.switch_scene("ChartEditor")
 	else:
 		AudioHandler.play_audio("cancelMenu")
 
@@ -443,3 +455,8 @@ func _on_KeyInput_text_changed():
 	# if you want even more keys than this, i'll add it when i feel like it
 	
 	$Grid.load_section(curSection)
+
+func _on_NoteTypeDropdown_item_selected(index):
+	if $Grid.selected_note != null: 
+		$Grid.selected_note[3] = $Tabs/Notes/NoteType/NoteTypeDropdown.text
+		$Grid.load_section(curSection)

@@ -27,8 +27,6 @@ func _ready():
 	
 	if Gameplay.skipped_title:
 		skipIntro(true)
-	
-	$Transition._fade_out()
 
 func _process(delta):
 	if AudioHandler.get_node("freakyMenu").playing:
@@ -59,8 +57,7 @@ func _process(delta):
 				timer.set_one_shot(true)
 				
 				yield(timer, "timeout")
-				#SceneManager.transition_to_scene("MainMenu")
-				$Transition.transition_to_scene("MainMenu")
+				SceneManager.switch_scene("MainMenu")
 			else:
 				skipIntro()	
 			

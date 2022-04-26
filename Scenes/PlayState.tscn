@@ -1,10 +1,9 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Assets/Fonts/vcr.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Scenes/PlayState.gd" type="Script" id=2]
 [ext_resource path="res://Assets/Images/Icons/dad.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Images/Icons/bf.png" type="Texture" id=4]
-[ext_resource path="res://Transition/Transition.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Scenes/Gameplay/Dialogue/DialogueBox.tscn" type="PackedScene" id=8]
 
 [sub_resource type="DynamicFont" id=1]
@@ -149,9 +148,3 @@ Misses: 0"
 visible = false
 
 [node name="StrumTween" type="Tween" parent="camHUD"]
-
-[node name="Misc" type="CanvasLayer" parent="."]
-layer = 128
-
-[node name="Transition" parent="Misc" instance=ExtResource( 7 )]
-visible = false

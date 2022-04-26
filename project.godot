@@ -20,6 +20,8 @@ config/icon="res://icon.png"
 AudioHandler="*res://Scenes/AudioHandler.tscn"
 SceneManager="*res://Scripts/SceneManager.gd"
 PauseMenu="*res://Scenes/Gameplay/PauseMenu.tscn"
+Transition="*res://Transition/Transition.tscn"
+AchievementThingie="*res://Scenes/Achievements/Popup/AchievementThingie.tscn"
 VolumeControl="*res://Scenes/VolumeControl.tscn"
 Fps="*res://Scenes/FPS.tscn"
 EngineSettings="*res://Scripts/EngineSettings.gd"
@@ -39,7 +41,6 @@ ModManager="*res://Scripts/ModManager.gd"
 Events="*res://Scripts/Events.gd"
 MemoryLeaker="*res://Scripts/MemoryLeaker.gd"
 Achievements="*res://Scripts/Achievements.gd"
-AchievementThingie="*res://Scenes/Achievements/Popup/AchievementThingie.tscn"
 
 [display]
 
@@ -163,6 +164,11 @@ ui_shift={
 reset={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":82,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+fullscreen={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777254,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
 

@@ -1,9 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Assets/Images/menuDesat.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/ModsMenu/ModSelection.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/ModsMenu.gd" type="Script" id=3]
-[ext_resource path="res://Transition/Transition.tscn" type="PackedScene" id=4]
 
 [node name="ModsMenu" type="Node2D"]
 script = ExtResource( 3 )
@@ -18,8 +17,3 @@ visible = false
 position = Vector2( 640, 190 )
 
 [node name="Mods" type="Node2D" parent="."]
-
-[node name="Misc" type="CanvasLayer" parent="."]
-
-[node name="Transition" parent="Misc" instance=ExtResource( 4 )]
-visible = false

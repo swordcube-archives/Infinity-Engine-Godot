@@ -26,8 +26,6 @@ func _ready():
 	change_selection(0)
 	change_social(0)
 	
-	$Misc/Transition._fade_out()
-	
 func _process(delta):
 	var index = 0
 	for credit in $Credits.get_children():
@@ -35,7 +33,7 @@ func _process(delta):
 		index += 1
 		
 	if Input.is_action_just_pressed("ui_back"):
-		$Misc/Transition.transition_to_scene("MainMenu")
+		SceneManager.switch_scene("MainMenu")
 		
 	if Input.is_action_just_pressed("ui_up"):
 		change_selection(-1)

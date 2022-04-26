@@ -139,6 +139,7 @@ func _process(delta):
 func end_dialogue():
 	if get_node("../../") != null:
 		get_node("../../").in_cutscene = false
+		get_node("../../").can_pause = true
 		
 	queue_free()
 

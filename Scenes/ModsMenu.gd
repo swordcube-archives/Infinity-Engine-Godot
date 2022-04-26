@@ -9,8 +9,6 @@ func _ready():
 	
 	if not AudioHandler.get_node("Inst").playing and not AudioHandler.get_node("Voices").playing and not AudioHandler.get_node("freakyMenu").playing:
 		AudioHandler.play_audio("freakyMenu")
-		
-	$Misc/Transition._fade_out()
 	
 	list_mods()
 	change_selection(0)
@@ -57,7 +55,7 @@ func _process(delta):
 			piss.get_node("Description").text = unactive_desc
 		
 	if Input.is_action_just_pressed("ui_back"):
-		$Misc/Transition.transition_to_scene("MainMenu")
+		SceneManager.switch_scene("MainMenu")
 		
 	var index = 0
 	for mod in $Mods.get_children():

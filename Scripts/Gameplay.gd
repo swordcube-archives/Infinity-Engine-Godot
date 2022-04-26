@@ -55,6 +55,9 @@ func _ready():
 	print("Current OS: " + OS.get_name())
 
 func _process(delta):
+	if Input.is_action_just_pressed("fullscreen"):
+		OS.set_window_fullscreen(!OS.window_fullscreen)
+		
 	if SONG != null and "ui_Skin" in SONG.song:
 		ui_Skin = SONG.song.ui_Skin
 	else:

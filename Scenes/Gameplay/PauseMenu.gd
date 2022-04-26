@@ -1,8 +1,12 @@
 extends Node2D
 
+var changing_difficulty = false
+
 var default_pause_options = [
 	"Resume",
 	"Restart Song",
+	"Change Difficulty",
+	"Toggle Practice Mode",
 	"Exit To Menu"
 ]
 
@@ -28,44 +32,82 @@ func _process(delta):
 	if Input.is_action_just_pressed("ui_confirm") and get_tree().current_scene.name == "PlayState":
 		if get_tree().current_scene.can_pause:
 			if get_tree().paused == true:
-				match(pause_options[curSelected]):
-					"Resume":
-						get_tree().paused = not get_tree().paused
-						
-						if not get_tree().current_scene.countdown_active:
-							get_tree().current_scene.resync_vocals()
-						
-						var inst_pos = AudioHandler.get_node("Inst").get_playback_position()
-						var voices_pos = AudioHandler.get_node("Voices").get_playback_position()
-						
-						if AudioHandler.get_node("Inst").stream != null:
-							AudioHandler.unpause_inst()
-							AudioHandler.get_node("Inst").seek(inst_pos)
+				if not changing_difficulty:
+					match(pause_options[curSelected]):
+						"Resume":
+							get_tree().paused = not get_tree().paused
 							
-						if AudioHandler.get_node("Voices").stream != null:
-							AudioHandler.unpause_voices()
-							AudioHandler.get_node("Voices").seek(voices_pos)
-						
-						AudioHandler.stop_audio("breakfast")
-					"Restart Song":
-						AudioHandler.stop_audio("breakfast")
-						
-						get_tree().reload_current_scene()
-						get_tree().paused = not get_tree().paused
-					"Exit To Menu":
-						AudioHandler.stop_audio("breakfast")
-						AudioHandler.play_audio("freakyMenu")
-						
-						if Gameplay.story_mode:
-							SceneManager.switch_scene("StoryMenu")
-						else:
-							SceneManager.switch_scene("FreeplayMenu")
+							if not get_tree().current_scene.countdown_active:
+								get_tree().current_scene.resync_vocals()
 							
-						get_tree().paused = not get_tree().paused
+							var inst_pos = AudioHandler.get_node("Inst").get_playback_position()
+							var voices_pos = AudioHandler.get_node("Voices").get_playback_position()
+							
+							if AudioHandler.get_node("Inst").stream != null:
+								AudioHandler.unpause_inst()
+								AudioHandler.get_node("Inst").seek(inst_pos)
+								
+							if AudioHandler.get_node("Voices").stream != null:
+								AudioHandler.unpause_voices()
+								AudioHandler.get_node("Voices").seek(voices_pos)
+							
+							AudioHandler.stop_audio("breakfast")
+						"Restart Song":
+							AudioHandler.stop_audio("breakfast")
+							
+							SceneManager.switch_scene("PlayState")
+							get_tree().paused = not get_tree().paused
+						"Change Difficulty":
+							changing_difficulty = true
+							pause_options = []
+							
+							var song_dir = Util.list_files_in_directory(Paths.song_path(Gameplay.SONG.song.song))
+							
+							for diff in song_dir:
+								if not diff.begins_with(".") and diff.ends_with(".json"):
+									pause_options.append(diff.split(".json")[0])
+									
+							# prevent dialogue jsons from showing up unless "dialogue"
+							# is the only difficulty
+							if len(pause_options) > 1 and (pause_options.has("dialogue") or pause_options.has("dialogue-end")):
+								pause_options.erase("dialogue")
+								pause_options.erase("dialogue-end")
+									
+							# reordering the default shits because godot and linux
+							# can be stupid sometimes with ordering
+							if pause_options.has("hard"):
+								pause_options.erase("hard")
+								pause_options.insert(0, "hard")
+							if pause_options.has("normal"):
+								pause_options.erase("normal")
+								pause_options.insert(0, "normal")
+							if pause_options.has("easy"):
+								pause_options.erase("easy")
+								pause_options.insert(0, "easy")
+								
+							spawn_options()
+						"Exit To Menu":
+							AudioHandler.stop_audio("breakfast")
+							AudioHandler.play_audio("freakyMenu")
+							
+							if Gameplay.story_mode:
+								SceneManager.switch_scene("StoryMenu")
+							else:
+								SceneManager.switch_scene("FreeplayMenu")
+								
+							get_tree().paused = not get_tree().paused
+				else:
+					changing_difficulty = false
+					
+					Gameplay.difficulty = pause_options[curSelected]
+					Gameplay.SONG = JsonUtil.get_json(Paths.song_path(Gameplay.SONG.song.song, Gameplay.difficulty))
+					
+					AudioHandler.stop_audio("breakfast")
+					
+					SceneManager.switch_scene("PlayState")
+					get_tree().paused = not get_tree().paused
 			else:
 				get_tree().paused = not get_tree().paused
-				
-				get_tree().current_scene.get_node("Misc/Transition").visible = false
 				
 				$SongName.rect_position.y = 0
 				$SongName.modulate.a = 0

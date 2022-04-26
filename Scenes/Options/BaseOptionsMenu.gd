@@ -3,8 +3,6 @@ extends Node2D
 var curSelected = 0
 
 func _ready():
-	$Misc/Transition._fade_out()
-	
 	var option_i = 0
 	for option in OptionsMenuShit.cur_options:
 		if option[3] == "bool":
@@ -45,7 +43,7 @@ func _process(delta):
 		index += 1
 		
 	if Input.is_action_just_pressed("ui_back"):
-		$Misc/Transition.transition_to_scene("Options/OptionsMenu")
+		SceneManager.switch_scene("Options/OptionsMenu", false)
 		
 	if Input.is_action_just_pressed("ui_up"):
 		change_selection(-1)

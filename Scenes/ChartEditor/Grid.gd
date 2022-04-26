@@ -121,7 +121,7 @@ func load_section(section):
 		spawn_event(time_to_y(event[0] - section_start_time()), time_to_y(event[0] - section_start_time()), event[0], event[1])
 		
 	for note in Gameplay.SONG.song.notes[section].sectionNotes:
-		spawn_note(note[1] + 1, time_to_y(note[0] - section_start_time()), time_to_y(note[0] - section_start_time()), note[0], note[2])
+		spawn_note(note[1] + 1, time_to_y(note[0] - section_start_time()), time_to_y(note[0] - section_start_time()), note[0], note[2], note[3])
 		
 func section_start_time(section = null):
 	if section == null:
@@ -211,6 +211,7 @@ func add_note(x, y):
 	var note_data = int(x - 1)
 	var note_length = 0.0
 	var sustain_length = 0.0
+	var note_type = $"../Tabs/Notes/NoteType/NoteTypeDropdown".text
 	
 	if note_data < 0:
 		var event_name = $"../Tabs/Events/Event/EventDropdown".text
@@ -227,9 +228,9 @@ func add_note(x, y):
 		selected_event = balls
 		selected_event_object = piss
 	else:
-		var balls = spawn_note(x, y, null, strum_time, sustain_length)
+		var balls = spawn_note(x, y, null, strum_time, sustain_length, note_type)
 		
-		var bitch = [strum_time, note_data, note_length]
+		var bitch = [strum_time, note_data, note_length, note_type]
 		
 		Gameplay.SONG.song.notes[$"../".curSection].sectionNotes.append(bitch)
 		selected_note = bitch
@@ -253,7 +254,7 @@ func spawn_event(y, custom_y = null, strum_time = 0, events_array = []):
 	
 	$Events.add_child(new_note)
 	
-func spawn_note(x, y, custom_y = null, strum_time = 0, sustain_length = 0):
+func spawn_note(x, y, custom_y = null, strum_time = 0, sustain_length = 0, note_type = "Default"):
 	if custom_y == null:
 		custom_y = $Selected.rect_position.y
 	
@@ -261,7 +262,11 @@ func spawn_note(x, y, custom_y = null, strum_time = 0, sustain_length = 0):
 	mouse_pos.x -= position.x
 	mouse_pos.y -= position.y
 	
-	var new_note = load("res://Scenes/Notes/" + $"../".note_type + "/Note.tscn").instance()
+	var loaded_note = load("res://Scenes/Notes/" + note_type + "/Note.tscn")
+	if loaded_note == null:
+		loaded_note = load("res://Scenes/Notes/Default/Note.tscn")
+		
+	var new_note = loaded_note.instance()
 	new_note.position = Vector2(x * grid_size, custom_y)
 	new_note.noteData = int(x - 1)
 	new_note.charter_note = true

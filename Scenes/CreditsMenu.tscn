@@ -1,11 +1,10 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Assets/Images/menuDesat.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Fonts/funkin.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://Assets/Images/Credits/swordcube.png" type="Texture" id=3]
 [ext_resource path="res://Scenes/CreditsMenu.gd" type="Script" id=4]
 [ext_resource path="res://Scenes/CreditTemplate.gd" type="Script" id=5]
-[ext_resource path="res://Transition/Transition.tscn" type="PackedScene" id=6]
 
 [sub_resource type="DynamicFont" id=1]
 size = 48
@@ -62,8 +61,3 @@ text = "I am very awesome and cool
 And i am also real"
 
 [node name="Credits" type="Node2D" parent="."]
-
-[node name="Misc" type="CanvasLayer" parent="."]
-
-[node name="Transition" parent="Misc" instance=ExtResource( 6 )]
-visible = false

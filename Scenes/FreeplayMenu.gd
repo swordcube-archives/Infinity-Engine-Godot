@@ -16,8 +16,6 @@ var can_enter = true
 func _ready():	
 	if not AudioHandler.get_node("Inst").playing and not AudioHandler.get_node("Voices").playing and not AudioHandler.get_node("freakyMenu").playing:
 		AudioHandler.play_audio("freakyMenu")
-		
-	$Misc/Transition._fade_out()
 	
 	for file in Util.list_files_in_directory("res://Assets/Weeks"):
 		if not file.begins_with(".") and file.ends_with(".json"):
@@ -130,7 +128,7 @@ func _process(delta):
 	
 	if Input.is_action_just_pressed("ui_back"):
 		AudioHandler.play_audio("cancelMenu")
-		$Misc/Transition.transition_to_scene("MainMenu")
+		SceneManager.switch_scene("MainMenu")
 		
 	if Input.is_action_just_pressed("ui_up"):
 		change_selection(-1)
@@ -242,4 +240,4 @@ func start_song():
 		Gameplay.SONG = JsonUtil.get_json(song)
 		Gameplay.difficulty = songs[curSelected].difficulties[curDifficulty].to_lower()
 		#print(Gameplay.SONG)
-		$Misc/Transition.transition_to_scene("PlayState")
+		SceneManager.switch_scene("PlayState")
