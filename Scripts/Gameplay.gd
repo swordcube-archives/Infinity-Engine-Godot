@@ -1,6 +1,6 @@
 extends Node
 
-onready var SONG = JsonUtil.get_json("res://Assets/Songs/Tutorial/hard")
+onready var SONG = JsonUtil.get_json(Paths.song_path("Test", "normal"))
 var ui_Skin = "Default"
 
 var death_character = "bf-dead"
@@ -59,6 +59,17 @@ func _process(delta):
 		ui_Skin = SONG.song.ui_Skin
 	else:
 		ui_Skin = Options.get_data("ui-skin")
+		
+	if "mania" in Gameplay.SONG.song:
+		match Gameplay.SONG.song.mania:
+			_:
+				key_count = 4
+			1:
+				key_count = 6
+			2:
+				key_count = 7
+			3:
+				key_count = 9
 		
 	if "keyCount" in Gameplay.SONG.song:
 		key_count = Gameplay.SONG.song.keyCount

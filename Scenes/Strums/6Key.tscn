@@ -1,42 +1,35 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://Assets/Images/UI Skins/Default/strums.res" type="SpriteFrames" id=1]
+[ext_resource path="res://Scenes/Strums/Strum.tscn" type="PackedScene" id=2]
 
 [node name="6Key" type="Node2D"]
 scale = Vector2( 0.6, 0.6 )
 
-[node name="left_key" type="AnimatedSprite" parent="."]
-position = Vector2( -80.0003, 0 )
-frames = ExtResource( 1 )
-animation = "arrowLEFT"
-playing = true
+[node name="Strum" parent="." instance=ExtResource( 2 )]
+position = Vector2( -80, 0 )
+scale = Vector2( 0.95, 0.95 )
 
-[node name="down_key" type="AnimatedSprite" parent="."]
-position = Vector2( 67.6923, 0 )
-frames = ExtResource( 1 )
-animation = "arrowDOWN"
-playing = true
+[node name="Strum2" parent="." instance=ExtResource( 2 )]
+position = Vector2( 66.6667, 0 )
+scale = Vector2( 0.95, 0.95 )
+direction = "B"
 
-[node name="right_key" type="AnimatedSprite" parent="."]
-position = Vector2( 214.385, 0 )
-frames = ExtResource( 1 )
-animation = "arrowRIGHT"
-playing = true
+[node name="Strum3" parent="." instance=ExtResource( 2 )]
+position = Vector2( 213.333, 0 )
+scale = Vector2( 0.95, 0.95 )
+direction = "C"
 
-[node name="left_key2" type="AnimatedSprite" parent="."]
-position = Vector2( 363.077, 0 )
-frames = ExtResource( 1 )
-animation = "arrowLEFT"
-playing = true
+[node name="Strum4" parent="." instance=ExtResource( 2 )]
+position = Vector2( 360, 0 )
+scale = Vector2( 0.95, 0.95 )
+direction = "F"
 
-[node name="up_key" type="AnimatedSprite" parent="."]
-position = Vector2( 510.769, -1.42857 )
-frames = ExtResource( 1 )
-animation = "arrowUP"
-playing = true
+[node name="Strum5" parent="." instance=ExtResource( 2 )]
+position = Vector2( 506.667, 0 )
+scale = Vector2( 0.95, 0.95 )
+direction = "H"
 
-[node name="right_key2" type="AnimatedSprite" parent="."]
-position = Vector2( 657.461, 0 )
-frames = ExtResource( 1 )
-animation = "arrowRIGHT"
-playing = true
+[node name="Strum6" parent="." instance=ExtResource( 2 )]
+position = Vector2( 653.333, 0 )
+scale = Vector2( 0.95, 0.95 )
+direction = "I"

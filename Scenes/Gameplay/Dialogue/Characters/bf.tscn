@@ -1,6 +1,7 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Assets/Images/Dialogue/Portraits/bf/assets.res" type="SpriteFrames" id=1]
+[ext_resource path="res://Scenes/Gameplay/Dialogue/Characters/dialogue_char.gd" type="Script" id=2]
 
 [sub_resource type="Animation" id=13]
 resource_name = "confused idle"
@@ -513,14 +514,13 @@ tracks/3/keys = {
 }
 
 [node name="char" type="Node2D"]
+script = ExtResource( 2 )
 
 [node name="frames" type="AnimatedSprite" parent="."]
 position = Vector2( 1, -204 )
 frames = ExtResource( 1 )
-animation = "pissed talk"
-frame = 5
+animation = "normal idle"
 playing = true
-offset = Vector2( -20, 0 )
 
 [node name="anim" type="AnimationPlayer" parent="."]
 root_node = NodePath("../frames")

@@ -81,8 +81,8 @@ hframes = 3
 
 [node name="IconP1" type="Sprite" parent="camHUD/HealthBar"]
 position = Vector2( 701, 60 )
-scale = Vector2( -1, 1 )
 texture = ExtResource( 4 )
+flip_h = true
 hframes = 3
 
 [node name="ScoreText" type="RichTextLabel" parent="camHUD/HealthBar"]
@@ -94,6 +94,7 @@ custom_fonts/normal_font = SubResource( 1 )
 bbcode_enabled = true
 bbcode_text = "[center]Score: 0 // Misses: 0 // Accuracy: N/A"
 text = "Score: 0 // Misses: 0 // Accuracy: N/A"
+scroll_active = false
 
 [node name="TimeBar" type="Node2D" parent="camHUD"]
 modulate = Color( 1, 1, 1, 0 )

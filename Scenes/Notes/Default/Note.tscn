@@ -21,7 +21,6 @@ position = Vector2( 0.285713, -0.142869 )
 texture = ExtResource( 3 )
 
 [node name="Note" type="AnimatedSprite" parent="."]
-scale = Vector2( 1, 1 )
 frames = ExtResource( 1 )
 animation = "A"
 playing = true

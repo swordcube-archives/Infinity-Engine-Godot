@@ -10,7 +10,21 @@ var dialogue_array:Array = []
 
 var dialogue_started:bool = false
 
+var character_on_screen = ""
+
+var left = null
+var middle = null
+var right = null
+
 func _ready():
+	left = load("res://Scenes/Gameplay/Dialogue/Characters/bf.tscn").instance()
+	middle = load("res://Scenes/Gameplay/Dialogue/Characters/bf.tscn").instance()
+	right = load("res://Scenes/Gameplay/Dialogue/Characters/bf.tscn").instance()
+	
+	$chars.add_child(left)
+	$chars.add_child(middle)
+	$chars.add_child(right)
+	
 	var song = Gameplay.SONG.song
 	json = JsonUtil.get_json("res://Assets/Songs/" + song.song + "/dialogue")
 	
@@ -65,6 +79,28 @@ func next_dialogue():
 func render_dialogue():
 	$text.text = ""
 	
+	if dialogue_list[0].char != character_on_screen:
+		$chars.remove_child(left)
+		$chars.remove_child(middle)
+		$chars.remove_child(right)
+		
+		character_on_screen = dialogue_list[0].char
+		var loaded_char = load("res://Scenes/Gameplay/Dialogue/Characters/" + dialogue_list[0].char + ".tscn")
+		var char_instance = loaded_char.instance()
+		match char_instance.alignment:
+			"left":
+				char_instance.global_position.x = 100
+			"middle":
+				char_instance.global_position.x = ScreenRes.screen_width / 2
+			"right", _:
+				char_instance.global_position.x = 100
+				
+		char_instance.global_position.y = 360
+		
+		$chars.add_child(left)
+		$chars.add_child(middle)
+		$chars.add_child(right)
+	
 	remove_child(dialogue_timer)
 	dialogue_timer = Timer.new()
 	dialogue_timer.set_wait_time(dialogue_list[0].speed)
@@ -101,7 +137,9 @@ func _process(delta):
 	end_dialogue()
 
 func end_dialogue():
-	get_node("../../").in_cutscene = false
+	if get_node("../../") != null:
+		get_node("../../").in_cutscene = false
+		
 	queue_free()
 
 func _on_box_animation_finished():

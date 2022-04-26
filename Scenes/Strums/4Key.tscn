@@ -1,29 +1,20 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://Assets/Images/UI Skins/Default/strums.res" type="SpriteFrames" id=1]
+[ext_resource path="res://Scenes/Strums/Strum.tscn" type="PackedScene" id=2]
 
 [node name="4Key" type="Node2D"]
 scale = Vector2( 0.7, 0.7 )
 
-[node name="left_key" type="AnimatedSprite" parent="."]
-frames = ExtResource( 1 )
-animation = "arrowLEFT"
-playing = true
+[node name="Strum" parent="." instance=ExtResource( 2 )]
 
-[node name="down_key" type="AnimatedSprite" parent="."]
+[node name="Strum2" parent="." instance=ExtResource( 2 )]
 position = Vector2( 160, 0 )
-frames = ExtResource( 1 )
-animation = "arrowDOWN"
-playing = true
+direction = "B"
 
-[node name="up_key" type="AnimatedSprite" parent="."]
+[node name="Strum3" parent="." instance=ExtResource( 2 )]
 position = Vector2( 320, 0 )
-frames = ExtResource( 1 )
-animation = "arrowUP"
-playing = true
+direction = "C"
 
-[node name="right_key" type="AnimatedSprite" parent="."]
-position = Vector2( 479, 0 )
-frames = ExtResource( 1 )
-animation = "arrowRIGHT"
-playing = true
+[node name="Strum4" parent="." instance=ExtResource( 2 )]
+position = Vector2( 480, 0 )
+direction = "D"

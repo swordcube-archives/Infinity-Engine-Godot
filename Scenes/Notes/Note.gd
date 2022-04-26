@@ -33,7 +33,7 @@ onready var line = $Line2D
 func set_direction():
 	old_sus = sustainLength
 	
-	dir_string = Gameplay.note_letter_directions[Gameplay.SONG.song.keyCount - 1][noteData % Gameplay.SONG.song.keyCount]
+	dir_string = Gameplay.note_letter_directions[Gameplay.key_count - 1][noteData % Gameplay.key_count]
 			
 	$Note.play(dir_string)
 			

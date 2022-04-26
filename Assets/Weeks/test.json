@@ -8,12 +8,12 @@
         }
     ],
     "difficulties": ["normal"],
-    "characters": ["pico", "bf", "gf"],
-    "description": "PICO",
+    "characters": ["bf", "bf", "gf"],
+    "description": "TEST LOL",
     "texture": "week1",
     "background_image": "",
     "background_color": "f9cf51",
     "locked_before": "",
     "shows_in_freeplay": true,
-    "shows_in_story_mode": false
+    "shows_in_story_mode": true
 }

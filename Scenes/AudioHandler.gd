@@ -53,7 +53,7 @@ func stop_voices():
 # countdown shit
 func play_countdown(num):
 	match num:
-		0:
+		3:
 			var sound = get_node("intro3-" + Gameplay.ui_Skin.to_lower())
 			
 			if sound == null:
@@ -61,7 +61,7 @@ func play_countdown(num):
 				
 			sound.play()
 			sound.seek(0)
-		1:
+		2:
 			var sound = get_node("intro2-" + Gameplay.ui_Skin.to_lower())
 
 			if sound == null:
@@ -69,7 +69,7 @@ func play_countdown(num):
 			
 			sound.play()
 			sound.seek(0)
-		2:
+		1:
 			var sound = get_node("intro1-" + Gameplay.ui_Skin.to_lower())
 
 			if sound == null:
@@ -77,7 +77,7 @@ func play_countdown(num):
 			
 			sound.play()
 			sound.seek(0)
-		3:
+		0:
 			var sound = get_node("introGo-" + Gameplay.ui_Skin.to_lower())
 
 			if sound == null:

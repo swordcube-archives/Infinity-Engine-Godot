@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Images/UI Skins/Default/strums.res" type="SpriteFrames" id=1]
+[ext_resource path="res://Scenes/Strums/Strum.gd" type="Script" id=2]
+
+[node name="Strum" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="key" type="AnimatedSprite" parent="."]
+frames = ExtResource( 1 )
+animation = "A static"
+playing = true
+
+[connection signal="animation_finished" from="key" to="." method="_on_key_animation_finished"]

@@ -16,9 +16,13 @@ export(bool) var dances = true
 
 var special_anim = false
 
-func _ready():
+func _ready():		
 	if dances:
 		dance(true)
+		
+func flip():
+	if is_player:
+		scale.x *= -1
 
 func play_anim(anim, force = false):
 	if name != "_" and $anim.get_animation(anim) != null:

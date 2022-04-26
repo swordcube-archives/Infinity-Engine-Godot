@@ -1,6 +1,4 @@
-extends Node2D
-
-export(float) var default_cam_zoom = 1.05
+extends "res://Stages/stage.gd"
 
 var lightningStrikeBeat = 0
 var lightningOffset = 0

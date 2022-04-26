@@ -7,7 +7,6 @@
 
 [node name="stage" type="Node2D"]
 script = ExtResource( 4 )
-default_cam_zoom = 1.1
 
 [node name="StageBack" type="ParallaxBackground" parent="."]
 
