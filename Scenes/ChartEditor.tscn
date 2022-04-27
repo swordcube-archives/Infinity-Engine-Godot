@@ -53,9 +53,14 @@ visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
-margin_top = 24.0
+margin_top = 32.0
 margin_right = -4.0
 margin_bottom = -4.0
+
+[node name="CameraP1" type="CheckBox" parent="Tabs/Section"]
+margin_right = 24.0
+margin_bottom = 24.0
+text = "Camera Points To Player 1"
 
 [node name="Notes" type="Tabs" parent="Tabs"]
 visible = false
@@ -371,6 +376,7 @@ margin_right = 284.0
 margin_bottom = 624.0
 text = "Clear Events"
 
+[connection signal="pressed" from="Tabs/Section/CameraP1" to="." method="_on_CameraP1_pressed"]
 [connection signal="item_selected" from="Tabs/Notes/NoteType/NoteTypeDropdown" to="." method="_on_NoteTypeDropdown_item_selected"]
 [connection signal="item_selected" from="Tabs/Events/Event/EventDropdown" to="." method="_on_EventDropdown_item_selected"]
 [connection signal="pressed" from="Tabs/Events/MergedEvents/MergedEventsLeft" to="." method="_on_MergedEventsLeft_pressed"]

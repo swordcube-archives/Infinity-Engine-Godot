@@ -523,9 +523,10 @@ dances_left_right = true
 [node name="frames" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -326 )
 frames = ExtResource( 2 )
-animation = "danceLeft"
-frame = 14
+animation = "singDOWN"
+frame = 19
 playing = true
+offset = Vector2( 0, 5 )
 
 [node name="anim" type="AnimationPlayer" parent="."]
 root_node = NodePath("../frames")

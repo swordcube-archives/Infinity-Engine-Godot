@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Assets/Fonts/vcr.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Scenes/PlayState.gd" type="Script" id=2]
 [ext_resource path="res://Assets/Images/Icons/dad.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Images/Icons/bf.png" type="Texture" id=4]
+[ext_resource path="res://Scenes/Gameplay/HealthIcon.gd" type="Script" id=5]
 [ext_resource path="res://Scenes/Gameplay/Dialogue/DialogueBox.tscn" type="PackedScene" id=8]
 
 [sub_resource type="DynamicFont" id=1]
@@ -77,12 +78,14 @@ color = Color( 0.192157, 0.690196, 0.819608, 1 )
 position = Vector2( 589, 60 )
 texture = ExtResource( 3 )
 hframes = 3
+script = ExtResource( 5 )
 
 [node name="IconP1" type="Sprite" parent="camHUD/HealthBar"]
 position = Vector2( 701, 60 )
 texture = ExtResource( 4 )
 flip_h = true
 hframes = 3
+script = ExtResource( 5 )
 
 [node name="ScoreText" type="RichTextLabel" parent="camHUD/HealthBar"]
 margin_top = 96.0

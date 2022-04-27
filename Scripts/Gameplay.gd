@@ -9,6 +9,7 @@ var death_camera_pos = Vector2(0, 0)
 var death_character_pos = Vector2(0, 0)
 
 var blueballed:int = 0
+var practice_mode:bool = false
 
 var used_practice:bool = false
 

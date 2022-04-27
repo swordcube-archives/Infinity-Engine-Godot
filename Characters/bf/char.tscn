@@ -4,8 +4,7 @@
 [ext_resource path="res://Characters/bf/assets.res" type="SpriteFrames" id=2]
 [ext_resource path="res://Assets/Images/Icons/bf.png" type="Texture" id=3]
 
-[sub_resource type="Animation" id=10]
-resource_name = "hey"
+[sub_resource type="Animation" id=498]
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:animation")
 tracks/0/interp = 1
@@ -52,11 +51,10 @@ tracks/3/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( 0, 0 ) ]
+"values": [ Vector2( 0, -2 ) ]
 }
 
-[sub_resource type="Animation" id=1]
-resource_name = "idle"
+[sub_resource type="Animation" id=499]
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:animation")
 tracks/0/interp = 1
@@ -106,8 +104,7 @@ tracks/3/keys = {
 "values": [ Vector2( 0, 0 ) ]
 }
 
-[sub_resource type="Animation" id=11]
-resource_name = "scared"
+[sub_resource type="Animation" id=500]
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:animation")
 tracks/0/interp = 1
@@ -157,8 +154,7 @@ tracks/3/keys = {
 "values": [ Vector2( 0, 0 ) ]
 }
 
-[sub_resource type="Animation" id=3]
-resource_name = "singDOWN"
+[sub_resource type="Animation" id=501]
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:animation")
 tracks/0/interp = 1
@@ -208,8 +204,7 @@ tracks/3/keys = {
 "values": [ Vector2( 0, 25 ) ]
 }
 
-[sub_resource type="Animation" id=7]
-resource_name = "singDOWNmiss"
+[sub_resource type="Animation" id=502]
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:animation")
 tracks/0/interp = 1
@@ -259,8 +254,7 @@ tracks/3/keys = {
 "values": [ Vector2( 0, 12 ) ]
 }
 
-[sub_resource type="Animation" id=2]
-resource_name = "singLEFT"
+[sub_resource type="Animation" id=503]
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:animation")
 tracks/0/interp = 1
@@ -310,8 +304,7 @@ tracks/3/keys = {
 "values": [ Vector2( -17, 5 ) ]
 }
 
-[sub_resource type="Animation" id=6]
-resource_name = "singLEFTmiss"
+[sub_resource type="Animation" id=504]
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:animation")
 tracks/0/interp = 1
@@ -361,8 +354,7 @@ tracks/3/keys = {
 "values": [ Vector2( -17, -7 ) ]
 }
 
-[sub_resource type="Animation" id=4]
-resource_name = "singRIGHT"
+[sub_resource type="Animation" id=505]
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:animation")
 tracks/0/interp = 1
@@ -412,8 +404,7 @@ tracks/3/keys = {
 "values": [ Vector2( 45, 5 ) ]
 }
 
-[sub_resource type="Animation" id=9]
-resource_name = "singRIGHTmiss"
+[sub_resource type="Animation" id=506]
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:animation")
 tracks/0/interp = 1
@@ -463,8 +454,7 @@ tracks/3/keys = {
 "values": [ Vector2( 45, -10 ) ]
 }
 
-[sub_resource type="Animation" id=5]
-resource_name = "singUP"
+[sub_resource type="Animation" id=507]
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:animation")
 tracks/0/interp = 1
@@ -514,8 +504,7 @@ tracks/3/keys = {
 "values": [ Vector2( 15, -15 ) ]
 }
 
-[sub_resource type="Animation" id=8]
-resource_name = "singUPmiss"
+[sub_resource type="Animation" id=508]
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:animation")
 tracks/0/interp = 1
@@ -580,17 +569,17 @@ playing = true
 
 [node name="anim" type="AnimationPlayer" parent="."]
 root_node = NodePath("../frames")
-anims/hey = SubResource( 10 )
-anims/idle = SubResource( 1 )
-anims/scared = SubResource( 11 )
-anims/singDOWN = SubResource( 3 )
-anims/singDOWNmiss = SubResource( 7 )
-anims/singLEFT = SubResource( 2 )
-anims/singLEFTmiss = SubResource( 6 )
-anims/singRIGHT = SubResource( 4 )
-anims/singRIGHTmiss = SubResource( 9 )
-anims/singUP = SubResource( 5 )
-anims/singUPmiss = SubResource( 8 )
+anims/hey = SubResource( 498 )
+anims/idle = SubResource( 499 )
+anims/scared = SubResource( 500 )
+anims/singDOWN = SubResource( 501 )
+anims/singDOWNmiss = SubResource( 502 )
+anims/singLEFT = SubResource( 503 )
+anims/singLEFTmiss = SubResource( 504 )
+anims/singRIGHT = SubResource( 505 )
+anims/singRIGHTmiss = SubResource( 506 )
+anims/singUP = SubResource( 507 )
+anims/singUPmiss = SubResource( 508 )
 
 [node name="camera_pos" type="Node2D" parent="."]
 position = Vector2( -149, -294 )

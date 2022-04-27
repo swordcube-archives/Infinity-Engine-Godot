@@ -78,11 +78,12 @@ func _process(_delta):
 	selected_x = floor(mouse_pos.x / grid_size)
 	selected_y = floor(mouse_pos.y / grid_size)
 	
-	for note in $Notes.get_children():
-		if Conductor.songPosition >= note.strumTime:
-			note.modulate.a = 0.4
-			note.strumTime = 9999999
-			AudioHandler.play_hitsound("osu!")
+	if $"../".playing:
+		for note in $Notes.get_children():
+			if Conductor.songPosition >= note.strumTime:
+				note.modulate.a = 0.4
+				note.strumTime = 9999999
+				AudioHandler.play_hitsound("osu!")
 	
 	var cool_grid = grid_size / (note_snap / 16.0)
 	
@@ -117,11 +118,19 @@ func load_section(section):
 			"mustHitSection": true
 		})
 		
+	$"../Tabs/Section/CameraP1".pressed = Gameplay.SONG.song.notes[section].mustHitSection
+		
 	for event in events:
 		spawn_event(time_to_y(event[0] - section_start_time()), time_to_y(event[0] - section_start_time()), event[0], event[1])
 		
 	for note in Gameplay.SONG.song.notes[section].sectionNotes:
-		spawn_note(note[1] + 1, time_to_y(note[0] - section_start_time()), time_to_y(note[0] - section_start_time()), note[0], note[2], note[3])
+		var type = "Default"
+		
+		if range(note.size()).has(3):
+			if note[3] is String:
+				type = note[3]
+				
+		spawn_note(note[1] + 1, time_to_y(note[0] - section_start_time()), time_to_y(note[0] - section_start_time()), note[0], note[2], type)
 		
 func section_start_time(section = null):
 	if section == null:
@@ -293,8 +302,20 @@ func spawn_note(x, y, custom_y = null, strum_time = 0, sustain_length = 0, note_
 	
 	end.visible = false
 	
-	new_note.scale.x = 40.0 / anim_spr.frames.get_frame(anim_spr.animation, anim_spr.frame).get_width()
-	new_note.scale.y = 40.0 / anim_spr.frames.get_frame(anim_spr.animation, anim_spr.frame).get_height()
+	var size:Vector2
+	
+	if anim_spr is AnimatedSprite:
+		size = Vector2(anim_spr.frames.get_frame(anim_spr.animation, anim_spr.frame).get_width(), anim_spr.frames.get_frame(anim_spr.animation, anim_spr.frame).get_height())
+	else:
+		size = Vector2(anim_spr.texture.get_width(), anim_spr.texture.get_height())
+		
+	if new_note.charter_image_size > Vector2(0, 0):
+		size = new_note.charter_image_size
+	
+	new_note.scale.x = 40.0 / size.x
+	new_note.scale.y = 40.0 / size.y
+	
+	anim_spr.offset = new_note.charter_offset
 	
 	$Notes.add_child(new_note)
 	return new_note

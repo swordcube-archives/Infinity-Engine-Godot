@@ -42,7 +42,7 @@ func _ready():
 	funny_timer.connect("timeout", self, "start_death_stuff")
 	
 func _process(delta):
-	if bf.get_node("frames").animation == "firstDeath" and bf.get_node("frames").frame == 26:
+	if bf.get_node("frames").animation == "firstDeath" and bf.get_node("frames").frame == 5:
 		$Cam.position = bf.global_position
 		$Cam.position.y -= 200
 		

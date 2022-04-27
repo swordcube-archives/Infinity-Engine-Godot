@@ -11,6 +11,7 @@
 
 [node name="stage" type="Node2D"]
 script = ExtResource( 6 )
+default_cam_zoom = 1.05
 
 [node name="sky" type="ParallaxBackground" parent="."]
 scale = Vector2( 1.1, 1.1 )
@@ -33,12 +34,12 @@ motion_scale = Vector2( 0.3, 0.3 )
 motion_offset = Vector2( 1040, -100 )
 
 [node name="spr" type="Sprite" parent="city/parallax"]
-position = Vector2( -1663.57, 141.782 )
+position = Vector2( -1619.93, 141.782 )
 scale = Vector2( 0.85, 0.85 )
 texture = ExtResource( 2 )
 
 [node name="windows" type="Sprite" parent="city/parallax"]
-position = Vector2( -1663.57, 141.782 )
+position = Vector2( -1619.93, 141.782 )
 scale = Vector2( 0.85, 0.85 )
 texture = ExtResource( 4 )
 
@@ -49,7 +50,7 @@ transform = Transform2D( 1.1, 0, 0, 1.1, 0, 0 )
 [node name="parallax" type="ParallaxLayer" parent="behindTrain"]
 
 [node name="spr" type="Sprite" parent="behindTrain/parallax"]
-position = Vector2( -1693.57, 198.145 )
+position = Vector2( -1713.57, 198.145 )
 scale = Vector2( 1.15366, 1.15366 )
 texture = ExtResource( 5 )
 
@@ -71,7 +72,7 @@ transform = Transform2D( 1.1, 0, 0, 1.1, 0, 0 )
 [node name="parallax" type="ParallaxLayer" parent="street"]
 
 [node name="spr" type="Sprite" parent="street/parallax"]
-position = Vector2( -1693.57, 198.145 )
+position = Vector2( -1713.57, 198.145 )
 scale = Vector2( 1.15366, 1.15366 )
 texture = ExtResource( 3 )
 

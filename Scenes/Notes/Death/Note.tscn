@@ -1,17 +1,18 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Scenes/Notes/Note.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Images/UI Skins/Default/notes.res" type="SpriteFrames" id=2]
-[ext_resource path="res://Assets/Images/UI Skins/Default/Sustains/A hold0000.png" type="Texture" id=3]
-[ext_resource path="res://Assets/Images/UI Skins/Default/Sustains/A tail0000.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Images/Custom Notes/Death/assets.res" type="SpriteFrames" id=2]
+[ext_resource path="res://Assets/Images/Custom Notes/Death/Sustains/hold.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Images/Custom Notes/Death/Sustains/tail.png" type="Texture" id=4]
 
 [node name="Note" type="Node2D"]
-modulate = Color( 1, 0, 0, 1 )
 scale = Vector2( 0.7, 0.7 )
 script = ExtResource( 1 )
 bf_health_gain = 0.0
 hit_damage = 1e+17
 shouldHit = false
+charter_image_size = Vector2( 150, 150 )
+charter_offset = Vector2( -260, -50 )
 
 [node name="Line2D" type="Line2D" parent="."]
 points = PoolVector2Array( 0, 0, 0, 0 )
@@ -25,6 +26,8 @@ position = Vector2( 0.285713, -0.142869 )
 texture = ExtResource( 4 )
 
 [node name="Note" type="AnimatedSprite" parent="."]
+position = Vector2( -4.28571, -52.8572 )
 frames = ExtResource( 2 )
 animation = "A"
+frame = 2
 playing = true

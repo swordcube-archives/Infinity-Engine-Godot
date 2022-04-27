@@ -8,6 +8,8 @@ export(float) var bf_health_gain = 0.023
 export(float) var hit_damage = 0.0
 export(float) var miss_damage = 0.0475
 export(bool) var shouldHit = true
+export(Vector2) var charter_image_size = Vector2(0, 0)
+export(Vector2) var charter_offset = Vector2(0, 0)
 
 var isSustainNote = false
 var mustPress = false
@@ -32,16 +34,20 @@ var isGaming = false
 
 var charter_note = false
 
+var delta = 0.0
+
 onready var line = $Line2D
 
 func set_direction():
 	old_sus = sustainLength
 	
 	dir_string = Gameplay.note_letter_directions[Gameplay.key_count - 1][noteData % Gameplay.key_count]
-			
-	$Note.play(dir_string)
+		
+	if $Note is AnimatedSprite:
+		$Note.play(dir_string)
 			
 func _process(delta):
+	self.delta = delta
 	if not charter_note:
 		PlayState = get_parent().get_parent().get_parent()
 		
@@ -72,9 +78,20 @@ func _process(delta):
 func opponent_note_hit():
 	PlayState.health -= dad_health_gain
 	
+var hold_timer = 0
+	
 func player_note_hit():
-	PlayState.health += bf_health_gain
-	PlayState.health -= hit_damage
+	if get_node("Note").visible:
+		PlayState.health += bf_health_gain
+		PlayState.health -= hit_damage
+	else:
+		if hold_timer <= 0:
+			PlayState.health += bf_health_gain
+			PlayState.health -= hit_damage
+			
+		hold_timer += delta
+		if hold_timer >= delta * 4:
+			hold_timer = 0
 	
 func player_note_miss():
 	PlayState.health -= miss_damage

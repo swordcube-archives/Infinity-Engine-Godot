@@ -460,3 +460,8 @@ func _on_NoteTypeDropdown_item_selected(index):
 	if $Grid.selected_note != null: 
 		$Grid.selected_note[3] = $Tabs/Notes/NoteType/NoteTypeDropdown.text
 		$Grid.load_section(curSection)
+
+func _on_CameraP1_pressed():
+	Gameplay.SONG.song.notes[curSection].mustHitSection = $Tabs/Section/CameraP1.pressed
+	$Tabs/Section/CameraP1.release_focus()
+	refresh_icons()

@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Scenes/Notes/Note.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Images/Custom Notes/Warning/note.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Images/Custom Notes/Warning/Sustains/hold.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Images/Custom Notes/Warning/Sustains/tail.png" type="Texture" id=4]
+
+[node name="Note" type="Node2D"]
+scale = Vector2( 0.7, 0.7 )
+script = ExtResource( 1 )
+bf_health_gain = 0.15
+miss_damage = 1e+17
+
+[node name="Line2D" type="Line2D" parent="."]
+points = PoolVector2Array( 0, 0, 0, 0 )
+width = 50.0
+default_color = Color( 1, 1, 1, 1 )
+texture = ExtResource( 3 )
+texture_mode = 1
+
+[node name="End" type="Sprite" parent="."]
+position = Vector2( 0.285713, -0.142869 )
+texture = ExtResource( 4 )
+
+[node name="Note" type="Sprite" parent="."]
+texture = ExtResource( 2 )

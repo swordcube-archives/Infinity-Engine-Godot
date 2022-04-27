@@ -58,6 +58,8 @@ var shits = 0
 
 var loaded_modcharts = []
 
+var events = []
+
 var sing_anims_list = [
 	["singUP"],
 	["singLEFT", "singRIGHT"],
@@ -82,8 +84,11 @@ var inst_length = 0.0
 var voices_time = 0.0
 
 func _ready():
-	if botplay:
+	if botplay or Gameplay.practice_mode:
 		Gameplay.used_practice = true
+		
+	if "events" in Gameplay.SONG.song:
+		events = Gameplay.SONG.song.events.duplicate()
 		
 	Conductor.change_bpm(Gameplay.SONG.song.bpm, Gameplay.song_multiplier)
 	Conductor.recalculate_values(Gameplay.song_multiplier)
@@ -424,6 +429,9 @@ func _physics_process(delta):
 		if Conductor.songPosition >= inst_length:
 			check_for_achievements()
 		
+	# notes spawn in this function because who the fuck
+	# will notice notes spawning at like 92734382918 fps anyways
+	# physics process runs at 60fps
 	var index = 0
 	for note in noteDataArray:
 		if float(note[0]) > Conductor.songPosition + 5000:
@@ -456,8 +464,23 @@ func _physics_process(delta):
 			else:
 				dunceNote.scale = player_strums.scale
 				
-			dunceNote.get_node("Line2D").texture = load("res://Assets/Images/UI Skins/" + Gameplay.ui_Skin + "/Sustains/" + dunceNote.dir_string + " hold0000.png")
-			dunceNote.get_node("End").texture = load("res://Assets/Images/UI Skins/" + Gameplay.ui_Skin + "/Sustains/" + dunceNote.dir_string + " tail0000.png")
+			var fard = "res://Assets/Images/UI Skins/"
+			var skin = Gameplay.ui_Skin
+			if note[5] != "Default":
+				fard = "res://Assets/Images/Custom Notes/"
+				skin = note[5]
+				
+			var hold = load(fard + skin + "/Sustains/" + dunceNote.dir_string + " hold0000.png")
+			var end = load(fard + skin + "/Sustains/" + dunceNote.dir_string + " tail0000.png")
+			
+			if hold == null:
+				hold = load(fard + skin + "/Sustains/hold.png")
+				
+			if end == null:
+				end = load(fard + skin + "/Sustains/tail.png")
+				
+			dunceNote.get_node("Line2D").texture = hold
+			dunceNote.get_node("End").texture = end
 			
 			game_notes.add_child(dunceNote)
 			
@@ -469,6 +492,20 @@ func _physics_process(delta):
 			noteDataArray.remove(index)
 	
 		index += 1
+		
+	# events spawn in this function because who the fuck
+	# will notice events spawning at like 92734382918 fps anyways
+	# physics process runs at 60fps
+	for event in events:
+		if Conductor.songPosition >= event[0]:
+			for piss in event[1]:
+				var event_name = piss[0]
+				var value1 = piss[1]
+				var value2 = piss[2]
+				
+				trigger_event(event_name, value1, value2)
+				
+			events.remove(0)
 		
 var botplay_text_sine = 0.0
 	
@@ -486,6 +523,7 @@ func _process(delta):
 		
 	if Input.is_action_just_pressed("reset") and Options.get_data("enable-retry-button"):
 		health -= 999999999
+		check_health()
 	
 	$camHUD/BotplayText.visible = botplay
 	
@@ -516,6 +554,18 @@ func _process(delta):
 	
 	icon_p2.position.x = ((589 + health_bar.position.x) - ((icon_p2.scale.x - 1) * 70)) - ((health - 1) * 589 / 2)
 	icon_p1.position.x = ((701 + health_bar.position.x) + ((icon_p1.scale.x - 1) * 70)) - ((health - 1) * 589 / 2)
+	
+	var health_percentage = (health / 2) * 100
+	if health_percentage < 20:
+		icon_p2.switch_to("winning")
+		icon_p1.switch_to("losing")
+	else:
+		icon_p2.switch_to("normal")
+		icon_p1.switch_to("normal")
+		
+	if health_percentage > 80:
+		icon_p1.switch_to("winning")
+		icon_p2.switch_to("losing")
 	
 	health_bar.get_node("BFColor").rect_scale.x = health / 2
 	
@@ -567,8 +617,8 @@ func _process(delta):
 			
 		# missing
 		
-		# made it so you don't get a miss for releasing
-		# a sustain ever so slightly early
+		# you can no longer just hold down the keys to hit sustains
+		# you have to actually try to hit them now :D
 		
 		# edit this to edit how early you can release without
 		# getting punished
@@ -584,7 +634,7 @@ func _process(delta):
 			if note.sustainLength <= 0:
 				note.queue_free()
 		else:
-			if your or your2:
+			if your or your2 or (note.mustPress and not note.beingPressed and pressed[note.noteData]):
 				if Conductor.songPosition > note.strumTime + Conductor.safeZoneOffset:
 					if note.shouldHit:
 						song_score -= 10
@@ -599,6 +649,7 @@ func _process(delta):
 						AudioHandler.play_audio("missnote" + str(randi()%3 + 1))
 						
 						total_notes += 1
+						note.player_note_miss()
 						calculate_accuracy()
 						
 						if bf.special_anim != true:
@@ -610,13 +661,22 @@ func _process(delta):
 		
 	if not in_cutscene:			
 		process_inputs(delta)
-					
-	if health < 0:
+				
+	check_health()	
+
+var already_dead = false
+
+func check_health():
+	if health <= 0:
 		health = 0
-		Gameplay.death_character = bf.death_character
-		Gameplay.death_character_pos = bf.global_position
-		Gameplay.death_camera_pos = cam_game.position
-		SceneManager.switch_scene("Gameover", false)
+		if not Gameplay.practice_mode:
+			if not already_dead:
+				already_dead = true
+				Gameplay.death_character = bf.death_character
+				Gameplay.death_character_pos = bf.global_position
+				Gameplay.death_camera_pos = cam_game.position
+				Gameplay.blueballed += 1
+				SceneManager.switch_scene("Gameover", false)
 		
 	if health > 2:
 		health = 2
@@ -743,7 +803,7 @@ func process_inputs(delta):
 						note_miss(i)
 				
 		for note in game_notes.get_children():
-			if note.mustPress and note.sustainLength > 0 and pressed[note.noteData] and Conductor.songPosition >= note.strumTime or botplay and note.mustPress and note.sustainLength > 0 and Conductor.songPosition >= note.strumTime:
+			if note.mustPress and note.beingPressed and note.sustainLength > 0 and pressed[note.noteData] and Conductor.songPosition >= note.strumTime or botplay and note.mustPress and note.sustainLength > 0 and Conductor.songPosition >= note.strumTime:
 				var strum = player_strums.get_children()[note.noteData]
 				
 				if Options.get_data("strum-animations"):
@@ -754,12 +814,9 @@ func process_inputs(delta):
 				
 				AudioHandler.get_node("Voices").volume_db = 0
 				
-				if Options.get_data("pussy-mode"):
-					health += delta / 4
-				
+				note.player_note_hit()
 				note.get_node("Note").visible = false
 				note.global_position.y = strum.global_position.y
-				note.player_note_hit()
 				note.sustainLength -= (delta * 1000) * Gameplay.song_multiplier
 				if note.sustainLength <= 0:
 					note.queue_free()
@@ -790,10 +847,8 @@ func process_inputs(delta):
 					bf.play_anim(sing_anims[note.noteData], true)
 				
 				AudioHandler.get_node("Voices").volume_db = 0
-				
-				if Options.get_data("pussy-mode"):
-					health += delta / 4
-				
+
+				note.player_note_hit()
 				note.get_node("Note").visible = false
 				note.global_position.y = strum.global_position.y
 				note.sustainLength -= (delta * 1000) * Gameplay.song_multiplier
@@ -1028,7 +1083,7 @@ func step_hit():
 		$camHUD/TimeBar/FGColor.color = dad.health_color
 		
 func resync_vocals():
-	if AudioHandler.get_node("Inst").playing or AudioHandler.get_node("Voices").playing:
+	if not countdown_active:
 		Conductor.songPosition = (AudioHandler.get_node("Inst").get_playback_position() * 1000)
 		AudioHandler.get_node("Voices").seek(Conductor.songPosition / 1000)
 	
