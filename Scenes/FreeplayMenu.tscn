@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Assets/Images/menuDesat.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/FreeplayMenu.gd" type="Script" id=2]
+[ext_resource path="res://Scenes/FreeplayIcon.gd" type="Script" id=3]
 [ext_resource path="res://Assets/Fonts/font_alphabet.tres" type="BitmapFont" id=4]
 [ext_resource path="res://Assets/Images/Icons/dad.png" type="Texture" id=5]
 [ext_resource path="res://Assets/Fonts/vcr.ttf" type="DynamicFontData" id=6]
@@ -37,6 +38,7 @@ uppercase = true
 position = Vector2( 495, 48 )
 texture = ExtResource( 5 )
 hframes = 3
+script = ExtResource( 3 )
 
 [node name="Songs" type="Node2D" parent="."]
 

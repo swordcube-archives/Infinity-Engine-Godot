@@ -563,9 +563,10 @@ is_player = true
 [node name="frames" type="AnimatedSprite" parent="."]
 position = Vector2( 1, -207 )
 frames = ExtResource( 2 )
-animation = "idle"
-frame = 13
+animation = "hey"
+frame = 25
 playing = true
+offset = Vector2( 0, -2 )
 
 [node name="anim" type="AnimationPlayer" parent="."]
 root_node = NodePath("../frames")
@@ -585,4 +586,3 @@ anims/singUPmiss = SubResource( 508 )
 position = Vector2( -149, -294 )
 
 [connection signal="animation_finished" from="frames" to="." method="_on_frames_animation_finished"]
-[connection signal="animation_finished" from="anim" to="." method="_on_anim_animation_finished"]

@@ -8,12 +8,12 @@ var old_texture = null
 func _process(delta):
 	if not old_texture == texture:
 		old_texture = texture
-		if texture.get_width() / 2 > PlayState.dad.icon_size.x:
-			hframes = 3
-		else:
-			hframes = 2
+		hframes = 3
 		
-		if texture.get_width() == PlayState.dad.icon_size.x:
+		if texture.get_width() == texture.get_height() * 2:
+			hframes = 2
+			
+		if texture.get_width() == texture.get_height():
 			hframes = 1
 		
 func switch_to(type):

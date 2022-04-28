@@ -6,7 +6,7 @@ func switch_scene(scene, transition = true):
 			Transition._fade_in()
 			
 			var timer = Timer.new()
-			timer.set_wait_time(0.75)
+			timer.set_wait_time(Transition.duration)
 			add_child(timer)
 			timer.start()
 			timer.set_one_shot(true)

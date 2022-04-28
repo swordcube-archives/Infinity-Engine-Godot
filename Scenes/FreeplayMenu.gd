@@ -14,6 +14,7 @@ var playing = ""
 var can_enter = true
 
 func _ready():	
+	add_child(bg_tween)
 	Gameplay.blueballed = 0
 	
 	if not AudioHandler.get_node("Inst").playing and not AudioHandler.get_node("Voices").playing and not AudioHandler.get_node("freakyMenu").playing:
@@ -94,7 +95,6 @@ func change_selection(amount):
 	$Songs.get_children()[curSelected].modulate.a = 1
 	
 	bg_tween.interpolate_property($BG/BG, "modulate", $BG/BG.modulate, Color(songs[curSelected].color), 1)
-	add_child(bg_tween)
 	bg_tween.start()
 	
 	position_highscore()

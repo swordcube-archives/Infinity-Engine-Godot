@@ -68,41 +68,42 @@ func _process(_delta):
 	$Line.rect_size.x = grid_size * (columns + 1)
 	$Line.rect_position.y = time_to_y(Conductor.songPosition - section_start_time())
 	
-	var prev_selected_x = selected_x
-	var prev_selected_y = selected_y
-	
-	var mouse_pos = get_global_mouse_position()
-	mouse_pos.x -= position.x
-	mouse_pos.y -= position.y
-	
-	selected_x = floor(mouse_pos.x / grid_size)
-	selected_y = floor(mouse_pos.y / grid_size)
-	
-	if $"../".playing:
-		for note in $Notes.get_children():
-			if Conductor.songPosition >= note.strumTime:
-				note.modulate.a = 0.4
-				note.strumTime = 9999999
-				AudioHandler.play_hitsound("osu!")
-	
-	var cool_grid = grid_size / (note_snap / 16.0)
-	
-	if Input.is_action_pressed("ui_shift"):
-		$Selected.rect_position = Vector2(selected_x * grid_size, mouse_pos.y)
-	else:
-		$Selected.rect_position = Vector2(selected_x * grid_size, floor(mouse_pos.y / cool_grid) * cool_grid)
+	if $"../".can_interact:
+		var prev_selected_x = selected_x
+		var prev_selected_y = selected_y
 		
-	#if prev_selected_x != selected_x or prev_selected_y != selected_y:
-	update()
+		var mouse_pos = get_global_mouse_position()
+		mouse_pos.x -= position.x
+		mouse_pos.y -= position.y
 		
-	if Input.is_action_just_pressed("mouse_left"):
-		if selected_x >= 0 and selected_x <= columns:
-			if selected_y >= 0 and selected_y < rows:
-				if ctrl_pressed:
-					select_note(selected_x, selected_y)
-				else:
-					add_note(selected_x, selected_y)
-				print("PLACED NOTE!")
+		selected_x = floor(mouse_pos.x / grid_size)
+		selected_y = floor(mouse_pos.y / grid_size)
+		
+		if $"../".playing:
+			for note in $Notes.get_children():
+				if Conductor.songPosition >= note.strumTime:
+					note.modulate.a = 0.4
+					note.strumTime = 9999999
+					AudioHandler.play_hitsound("osu!")
+		
+		var cool_grid = grid_size / (note_snap / 16.0)
+		
+		if Input.is_action_pressed("ui_shift"):
+			$Selected.rect_position = Vector2(selected_x * grid_size, mouse_pos.y)
+		else:
+			$Selected.rect_position = Vector2(selected_x * grid_size, floor(mouse_pos.y / cool_grid) * cool_grid)
+			
+		#if prev_selected_x != selected_x or prev_selected_y != selected_y:
+		update()
+			
+		if Input.is_action_just_pressed("mouse_left"):
+			if selected_x >= 0 and selected_x <= columns:
+				if selected_y >= 0 and selected_y < rows:
+					if ctrl_pressed:
+						select_note(selected_x, selected_y)
+					else:
+						add_note(selected_x, selected_y)
+					print("PLACED NOTE!")
 		
 func load_section(section):
 	for note in $Notes.get_children():
@@ -129,6 +130,10 @@ func load_section(section):
 		if range(note.size()).has(3):
 			if note[3] is String:
 				type = note[3]
+				
+		if range(note.size()).has(4):
+			if note[4] is String:
+				type = note[4]
 				
 		spawn_note(note[1] + 1, time_to_y(note[0] - section_start_time()), time_to_y(note[0] - section_start_time()), note[0], note[2], type)
 		

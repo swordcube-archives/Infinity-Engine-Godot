@@ -115,3 +115,5 @@ stream = ExtResource( 25 )
 [node name="Generic" type="AudioStreamPlayer" parent="Hitsounds"]
 stream = ExtResource( 26 )
 volume_db = 6.12
+
+[node name="NotetypeHitsound" type="AudioStreamPlayer" parent="."]

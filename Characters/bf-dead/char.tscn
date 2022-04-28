@@ -166,10 +166,10 @@ is_player = true
 [node name="frames" type="AnimatedSprite" parent="."]
 position = Vector2( 1, -196 )
 frames = ExtResource( 2 )
-animation = "retry"
-frame = 33
+animation = "deathLoop"
+frame = 22
 playing = true
-offset = Vector2( 0, -31 )
+offset = Vector2( 0, 1 )
 
 [node name="anim" type="AnimationPlayer" parent="."]
 root_node = NodePath("../frames")
@@ -181,4 +181,3 @@ anims/retry = SubResource( 10 )
 position = Vector2( -221, -294 )
 
 [connection signal="animation_finished" from="frames" to="." method="_on_frames_animation_finished"]
-[connection signal="animation_finished" from="anim" to="." method="_on_anim_animation_finished"]

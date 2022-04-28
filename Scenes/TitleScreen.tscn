@@ -1,10 +1,9 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Assets/Images/gfDanceTitle.res" type="SpriteFrames" id=1]
 [ext_resource path="res://Assets/Images/logoBumpin.res" type="SpriteFrames" id=2]
 [ext_resource path="res://Assets/Images/titleEnter.res" type="SpriteFrames" id=3]
 [ext_resource path="res://Scenes/TitleScreen.gd" type="Script" id=4]
-[ext_resource path="res://Transition/Transition.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Assets/Fonts/font_alphabet.tres" type="BitmapFont" id=6]
 [ext_resource path="res://Assets/Images/GodotLogo.png" type="Texture" id=7]
 
@@ -34,7 +33,7 @@ playing = true
 position = Vector2( 832, 636 )
 frames = ExtResource( 3 )
 animation = "unpressed"
-frame = 36
+frame = 9
 playing = true
 
 [node name="Flash" type="ColorRect" parent="."]
@@ -62,5 +61,3 @@ visible = false
 position = Vector2( 640, 510 )
 scale = Vector2( 0.115234, 0.115234 )
 texture = ExtResource( 7 )
-
-[node name="Transition" parent="." instance=ExtResource( 5 )]

@@ -10,6 +10,9 @@ export(float) var miss_damage = 0.0475
 export(bool) var shouldHit = true
 export(Vector2) var charter_image_size = Vector2(0, 0)
 export(Vector2) var charter_offset = Vector2(0, 0)
+export(AudioStream) var hitsound = null
+
+var hitsound_player:AudioStreamPlayer = AudioStreamPlayer.new()
 
 var isSustainNote = false
 var mustPress = false

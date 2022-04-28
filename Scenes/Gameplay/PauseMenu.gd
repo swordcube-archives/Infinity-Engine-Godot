@@ -134,7 +134,7 @@ func _process(delta):
 				AudioHandler.play_audio("breakfast")
 				AudioHandler.get_node("breakfast").seek(0)
 				
-				remove_child(tween)
+				tween.queue_free()
 				tween.stop_all()
 				tween = Tween.new()
 				tween.interpolate_property(AudioHandler.get_node("breakfast"), "volume_db", -50, 0, AudioHandler.get_node("breakfast").stream.get_length() / 2)

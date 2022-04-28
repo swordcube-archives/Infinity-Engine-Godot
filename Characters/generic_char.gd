@@ -14,10 +14,6 @@ export(String) var death_character = "bf-dead"
 export(bool) var is_player = false
 export(bool) var dances = true
 
-# icon size is used for auto-detecting how many icons
-# your icon grid has (1 min, 3 max)
-export(Vector2) var icon_size = Vector2(150, 150)
-
 var special_anim = false
 
 func _ready():		

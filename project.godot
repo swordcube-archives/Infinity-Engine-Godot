@@ -41,6 +41,7 @@ ModManager="*res://Scripts/ModManager.gd"
 Events="*res://Scripts/Events.gd"
 MemoryLeaker="*res://Scripts/MemoryLeaker.gd"
 Achievements="*res://Scripts/Achievements.gd"
+BFCHelpers="*res://addons/bitmap_font_creator/BFCHelpers.gd"
 
 [display]
 
@@ -48,6 +49,10 @@ window/size/width=1280
 window/size/height=720
 window/stretch/mode="2d"
 window/stretch/aspect="keep"
+
+[editor_plugins]
+
+enabled=PoolStringArray(  )
 
 [gdnative]
 

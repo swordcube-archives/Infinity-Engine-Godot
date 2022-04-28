@@ -15,6 +15,7 @@ var can_interact = true
 
 var curEvent = 0
 
+var default_note_types = ["Default", "Death", "Warning"]
 var note_types = []
 
 func _ready():
@@ -23,7 +24,17 @@ func _ready():
 	for event in Events.event_list:
 		$Tabs/Events/Event/EventDropdown.add_item(event[0])
 	
-	var fuck = Util.list_files_in_directory("res://Scenes/Notes/")
+	var fuck = []
+	
+	var directory = Directory.new()
+	if directory.dir_exists("res://Scenes/Notes"):
+		fuck = Util.list_files_in_directory("res://Scenes/Notes/")
+	
+	for note_type in default_note_types:
+		fuck.erase(note_type)
+		if not fuck.has(note_type):
+			fuck.append(note_type)
+	
 	for file in fuck:
 		if not "." in file:
 			note_types.append(file)
@@ -336,7 +347,8 @@ func _on_BPMInput_text_changed():
 	Conductor.change_bpm(Gameplay.SONG.song.bpm)
 
 func _on_SaveChart_pressed():
-	print("DOESN'T WORK YET")
+	can_interact = false
+	$FileDialog.popup_centered()
 
 func _on_ReloadJSON_pressed():
 	var json = JsonUtil.get_json("res://Assets/Songs/" + str($Tabs/Song/Song/SongInput.text) + "/" + str($Tabs/Song/Difficulty/DiffInput.text).to_lower())
@@ -364,7 +376,26 @@ func _on_ClearEvents_pressed():
 	$Grid.load_section(curSection)
 
 func _on_SaveEvents_pressed():
-	pass # Replace with function body.
+	can_interact = false
+	$FileDialog2.popup_centered()
+	
+func file_saved(path):
+	var file = File.new()
+	file.open(path, File.WRITE)
+	file.store_line(to_json(Gameplay.SONG))
+	file.close()
+	
+	yield(get_tree().create_timer(0.1), "timeout")
+	can_interact = true
+	
+func event_saved(path):
+	var file = File.new()
+	file.open(path, File.WRITE)
+	file.store_line(to_json({"events": $Grid.events}))
+	file.close()
+	
+	yield(get_tree().create_timer(0.1), "timeout")
+	can_interact = true
 
 func _on_EventDropdown_item_selected(index):
 	reload_event_description(index)
@@ -465,3 +496,41 @@ func _on_CameraP1_pressed():
 	Gameplay.SONG.song.notes[curSection].mustHitSection = $Tabs/Section/CameraP1.pressed
 	$Tabs/Section/CameraP1.release_focus()
 	refresh_icons()
+
+func _on_CopyLastSection_pressed():
+	$Tabs/Section/CopyLastSection.release_focus()
+	var amount = int($Tabs/Section/SectionToCopy.text)
+	 
+	for note in Gameplay.SONG.song.notes[curSection - amount].sectionNotes:
+		var strum = note[0] + Conductor.timeBetweenSteps * (Gameplay.SONG.song.notes[curSection].lengthInSteps * amount)
+
+		var copiedNote:Array = [strum, note[1], note[2]]
+		Gameplay.SONG.song.notes[curSection].sectionNotes.append(copiedNote)
+		
+	$Grid.load_section(curSection)
+
+func _on_ClearSection_pressed():
+	$Tabs/Section/ClearSection.release_focus()
+	
+	var section = Gameplay.SONG.song.notes[curSection].sectionNotes
+	section.clear()
+	
+	$Grid.load_section(curSection)
+
+func _on_FileDialog_focus_entered():
+	can_interact = false
+
+func _on_FileDialog_focus_exited():
+	can_interact = false
+
+func _on_SwapSection_pressed():
+	$Tabs/Section/SwapSection.release_focus()
+	
+	var sections = Gameplay.SONG.song.notes[curSection].sectionNotes
+	
+	for i in len(sections):
+		var note = sections[i].duplicate()
+		note[1] = (note[1] + Gameplay.key_count) % (Gameplay.key_count * 2)
+		sections[i] = note
+		
+	$Grid.load_section(curSection)

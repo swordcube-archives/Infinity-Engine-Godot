@@ -222,18 +222,29 @@ func load_characters():
 func load_notes():
 	for section in Gameplay.SONG.song["notes"]:
 		for note in section["sectionNotes"]:
-			var type = "Default"
 			if note[1] != -1:
 				if len(note) == 3:
 					note.push_back(0)
 				
+				var type:String = "Default"
+				
 				if note[3] is Array:
 					note[3] = note[3][0]
-					
-				if note[3] is String:
+				elif note[3] is String:
 					type = note[3]
+					
+					note[3] = 0
+					note.push_back(type)
 				
-				noteDataArray.push_back([float(note[0]) + (Options.get_data("note-offset") + (AudioServer.get_output_latency() * 1000) * Gameplay.song_multiplier), note[1], note[2], bool(section["mustHitSection"]), int(note[3]), type])
+				if len(note) == 4:
+					note.push_back("Default")
+				
+				if note[4]:
+					if note[4] is String:
+						type = note[4]
+				
+				var final_data = [float(note[0]) + Options.get_data("note-offset") + (AudioServer.get_output_latency() * 1000), note[1], note[2], bool(section["mustHitSection"]), int(note[3]), type]
+				noteDataArray.push_back(final_data)
 				
 	speed = Gameplay.SONG.song.speed
 	
@@ -478,6 +489,13 @@ func _physics_process(delta):
 				
 			if end == null:
 				end = load(fard + skin + "/Sustains/tail.png")
+				
+			# if it's still null
+			if hold == null:
+				hold = load("res://Assets/Images/UI Skins/Default/Sustains/" + dunceNote.dir_string + " hold0000.png")
+				
+			if end == null:
+				end = load("res://Assets/Images/UI Skins/Default/Sustains/" + dunceNote.dir_string + " tail0000.png")
 				
 			dunceNote.get_node("Line2D").texture = hold
 			dunceNote.get_node("End").texture = end
@@ -925,8 +943,12 @@ func pop_up_score(strum_time, note):
 	if cur_rating == "marvelous":
 		song_score += rating_scores[0]
 		
-	if not Options.get_data("hitsound") == "None":
-		AudioHandler.play_hitsound(Options.get_data("hitsound"))
+	if not note.hitsound:
+		if not Options.get_data("hitsound") == "None":
+			AudioHandler.play_hitsound(Options.get_data("hitsound"))
+	else:
+		AudioHandler.get_node("NotetypeHitsound").stream = note.hitsound
+		AudioHandler.get_node("NotetypeHitsound").play()
 	
 	var rating = preload("res://Scenes/Gameplay/Rating.tscn").instance()
 	rating.name = "Rating" + str(total_notes)
@@ -966,7 +988,7 @@ func pop_up_score(strum_time, note):
 			shits += 1
 			
 			if not Options.get_data("pussy-mode"):
-				health -= 0.1
+				health -= 0.0475
 				
 	for rating_spr in $camHUD/Ratings.get_children():
 		rating_spr.get_node("MS").visible = false
