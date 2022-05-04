@@ -1,9 +1,0 @@
-[gd_scene load_steps=3 format=2]
-
-[ext_resource path="res://Assets/Images/event.png" type="Texture" id=1]
-[ext_resource path="res://Scenes/Notes/EventNote.gd" type="Script" id=2]
-
-[node name="EventNote" type="Sprite"]
-texture = ExtResource( 1 )
-centered = false
-script = ExtResource( 2 )

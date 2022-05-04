@@ -1,2 +1,0 @@
-Value 1 = Stage to change to
-Value 2 does nothing

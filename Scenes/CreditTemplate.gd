@@ -1,3 +1,0 @@
-extends Sprite
-
-var socials = []

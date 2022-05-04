@@ -1,7 +1,0 @@
-{
-    "idle_anim": ["GF Dancing Beat WHITE", 24, [0, 0]],
-    "confirm_anim": ["GF Dancing Beat WHITE", 24, [0, 0]],
-    "scale": 0.5,
-    "flip_x": false,
-    "position": [-140, -135]
-}
