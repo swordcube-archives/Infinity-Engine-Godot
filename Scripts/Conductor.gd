@@ -27,7 +27,7 @@ var bpm_changes:Array = []
 signal beat_hit
 signal step_hit
 
-func _process(_delta):
+func _physics_process(_delta):
 	safeZoneOffset = 246 * Gameplay.song_multiplier
 	
 	var oldBeat = curBeat

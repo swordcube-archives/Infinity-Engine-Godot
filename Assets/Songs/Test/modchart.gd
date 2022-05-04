@@ -20,8 +20,6 @@ func _physics_process(delta):
 		
 		OS.window_position.y = window_pos.y - 10 + (sin(fuck / 2) + 1) * 10
 		
-		PlayState.health = (sin(fuck / 3.5) + 2) * 0.5
-		
 		var index = 0
 		o_strums.global_position.x = lerp(o_strums.global_position.x, -600, delta * 2)
 		p_strums.global_position.x = lerp(p_strums.global_position.x, ScreenRes.screen_width / 2.72, delta * 2)
@@ -36,11 +34,11 @@ func _step_hit(): # this is _beat_hit but it happens more often
 	pass
 	
 func screen_center(object):
-	print(ScreenRes.screen_width)
-	print(ScreenRes.screen_height)
 	object.global_position = Vector2(ScreenRes.screen_width / 2, ScreenRes.screen_height / 2)
 	
 func _process(delta):
+	PlayState.health = (sin(fuck / 3.5) + 2) * 0.5
+	
 	for note in PlayState.game_notes.get_children():
 		if not note.mustPress and Conductor.songPosition >= note.strumTime:
 			opponent_note_hit(note)

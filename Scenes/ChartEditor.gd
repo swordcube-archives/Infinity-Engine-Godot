@@ -54,7 +54,8 @@ func _ready():
 	$Tabs/Song/Difficulty/DiffInput.text = Gameplay.difficulty
 	$Tabs/Song/KeyCount/KeyInput.text = str(Gameplay.SONG.song.keyCount)
 	
-	var char_list = Util.list_files_in_directory("res://Characters")
+	var char_list:Array = Util.list_files_in_directory("res://Characters")
+	char_list.insert(0, "")
 	
 	for character in char_list:
 		if not "." in character:
@@ -62,8 +63,9 @@ func _ready():
 			$Tabs/Song/Characters/Opponent.add_item(character)
 			$Tabs/Song/Characters/GF.add_item(character)
 			$Tabs/Song/Characters/BF.add_item(character)
-			
+		
 	var stage_list = Util.list_files_in_directory("res://Stages")
+	stage_list.insert(0, "")
 	
 	for stage in stage_list:
 		if not "." in stage:
@@ -122,6 +124,11 @@ func _ready():
 	$Tabs/Song/Characters/BF.text = Gameplay.SONG.song.player1
 	
 	$Tabs/Song/Characters/Stage.text = stage
+	
+	$Tabs/Song/Characters/Opponent.selected = char_list.find($Tabs/Song/Characters/Opponent.text)
+	$Tabs/Song/Characters/GF.selected = char_list.find($Tabs/Song/Characters/GF.text)
+	$Tabs/Song/Characters/BF.selected = char_list.find($Tabs/Song/Characters/BF.text)
+	$Tabs/Song/Characters/Stage.selected = stage_list.find(stage)
 	
 	AudioHandler.get_node("Inst").stream = load(Paths.inst(Gameplay.SONG.song.song))
 	AudioHandler.get_node("Voices").stream = load(Paths.voices(Gameplay.SONG.song.song))
@@ -405,8 +412,11 @@ func reload_event_description(index):
 	
 	curEvent = index
 		
-	for line in Events.event_list[index][1]:
-		description += str(line) + "\n"
+	if Events.event_list[index][1] is Array:
+		for line in Events.event_list[index][1]:
+			description += str(line) + "\n"
+	else:
+		description = Events.event_list[index][1]
 		
 	if $Grid.selected_event != null:
 		$Grid.selected_event[1][selected_event][0] = Events.event_list[index][0]
@@ -486,6 +496,9 @@ func _on_KeyInput_text_changed():
 	# if you want even more keys than this, i'll add it when i feel like it
 	
 	$Grid.load_section(curSection)
+	
+	for note in $Grid/Notes.get_children():
+		note.get_node("Note").play(note.dir_string)
 
 func _on_NoteTypeDropdown_item_selected(index):
 	if $Grid.selected_note != null: 
@@ -505,6 +518,10 @@ func _on_CopyLastSection_pressed():
 		var strum = note[0] + Conductor.timeBetweenSteps * (Gameplay.SONG.song.notes[curSection].lengthInSteps * amount)
 
 		var copiedNote:Array = [strum, note[1], note[2]]
+		if range(note.size()).has(3):
+			copiedNote.append(note[3])
+		if range(note.size()).has(4):
+			copiedNote.append(note[4])
 		Gameplay.SONG.song.notes[curSection].sectionNotes.append(copiedNote)
 		
 	$Grid.load_section(curSection)
@@ -534,3 +551,6 @@ func _on_SwapSection_pressed():
 		sections[i] = note
 		
 	$Grid.load_section(curSection)
+
+func _on_FileDialog_popup_hide():
+	can_interact = true

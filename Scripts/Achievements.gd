@@ -1,7 +1,7 @@
 extends Node
 
-var achievements = {}
-var unlocked = {}
+var achievements:Dictionary = {}
+var unlocked:Dictionary = {}
 
 func _ready():
 	init_achievements()

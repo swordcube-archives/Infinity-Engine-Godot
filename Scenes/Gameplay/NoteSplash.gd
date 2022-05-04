@@ -15,6 +15,7 @@ var colors = [
 ]
 
 func _ready():
+	$spr.frames = Gameplay.ui_Skin_Scene.note_splash_textures
 	$spr.play("note impact " + str(int(rand_range(1, 2))) + " " + colors[Gameplay.key_count - 1][noteData % Gameplay.key_count])
 	$spr.modulate.a = 0.6
 	

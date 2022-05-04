@@ -45,12 +45,12 @@ func _physics_process(delta):
 	
 	for i in len(rand_array):
 		get_node("Num" + str(i)).position.y -= rand_array[i]
-		rand_array[i] -= 0.2
+		rand_array[i] -= delta * 15
 	
 	br += delta * 4
-	y_vel -= 0.2
+	y_vel -= delta * 15
 	
-	if br > 2:
+	if br > 1.5:
 		modulate.a -= delta * 5
 		
 	if modulate.a <= 0:
@@ -73,4 +73,4 @@ func get_combo():
 			combo_array = [0, 0, 0, str(combo)[0]]
 		
 func number_path(num):
-	return "res://Assets/Images/UI Skins/" + Gameplay.ui_Skin + "/num" + str(num) + ".png"
+	return Gameplay.ui_Skin_Scene.combo_path + str(num) + ".png"

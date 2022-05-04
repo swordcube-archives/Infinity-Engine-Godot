@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scenes/Achievements/generic_achievement.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Images/Achievements/week6.png" type="Texture" id=2]
+
+[node name="Week6" type="Node"]
+script = ExtResource( 1 )
+title = "New Highscore!"
+internal_name = "week6"
+description = "Beat Week 6 in Story Mode."
+icon = ExtResource( 2 )
+unlocks_after_week = "week6"
+achievement_order = 6

@@ -5,6 +5,7 @@ var anim_finished = false
 export(String) var direction = "A"
 
 func _ready():
+	$key.frames = Gameplay.ui_Skin_Scene.strum_textures
 	play_anim("static")
 
 func play_anim(anim, backwards = false):

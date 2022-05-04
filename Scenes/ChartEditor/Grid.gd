@@ -93,9 +93,6 @@ func _process(_delta):
 		else:
 			$Selected.rect_position = Vector2(selected_x * grid_size, floor(mouse_pos.y / cool_grid) * cool_grid)
 			
-		#if prev_selected_x != selected_x or prev_selected_y != selected_y:
-		update()
-			
 		if Input.is_action_just_pressed("mouse_left"):
 			if selected_x >= 0 and selected_x <= columns:
 				if selected_y >= 0 and selected_y < rows:
@@ -104,6 +101,8 @@ func _process(_delta):
 					else:
 						add_note(selected_x, selected_y)
 					print("PLACED NOTE!")
+					
+	update()
 		
 func load_section(section):
 	for note in $Notes.get_children():
@@ -188,6 +187,15 @@ func select_note(x, y):
 						$"../Tabs/Events/Event/EventDropdown".text = note_object[1][0][0]
 						$"../Tabs/Events/Value1/Value1Input".text = note_object[1][0][1]
 						$"../Tabs/Events/Value2/Value2Input".text = note_object[1][0][2]
+						var index = 0
+						for heheheha in Events.event_list:
+							if heheheha[0] == note_object[1][0][0]:
+								$"../".reload_event_description(index)
+								$"../Tabs/Events/Event/EventDropdown".selected = index
+								break
+								
+							index += 1
+							
 						print("SELECTED EVENT!")
 				
 				selected_event_object = event

@@ -25,53 +25,37 @@ motion_offset = Vector2( 1440, -150 )
 position = Vector2( -1597.21, 228.145 )
 texture = ExtResource( 1 )
 
-[node name="city" type="ParallaxBackground" parent="."]
-scale = Vector2( 1.1, 1.1 )
-transform = Transform2D( 1.1, 0, 0, 1.1, 0, 0 )
-
-[node name="parallax" type="ParallaxLayer" parent="city"]
+[node name="parallax2" type="ParallaxLayer" parent="sky"]
 motion_scale = Vector2( 0.3, 0.3 )
 motion_offset = Vector2( 1040, -100 )
 
-[node name="spr" type="Sprite" parent="city/parallax"]
+[node name="spr" type="Sprite" parent="sky/parallax2"]
 position = Vector2( -1619.93, 141.782 )
 scale = Vector2( 0.85, 0.85 )
 texture = ExtResource( 2 )
 
-[node name="windows" type="Sprite" parent="city/parallax"]
+[node name="windows" type="Sprite" parent="sky/parallax2"]
 position = Vector2( -1619.93, 141.782 )
 scale = Vector2( 0.85, 0.85 )
 texture = ExtResource( 4 )
 
-[node name="behindTrain" type="ParallaxBackground" parent="."]
-scale = Vector2( 1.1, 1.1 )
-transform = Transform2D( 1.1, 0, 0, 1.1, 0, 0 )
+[node name="parallax3" type="ParallaxLayer" parent="sky"]
 
-[node name="parallax" type="ParallaxLayer" parent="behindTrain"]
-
-[node name="spr" type="Sprite" parent="behindTrain/parallax"]
+[node name="spr" type="Sprite" parent="sky/parallax3"]
 position = Vector2( -1713.57, 198.145 )
 scale = Vector2( 1.15366, 1.15366 )
 texture = ExtResource( 5 )
 
-[node name="train" type="ParallaxBackground" parent="."]
-scale = Vector2( 1.1, 1.1 )
-transform = Transform2D( 1.1, 0, 0, 1.1, 0, 0 )
+[node name="parallax4" type="ParallaxLayer" parent="sky"]
 
-[node name="parallax" type="ParallaxLayer" parent="train"]
-
-[node name="spr" type="Sprite" parent="train/parallax"]
+[node name="spr" type="Sprite" parent="sky/parallax4"]
 position = Vector2( 2000, 287.273 )
 scale = Vector2( 1.15366, 1.15366 )
 texture = ExtResource( 7 )
 
-[node name="street" type="ParallaxBackground" parent="."]
-scale = Vector2( 1.1, 1.1 )
-transform = Transform2D( 1.1, 0, 0, 1.1, 0, 0 )
+[node name="parallax5" type="ParallaxLayer" parent="sky"]
 
-[node name="parallax" type="ParallaxLayer" parent="street"]
-
-[node name="spr" type="Sprite" parent="street/parallax"]
+[node name="spr" type="Sprite" parent="sky/parallax5"]
 position = Vector2( -1713.57, 198.145 )
 scale = Vector2( 1.15366, 1.15366 )
 texture = ExtResource( 3 )

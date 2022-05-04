@@ -1,0 +1,10 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Assets/Images/UI Skins/Skin.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Images/UI Skins/Circles/strums.res" type="SpriteFrames" id=2]
+[ext_resource path="res://Assets/Images/UI Skins/Circles/notes.res" type="SpriteFrames" id=3]
+
+[node name="Skin" type="Node"]
+script = ExtResource( 1 )
+strum_textures = ExtResource( 2 )
+note_textures = ExtResource( 3 )

@@ -2,10 +2,10 @@ extends Node
 
 var default_event_list = [["???", "No description"]]
 
-var event_list = default_event_list
+var event_list = default_event_list.duplicate()
 
 func init_event_list():
-	event_list = default_event_list
+	event_list = default_event_list.duplicate()
 	
 	var files = Util.list_files_in_directory("res://Assets/Data/Events")
 	

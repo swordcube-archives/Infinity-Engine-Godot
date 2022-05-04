@@ -71,4 +71,4 @@ func get_combo():
 			combo_array = [0, 0, 0, str(combo)[0]]
 		
 func number_path(num):
-	return "res://Assets/Images/UI Skins/" + Gameplay.ui_Skin + "/num" + str(num) + ".png"
+	return Gameplay.ui_Skin_Scene.combo_path + str(num) + ".png"

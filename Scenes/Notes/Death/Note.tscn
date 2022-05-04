@@ -12,6 +12,8 @@ bf_health_gain = 0.0
 hit_damage = 1e+09
 miss_damage = 0.0
 shouldHit = false
+charter_image_size = Vector2( 170, 170 )
+charter_offset = Vector2( -250, -35 )
 
 [node name="Line2D" type="Line2D" parent="."]
 points = PoolVector2Array( 0, 0, 0, 0 )
@@ -28,5 +30,5 @@ texture = ExtResource( 4 )
 position = Vector2( -4.28571, -52.8572 )
 frames = ExtResource( 2 )
 animation = "A"
-frame = 3
+frame = 4
 playing = true

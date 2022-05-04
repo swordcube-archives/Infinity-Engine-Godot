@@ -1,54 +1,37 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://Assets/Images/UI Skins/Default/strums.res" type="SpriteFrames" id=1]
+[ext_resource path="res://Scenes/Strums/Strum.tscn" type="PackedScene" id=2]
 
-[node name="4Key" type="Node2D"]
+[node name="8Key" type="Node2D"]
 scale = Vector2( 0.5, 0.5 )
 
-[node name="left_key" type="AnimatedSprite" parent="."]
+[node name="Strum" parent="." instance=ExtResource( 2 )]
 position = Vector2( -176, 0 )
-frames = ExtResource( 1 )
-animation = "arrowLEFT"
-playing = true
 
-[node name="down_key" type="AnimatedSprite" parent="."]
-position = Vector2( -27.4286, 0 )
-frames = ExtResource( 1 )
-animation = "arrowDOWN"
-playing = true
+[node name="Strum2" parent="." instance=ExtResource( 2 )]
+position = Vector2( -28, 0 )
+direction = "B"
 
-[node name="up_key" type="AnimatedSprite" parent="."]
-position = Vector2( 121.143, 0 )
-frames = ExtResource( 1 )
-animation = "arrowUP"
-playing = true
+[node name="Strum3" parent="." instance=ExtResource( 2 )]
+position = Vector2( 120, 0 )
+direction = "C"
 
-[node name="right_key" type="AnimatedSprite" parent="."]
-position = Vector2( 268.714, 0 )
-frames = ExtResource( 1 )
-animation = "arrowRIGHT"
-playing = true
+[node name="Strum4" parent="." instance=ExtResource( 2 )]
+position = Vector2( 268, 0 )
+direction = "D"
 
-[node name="left_key2" type="AnimatedSprite" parent="."]
-position = Vector2( 418.286, 0 )
-frames = ExtResource( 1 )
-animation = "arrowLEFT"
-playing = true
+[node name="Strum5" parent="." instance=ExtResource( 2 )]
+position = Vector2( 416, 0 )
+direction = "F"
 
-[node name="down_key2" type="AnimatedSprite" parent="."]
-position = Vector2( 566.857, 0 )
-frames = ExtResource( 1 )
-animation = "arrowDOWN"
-playing = true
+[node name="Strum6" parent="." instance=ExtResource( 2 )]
+position = Vector2( 564, 0 )
+direction = "G"
 
-[node name="up_key2" type="AnimatedSprite" parent="."]
-position = Vector2( 715.429, 0 )
-frames = ExtResource( 1 )
-animation = "arrowUP"
-playing = true
+[node name="Strum7" parent="." instance=ExtResource( 2 )]
+position = Vector2( 712, 0 )
+direction = "H"
 
-[node name="right_key2" type="AnimatedSprite" parent="."]
-position = Vector2( 863, 0 )
-frames = ExtResource( 1 )
-animation = "arrowRIGHT"
-playing = true
+[node name="Strum8" parent="." instance=ExtResource( 2 )]
+position = Vector2( 860, 0 )
+direction = "I"

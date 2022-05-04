@@ -34,4 +34,6 @@ custom_fonts/font = SubResource( 1 )
 text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna..."
 autowrap = true
 
+[node name="CharTween" type="Tween" parent="."]
+
 [connection signal="animation_finished" from="box" to="." method="_on_box_animation_finished"]

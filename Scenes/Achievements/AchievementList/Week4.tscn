@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scenes/Achievements/generic_achievement.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Images/Achievements/week4.png" type="Texture" id=2]
+
+[node name="Week4" type="Node"]
+script = ExtResource( 1 )
+title = "Limo Driver"
+internal_name = "week4"
+description = "Beat Week 4 in Story Mode."
+icon = ExtResource( 2 )
+unlocks_after_week = "week4"
+achievement_order = 4

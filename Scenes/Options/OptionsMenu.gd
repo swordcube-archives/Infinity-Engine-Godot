@@ -32,6 +32,12 @@ func _process(delta):
 						"bool", # type
 					],
 					[
+						"Optimization", # title
+						"optimization", # actual thing in save data
+						"Gets rid of all characters and stages for performance.", # desc
+						"bool", # type
+					],
+					[
 						"Ghost Tapping", # title
 						"ghost-tapping", # actual thing in save data
 						"When enabled, pressing notes that don't exist won't give you a miss.", # desc
@@ -135,7 +141,7 @@ func _process(delta):
 					],
 					[
 						"Good Timing", # title
-						"shit-timing", # actual thing in save data
+						"good-timing", # actual thing in save data
 						'Change how much milliseconds it takes to get a "Good!"', # desc
 						"float", # type
 						0.1, # multiplier

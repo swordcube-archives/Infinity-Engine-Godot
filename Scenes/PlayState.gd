@@ -19,7 +19,6 @@ onready var cam_hud = $camHUD
 onready var time_bar = $camHUD/TimeBar
 onready var health_bar = $camHUD/HealthBar
 onready var cam_game = $camGame
-onready var characters = $Characters
 
 onready var downscroll = Options.get_data("downscroll")
 onready var middlescroll = Options.get_data("middlescroll")
@@ -86,6 +85,8 @@ var voices_time = 0.0
 func _ready():
 	if botplay or Gameplay.practice_mode:
 		Gameplay.used_practice = true
+	else:
+		Gameplay.used_practice = false
 		
 	if "events" in Gameplay.SONG.song:
 		events = Gameplay.SONG.song.events.duplicate()
@@ -112,11 +113,17 @@ func _ready():
 	
 	position_strums()
 	
-	load_stage()
-	load_characters()
+	if not Options.get_data("optimization"):
+		load_stage()
+		load_characters()
+	
 	load_notes()
 	
-	var zoomThing = 1 - stage.default_cam_zoom
+	var zoomThing = 1
+	
+	if stage:
+		zoomThing = 1 - stage.default_cam_zoom
+		
 	var goodZoom = 1 + zoomThing
 	
 	cam_game.zoom = Vector2(goodZoom, goodZoom)
@@ -129,11 +136,12 @@ func _ready():
 	refresh_input_bullshit()
 	
 func reload_health_bar():
-	$camHUD/HealthBar/DadColor.color = dad.health_color
-	$camHUD/HealthBar/BFColor.color = bf.health_color
-	
-	icon_p2.texture = dad.health_icon
-	icon_p1.texture = bf.health_icon
+	if dad:
+		$camHUD/HealthBar/DadColor.color = dad.health_color
+		icon_p2.texture = dad.health_icon
+	if bf:
+		$camHUD/HealthBar/BFColor.color = bf.health_color
+		icon_p1.texture = bf.health_icon
 	
 func load_stage():
 	gf_version = "gf"
@@ -168,6 +176,15 @@ func load_stage():
 			_:
 				cur_stage = "stage"
 				
+	if "gf" in Gameplay.SONG.song:
+		gf_version = Gameplay.SONG.song.gf
+		
+	if "gfVersion" in Gameplay.SONG.song:
+		gf_version = Gameplay.SONG.song.gfVersion
+		
+	if "player3" in Gameplay.SONG.song:
+		gf_version = Gameplay.SONG.song.player3
+				
 	Gameplay.SONG.song.stage = cur_stage
 
 	var stage_loaded = load(Paths.stage(cur_stage))
@@ -175,7 +192,7 @@ func load_stage():
 		stage_loaded = load(Paths.stage("stage"))
 		
 	stage = stage_loaded.instance()
-	$Stage.add_child(stage)
+	add_child(stage)
 	
 func load_characters():
 	var dad_loaded = load(Paths.character(Gameplay.SONG.song.player2))
@@ -190,29 +207,41 @@ func load_characters():
 	if bf_loaded == null:
 		bf_loaded = load(Paths.character("bf"))	
 	
-	dad = dad_loaded.instance()
-	gf = gf_loaded.instance()
-	bf = bf_loaded.instance()
+	if Gameplay.SONG.song.player2 != "":
+		dad = dad_loaded.instance()
+	if gf_version != "":
+		gf = gf_loaded.instance()
+	if Gameplay.SONG.song.player1 != "":
+		bf = bf_loaded.instance()
 	
-	dad.name = "dad"
-	gf.name = "gf"
-	bf.name = "boyfriend"
+	if dad:
+		dad.name = "dad"
+	if gf:
+		gf.name = "gf"
+	if bf:
+		bf.name = "boyfriend"
 	
-	dad.global_position = stage.get_node("dad_pos").position
+	if dad:
+		dad.global_position = stage.get_node("dad_pos").position
+		
+		if dad_loaded == gf_loaded:
+			gf.visible = false
+			dad.global_position = stage.get_node("gf_pos").position
 	
-	if dad_loaded == gf_loaded:
-		gf.visible = false
-		dad.global_position = stage.get_node("gf_pos").position
+	if gf:
+		gf.global_position = stage.get_node("gf_pos").position
+	if bf:
+		bf.global_position = stage.get_node("bf_pos").position
 	
-	gf.global_position = stage.get_node("gf_pos").position
-	bf.global_position = stage.get_node("bf_pos").position
-	
-	if dad.is_player:
+	if dad and dad.is_player:
 		dad.scale.x *= -1
 	
-	characters.add_child(gf)
-	characters.add_child(dad)
-	characters.add_child(bf)
+	if gf:
+		add_child(gf)
+	if bf:
+		add_child(bf)
+	if dad:
+		add_child(dad)
 	
 	if Gameplay.SONG.song.notes[cur_section].mustHitSection:
 		focus_on("bf")
@@ -350,6 +379,12 @@ func countdown_shit(fard):
 				AudioHandler.play_inst(Gameplay.SONG.song.song)
 				AudioHandler.play_voices(Gameplay.SONG.song.song)
 				
+				AudioHandler.get_node("Inst").seek(0)
+				AudioHandler.get_node("Voices").seek(0)
+				
+				AudioHandler.get_node("Inst").pitch_scale = Gameplay.song_multiplier
+				AudioHandler.get_node("Voices").pitch_scale = Gameplay.song_multiplier
+				
 				inst_length = AudioHandler.get_node("Inst").stream.get_length() * 1000.0
 				
 				timebar_tween.interpolate_property(cam_hud.get_node("TimeBar"), "modulate", $camHUD/TimeBar.modulate, Color(1, 1, 1, 1), 0.5, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
@@ -445,7 +480,7 @@ func _physics_process(delta):
 	# physics process runs at 60fps
 	var index = 0
 	for note in noteDataArray:
-		if float(note[0]) > Conductor.songPosition + 5000:
+		if float(note[0]) > Conductor.songPosition + (5000 * Gameplay.song_multiplier):
 			break
 			
 		if float(note[0]) - Conductor.songPosition < (1500 * Gameplay.song_multiplier):
@@ -511,38 +546,6 @@ func _physics_process(delta):
 	
 		index += 1
 		
-	# events spawn in this function because who the fuck
-	# will notice events spawning at like 92734382918 fps anyways
-	# physics process runs at 60fps
-	for event in events:
-		if Conductor.songPosition >= event[0]:
-			for piss in event[1]:
-				var event_name = piss[0]
-				var value1 = piss[1]
-				var value2 = piss[2]
-				
-				trigger_event(event_name, value1, value2)
-				
-			events.remove(0)
-		
-var botplay_text_sine = 0.0
-	
-func _process(delta):
-	sing_anims = sing_anims_list[Gameplay.key_count - 1]
-	
-	if not in_cutscene and not ending_song and not Transition.transitioning:
-		if not countdown_active:
-			Conductor.songPosition += (delta * 1000) * Gameplay.song_multiplier
-		else:
-			Conductor.songPosition += (delta * 1000)
-		
-	if Input.is_action_just_pressed("chart_editor"):		
-		SceneManager.switch_scene("ChartEditor")
-		
-	if Input.is_action_just_pressed("reset") and Options.get_data("enable-retry-button"):
-		health -= 999999999
-		check_health()
-	
 	$camHUD/BotplayText.visible = botplay
 	
 	botplay_text_sine += 180 * delta
@@ -590,6 +593,38 @@ func _process(delta):
 	if cam_zooming:
 		set_game_zoom(lerp(cam_game.zoom.x, default_cam_zoom, delta * 7), lerp(cam_game.zoom.y, default_cam_zoom, delta * 7))
 		set_hud_zoom(lerp(cam_hud.scale.x, 1, delta * 7), lerp(cam_hud.scale.y, 1, delta * 7))
+		
+	# events spawn in this function because who the fuck
+	# will notice events spawning at like 92734382918 fps anyways
+	# physics process runs at 60fps
+	for event in events:
+		if Conductor.songPosition >= event[0]:
+			for piss in event[1]:
+				var event_name = piss[0]
+				var value1 = piss[1]
+				var value2 = piss[2]
+				
+				trigger_event(event_name, value1, value2)
+				
+			events.remove(0)
+		
+var botplay_text_sine = 0.0
+	
+func _process(delta):
+	sing_anims = sing_anims_list[Gameplay.key_count - 1]
+	
+	if not in_cutscene and not ending_song and not Transition.transitioning:
+		if not countdown_active:
+			Conductor.songPosition += (delta * 1000) * Gameplay.song_multiplier
+		else:
+			Conductor.songPosition += (delta * 1000)
+		
+	if Input.is_action_just_pressed("chart_editor"):		
+		SceneManager.switch_scene("ChartEditor")
+		
+	if Input.is_action_just_pressed("reset") and Options.get_data("enable-retry-button"):
+		health -= 999999999
+		check_health()
 	
 	if Input.is_action_just_pressed("ui_back"):
 		SceneManager.switch_scene("FreeplayMenu")
@@ -614,7 +649,7 @@ func _process(delta):
 				if Conductor.songPosition >= note.strumTime:
 					cam_zooming = true
 					
-					if dad.special_anim != true:
+					if dad and dad.special_anim != true:
 						dad.hold_timer = 0
 						dad.play_anim(sing_anims[note.noteData % Gameplay.key_count], true)
 					
@@ -670,7 +705,7 @@ func _process(delta):
 						note.player_note_miss()
 						calculate_accuracy()
 						
-						if bf.special_anim != true:
+						if bf and bf.special_anim != true:
 							bf.play_anim(sing_anims[note.noteData % Gameplay.key_count] + "miss", true)
 						
 						AudioHandler.get_node("Voices").volume_db = -999
@@ -690,8 +725,13 @@ func check_health():
 		if not Gameplay.practice_mode:
 			if not already_dead:
 				already_dead = true
-				Gameplay.death_character = bf.death_character
-				Gameplay.death_character_pos = bf.global_position
+				if bf:
+					Gameplay.death_character = bf.death_character
+					Gameplay.death_character_pos = bf.global_position
+				else:
+					Gameplay.death_character = "bf-dead"
+					Gameplay.death_character_pos = Vector2(700, 500)
+					
 				Gameplay.death_camera_pos = cam_game.position
 				Gameplay.blueballed += 1
 				SceneManager.switch_scene("Gameover", false)
@@ -792,28 +832,30 @@ func process_inputs(delta):
 							note_data_possibles[real_note.noteData] = true
 							note_data_times[real_note.noteData] = real_note.strumTime
 							
-							bf.hold_timer = 0
+							if bf:
+								bf.hold_timer = 0
 							
 							good_note_hit(real_note)
 							
 							if dont_hit.has(real_note):
 								note_miss(real_note.noteData)
 								rythm_array[i] = true
-								
-						if real_note.strumTime == note_data_times[real_note.noteData]:
-							good_note_hit(real_note)
+									
+							if real_note.strumTime == note_data_times[real_note.noteData]:
+								good_note_hit(real_note)
 					else:
 						if pressed[real_note.noteData] and not note_data_possibles[real_note.noteData]:
 							if just_pressed[real_note.noteData]:
 								pop_up_score(real_note.strumTime, real_note)
 								calculate_accuracy()
 								
-							real_note.beingPressed = true
-							real_note.player_note_hit()
-							note_data_possibles[real_note.noteData] = true
-							note_data_times[real_note.noteData] = real_note.strumTime
+								real_note.beingPressed = true
+								note_data_possibles[real_note.noteData] = true
+								note_data_times[real_note.noteData] = real_note.strumTime
 							
-							bf.hold_timer = 0
+							real_note.player_note_hit()
+							if bf:
+								bf.hold_timer = 0
 			
 			if not Options.get_data("ghost-tapping"):
 				for i in len(just_pressed):
@@ -821,13 +863,13 @@ func process_inputs(delta):
 						note_miss(i)
 				
 		for note in game_notes.get_children():
-			if note.mustPress and note.beingPressed and note.sustainLength > 0 and pressed[note.noteData] and Conductor.songPosition >= note.strumTime or botplay and note.mustPress and note.sustainLength > 0 and Conductor.songPosition >= note.strumTime:
+			if (note.mustPress and note.beingPressed and note.sustainLength > 0 and pressed[note.noteData] and Conductor.songPosition >= note.strumTime) or (botplay and note.mustPress and note.sustainLength > 0 and Conductor.songPosition >= note.strumTime):
 				var strum = player_strums.get_children()[note.noteData]
 				
 				if Options.get_data("strum-animations"):
 					strum.play_anim("confirm")
 				
-				if bf.special_anim != true:
+				if bf and bf.special_anim != true:
 					bf.play_anim(sing_anims[note.noteData], true)
 				
 				AudioHandler.get_node("Voices").volume_db = 0
@@ -873,7 +915,7 @@ func process_inputs(delta):
 				if note.sustainLength <= 0:
 					note.queue_free()
 					
-	if bf.hold_timer > Conductor.timeBetweenSteps * bf.sing_duration * 0.001 and not pressed.has(true):
+	if bf and bf.hold_timer > Conductor.timeBetweenSteps * bf.sing_duration * 0.001 and not pressed.has(true):
 		if bf.last_anim.begins_with('sing') and not bf.last_anim.ends_with('miss'):
 			bf.dance()
 						
@@ -895,7 +937,8 @@ func note_miss(direction = 0):
 	var miss_audio = "missnote" + str(randi()%3 + 1)
 	AudioHandler.play_audio(miss_audio)
 	
-	bf.play_anim(sing_anims[direction] + " miss", true)
+	if bf.special_anim != true:
+		bf.play_anim(sing_anims[direction] + " miss", true)
 		
 func sort_ascending(a, b):
 	if a.strumTime < b.strumTime:
@@ -952,7 +995,20 @@ func pop_up_score(strum_time, note):
 	
 	var rating = preload("res://Scenes/Gameplay/Rating.tscn").instance()
 	rating.name = "Rating" + str(total_notes)
-	rating.get_node("Sprite").texture = load("res://Assets/Images/UI Skins/" + Gameplay.ui_Skin + "/" + cur_rating + ".png")
+	var rating_texture:StreamTexture
+	match cur_rating:
+		"marvelous":
+			rating_texture = Gameplay.ui_Skin_Scene.marvelous_texture
+		"sick":
+			rating_texture = Gameplay.ui_Skin_Scene.sick_texture
+		"good":
+			rating_texture = Gameplay.ui_Skin_Scene.good_texture
+		"bad":
+			rating_texture = Gameplay.ui_Skin_Scene.bad_texture
+		"shit":
+			rating_texture = Gameplay.ui_Skin_Scene.shit_texture
+			
+	rating.get_node("Sprite").texture = rating_texture
 	rating.modulate.a = 1
 	rating.visible = true
 	rating.note_ms = note_ms
@@ -974,6 +1030,7 @@ func pop_up_score(strum_time, note):
 				var note_splash = preload("res://Scenes/Gameplay/NoteSplash.tscn").instance()
 				note_splash.noteData = note.noteData
 				note_splash.global_position = player_strums.get_children()[note.noteData].global_position
+				note_splash.scale = player_strums.scale + Vector2(0.3, 0.3)
 				$camHUD.add_child(note_splash)
 		"good":
 			rating.get_node("MS").modulate = Color("42f584")
@@ -1001,7 +1058,8 @@ func good_note_hit(note):
 		
 		note.player_note_hit()
 		
-		bf.play_anim(sing_anims[note.noteData], true)
+		if bf and bf.special_anim != true:
+			bf.play_anim(sing_anims[note.noteData], true)
 		
 		player_strums.get_child(note.noteData).play_anim("confirm")
 		
@@ -1061,18 +1119,21 @@ func beat_hit():
 func focus_on(character):
 	match character:
 		"gf", "girlfriend":
-			var gorl = gf.global_position + gf.get_node("camera_pos").position
-			cam_game.position = Vector2(gorl.x, gorl.y)
+			if gf:
+				var gorl = gf.global_position + gf.get_node("camera_pos").position
+				cam_game.position = Vector2(gorl.x, gorl.y)
 		"bf", "boyfriend":
-			var boy = bf.global_position + bf.get_node("camera_pos").position
-			cam_game.position = Vector2(boy.x, boy.y)
+			if bf:
+				var boy = bf.global_position + bf.get_node("camera_pos").position
+				cam_game.position = Vector2(boy.x, boy.y)
 		_:
-			var father = dad.global_position + dad.get_node("camera_pos").position
-			
-			if dad.is_player:
-				father.x = dad.global_position.x + (dad.get_node("camera_pos").position.x + 250)
+			if dad:
+				var father = dad.global_position + dad.get_node("camera_pos").position
 				
-			cam_game.position = Vector2(father.x, father.y)
+				if dad.is_player:
+					father.x = dad.global_position.x + (dad.get_node("camera_pos").position.x + 250)
+					
+				cam_game.position = Vector2(father.x, father.y)
 
 func step_hit():
 	if not countdown_active:
@@ -1099,10 +1160,16 @@ func step_hit():
 		
 	if Gameplay.SONG.song["notes"][cur_section]["mustHitSection"]:
 		focus_on("bf")
-		$camHUD/TimeBar/FGColor.color = bf.health_color
+		if bf:
+			$camHUD/TimeBar/FGColor.color = bf.health_color
+		else:
+			$camHUD/TimeBar/FGColor.color = Color("FFFFFF")
 	else:
 		focus_on("dad")
-		$camHUD/TimeBar/FGColor.color = dad.health_color
+		if dad:
+			$camHUD/TimeBar/FGColor.color = dad.health_color
+		else:
+			$camHUD/TimeBar/FGColor.color = Color("FFFFFF")
 		
 func resync_vocals():
 	if not countdown_active:
@@ -1137,17 +1204,20 @@ func trigger_event(event_name, value1 = "", value2 = ""):
 		"Hey!":
 			match value1.to_lower():
 				"bf":
-					bf.play_anim("hey", true)
-					bf.special_anim = true
+					if bf:
+						bf.play_anim("hey", true)
+						bf.special_anim = true
 				"gf":
-					gf.play_anim("cheer", true)
-					gf.special_anim = true
+					if gf:
+						gf.play_anim("cheer", true)
+						gf.special_anim = true
 				_:
-					bf.play_anim("hey", true)
-					gf.play_anim("cheer", true)
-					
-					bf.special_anim = true
-					gf.special_anim = true
+					if bf:
+						bf.play_anim("hey", true)
+						bf.special_anim = true
+					if gf:
+						gf.play_anim("cheer", true)
+						gf.special_anim = true
 		"Add Camera Zoom":
 			var gameZoom = float(value1)
 			var hudZoom = float(value2)
@@ -1159,7 +1229,7 @@ func trigger_event(event_name, value1 = "", value2 = ""):
 		"Change Scroll Speed":
 			speed = float(value1)
 		"Change Stage":
-			$Stage.remove_child(stage)
+			remove_child(stage)
 			
 			var stageLoaded = load("res://Stages/" + value1 + "/stage.tscn")
 			
@@ -1167,7 +1237,8 @@ func trigger_event(event_name, value1 = "", value2 = ""):
 				stageLoaded = load("res://Stages/stage/stage.tscn")
 			
 			stage = stageLoaded.instance()
-			$Stage.add_child(stage)
+			add_child(stage)
+			move_child(stage, 0)
 			
 			dad.global_position = stage.get_node("dad_pos").position
 
@@ -1185,9 +1256,9 @@ func trigger_event(event_name, value1 = "", value2 = ""):
 			
 			default_cam_zoom = stage.default_cam_zoom
 		"Change Character":
-			characters.remove_child(dad)
-			characters.remove_child(gf)
-			characters.remove_child(bf)
+			remove_child(dad)
+			remove_child(gf)
+			remove_child(bf)
 			
 			match value1:
 				"dad", _:
@@ -1221,7 +1292,10 @@ func trigger_event(event_name, value1 = "", value2 = ""):
 					bf.global_position = stage.get_node("bf_pos").position
 					
 					reload_health_bar()
+					
+			if dad.is_player:
+				dad.scale.x *= -1
 				
-			$Characters.add_child(gf)
-			$Characters.add_child(dad)
-			$Characters.add_child(bf)
+			add_child(gf)
+			add_child(dad)
+			add_child(bf)

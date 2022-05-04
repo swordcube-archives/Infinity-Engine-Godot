@@ -168,6 +168,9 @@ func _process(delta):
 			
 			AudioHandler.get_node("Inst").seek(0)
 			AudioHandler.get_node("Voices").seek(0)
+			
+			AudioHandler.get_node("Inst").pitch_scale = Gameplay.song_multiplier
+			AudioHandler.get_node("Voices").pitch_scale = Gameplay.song_multiplier
 		else:
 			start_song()
 			

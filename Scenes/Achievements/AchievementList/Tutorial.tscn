@@ -10,3 +10,4 @@ internal_name = "tutorial"
 description = "Wow! You can press keys!"
 icon = ExtResource( 2 )
 unlocks_after_week = "tutorial"
+achievement_order = 0

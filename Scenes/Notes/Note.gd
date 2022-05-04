@@ -47,6 +47,9 @@ func set_direction():
 	dir_string = Gameplay.note_letter_directions[Gameplay.key_count - 1][noteData % Gameplay.key_count]
 		
 	if $Note is AnimatedSprite:
+		if "Default" in $Note.frames.resource_path:
+			$Note.frames = Gameplay.ui_Skin_Scene.note_textures
+			
 		$Note.play(dir_string)
 			
 func _process(delta):
@@ -58,7 +61,13 @@ func _process(delta):
 		line.modulate.a = 0.6
 		$End.modulate.a = 0.6
 		
-		var y_pos = (sustainLength / 1.5) * Gameplay.scroll_speed
+		var scale_shit = 1
+		if mustPress:
+			scale_shit = PlayState.player_strums.scale.y + 0.3
+		else:
+			scale_shit = PlayState.opponent_strums.scale.y + 0.3
+			
+		var y_pos = ((sustainLength / 1.5) * Gameplay.scroll_speed) / scale_shit
 		y_pos -= $Line2D.texture.get_height()
 		
 		if get_tree().current_scene.downscroll:
@@ -93,7 +102,7 @@ func player_note_hit():
 			PlayState.health -= hit_damage
 			
 		hold_timer += delta
-		if hold_timer >= delta * 4:
+		if hold_timer >= ((Conductor.timeBetweenSteps / 1000) / 2):
 			hold_timer = 0
 	
 func player_note_miss():

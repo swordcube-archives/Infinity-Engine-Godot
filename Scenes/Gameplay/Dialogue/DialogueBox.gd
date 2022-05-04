@@ -17,9 +17,11 @@ var middle = null
 var right = null
 
 func _ready():
-	left = load("res://Scenes/Gameplay/Dialogue/Characters/bf.tscn").instance()
-	middle = load("res://Scenes/Gameplay/Dialogue/Characters/bf.tscn").instance()
-	right = load("res://Scenes/Gameplay/Dialogue/Characters/bf.tscn").instance()
+	var instance = load("res://Scenes/Gameplay/Dialogue/Characters/bf.tscn").instance()
+	instance.position -= Vector2(9999, 9999)
+	left = instance
+	middle = instance
+	right = instance
 	
 	$chars.add_child(left)
 	$chars.add_child(middle)
@@ -74,32 +76,60 @@ func next_dialogue():
 		if len(dialogue_list) < 1:
 			end_anims()
 		else:
+			render_characters()
 			render_dialogue()
-		
-func render_dialogue():
-	$text.text = ""
-	
+			
+func render_characters():
 	if dialogue_list[0].char != character_on_screen:
-		$chars.remove_child(left)
-		$chars.remove_child(middle)
-		$chars.remove_child(right)
+		$CharTween.interpolate_property(left, "position", left.position, Vector2(left.position.x - 50, left.position.y), 0.5, Tween.TRANS_CUBIC, Tween.EASE_OUT)
+		$CharTween.interpolate_property(left, "modulate", left.modulate, Color(1, 1, 1, 0), 0.5, Tween.TRANS_CUBIC, Tween.EASE_OUT)
+		
+		$CharTween.interpolate_property(middle, "position", middle.position, Vector2(middle.position.x, middle.position.y + 50), 0.5, Tween.TRANS_CUBIC, Tween.EASE_OUT)
+		$CharTween.interpolate_property(middle, "modulate", middle.modulate, Color(1, 1, 1, 0), 0.5, Tween.TRANS_CUBIC, Tween.EASE_OUT)
+		
+		$CharTween.interpolate_property(right, "position", right.position, Vector2(right.position.x + 50, right.position.y), 0.5, Tween.TRANS_CUBIC, Tween.EASE_OUT)
+		$CharTween.interpolate_property(right, "modulate", right.modulate, Color(1, 1, 1, 0), 0.5, Tween.TRANS_CUBIC, Tween.EASE_OUT)
+		
+		$CharTween.start()
 		
 		character_on_screen = dialogue_list[0].char
 		var loaded_char = load("res://Scenes/Gameplay/Dialogue/Characters/" + dialogue_list[0].char + ".tscn")
 		var char_instance = loaded_char.instance()
+		char_instance.global_position.y = 520
+		char_instance.talk()
 		match char_instance.alignment:
 			"left":
-				char_instance.global_position.x = 100
+				char_instance.global_position.x = 250
+				left = char_instance
+				
+				$CharTween.interpolate_property(left, "position", left.position, Vector2(left.position.x + 50, left.position.y), 0.5, Tween.TRANS_CUBIC, Tween.EASE_OUT)
+				$CharTween.interpolate_property(left, "modulate", Color(1, 1, 1, 0), Color(1, 1, 1, 1), 0.5, Tween.TRANS_CUBIC, Tween.EASE_OUT)
+				$CharTween.start()
+				
+				$chars.add_child(left)
 			"middle":
 				char_instance.global_position.x = ScreenRes.screen_width / 2
-			"right", _:
-				char_instance.global_position.x = 100
+				char_instance.global_position.y += 50
 				
-		char_instance.global_position.y = 360
+				middle = char_instance
+				
+				$CharTween.interpolate_property(middle, "position", middle.position, Vector2(middle.position.x, middle.position.y - 50), 0.5, Tween.TRANS_CUBIC, Tween.EASE_OUT)
+				$CharTween.interpolate_property(middle, "modulate", Color(1, 1, 1, 0), Color(1, 1, 1, 1), 0.5, Tween.TRANS_CUBIC, Tween.EASE_OUT)
+				$CharTween.start()
+				
+				$chars.add_child(middle)
+			"right", _:
+				char_instance.global_position.x = $box.global_position.x + 400
+				right = char_instance
+				
+				$CharTween.interpolate_property(right, "position", right.position, Vector2(right.position.x - 50, right.position.y), 0.5, Tween.TRANS_CUBIC, Tween.EASE_OUT)
+				$CharTween.interpolate_property(right, "modulate", Color(1, 1, 1, 0), Color(1, 1, 1, 1), 0.5, Tween.TRANS_CUBIC, Tween.EASE_OUT)
+				$CharTween.start()
+				
+				$chars.add_child(right)
 		
-		$chars.add_child(left)
-		$chars.add_child(middle)
-		$chars.add_child(right)
+func render_dialogue():
+	$text.text = ""
 	
 	remove_child(dialogue_timer)
 	dialogue_timer = Timer.new()
@@ -112,6 +142,21 @@ func render_dialogue():
 	for i in len(dialogue_list[0].text):
 		if not ending_dialogue:
 			yield(dialogue_timer, "timeout")
+			if(len(dialogue_list) > 0):
+				var char_data = load("res://Scenes/Gameplay/Dialogue/Characters/" + dialogue_list[0].char + ".tscn").instance()
+				match char_data.alignment:
+					"left":
+						left.current_emotion = dialogue_list[0].emotion
+						left.talk()
+					"middle":
+						middle.current_emotion = dialogue_list[0].emotion
+						middle.talk()
+					"right":
+						right.current_emotion = dialogue_list[0].emotion
+						right.talk()
+					
+				char_data = null
+					
 			AudioHandler.play_audio("pixelText")
 		
 			if len(dialogue_list) > 0:
@@ -127,6 +172,11 @@ func end_anims():
 	
 	$text.visible = false
 	$box.play($box.animation.split(" idle")[0] + " open", true)
+	
+	$CharTween.interpolate_property(left, "modulate", left.modulate, Color(1, 1, 1, 0), 0.5, Tween.TRANS_CUBIC, Tween.EASE_OUT)
+	$CharTween.interpolate_property(middle, "modulate", middle.modulate, Color(1, 1, 1, 0), 0.5, Tween.TRANS_CUBIC, Tween.EASE_OUT)
+	$CharTween.interpolate_property(right, "modulate", right.modulate, Color(1, 1, 1, 0), 0.5, Tween.TRANS_CUBIC, Tween.EASE_OUT)
+	$CharTween.start()
 	
 	end_tween.interpolate_property($bg, "modulate", Color(1, 1, 1, 1), Color(1, 1, 1, 0), 1, Tween.TRANS_CUBIC, Tween.EASE_OUT)
 	add_child(end_tween)
@@ -150,6 +200,8 @@ func _on_box_animation_finished():
 		$box.play($box.animation.split(" open")[0] + " idle")
 		
 		$text.visible = true
+		$CharTween.start()
+		render_characters()
 		render_dialogue()
 		
 	if "open" in $box.animation and dialogue_started:
