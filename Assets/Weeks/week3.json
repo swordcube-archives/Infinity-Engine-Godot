@@ -1,0 +1,26 @@
+﻿{
+	"week_num": 3,
+	"songs": [
+		{
+			"name": "Pico",
+			"icon": "pico",
+			"color": "#941653",
+			"shows_in_story": true,
+			"shows_in_freeplay": true
+		},
+		{
+			"name": "Philly Nice",
+			"icon": "pico",
+			"color": "#941653",
+			"shows_in_story": true,
+			"shows_in_freeplay": true
+		},
+		{
+			"name": "Blammed",
+			"icon": "pico",
+			"color": "#941653",
+			"shows_in_story": true,
+			"shows_in_freeplay": true
+		}
+	]
+}

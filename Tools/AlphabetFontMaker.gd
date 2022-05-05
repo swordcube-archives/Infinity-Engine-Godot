@@ -10,6 +10,8 @@ func _ready():
 	for i in range (0, chars.length()):
 		var spacing = 46
 		match chars[i]:
+			"A":
+				spacing = 50
 			" ", "L":
 				spacing = 40
 			"T":

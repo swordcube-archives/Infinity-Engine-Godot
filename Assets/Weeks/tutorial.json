@@ -1,0 +1,12 @@
+﻿{
+	"week_num": 0,
+	"songs": [
+		{
+			"name": "Tutorial",
+			"icon": "gf",
+			"color": "#c9426b",
+			"shows_in_story": true,
+			"shows_in_freeplay": true
+		}
+	]
+}

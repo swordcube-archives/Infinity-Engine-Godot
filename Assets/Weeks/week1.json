@@ -1,0 +1,26 @@
+﻿{
+	"week_num": 1,
+	"songs": [
+		{
+			"name": "Bopeebo",
+			"icon": "dad",
+			"color": "#9271fd",
+			"shows_in_story": true,
+			"shows_in_freeplay": true
+		},
+		{
+			"name": "Fresh",
+			"icon": "dad",
+			"color": "#9271fd",
+			"shows_in_story": true,
+			"shows_in_freeplay": true
+		},
+		{
+			"name": "Dad Battle",
+			"icon": "dad",
+			"color": "#9271fd",
+			"shows_in_story": true,
+			"shows_in_freeplay": true
+		}
+	]
+}

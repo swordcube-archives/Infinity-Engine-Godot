@@ -9,9 +9,8 @@ script = ExtResource( 1 )
 [node name="Label" type="Label" parent="."]
 margin_top = 288.0
 margin_right = 1282.0
-margin_bottom = 447.0
+margin_bottom = 375.0
 custom_constants/line_spacing = -15
 custom_fonts/font = ExtResource( 2 )
-text = "this is so cool.
-i made a bitmap font!"
+text = "Generating..."
 align = 1

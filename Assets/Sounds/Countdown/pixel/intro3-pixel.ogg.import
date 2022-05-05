@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/intro3-pixel.ogg-8eb12ca2e071e801d457040296640bca.oggstr"
+
+[deps]
+
+source_file="res://Assets/Sounds/Countdown/pixel/intro3-pixel.ogg"
+dest_files=[ "res://.import/intro3-pixel.ogg-8eb12ca2e071e801d457040296640bca.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

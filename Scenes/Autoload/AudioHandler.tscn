@@ -1,0 +1,70 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://Scripts/Autoload/AudioHandler.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Sounds/Countdown/default/intro3-default.ogg" type="AudioStream" id=2]
+[ext_resource path="res://Assets/Sounds/Countdown/pixel/introGo-pixel.ogg" type="AudioStream" id=3]
+[ext_resource path="res://Assets/Sounds/Countdown/default/intro2-default.ogg" type="AudioStream" id=4]
+[ext_resource path="res://Assets/Sounds/Countdown/default/intro1-default.ogg" type="AudioStream" id=5]
+[ext_resource path="res://Assets/Sounds/scrollMenu.ogg" type="AudioStream" id=6]
+[ext_resource path="res://Assets/Sounds/confirmMenu.ogg" type="AudioStream" id=7]
+[ext_resource path="res://Assets/Sounds/Countdown/default/introGo-default.ogg" type="AudioStream" id=8]
+[ext_resource path="res://Assets/Sounds/Countdown/pixel/intro3-pixel.ogg" type="AudioStream" id=9]
+[ext_resource path="res://Assets/Music/freakyMenu.ogg" type="AudioStream" id=10]
+[ext_resource path="res://Assets/Sounds/Countdown/pixel/intro2-pixel.ogg" type="AudioStream" id=11]
+[ext_resource path="res://Assets/Sounds/cancelMenu.ogg" type="AudioStream" id=12]
+[ext_resource path="res://Assets/Sounds/Countdown/pixel/intro1-pixel.ogg" type="AudioStream" id=13]
+
+[node name="AudioHandler" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="blankTemplate" type="AudioStreamPlayer" parent="."]
+
+[node name="scrollMenu" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+
+[node name="confirmMenu" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+
+[node name="cancelMenu" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 12 )
+
+[node name="Countdown" type="Node2D" parent="."]
+
+[node name="Default" type="Node2D" parent="Countdown"]
+
+[node name="intro3" type="AudioStreamPlayer" parent="Countdown/Default"]
+stream = ExtResource( 2 )
+
+[node name="intro2" type="AudioStreamPlayer" parent="Countdown/Default"]
+stream = ExtResource( 4 )
+
+[node name="intro1" type="AudioStreamPlayer" parent="Countdown/Default"]
+stream = ExtResource( 5 )
+
+[node name="introGo" type="AudioStreamPlayer" parent="Countdown/Default"]
+stream = ExtResource( 8 )
+
+[node name="Pixel" type="Node2D" parent="Countdown"]
+
+[node name="intro3" type="AudioStreamPlayer" parent="Countdown/Pixel"]
+stream = ExtResource( 9 )
+
+[node name="intro2" type="AudioStreamPlayer" parent="Countdown/Pixel"]
+stream = ExtResource( 11 )
+
+[node name="intro1" type="AudioStreamPlayer" parent="Countdown/Pixel"]
+stream = ExtResource( 13 )
+
+[node name="introGo" type="AudioStreamPlayer" parent="Countdown/Pixel"]
+stream = ExtResource( 3 )
+
+[node name="Gameplay" type="Node2D" parent="."]
+
+[node name="Inst" type="AudioStreamPlayer" parent="Gameplay"]
+
+[node name="Voices" type="AudioStreamPlayer" parent="Gameplay"]
+
+[node name="Music" type="Node2D" parent="."]
+
+[node name="freakyMenu" type="AudioStreamPlayer" parent="Music"]
+stream = ExtResource( 10 )
