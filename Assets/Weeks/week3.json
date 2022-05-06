@@ -5,6 +5,7 @@
 			"name": "Pico",
 			"icon": "pico",
 			"color": "#941653",
+			"difficulties": ["easy", "normal", "hard"],
 			"shows_in_story": true,
 			"shows_in_freeplay": true
 		},
@@ -12,6 +13,7 @@
 			"name": "Philly Nice",
 			"icon": "pico",
 			"color": "#941653",
+			"difficulties": ["easy", "normal", "hard"],
 			"shows_in_story": true,
 			"shows_in_freeplay": true
 		},
@@ -19,6 +21,7 @@
 			"name": "Blammed",
 			"icon": "pico",
 			"color": "#941653",
+			"difficulties": ["easy", "normal", "hard"],
 			"shows_in_story": true,
 			"shows_in_freeplay": true
 		}

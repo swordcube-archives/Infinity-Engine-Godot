@@ -5,6 +5,7 @@
 			"name": "Spookeez",
 			"icon": "spooky",
 			"color": "#223344",
+			"difficulties": ["easy", "normal", "hard"],
 			"shows_in_story": true,
 			"shows_in_freeplay": true
 		},
@@ -12,6 +13,7 @@
 			"name": "South",
 			"icon": "spooky",
 			"color": "#223344",
+			"difficulties": ["easy", "normal", "hard"],
 			"shows_in_story": true,
 			"shows_in_freeplay": true
 		},
@@ -19,6 +21,7 @@
 			"name": "Monster",
 			"icon": "monster",
 			"color": "#223344",
+			"difficulties": ["easy", "normal", "hard"],
 			"shows_in_story": true,
 			"shows_in_freeplay": true
 		}

@@ -1,0 +1,13 @@
+﻿{
+	"week_num": -1,
+	"songs": [
+		{
+			"name": "Test",
+			"icon": "bf-pixel",
+			"color": "#68b1e8",
+			"difficulties": ["normal"],
+			"shows_in_story": true,
+			"shows_in_freeplay": true
+		}
+	]
+}

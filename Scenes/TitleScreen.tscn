@@ -1,9 +1,11 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Assets/Images/gfDanceTitle.res" type="SpriteFrames" id=1]
 [ext_resource path="res://Assets/Images/logoBumpin.res" type="SpriteFrames" id=2]
 [ext_resource path="res://Scenes/TitleScreen.gd" type="Script" id=3]
 [ext_resource path="res://Assets/Images/titleEnter.res" type="SpriteFrames" id=4]
+[ext_resource path="res://Assets/Fonts/font_alphabet.tres" type="BitmapFont" id=5]
+[ext_resource path="res://Assets/Images/GodotLogo.png" type="Texture" id=6]
 
 [sub_resource type="Animation" id=1]
 resource_name = "confirm"
@@ -132,16 +134,49 @@ position = Vector2( 879, 383 )
 frames = ExtResource( 1 )
 animation = "danceLeft"
 
-[node name="Enter Text" type="Node2D" parent="."]
+[node name="EnterText" type="Node2D" parent="."]
 
-[node name="AnimatedSprite" type="AnimatedSprite" parent="Enter Text"]
+[node name="AnimatedSprite" type="AnimatedSprite" parent="EnterText"]
 position = Vector2( 840, 636 )
 frames = ExtResource( 4 )
 animation = "Press Enter to Begin"
-frame = 3
+frame = 37
 playing = true
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Enter Text"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="EnterText"]
 root_node = NodePath("../AnimatedSprite")
 anims/confirm = SubResource( 1 )
 anims/idle = SubResource( 2 )
+
+[node name="IntroText" type="Node2D" parent="."]
+
+[node name="BG" type="ColorRect" parent="IntroText"]
+margin_right = 1280.0
+margin_bottom = 720.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Flash" type="ColorRect" parent="IntroText"]
+visible = false
+margin_right = 1280.0
+margin_bottom = 720.0
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Label" type="Label" parent="IntroText"]
+margin_left = -320.0
+margin_top = 160.0
+margin_right = 1612.0
+margin_bottom = 381.0
+custom_constants/line_spacing = -20
+custom_fonts/font = ExtResource( 5 )
+align = 1
+
+[node name="GodotLogo" type="Sprite" parent="IntroText"]
+visible = false
+position = Vector2( 640, 503 )
+scale = Vector2( 0.123828, 0.123828 )
+texture = ExtResource( 6 )

@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Assets/Images/menuDesat.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/FreeplayMenu.gd" type="Script" id=2]
@@ -6,6 +6,19 @@
 [ext_resource path="res://Assets/Images/Icons/dad.png" type="Texture" id=4]
 [ext_resource path="res://Scripts/HealthIcon.gd" type="Script" id=5]
 [ext_resource path="res://Scenes/FreeplaySong.gd" type="Script" id=6]
+[ext_resource path="res://Assets/Fonts/vcr.ttf" type="DynamicFontData" id=7]
+
+[sub_resource type="DynamicFont" id=1]
+size = 32
+font_data = ExtResource( 7 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 24
+font_data = ExtResource( 7 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 24
+font_data = ExtResource( 7 )
 
 [node name="FreeplayMenu" type="Node2D"]
 script = ExtResource( 2 )
@@ -31,3 +44,36 @@ hframes = 3
 script = ExtResource( 5 )
 
 [node name="Songs" type="Node2D" parent="."]
+
+[node name="DiffBG" type="ColorRect" parent="."]
+margin_left = 893.0
+margin_right = 1280.0
+margin_bottom = 96.0
+color = Color( 0, 0, 0, 0.5 )
+
+[node name="PB" type="Label" parent="."]
+margin_left = 893.0
+margin_top = 4.0
+margin_right = 1280.0
+margin_bottom = 33.0
+custom_fonts/font = SubResource( 1 )
+text = "PERSONAL BEST: 69420"
+align = 1
+
+[node name="Diff" type="Label" parent="."]
+margin_left = 893.0
+margin_top = 39.0
+margin_right = 1280.0
+margin_bottom = 61.0
+custom_fonts/font = SubResource( 2 )
+text = "< HARD >"
+align = 1
+
+[node name="Speed" type="Label" parent="."]
+margin_left = 893.0
+margin_top = 67.0
+margin_right = 1280.0
+margin_bottom = 83.0
+custom_fonts/font = SubResource( 3 )
+text = "Speed: 1"
+align = 1

@@ -5,6 +5,7 @@
 			"name": "Bopeebo",
 			"icon": "dad",
 			"color": "#9271fd",
+			"difficulties": ["easy", "normal", "hard"],
 			"shows_in_story": true,
 			"shows_in_freeplay": true
 		},
@@ -12,6 +13,7 @@
 			"name": "Fresh",
 			"icon": "dad",
 			"color": "#9271fd",
+			"difficulties": ["easy", "normal", "hard"],
 			"shows_in_story": true,
 			"shows_in_freeplay": true
 		},
@@ -19,6 +21,7 @@
 			"name": "Dad Battle",
 			"icon": "dad",
 			"color": "#9271fd",
+			"difficulties": ["easy", "normal", "hard"],
 			"shows_in_story": true,
 			"shows_in_freeplay": true
 		}

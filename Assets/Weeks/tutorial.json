@@ -5,6 +5,7 @@
 			"name": "Tutorial",
 			"icon": "gf",
 			"color": "#c9426b",
+			"difficulties": ["easy", "normal", "hard"],
 			"shows_in_story": true,
 			"shows_in_freeplay": true
 		}

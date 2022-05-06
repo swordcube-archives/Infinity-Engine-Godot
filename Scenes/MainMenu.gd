@@ -23,7 +23,9 @@ func _process(delta):
 		change_selection(1)
 		
 	if Input.is_action_just_pressed("ui_back"):
-		SceneHandler.switch_to("TitleScreen")
+		if not Transition.transitioning:
+			AudioHandler.play_audio("cancelMenu")
+			SceneHandler.switch_to("TitleScreen")
 		
 	if Input.is_action_just_pressed("ui_accept"):
 		if not flashing:

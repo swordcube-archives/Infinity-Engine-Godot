@@ -1,5 +1,11 @@
 extends Node
 
+func ui_skin(skin):
+	return "res://Scenes/UI Skins/" + skin + ".tscn"
+
+func song_json(song, diff = "normal"):
+	return "res://Assets/Songs/" + song + "/" + diff + ".json"
+
 func json(file):
 	return "res://Assets/Data/" + file + ".json"
 	

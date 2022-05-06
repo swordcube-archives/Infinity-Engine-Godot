@@ -2,11 +2,20 @@ extends Node2D
 
 onready var inst = $Gameplay/Inst
 onready var voices = $Gameplay/Voices
+onready var freakyMenu = $Music/freakyMenu
 
 # for music
+func change_music_pitch(pitch):
+	var music = get_node("Music").get_children()
+	for file in music:
+		file.pitch_scale = pitch
+		
+	inst.pitch_scale = pitch
+	voices.pitch_scale = pitch
+		
 func play_music(music_to_play):		
 	var node = get_node("Music/" + music_to_play)
-	if node and not node.playing:
+	if node and not inst.playing and not voices.playing and not node.playing:
 		var music = get_node("Music").get_children()
 		for file in music:
 			file.stop()
@@ -17,6 +26,9 @@ func stop_music():
 	var music = get_node("Music").get_children()
 	for file in music:
 		file.stop()
+		
+	inst.stop()
+	voices.stop()
 		
 func play_inst(song):
 	var music = get_node("Music").get_children()

@@ -1,0 +1,59 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Assets/Images/healthBar.png" type="Texture" id=1]
+[ext_resource path="res://Scripts/HealthIcon.gd" type="Script" id=2]
+[ext_resource path="res://Assets/Images/Icons/dad.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Images/Icons/bf.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Fonts/vcr.ttf" type="DynamicFontData" id=5]
+
+[sub_resource type="DynamicFont" id=1]
+outline_size = 2
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 5 )
+
+[node name="HealthBar" type="Node2D"]
+
+[node name="BG" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Color1" type="ColorRect" parent="."]
+margin_left = -295.0
+margin_top = -5.0
+margin_right = 295.0
+margin_bottom = 5.0
+color = Color( 0.588235, 0.329412, 0.784314, 1 )
+
+[node name="Color2" type="ColorRect" parent="."]
+margin_top = -5.0
+margin_right = 295.0
+margin_bottom = 5.0
+rect_pivot_offset = Vector2( 590, 0 )
+color = Color( 0.25098, 0.647059, 0.819608, 1 )
+
+[node name="IconP2" type="Sprite" parent="."]
+position = Vector2( 21, -78 )
+texture = ExtResource( 3 )
+centered = false
+offset = Vector2( -150, 0 )
+hframes = 3
+script = ExtResource( 2 )
+
+[node name="IconP1" type="Sprite" parent="."]
+position = Vector2( -19, -78 )
+texture = ExtResource( 4 )
+centered = false
+flip_h = true
+hframes = 3
+script = ExtResource( 2 )
+
+[node name="Label" type="Label" parent="."]
+margin_left = -324.0
+margin_top = 41.0
+margin_right = 324.0
+margin_bottom = 63.0
+custom_fonts/font = SubResource( 1 )
+text = "Score: 0 // Misses: 0 // Accuracy: 0% [N/A - ?]"
+align = 1

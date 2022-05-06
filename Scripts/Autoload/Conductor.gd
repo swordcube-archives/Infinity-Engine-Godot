@@ -9,7 +9,7 @@ var step_crochet:float = crochet / 4
 var cur_beat:int = 0
 var cur_step:int = 0
 
-var safe_zone_offset:float = 166
+var safe_zone_offset:float = 220
 
 var bpm_changes:Array = []
 
