@@ -110,7 +110,7 @@ tracks/3/keys = {
 position = Vector2( 760, 334 )
 frames = ExtResource( 1 )
 animation = "ENTER PRESSED"
-frame = 5
+frame = 7
 playing = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

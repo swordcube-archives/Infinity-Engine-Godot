@@ -38,11 +38,13 @@ func play_inst(song):
 	inst.stop()
 	inst.stream = load("res://Assets/Songs/" + song + "/Inst.ogg")
 	inst.play(0)
+	inst.volume_db = 0
 	
 func play_voices(song):
 	voices.stop()
 	voices.stream = load("res://Assets/Songs/" + song + "/Voices.ogg")
-	voices.play()
+	voices.play(0)
+	voices.volume_db = 0
 		
 # for sound effects
 func play_audio(audio, pos = 0):

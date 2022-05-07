@@ -25,6 +25,8 @@ func sort_ascending(a, b):
 	return false
 
 func _ready():
+	AudioHandler.inst.stop()
+	AudioHandler.voices.stop()
 	AudioHandler.play_music("freakyMenu")
 	
 	init_song_list()

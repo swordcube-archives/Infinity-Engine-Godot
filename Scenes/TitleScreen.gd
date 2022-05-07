@@ -20,7 +20,7 @@ func _ready():
 	Conductor.connect("beat_hit", self, "beat_hit")
 	dance()
 	
-	if Gameplay.skip_title:
+	if GameplaySettings.skip_title:
 		skip_intro()
 	
 func _physics_process(delta):
@@ -36,7 +36,6 @@ func _process(delta):
 		skip_intro()
 		
 		if not going:
-			print("Ahidoua")
 			going = true
 			
 			var bg = $IntroText/BG
@@ -118,7 +117,7 @@ func delete_cool_text():
 		
 func skip_intro():
 	skipped = true
-	Gameplay.skip_title = true
+	GameplaySettings.skip_title = true
 	
 	$IntroText/Label.visible = false
 	

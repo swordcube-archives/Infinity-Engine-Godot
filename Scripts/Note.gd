@@ -13,6 +13,7 @@ onready var PlayState = $"../../../../"
 
 var note_type:String = "Default"
 var must_press:bool = false
+var og_sustain_length:float = 0.0
 var sustain_length:float = 0.0
 var strum_time:float = 0.0
 var note_data:int = 0
@@ -22,9 +23,9 @@ var charter_note:bool = false
 
 var being_pressed:bool = false
 
-var canBeHit:bool = false
-var tooLate:bool = false
-var wasGoodHit:bool = false
+var can_be_hit:bool = false
+var too_late:bool = false
+var was_good_hit:bool = false
 
 func _ready():
 	play_anim("")
@@ -38,11 +39,6 @@ func _process(delta):
 	else:
 		line2d.points[1].y = y_pos
 		end.position.y = line2d.points[1].y + (end.texture.get_height() / 2)
-
-	if not charter_note and must_press:
-		if Conductor.song_position >= (strum_time + Conductor.safe_zone_offset):
-			if (sustain_length > 0 and not PlayState.pressedArray[note_data]) or (sustain_length <= 0):
-				queue_free()
 
 func play_anim(anim):
 	# check if the note is animated lol
@@ -71,20 +67,20 @@ func calculate_can_be_hit():
 		if(should_hit):
 			if (strum_time > Conductor.song_position - Conductor.safe_zone_offset
 				&& strum_time < Conductor.song_position + Conductor.safe_zone_offset):
-				canBeHit = true;
+				can_be_hit = true;
 			else:
-				canBeHit = false;
+				can_be_hit = false;
 		else:
 			if (strum_time > Conductor.song_position - Conductor.safe_zone_offset * 0.3
 				&& strum_time < Conductor.song_position + Conductor.safe_zone_offset * 0.2):
-				canBeHit = true;
+				can_be_hit = true;
 			else:
-				canBeHit = false;
+				can_be_hit = false;
 
-		if (strum_time < Conductor.song_position - Conductor.safe_zone_offset && !wasGoodHit):
-			tooLate = true;
+		if (strum_time < Conductor.song_position - Conductor.safe_zone_offset && !was_good_hit):
+			too_late = true;
 	else:
-		canBeHit = false;
+		can_be_hit = false;
 
 		if (strum_time <= Conductor.song_position):
-			wasGoodHit = true;
+			was_good_hit = true;

@@ -1,9 +1,15 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scenes/PlayState.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/PlayState/HealthBar.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/PlayState/TimeBar.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/Images/UI Skins/Default/ready.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Fonts/vcr.ttf" type="DynamicFontData" id=5]
+
+[sub_resource type="DynamicFont" id=1]
+outline_size = 2
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 5 )
 
 [node name="PlayState" type="Node2D"]
 script = ExtResource( 1 )
@@ -17,6 +23,8 @@ layer = 120
 [node name="HUD" type="CanvasModulate" parent="CanvasLayer"]
 
 [node name="Notes" type="Node2D" parent="CanvasLayer/HUD"]
+
+[node name="Ratings" type="Node2D" parent="CanvasLayer/HUD"]
 
 [node name="HealthBar" parent="CanvasLayer/HUD" instance=ExtResource( 2 )]
 position = Vector2( 640, 646 )
@@ -42,3 +50,16 @@ __meta__ = {
 [node name="CountdownGo" type="AudioStreamPlayer" parent="CanvasLayer/HUD"]
 
 [node name="Tween" type="Tween" parent="CanvasLayer/HUD"]
+
+[node name="RatingText" type="Label" parent="CanvasLayer/HUD"]
+margin_left = 26.0
+margin_top = 308.0
+margin_right = 134.0
+margin_bottom = 413.0
+custom_fonts/font = SubResource( 1 )
+text = "Marvelous: 0
+Sicks: 0
+Goods: 0
+Bads: 0
+Shits: 0
+Misses: 0"

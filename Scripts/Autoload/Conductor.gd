@@ -19,6 +19,7 @@ signal step_hit
 func recalculate_values():
 	crochet = ((60 / bpm) * 1000)
 	step_crochet = crochet / 4
+	safe_zone_offset = 220 * GameplaySettings.song_multiplier
 
 func change_bpm(new_bpm, changes = []):
 	if len(changes) == 0:
@@ -66,6 +67,8 @@ func _physics_process(delta):
 			
 			bpm = change[1]
 			recalculate_values()
+		else:
+			break
 	
 	if len(last_change) < 3:
 		last_change.append(0)

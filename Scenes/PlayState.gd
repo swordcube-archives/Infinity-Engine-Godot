@@ -2,6 +2,8 @@ extends Node2D
 
 onready var camera = $Camera2D
 onready var hud = $CanvasLayer/HUD
+onready var ratingtext = $CanvasLayer/HUD/RatingText
+onready var ratings = $CanvasLayer/HUD/Ratings
 
 onready var health_bar = $CanvasLayer/HUD/HealthBar
 
@@ -23,8 +25,19 @@ onready var downscroll:bool = Options.get_data("downscroll")
 onready var middlescroll:bool = Options.get_data("middlescroll")
 onready var botplay:bool = Options.get_data("botplay")
 
+var ending_song:bool = false
+
+var rating_template:Node2D = load("res://Scenes/PlayState/Rating.tscn").instance()
+
 var countdown_active:bool = true
 var SONG:Dictionary = GameplaySettings.SONG.song
+
+var stage:Node2D
+var dad:Node2D
+var gf:Node2D
+var bf:Node2D
+
+var sing_anims:Array = ["singLEFT", "singDOWN", "singUP", "singRIGHT"]
 
 var cam_zooming:bool = false
 
@@ -35,9 +48,60 @@ var pressed:Array = []
 var just_released:Array = []
 var released:Array = []
 
+var note_data_possibles:Array = []
+var rythm_array:Array = []
+var note_data_times:Array = []
+var dont_hit:Array = []
+
+var rating_textures:Array = []
+var combo_textures:Array = []
+
+var marvelous:int = 0
+var sicks:int = 0
+var goods:int = 0
+var bads:int = 0
+var shits:int = 0
+
+var rating1:String = "N/A"
+var rating2:String = "?"
+
+var song_score:int = 0
+var song_misses:int = 0
+var song_accuracy:float = 0
+
+var combo:int = 0
+var total_notes:int = 0
+var total_hit:float = 0.0
+
+func refresh_combo_textures():
+	rating_textures = [
+		GameplaySettings.ui_skin.marvelous_tex,
+		GameplaySettings.ui_skin.sick_tex,
+		GameplaySettings.ui_skin.good_tex,
+		GameplaySettings.ui_skin.bad_tex,
+		GameplaySettings.ui_skin.shit_tex,
+	]
+	
+	combo_textures = [
+		load(GameplaySettings.ui_skin.combo_num_path + "0.png"),
+		load(GameplaySettings.ui_skin.combo_num_path + "1.png"),
+		load(GameplaySettings.ui_skin.combo_num_path + "2.png"),
+		load(GameplaySettings.ui_skin.combo_num_path + "3.png"),
+		load(GameplaySettings.ui_skin.combo_num_path + "4.png"),
+		load(GameplaySettings.ui_skin.combo_num_path + "5.png"),
+		load(GameplaySettings.ui_skin.combo_num_path + "6.png"),
+		load(GameplaySettings.ui_skin.combo_num_path + "7.png"),
+		load(GameplaySettings.ui_skin.combo_num_path + "8.png"),
+		load(GameplaySettings.ui_skin.combo_num_path + "9.png")
+	]
+
 func _ready():	
 	Keybinds.setup_Binds()	
+	
 	GameplaySettings.load_ui_skin()
+	refresh_combo_textures()
+	
+	load_stage_and_characters()
 	
 	opponent_strums = load("res://Scenes/Strums/" + str(GameplaySettings.key_count) + "Key.tscn").instance()
 	player_strums = load("res://Scenes/Strums/" + str(GameplaySettings.key_count) + "Key.tscn").instance()
@@ -113,6 +177,90 @@ func _ready():
 				
 	GameplaySettings.scroll_speed /= GameplaySettings.song_multiplier
 	
+	focus_camera()
+	
+var cur_stage = "stage"
+var gf_version = "gf"
+	
+func load_stage_and_characters():
+	if "stage" in SONG:
+		cur_stage = SONG["stage"]
+	else:
+		match SONG.song.to_lower():
+			"spookeez", "south", "monster":
+				cur_stage = "spooky"
+			"pico", "philly nice", "blammed":
+				cur_stage = "philly"
+			"satin panties", "high", "m.i.l.f":
+				cur_stage = "limo"
+			"cocoa", "eggnog":
+				cur_stage = "mall"
+			"winter horrorland":
+				cur_stage = "mallEvil"
+			"senpai", "roses":
+				cur_stage = "school"
+			"thorns":
+				cur_stage = "schoolEvil"
+			_:
+				cur_stage = "stage"
+				
+	if ResourceLoader.exists(Paths.stage(cur_stage)):
+		print(Paths.stage(cur_stage) + " EXISTS!!!")
+		
+		stage = load(Paths.stage(cur_stage)).instance()
+		add_child(stage)
+	else:
+		print(Paths.stage(cur_stage) + " DOESN'T EXIST!!!")
+		
+		cur_stage = "stage"
+		stage = load(Paths.stage(cur_stage)).instance()
+		add_child(stage)
+		
+	if "gf" in SONG:
+		gf_version = SONG["gf"]
+	elif "gfVersion" in SONG:
+		gf_version = SONG["gfVersion"]
+	elif "player3" in SONG:
+		gf_version = SONG["player3"]
+	else:
+		match SONG.song.to_lower():
+			"cocoa", "eggnog", "winter horrorland":
+				gf_version = "gf-christmas"
+			"senpai", "roses", "thorns":
+				gf_version = "gf-pixel"
+			_:
+				gf_version = "gf"
+				
+	# load gf
+	if ResourceLoader.exists(Paths.character(gf_version)):
+		gf = load(Paths.character(gf_version)).instance()
+		add_child(gf)
+	else:
+		gf = load(Paths.character("gf")).instance()
+		add_child(gf)
+		
+	gf.global_position = stage.gf_pos
+		
+	# load dad
+	if ResourceLoader.exists(Paths.character(SONG.player2)):
+		dad = load(Paths.character(SONG.player2)).instance()
+		add_child(dad)
+	else:
+		dad = load(Paths.character("dad")).instance()
+		add_child(dad)
+		
+	dad.global_position = stage.dad_pos
+		
+	# load bf
+	if ResourceLoader.exists(Paths.character(SONG.player1)):
+		bf = load(Paths.character(SONG.player1)).instance()
+		add_child(bf)
+	else:
+		bf = load(Paths.character("bf")).instance()
+		add_child(bf)
+		
+	bf.global_position = stage.bf_pos
+	
 func _physics_process(delta):
 	iconP2.scale = lerp(iconP2.scale, Vector2.ONE, delta * 20)
 	iconP1.scale = lerp(iconP1.scale, Vector2.ONE, delta * 20)
@@ -135,6 +283,14 @@ func _physics_process(delta):
 			timebar_progress.rect_scale.x = 1
 		timebar_text.text = cur_time + " / " + length
 		
+		if a > b:
+			ending_song = true
+			AudioHandler.stop_music()
+			AudioHandler.play_music("freakyMenu")
+			AudioHandler.inst.stop()
+			AudioHandler.voices.stop()
+			SceneHandler.switch_to("FreeplayMenu")
+		
 	for strum in opponent_strums.get_children():
 		if strum.anim_finished:
 			strum.play_anim("static")
@@ -151,7 +307,6 @@ func _physics_process(delta):
 			new_note.note_type = note[5]
 			new_note.strum_time = float(note[0])
 			
-			print("STINKY:" + str(note[1]))
 			new_note.note_data = int(note[1]) % GameplaySettings.key_count
 			
 			if "is_alt" in new_note:
@@ -162,7 +317,8 @@ func _physics_process(delta):
 					new_note.character = note[4]
 					
 			if float(note[2]) >= Conductor.step_crochet:
-				new_note.sustain_length = float(note[2])
+				new_note.og_sustain_length = float(note[2]) - 50
+				new_note.sustain_length = float(note[2]) - 50
 				new_note.get_node("End").visible = true
 				new_note.get_node("Line2D").visible = true
 			
@@ -213,7 +369,7 @@ onready var countdown_sounds = [
 	
 func countdown_tick():
 	countdown -= 1
-	print("COUNTDOWN: " + str(countdown))
+	#print("COUNTDOWN: " + str(countdown))
 	match countdown:
 		4:
 			var sound = countdown_sounds[0]
@@ -265,13 +421,18 @@ func countdown_tick():
 			countdown_tween.start()
 		
 func _process(delta):
-	if not Transition.transitioning:
-		if countdown_active:
-			Conductor.song_position += (delta * 1000)
-		else:
+	if countdown_active:
+		Conductor.song_position += (delta * 1000)
+	else:
+		if not Transition.transitioning:
 			Conductor.song_position += (delta * 1000) * GameplaySettings.song_multiplier
-			
+		
 	if Input.is_action_just_pressed("ui_back"):
+		ending_song = true
+		AudioHandler.stop_music()
+		AudioHandler.inst.stop()
+		AudioHandler.voices.stop()
+		AudioHandler.play_music("freakyMenu")
 		SceneHandler.switch_to("FreeplayMenu")
 		
 	for note in notes.get_children():
@@ -301,6 +462,9 @@ func _process(delta):
 				note.sustain_length -= (delta * 1000) * GameplaySettings.song_multiplier
 				note.global_position.y = opponent_strums.get_child(note.note_data).global_position.y
 				
+				dad.play_anim(sing_anims[note.note_data])
+				AudioHandler.voices.volume_db = 0
+				
 				if note.sustain_length <= -50:
 					note.line2d.points[1].y = 0
 					note.queue_free()
@@ -322,7 +486,269 @@ func process_inputs(delta):
 		if just_released[i]:
 			player_strums.get_child(i).play_anim("static")
 			
-		# FINISH INPUT SYSTEM TOMORROW!
+	if not botplay:
+		if just_pressed.has(true):
+			var possible_notes = []
+			
+			note_data_possibles = []
+			rythm_array = []
+			note_data_times = []
+			dont_hit = []
+			
+			for i in GameplaySettings.key_count:
+				note_data_possibles.append(false)
+				note_data_times.append(-1)
+
+				rythm_array.append(false)
+				
+				dont_hit.append(false)
+			
+			for note in notes.get_children():
+				note.calculate_can_be_hit()
+				
+				if (note.can_be_hit and note.must_press and not note.too_late) or note.being_pressed:
+					possible_notes.append(note)
+					
+			possible_notes.sort_custom(self, "sort_ascending")
+			
+			if len(possible_notes) > 0:
+				for i in len(possible_notes):
+					var real_note:Node2D = possible_notes[i]
+					if real_note.sustain_length <= 0:
+						if just_pressed[real_note.note_data] and not note_data_possibles[real_note.note_data]:
+							note_data_possibles[real_note.note_data] = true
+							note_data_times[real_note.note_data] = real_note.strum_time
+							
+							good_note_hit(real_note)
+							
+							if dont_hit.has(real_note):
+								note_miss(real_note.note_data)
+								rythm_array[i] = true
+									
+							if real_note.strum_time == note_data_times[real_note.note_data]:
+								good_note_hit(real_note)
+					else:
+						if pressed[real_note.note_data] and not note_data_possibles[real_note.note_data]:
+							if just_pressed[real_note.note_data]:
+								pop_up_score(real_note.strum_time, real_note)
+								calculate_accuracy()
+								
+								real_note.being_pressed = true
+								note_data_possibles[real_note.note_data] = true
+								note_data_times[real_note.note_data] = real_note.strum_time
+							
+							#real_note.player_note_hit()
+							if bf:
+								bf.hold_timer = 0
+								
+			if not Options.get_data("ghost-tapping"):
+				for i in len(just_pressed):
+					if just_pressed[i] and not note_data_possibles[i] and not rythm_array[i]:
+						note_miss(i)
+							
+	for note in notes.get_children():
+		if note.sustain_length >= -50 and note.being_pressed and pressed[note.note_data]: 
+			note.spr.visible = false
+			note.sustain_length -= (delta * 1000) * GameplaySettings.song_multiplier
+			var strum:Node2D = player_strums.get_child(note.note_data)			
+			strum.play_anim("confirm")
+			note.global_position.y = strum.global_position.y
+			AudioHandler.voices.volume_db = 0
+			
+			if note.sustain_length <= -50:
+				note.queue_free()
+				
+		# missing
+		var sustainMissRange = 200
+		
+		var your = (note.must_press and note.sustain_length <= 0 and not botplay)
+		var your2 = (note.must_press and note.sustain_length >= 0 and not pressed[note.note_data % GameplaySettings.key_count] and not botplay)
+		
+		if not pressed[note.note_data] and note.being_pressed and note.sustain_length <= sustainMissRange:
+			note.sustain_length -= (delta * 1000) * GameplaySettings.song_multiplier
+			note.global_position.y = player_strums.get_child(note.note_data % GameplaySettings.key_count).global_position.y
+			
+			AudioHandler.voices.volume_db = 0
+			
+			if note.sustain_length <= -50:
+				note.queue_free()
+		else:
+			if your2 or (note.must_press and not note.being_pressed and pressed[note.note_data]):
+				if Conductor.song_position > note.strum_time + Conductor.safe_zone_offset:
+					if note.should_hit:
+						note_miss(note.note_data)
+						
+						#if note.sustain_length >= 150:
+							#health -= 0.2
+						
+					note.queue_free()
+					
+func good_note_hit(note):
+	if not note.was_good_hit:
+		pop_up_score(note.strum_time, note)
+		
+		#note.player_note_hit()
+		
+		if bf and bf.special_anim != true:
+			bf.play_anim(sing_anims[note.note_data], true)
+		
+		player_strums.get_child(note.note_data).play_anim("confirm")
+		
+		note.was_good_hit = true
+		AudioHandler.voices.volume_db = 0
+		
+		calculate_accuracy()
+		
+		note.queue_free()
+		
+var cur_rating = "marvelous"
+func pop_up_score(strum_time, note):
+	var note_ms = (Conductor.song_position - strum_time) / GameplaySettings.song_multiplier
+	
+	var judgement_timings = [
+		Options.get_data("sick-timing"),
+		Options.get_data("good-timing"),
+		Options.get_data("bad-timing"),
+		Options.get_data("shit-timing")
+	]
+	
+	var rating_scores = [350, 200, 100, 50]
+	
+	cur_rating = "marvelous"
+	
+	if abs(note_ms) >= judgement_timings[0]:
+		cur_rating = "sick"
+		
+	if abs(note_ms) >= judgement_timings[1]:
+		cur_rating = "good"
+		
+	if abs(note_ms) >= judgement_timings[2]:
+		cur_rating = "bad"
+		
+	if abs(note_ms) >= judgement_timings[3]:
+		cur_rating = "shit"
+		
+	var rating_tex = rating_textures[0]
+	match cur_rating:
+		"marvelous", "sick":
+			song_score += rating_scores[0]
+			
+			if cur_rating == "sick":
+				rating_tex = rating_textures[1]
+				sicks += 1
+			else:
+				marvelous += 1
+				
+			total_hit += 1
+		"good":
+			goods += 1
+			
+			song_score += rating_scores[1]	
+			rating_tex = rating_textures[2]
+			
+			total_hit += 0.7
+		"bad":
+			bads += 1
+			
+			song_score += rating_scores[2]	
+			rating_tex = rating_textures[3]
+			
+			total_hit += 0.3
+		"shit":
+			shits += 1
+			
+			song_score += rating_scores[3]	
+			rating_tex = rating_textures[4]
+	
+	combo += 1
+	total_notes += 1
+	
+	var new_rating = rating_template.duplicate()
+	new_rating.global_position = Vector2(654, 237)
+	ratings.add_child(new_rating)
+	
+	new_rating.spr.texture = rating_tex
+	
+var rating_stuff:Array = [
+		['bruj', 0.1], #your accuracy is actual garbage if you get to this point
+		['F', 0.2], #From 0% to 19%
+		['E', 0.4], #From 20% to 39%
+		['D', 0.5], #From 40% to 49%
+		['C', 0.6], #From 50% to 59%
+		['B', 0.69], #From 60% to 68%
+		['funni', 0.7], #69%
+		['A', 0.8], #From 70% to 79%
+		['S', 0.9], #From 80% to 89%
+		['S+', 1], #From 90% to 99%
+		['S++', 1] #100%
+]
+		
+func calculate_accuracy():
+	if total_hit != 0 and total_notes != 0:
+		song_accuracy = (total_hit / total_notes)
+	else:
+		song_accuracy = 0
+		
+	if !is_nan(song_accuracy) and song_accuracy < 0:
+		song_accuracy = 0
+	
+	if is_nan(song_accuracy):
+		rating2 = "?"
+	elif song_accuracy >= 1:
+		song_accuracy = 1
+		rating2 = rating_stuff[rating_stuff.size()-1][0] #Uses last string
+	else:
+		for i in rating_stuff.size()-1:
+			if song_accuracy < rating_stuff[i][1]:
+				rating2 = rating_stuff[i][0]
+				break
+		
+	ratingtext.text = "Marvelous: " + str(marvelous)
+	ratingtext.text += "\nSicks: " + str(sicks)
+	ratingtext.text += "\nGoods: " + str(goods)
+	ratingtext.text += "\nBads: " + str(bads)
+	ratingtext.text += "\nShits: " + str(shits)
+	ratingtext.text += "\nMisses: " + str(song_misses)
+	
+	rating1 = "Clear"
+	
+	if marvelous > 0 and sicks == 0 and goods == 0 and bads == 0 and shits == 0 and song_misses == 0:
+		rating1 = "MFC"
+		
+	elif sicks > 0 and goods == 0 and bads == 0 and shits == 0 and song_misses == 0:
+		rating1 = "SFC"
+		
+	elif goods > 0 and bads == 0 and shits == 0 and song_misses == 0:
+		rating1 = "GFC"
+		
+	elif song_misses == 0:
+		rating1 = "FC"
+		
+	elif song_misses < 10:
+		rating1 = "SDCB"
+	
+	health_bar.scoretext.text = "Score: " + str(song_score) + " // Misses: " + str(song_misses) + " // Accuracy: " + str(CoolUtil.round_decimal(song_accuracy * 100, 2)) + "% [" + rating1 + " - " + rating2 + "]"
+			
+func note_miss(direction = 0):
+	#health -= 0.0475
+	
+	song_misses += 1
+	AudioHandler.voices.volume_db = -999
+	
+	if gf and combo > 5:
+		gf.play_anim("sad")
+		
+	combo = 0
+	song_score -= 10
+	
+	total_notes += 1
+	calculate_accuracy()
+	
+	var miss_audio = "missnote" + str(randi()%3 + 1)
+	AudioHandler.play_audio(miss_audio)
+	
+	if bf and bf.special_anim != true:
+		bf.play_anim(sing_anims[direction] + " miss", true)				
 	
 var old_keycount:int = -1
 func refresh_input_bullshit():
@@ -333,14 +759,28 @@ func refresh_input_bullshit():
 		pressed = []
 		just_released = []
 		released = []
+		dont_hit = []
 		
 		for i in GameplaySettings.key_count:
 			just_pressed.append(false)
 			pressed.append(false)
 			just_released.append(false)
 			released.append(false)
+			dont_hit.append(false)
 		
 func beat_hit():
+	if bf != null:
+		if bf.is_dancing() or bf.last_anim.ends_with("miss") or bf.last_anim == "hey" or bf.last_anim == "scared":
+			bf.dance()
+			
+	if dad != null:
+		if dad.is_dancing() or (SONG.player2 == gf_version and dad.last_anim == "cheer" or dad.last_anim == "scared"):
+			dad.dance()
+			
+	if gf != null:
+		if (gf.is_dancing() or gf.last_anim == "cheer" or gf.last_anim == "scared" or (gf.last_anim == "hairFall" and gf.anim_player.current_animation == "")) and dad != gf:
+			gf.dance()
+			
 	if not countdown_active:
 		iconP2.scale = Vector2(1.2, 1.2)
 		iconP1.scale = Vector2(1.2, 1.2)
@@ -351,4 +791,64 @@ func beat_hit():
 			hud.position.y = (hud.scale.y - 1) * -360
 	
 func step_hit():
-	pass
+	if not countdown_active:
+		var gaming = 20
+		
+		if OS.get_name() == "Windows":
+			gaming = 30
+		
+		if GameplaySettings.song_multiplier >= 1:
+			gaming *= GameplaySettings.song_multiplier
+		
+		if not ending_song and abs(AudioHandler.inst.get_playback_position() + (AudioServer.get_time_since_last_mix() * 1000) - (Conductor.song_position)) > gaming || (GameplaySettings.SONG.song.needsVoices && abs(AudioHandler.voices.get_playback_position() + (AudioServer.get_time_since_last_mix() * 1000) - (Conductor.song_position)) > gaming):
+			resync_vocals()
+			
+func focus_on(character):
+	match character:
+		"gf", "girlfriend":
+			if gf:
+				var gorl = gf.global_position + gf.camera_pos
+				camera.position = Vector2(gorl.x, gorl.y)
+		"bf", "boyfriend":
+			if bf:
+				var boy = bf.global_position + bf.camera_pos
+				camera.position = Vector2(boy.x, boy.y)
+		_:
+			if dad:
+				var father = dad.global_position + dad.camera_pos
+				
+				if dad.is_player:
+					father.x = dad.global_position.x + (dad.camera_pos.x + 250)
+					
+				camera.position = Vector2(father.x, father.y)
+		
+var cur_section:int = 0
+		
+func focus_camera():
+	var prevSection = cur_section
+	
+	cur_section = floor(Conductor.cur_step / 16)
+	
+	if cur_section < 0:
+		cur_section = 0
+		
+	if cur_section > len(SONG["notes"]) - 1:
+		cur_section = len(SONG["notes"]) - 1
+		
+	if SONG["notes"][cur_section]["mustHitSection"]:
+		focus_on("bf")
+		if bf:
+			timebar_progress.color = bf.health_color
+		else:
+			timebar_progress.color = Color("FFFFFF")
+	else:
+		focus_on("dad")
+		if dad:
+			timebar_progress.color = dad.health_color
+		else:
+			timebar_progress.color = Color("FFFFFF")
+			
+func resync_vocals():
+	if not countdown_active:
+		Conductor.song_position = (AudioHandler.inst.get_playback_position() * 1000)
+		AudioHandler.voices.seek(Conductor.song_position / 1000)

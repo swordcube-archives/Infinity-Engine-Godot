@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="speakers.png">
+	<!-- Created with Adobe Animate version 21.0.6.41649 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="bop0000" x="1" y="354" width="700" height="352" frameX="-2" frameY="0" frameWidth="704" frameHeight="352"/>
+	<SubTexture name="bop0001" x="1" y="1" width="704" height="352"/>
+	<SubTexture name="bop0002" x="1" y="1" width="704" height="352"/>
+	<SubTexture name="bop0003" x="1" y="707" width="700" height="352" frameX="-2" frameY="0" frameWidth="704" frameHeight="352"/>
+	<SubTexture name="bop0004" x="1" y="354" width="700" height="352" frameX="-2" frameY="0" frameWidth="704" frameHeight="352"/>
+	<SubTexture name="bop0005" x="1" y="354" width="700" height="352" frameX="-2" frameY="0" frameWidth="704" frameHeight="352"/>
+	<SubTexture name="bop0006" x="1" y="354" width="700" height="352" frameX="-2" frameY="0" frameWidth="704" frameHeight="352"/>
+</TextureAtlas>
