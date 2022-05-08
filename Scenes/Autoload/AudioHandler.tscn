@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Scripts/Autoload/AudioHandler.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Sounds/missnote1.ogg" type="AudioStream" id=2]
 [ext_resource path="res://Assets/Sounds/missnote2.ogg" type="AudioStream" id=3]
 [ext_resource path="res://Assets/Sounds/missnote3.ogg" type="AudioStream" id=4]
+[ext_resource path="res://Assets/Music/optionsMenu.ogg" type="AudioStream" id=5]
 [ext_resource path="res://Assets/Sounds/scrollMenu.ogg" type="AudioStream" id=6]
 [ext_resource path="res://Assets/Sounds/confirmMenu.ogg" type="AudioStream" id=7]
 [ext_resource path="res://Assets/Music/freakyMenu.ogg" type="AudioStream" id=10]
@@ -49,3 +50,6 @@ stream = ExtResource( 12 )
 
 [node name="freakyMenu" type="AudioStreamPlayer" parent="Music"]
 stream = ExtResource( 10 )
+
+[node name="optionsMenu" type="AudioStreamPlayer" parent="Music"]
+stream = ExtResource( 5 )

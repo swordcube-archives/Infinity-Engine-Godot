@@ -16,13 +16,13 @@ func _ready():
 	
 func _physics_process(delta):
 	if not PlayState.countdown_active:
-		fuck += (delta * 5) * Gameplay.song_multiplier
+		fuck += (delta * 5) * GameplaySettings.song_multiplier
 		
 		OS.window_position.y = window_pos.y - 10 + (sin(fuck / 2) + 1) * 10
 		
 		var index = 0
 		o_strums.global_position.x = lerp(o_strums.global_position.x, -600, delta * 2)
-		p_strums.global_position.x = lerp(p_strums.global_position.x, ScreenRes.screen_width / 2.72, delta * 2)
+		p_strums.global_position.x = lerp(p_strums.global_position.x, CoolUtil.screen_res.x / 2.72, delta * 2)
 		for strum in p_strums.get_children():
 			strum.position.y = sin(fuck + index) * 30
 			index += 1
@@ -34,7 +34,7 @@ func _step_hit(): # this is _beat_hit but it happens more often
 	pass
 	
 func screen_center(object):
-	object.global_position = Vector2(ScreenRes.screen_width / 2, ScreenRes.screen_height / 2)
+	object.global_position = Vector2(CoolUtil.screen_res.x / 2, CoolUtil.screen_res.y / 2)
 	
 func _process(delta):
 	PlayState.health = (sin(fuck / 3.5) + 2) * 0.5

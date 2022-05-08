@@ -15,12 +15,18 @@ _global_script_classes=[ {
 "path": "res://Scripts/Character.gd"
 }, {
 "base": "Node2D",
+"class": "Option",
+"language": "GDScript",
+"path": "res://Scenes/Options/Option.gd"
+}, {
+"base": "Node2D",
 "class": "Stage",
 "language": "GDScript",
 "path": "res://Scripts/stage.gd"
 } ]
 _global_script_class_icons={
 "Character": "",
+"Option": "",
 "Stage": ""
 }
 

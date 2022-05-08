@@ -11,9 +11,7 @@ var trainFinishing = false
 
 var die = false
 
-onready var dad:Node2D = $"../".dad
-onready var gf:Node2D = $"../".gf
-onready var bf:Node2D = $"../".bf
+onready var PlayState:Node2D = $"../"
 
 onready var train = $sky/parallax4/spr
 onready var train_sound = $train_sound
@@ -29,7 +27,7 @@ func _ready():
 	
 	Conductor.connect("beat_hit", self, "beat_hit")
 
-func _process(delta):			
+func _process(delta):
 	if trainMoving:
 		trainFrameTiming += delta
 
@@ -43,18 +41,18 @@ func beat_hit():
 	if not trainMoving:
 		trainCooldown = trainCooldown + 1
 
-	if Conductor.curBeat % 4 == 0:
+	if Conductor.cur_beat % 4 == 0:
 		lightSelected += 1
 		if lightSelected > 4:
 			lightSelected = 0
 
-		windows.texture = load("res://Stages/philly/win" + str(lightSelected) + ".png")
+		windows.texture = load("res://Assets/Images/Stages/philly/win" + str(lightSelected) + ".png")
 		
-		tween.interpolate_property(windows, "modulate", Color(1,1,1,1), Color(1,1,1,0), (Conductor.timeBetweenBeats / 1000) * 4, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+		tween.interpolate_property(windows, "modulate", Color(1,1,1,1), Color(1,1,1,0), (Conductor.crochet / 1000) * 4, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 		tween.stop_all()
 		tween.start()
 
-	if Conductor.curBeat % 8 == 4 and rand_range(0, 100) < 20 and not trainMoving and trainCooldown > 8:
+	if Conductor.cur_beat % 8 == 4 and rand_range(0, 100) < 20 and not trainMoving and trainCooldown > 8:
 		trainCooldown = int(rand_range(-4, 0))
 		
 		trainMoving = true
@@ -62,16 +60,16 @@ func beat_hit():
 
 func updateTrainPos():
 	if train_sound.get_playback_position() * 1000 >= 4700:
-		if "dances" in gf:
-			gf.dances = false
+		if "dances" in PlayState.gf:
+			PlayState.gf.dances = false
 		
 		if !startedMoving:
-			gf.play_anim("hairBlow", true)
+			PlayState.gf.play_anim("hairBlow", true)
 		
 		startedMoving = true
 		
-		if gf.get_node("anim").get_current_animation_position() >= 0.16:
-			gf.play_anim("hairBlow", true)
+		if PlayState.gf.anim_player.get_current_animation_position() >= 0.16:
+			PlayState.gf.play_anim("hairBlow", true)
 
 	if startedMoving:
 		train.position.x -= 400
@@ -87,7 +85,7 @@ func updateTrainPos():
 			trainReset()
 
 func trainReset():
-	gf.play_anim("hairFall", true)
+	PlayState.gf.play_anim("hairFall", true)
 	
 	train.position.x = 2000
 	trainMoving = false
@@ -95,5 +93,5 @@ func trainReset():
 	trainFinishing = false
 	startedMoving = false
 	
-	if "dances" in gf:
-		gf.dances = true
+	if "dances" in PlayState.gf:
+		PlayState.gf.dances = true

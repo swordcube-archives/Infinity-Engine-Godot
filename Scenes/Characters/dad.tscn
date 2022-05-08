@@ -268,10 +268,9 @@ sing_duration = 6.1
 [node name="frames" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -388 )
 frames = ExtResource( 2 )
-animation = "singUP"
-frame = 59
+animation = "idle"
+frame = 12
 playing = true
-offset = Vector2( -5, -25 )
 
 [node name="anim" type="AnimationPlayer" parent="."]
 root_node = NodePath("../frames")

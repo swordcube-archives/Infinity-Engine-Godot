@@ -301,7 +301,7 @@ tracks/3/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( 45, 5 ) ]
+"values": [ Vector2( 17, 5 ) ]
 }
 
 [sub_resource type="Animation" id=504]
@@ -351,7 +351,7 @@ tracks/3/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( 45, -7 ) ]
+"values": [ Vector2( 17, -7 ) ]
 }
 
 [sub_resource type="Animation" id=505]
@@ -401,7 +401,7 @@ tracks/3/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( -17, 5 ) ]
+"values": [ Vector2( -47, 5 ) ]
 }
 
 [sub_resource type="Animation" id=506]
@@ -451,7 +451,7 @@ tracks/3/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( -17, -10 ) ]
+"values": [ Vector2( -47, -10 ) ]
 }
 
 [sub_resource type="Animation" id=507]
@@ -501,7 +501,7 @@ tracks/3/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( -15, -15 ) ]
+"values": [ Vector2( -20, -15 ) ]
 }
 
 [sub_resource type="Animation" id=508]
@@ -551,7 +551,7 @@ tracks/3/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( -13, -13 ) ]
+"values": [ Vector2( -20, -13 ) ]
 }
 
 [node name="char" type="Node2D"]
@@ -563,9 +563,10 @@ is_player = true
 [node name="frames" type="AnimatedSprite" parent="."]
 position = Vector2( 1, -207 )
 frames = ExtResource( 2 )
-animation = "idle"
-frame = 13
+animation = "hey"
+frame = 25
 playing = true
+offset = Vector2( 0, -2 )
 flip_h = true
 
 [node name="anim" type="AnimationPlayer" parent="."]

@@ -1,9 +1,8 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Assets/Images/Characters/gf/assets.res" type="SpriteFrames" id=1]
 [ext_resource path="res://Scenes/Characters/gf.gd" type="Script" id=2]
 [ext_resource path="res://Assets/Images/Characters/gf/speakers/assets.res" type="SpriteFrames" id=3]
-[ext_resource path="res://Assets/Images/Icons/gf.png" type="Texture" id=4]
 
 [sub_resource type="Animation" id=140]
 resource_name = "cheer"
@@ -517,8 +516,6 @@ tracks/3/keys = {
 
 [node name="gf" type="Node2D"]
 script = ExtResource( 2 )
-health_color = Color( 0.647059, 0, 0.301961, 1 )
-health_icon = ExtResource( 4 )
 
 [node name="speakers" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -174 )
@@ -528,7 +525,7 @@ frame = 6
 playing = true
 
 [node name="girl" type="AnimatedSprite" parent="."]
-position = Vector2( -22, -437 )
+position = Vector2( -30, -437 )
 frames = ExtResource( 1 )
 animation = "danceLeft"
 frame = 14

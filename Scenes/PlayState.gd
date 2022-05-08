@@ -56,6 +56,8 @@ var dont_hit:Array = []
 var rating_textures:Array = []
 var combo_textures:Array = []
 
+var default_cam_zoom:float = 1.0
+
 var marvelous:int = 0
 var sicks:int = 0
 var goods:int = 0
@@ -72,6 +74,8 @@ var song_accuracy:float = 0
 var combo:int = 0
 var total_notes:int = 0
 var total_hit:float = 0.0
+
+var health:float = 1.0
 
 func refresh_combo_textures():
 	rating_textures = [
@@ -101,7 +105,9 @@ func _ready():
 	GameplaySettings.load_ui_skin()
 	refresh_combo_textures()
 	
-	load_stage_and_characters()
+	if not Options.get_data("optimization"):
+		load_stage_and_characters()
+		reload_healthbar()
 	
 	opponent_strums = load("res://Scenes/Strums/" + str(GameplaySettings.key_count) + "Key.tscn").instance()
 	player_strums = load("res://Scenes/Strums/" + str(GameplaySettings.key_count) + "Key.tscn").instance()
@@ -179,6 +185,15 @@ func _ready():
 	
 	focus_camera()
 	
+	var zoomThing = 1
+	if stage:
+		zoomThing = 1 - stage.default_cam_zoom
+		
+	var goodZoom = 1 + zoomThing
+	
+	camera.zoom = Vector2(goodZoom, goodZoom)
+	default_cam_zoom = goodZoom
+	
 var cur_stage = "stage"
 var gf_version = "gf"
 	
@@ -214,7 +229,6 @@ func load_stage_and_characters():
 		
 		cur_stage = "stage"
 		stage = load(Paths.stage(cur_stage)).instance()
-		add_child(stage)
 		
 	if "gf" in SONG:
 		gf_version = SONG["gf"]
@@ -234,38 +248,48 @@ func load_stage_and_characters():
 	# load gf
 	if ResourceLoader.exists(Paths.character(gf_version)):
 		gf = load(Paths.character(gf_version)).instance()
-		add_child(gf)
 	else:
 		gf = load(Paths.character("gf")).instance()
-		add_child(gf)
 		
 	gf.global_position = stage.gf_pos
 		
 	# load dad
 	if ResourceLoader.exists(Paths.character(SONG.player2)):
 		dad = load(Paths.character(SONG.player2)).instance()
-		add_child(dad)
+		
+		if dad.is_player:
+			dad.scale.x *= -1
 	else:
-		dad = load(Paths.character("dad")).instance()
-		add_child(dad)
+		dad = load(Paths.character("bf")).instance()
+		
+		if dad.is_player:
+			dad.scale.x *= -1
 		
 	dad.global_position = stage.dad_pos
 		
 	# load bf
 	if ResourceLoader.exists(Paths.character(SONG.player1)):
 		bf = load(Paths.character(SONG.player1)).instance()
-		add_child(bf)
 	else:
 		bf = load(Paths.character("bf")).instance()
-		add_child(bf)
 		
 	bf.global_position = stage.bf_pos
+	
+	add_child(stage)
+	add_child(gf)
+	add_child(dad)
+	add_child(bf)
 	
 func _physics_process(delta):
 	iconP2.scale = lerp(iconP2.scale, Vector2.ONE, delta * 20)
 	iconP1.scale = lerp(iconP1.scale, Vector2.ONE, delta * 20)
 	
 	if cam_zooming:
+		camera.zoom = Vector2(lerp(camera.zoom.x, default_cam_zoom, delta * 7), lerp(camera.zoom.y, default_cam_zoom, delta * 7))
+		
+		if camera.zoom.x < 0.65:
+			camera.zoom = Vector2(0.65, 0.65)
+		
 		hud.scale = lerp(hud.scale, Vector2.ONE, delta * 7)
 		hud.position.x = (hud.scale.x - 1) * -640
 		hud.position.y = (hud.scale.y - 1) * -360
@@ -284,12 +308,13 @@ func _physics_process(delta):
 		timebar_text.text = cur_time + " / " + length
 		
 		if a > b:
-			ending_song = true
-			AudioHandler.stop_music()
-			AudioHandler.play_music("freakyMenu")
-			AudioHandler.inst.stop()
-			AudioHandler.voices.stop()
-			SceneHandler.switch_to("FreeplayMenu")
+			if not ending_song:
+				ending_song = true
+				AudioHandler.stop_music()
+				AudioHandler.play_music("freakyMenu")
+				AudioHandler.inst.stop()
+				AudioHandler.voices.stop()
+				SceneHandler.switch_to("FreeplayMenu")
 		
 	for strum in opponent_strums.get_children():
 		if strum.anim_finished:
@@ -421,6 +446,29 @@ func countdown_tick():
 			countdown_tween.start()
 		
 func _process(delta):
+	var display_health:float = health
+	if display_health < 0:
+		health = 0
+	if display_health > 2:
+		health = 2
+		
+	health_bar.color2.rect_scale.x = display_health
+		
+	iconP2.position.x = 21 - ((display_health - 1) * 295)
+	iconP1.position.x = -19 - ((display_health - 1) * 295)
+	
+	var health_percentage:int = floor((display_health / 2) * 100)
+	
+	if health_percentage <= 20:
+		iconP1.switch_to("losing")
+		iconP2.switch_to("winning")
+	elif health_percentage >= 80:
+		iconP2.switch_to("losing")
+		iconP1.switch_to("winning")
+	else:
+		iconP1.switch_to("normal")
+		iconP2.switch_to("normal")
+		
 	if countdown_active:
 		Conductor.song_position += (delta * 1000)
 	else:
@@ -462,7 +510,10 @@ func _process(delta):
 				note.sustain_length -= (delta * 1000) * GameplaySettings.song_multiplier
 				note.global_position.y = opponent_strums.get_child(note.note_data).global_position.y
 				
-				dad.play_anim(sing_anims[note.note_data])
+				if dad:
+					dad.hold_timer = 0
+					dad.play_anim(sing_anims[note.note_data])
+					
 				AudioHandler.voices.volume_db = 0
 				
 				if note.sustain_length <= -50:
@@ -550,6 +601,11 @@ func process_inputs(delta):
 		if note.sustain_length >= -50 and note.being_pressed and pressed[note.note_data]: 
 			note.spr.visible = false
 			note.sustain_length -= (delta * 1000) * GameplaySettings.song_multiplier
+			
+			if bf:
+				bf.hold_timer = 0
+				bf.play_anim(sing_anims[note.note_data], true)	
+			
 			var strum:Node2D = player_strums.get_child(note.note_data)			
 			strum.play_anim("confirm")
 			note.global_position.y = strum.global_position.y
@@ -578,8 +634,8 @@ func process_inputs(delta):
 					if note.should_hit:
 						note_miss(note.note_data)
 						
-						#if note.sustain_length >= 150:
-							#health -= 0.2
+						if note.sustain_length >= 150:
+							health -= 0.2
 						
 					note.queue_free()
 					
@@ -590,6 +646,7 @@ func good_note_hit(note):
 		#note.player_note_hit()
 		
 		if bf and bf.special_anim != true:
+			bf.hold_timer = 0
 			bf.play_anim(sing_anims[note.note_data], true)
 		
 		player_strums.get_child(note.note_data).play_anim("confirm")
@@ -603,6 +660,12 @@ func good_note_hit(note):
 		
 var cur_rating = "marvelous"
 func pop_up_score(strum_time, note):
+	health += 0.023 
+	if health <= 0:
+		health = 0
+	if health > 2:
+		health = 2
+		
 	var note_ms = (Conductor.song_position - strum_time) / GameplaySettings.song_multiplier
 	
 	var judgement_timings = [
@@ -730,7 +793,10 @@ func calculate_accuracy():
 	health_bar.scoretext.text = "Score: " + str(song_score) + " // Misses: " + str(song_misses) + " // Accuracy: " + str(CoolUtil.round_decimal(song_accuracy * 100, 2)) + "% [" + rating1 + " - " + rating2 + "]"
 			
 func note_miss(direction = 0):
-	#health -= 0.0475
+	health -= 0.0475
+	
+	if health <= 0:
+		health = 0
 	
 	song_misses += 1
 	AudioHandler.voices.volume_db = -999
@@ -748,6 +814,7 @@ func note_miss(direction = 0):
 	AudioHandler.play_audio(miss_audio)
 	
 	if bf and bf.special_anim != true:
+		bf.hold_timer = 0
 		bf.play_anim(sing_anims[direction] + " miss", true)				
 	
 var old_keycount:int = -1
@@ -767,8 +834,16 @@ func refresh_input_bullshit():
 			just_released.append(false)
 			released.append(false)
 			dont_hit.append(false)
+			
+var last_beat = 0
+var last_step = 0
 		
 func beat_hit():
+	if last_beat != Conductor.cur_beat:
+		last_beat = Conductor.cur_beat
+	else:
+		return
+	
 	if bf != null:
 		if bf.is_dancing() or bf.last_anim.ends_with("miss") or bf.last_anim == "hey" or bf.last_anim == "scared":
 			bf.dance()
@@ -786,22 +861,28 @@ func beat_hit():
 		iconP1.scale = Vector2(1.2, 1.2)
 		
 		if cam_zooming and Conductor.cur_beat % 4 == 0:
+			camera.zoom -= Vector2(0.015, 0.015)
+			
 			hud.scale += Vector2(0.03, 0.03)
 			hud.position.x = (hud.scale.x - 1) * -640
 			hud.position.y = (hud.scale.y - 1) * -360
 	
 func step_hit():
-	if not countdown_active:
-		var gaming = 20
+	if last_step != Conductor.cur_step:
+		last_step = Conductor.cur_step
+	else:
+		return
 		
-		if OS.get_name() == "Windows":
-			gaming = 30
+	if not countdown_active:
+		var gaming = 30
 		
 		if GameplaySettings.song_multiplier >= 1:
 			gaming *= GameplaySettings.song_multiplier
 		
 		if not ending_song and abs(AudioHandler.inst.get_playback_position() + (AudioServer.get_time_since_last_mix() * 1000) - (Conductor.song_position)) > gaming || (GameplaySettings.SONG.song.needsVoices && abs(AudioHandler.voices.get_playback_position() + (AudioServer.get_time_since_last_mix() * 1000) - (Conductor.song_position)) > gaming):
 			resync_vocals()
+			
+		focus_camera()
 			
 func focus_on(character):
 	match character:
@@ -847,6 +928,15 @@ func focus_camera():
 			timebar_progress.color = dad.health_color
 		else:
 			timebar_progress.color = Color("FFFFFF")
+			
+func reload_healthbar():
+	if dad:
+		iconP2.texture = dad.health_icon
+		health_bar.color1.color = dad.health_color
+		
+	if bf:
+		iconP1.texture = bf.health_icon
+		health_bar.color2.color = bf.health_color
 			
 func resync_vocals():
 	if not countdown_active:
