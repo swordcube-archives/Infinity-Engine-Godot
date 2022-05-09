@@ -32,3 +32,12 @@ func txt(file):
 	
 func week_json(week_name):
 	return "res://Assets/Weeks/" + week_name + ".json"
+
+func image(a):
+	return "res://Assets/Images/" + a + ".png"
+
+func music(a):
+	return "res://Assets/Music/" + a + ".ogg"
+
+func sound(a):
+	return "res://Assets/Sounds/" + a + ".ogg"
