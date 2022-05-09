@@ -492,4 +492,4 @@ anims/singUPmiss = SubResource( 14 )
 [node name="camera_pos" type="Node2D" parent="."]
 position = Vector2( 254, -327 )
 
-[connection signal="animation_finished" from="frames" to="." method="_on_frames_animation_finished"]
+[connection signal="animation_finished" from="anim" to="." method="_on_anim_animation_finished"]

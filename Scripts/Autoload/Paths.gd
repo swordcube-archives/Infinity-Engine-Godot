@@ -11,6 +11,15 @@ func character(character):
 
 func song_json(song, diff = "normal"):
 	return "res://Assets/Songs/" + song + "/" + diff + ".json"
+	
+func song(song):
+	return "res://Assets/Songs/" + song
+	
+func inst(song):
+	return "res://Assets/Songs/" + song + "/Inst.ogg"
+	
+func voices(song):
+	return "res://Assets/Songs/" + song + "/Voices.ogg"
 
 func json(file):
 	return "res://Assets/Data/" + file + ".json"

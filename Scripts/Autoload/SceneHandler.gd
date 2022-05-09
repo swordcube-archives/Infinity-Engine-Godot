@@ -8,7 +8,12 @@ func switch_to(scene:String, type:String = "", transition:bool = true):
 			path = type + "/" + scene
 			
 		if ResourceLoader.exists("res://Scenes/" + path + ".tscn"):
-			Transition.fade_in()
-			yield(get_tree().create_timer(Transition.anim.get_animation("in").length), "timeout")
-			get_tree().change_scene("res://Scenes/" + path + ".tscn")
-			Transition.fade_out()
+			if transition:
+				Transition.fade_in()
+				yield(get_tree().create_timer(Transition.anim.get_animation("in").length), "timeout")
+				get_tree().change_scene("res://Scenes/" + path + ".tscn")
+			else:
+				get_tree().change_scene("res://Scenes/" + path + ".tscn")
+			
+			if transition:
+				Transition.fade_out()

@@ -25,6 +25,7 @@ func sort_ascending(a, b):
 	return false
 
 func _ready():
+	GameplaySettings.deaths = 0
 	AudioHandler.inst.stop()
 	AudioHandler.voices.stop()
 	AudioHandler.play_music("freakyMenu")
@@ -34,8 +35,11 @@ func _ready():
 func _physics_process(delta):
 	position_highscore()
 	
+	var songName = visible_songs.get_child(cur_selected).text + "-" + visible_songs.get_child(cur_selected).difficulties[cur_difficulty]
+	lerpScore = lerp(lerpScore, Highscores.get_song_score(songName), delta * 10)
+	
 	if ready:
-		bg.modulate = lerp(bg.modulate, Color(songs[cur_selected].color), delta * 2)
+		bg.modulate = lerp(bg.modulate, Color(visible_songs.get_child(cur_selected).color), delta * 2)
 		var index = 0
 		for song in visible_songs.get_children():
 			var x = song.rect_position.x
@@ -45,9 +49,11 @@ func _physics_process(delta):
 			
 			index += 1
 			
+var lerpScore:float = 0
+			
 func position_highscore():
 	pb.rect_size.x = 0
-	pb.text = "PERSONAL BEST: 0"
+	pb.text = "PERSONAL BEST: " + str(abs(int(lerpScore)))
 	
 	speed.rect_size.x = 0
 	speed.text = "Speed: " + str(CoolUtil.round_decimal(cur_speed, 2)) + " (SHIFT+R)"
@@ -99,6 +105,7 @@ func _process(delta):
 		
 	if Input.is_action_pressed("ui_shift") and Input.is_action_just_pressed("reset"):
 		cur_speed = 1
+		AudioHandler.change_music_pitch(cur_speed)
 		
 	if Input.is_action_pressed("ui_left") or Input.is_action_pressed("ui_right"):
 		hold_timer += delta
@@ -135,6 +142,7 @@ func _process(delta):
 		
 		if not Transition.transitioning:
 			GameplaySettings.SONG = CoolUtil.get_json(Paths.song_json(visible_songs.get_child(cur_selected).name.split("_")[0], visible_songs.get_child(cur_selected).difficulties[cur_difficulty]))
+			GameplaySettings.difficulty = visible_songs.get_child(cur_selected).difficulties[cur_difficulty]
 			GameplaySettings.song_multiplier = CoolUtil.round_decimal(cur_speed, 2)
 			SceneHandler.switch_to("PlayState")
 		

@@ -322,10 +322,9 @@ sing_duration = 6.1
 [node name="frames" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -276 )
 frames = ExtResource( 2 )
-animation = "spooky DOWN note"
-frame = 24
+animation = "spooky dance idle"
+frame = 15
 playing = true
-offset = Vector2( 15, 70 )
 
 [node name="anim" type="AnimationPlayer" parent="."]
 root_node = NodePath("../frames")
@@ -339,4 +338,4 @@ anims/singUP = SubResource( 5 )
 [node name="camera_pos" type="Node2D" parent="."]
 position = Vector2( 157, -405 )
 
-[connection signal="animation_finished" from="frames" to="." method="_on_frames_animation_finished"]
+[connection signal="animation_finished" from="anim" to="." method="_on_anim_animation_finished"]

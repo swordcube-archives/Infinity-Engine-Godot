@@ -12,6 +12,8 @@ func _ready():
 	yield(get_tree().create_timer(0.1), "timeout")
 	if Options.get_data("memory-leaks"):
 		leak_memory()
+		
+	OS.vsync_enabled = Options.get_data("vsync")
 
 func get_json(path):
 	var data_file = File.new()

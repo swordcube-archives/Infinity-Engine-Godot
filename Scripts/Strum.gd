@@ -3,6 +3,7 @@ extends Node2D
 export(String) var direction = "A"
 
 var anim_finished:bool = false
+onready var label = $Label
 
 func _ready():
 	play_anim("static")

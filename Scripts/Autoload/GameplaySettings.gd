@@ -6,6 +6,26 @@ var song_multiplier:float = 1.0
 
 var scroll_speed:float = 1.0
 
+var deaths:int = 0
+
+var difficulty:String = "normal"
+
+var used_practice:bool = false
+var practice_mode:bool = false
+
+var story_mode:bool = false
+var story_score:int = 0
+
+var week_name:String = "tutorial"
+
+var story_playlist:Array = []
+
+var death_shit:Dictionary = {
+	"character": "bf-dead",
+	"char_pos": Vector2.ZERO,
+	"cam_pos": Vector2.ZERO,
+}
+
 var SONG = CoolUtil.get_json(Paths.song_json("Test"))
 
 var note_types = {}

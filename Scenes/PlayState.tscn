@@ -1,10 +1,12 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Scenes/PlayState.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/PlayState/HealthBar.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/PlayState/TimeBar.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/Images/UI Skins/Default/ready.png" type="Texture" id=4]
 [ext_resource path="res://Assets/Fonts/vcr.ttf" type="DynamicFontData" id=5]
+[ext_resource path="res://Scenes/PlayState/NoteSplash.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Scenes/PlayState/PauseMenu.tscn" type="PackedScene" id=7]
 
 [sub_resource type="DynamicFont" id=1]
 outline_size = 2
@@ -50,6 +52,9 @@ __meta__ = {
 
 [node name="CountdownGo" type="AudioStreamPlayer" parent="CanvasLayer/HUD"]
 
+[node name="CountdownTimer" type="Timer" parent="CanvasLayer/HUD"]
+one_shot = true
+
 [node name="Tween" type="Tween" parent="CanvasLayer/HUD"]
 
 [node name="RatingText" type="Label" parent="CanvasLayer/HUD"]
@@ -64,3 +69,10 @@ Goods: 0
 Bads: 0
 Shits: 0
 Misses: 0"
+
+[node name="NoteSplashTemplate" parent="CanvasLayer/HUD" instance=ExtResource( 6 )]
+visible = false
+position = Vector2( 105, 136 )
+
+[node name="PauseMenu" parent="CanvasLayer/HUD" instance=ExtResource( 7 )]
+visible = false

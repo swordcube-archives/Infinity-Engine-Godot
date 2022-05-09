@@ -3,6 +3,9 @@ extends Node2D
 onready var PlayState = $"../../../../"
 
 onready var spr = $spr
+
+onready var combined_combo = $Combo
+
 onready var num_template = $Combo/NumTemplate
 var combo_str:String = "0"
 
@@ -12,6 +15,9 @@ var kill_spr:bool = false
 var kill_combo:bool = false
 
 func _ready():
+	var a = Options.get_data("combo-offset")
+	combined_combo.position += Vector2(a[0], a[1])
+	
 	combo_str = str(PlayState.combo)
 	
 	match len(combo_str):

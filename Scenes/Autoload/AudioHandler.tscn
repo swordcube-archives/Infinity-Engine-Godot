@@ -12,6 +12,7 @@
 [ext_resource path="res://Assets/Sounds/flixel_beep.ogg" type="AudioStream" id=14]
 
 [node name="AudioHandler" type="Node2D"]
+pause_mode = 2
 script = ExtResource( 1 )
 
 [node name="blankTemplate" type="AudioStreamPlayer" parent="."]

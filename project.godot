@@ -49,6 +49,7 @@ VolumeControl="*res://Scenes/Autoload/VolumeControl.tscn"
 GameplaySettings="*res://Scripts/Autoload/GameplaySettings.gd"
 Options="*res://Scripts/Autoload/Options.gd"
 Keybinds="*res://Scripts/Autoload/Keybinds.gd"
+Highscores="*res://Scripts/Autoload/Highscores.gd"
 
 [display]
 

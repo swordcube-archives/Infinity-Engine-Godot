@@ -1,5 +1,7 @@
 extends Node2D
 
+onready var keybind_menu = $KeybindMenu
+
 onready var menu_template = $Bar/MenuTemplate
 onready var menu_strip = $Bar
 
@@ -69,11 +71,12 @@ var options:Dictionary = {
 			"save_data_name": "scroll-speed",
 			"multiplier": 0.1,
 			"limits": [0, 10],
+			"decimals": 1,
 			"type": "float",
 		},
 		{
 			"title": "Scroll Speed Type",
-			"description": "Change how scroll speed is used in a song.\nMultiplicative = Adds onto the song's speed, Constant = Directly sets the speed.\n(PRESS LEFT & RIGHT to change)",
+			"description": "Change how scroll speed is used in a song.\nMultiplicative = Adds onto the speed, Constant = Directly sets the speed.\n(PRESS LEFT & RIGHT to change)",
 			"save_data_name": "scroll-type",
 			"values": ["Multiplicative", "Constant"],
 			"type": "string",
@@ -110,7 +113,7 @@ var options:Dictionary = {
 		},
 		{
 			"title": "VSync",
-			"description": "When enabled, The game will run at your monitors refresh rate. Usually 60hz or 120hz.",
+			"description": "When enabled, The game will run at your monitors refresh rate.\nUsually 60hz or 120hz.",
 			"save_data_name": "vsync",
 			"type": "bool",
 		},
@@ -121,6 +124,7 @@ var options:Dictionary = {
 			"type": "float",
 			"multiplier": 0.1,
 			"limits": [0, 130],
+			"decimals": 1,
 		},
 		{
 			"title": "Good Timing",
@@ -129,6 +133,7 @@ var options:Dictionary = {
 			"type": "float",
 			"multiplier": 0.1,
 			"limits": [0, 130],
+			"decimals": 1,
 		},
 		{
 			"title": "Bad Timing",
@@ -137,6 +142,7 @@ var options:Dictionary = {
 			"type": "float",
 			"multiplier": 0.1,
 			"limits": [0, 130],
+			"decimals": 1,
 		},
 		{
 			"title": "Shit Timing",
@@ -145,6 +151,7 @@ var options:Dictionary = {
 			"type": "float",
 			"multiplier": 0.1,
 			"limits": [0, 130],
+			"decimals": 1,
 		},
 	],
 	
@@ -178,6 +185,31 @@ var options:Dictionary = {
 			"description": "Change the keybinds used for 4 key.\n(Press ACCEPT (ENTER/SPACE) to change)",
 			"type": "menu",
 		},
+		{
+			"title": "5k Keybinds",
+			"description": "Change the keybinds used for 5 key.\n(Press ACCEPT (ENTER/SPACE) to change)",
+			"type": "menu",
+		},
+		{
+			"title": "6k Keybinds",
+			"description": "Change the keybinds used for 6 key.\n(Press ACCEPT (ENTER/SPACE) to change)",
+			"type": "menu",
+		},
+		{
+			"title": "7k Keybinds",
+			"description": "Change the keybinds used for 7 key.\n(Press ACCEPT (ENTER/SPACE) to change)",
+			"type": "menu",
+		},
+		{
+			"title": "8k Keybinds",
+			"description": "Change the keybinds used for 8 key.\n(Press ACCEPT (ENTER/SPACE) to change)",
+			"type": "menu",
+		},
+		{
+			"title": "9k Keybinds",
+			"description": "Change the keybinds used for 9 key.\n(Press ACCEPT (ENTER/SPACE) to change)",
+			"type": "menu",
+		},
 	],
 	
 	"Adjust Offsets": [
@@ -188,11 +220,14 @@ var options:Dictionary = {
 			"type": "float",
 			"multiplier": 0.1,
 			"limits": [-1000, 1000],
+			"decimals": 1,
 		},
 		{
 			"title": "Rating & Combo Offset",
 			"description": "Change the positions of the Ratings & Combos.\n(Press ACCEPT (ENTER/SPACE) to change)",
 			"type": "menu",
+			"menu_to_load": "RatingOffsetMenu",
+			"menu_category": "Options",
 		},
 	]
 }
@@ -213,7 +248,9 @@ var cur_selected:int = 0
 var selected_option:int = 0
 
 func _ready():
-	AudioHandler.stop_music()
+	if not AudioHandler.get_node("Music/optionsMenu").playing:
+		AudioHandler.stop_music()
+	
 	AudioHandler.play_music("optionsMenu")
 	
 	spawn_menu_options()
@@ -232,7 +269,7 @@ func _physics_process(delta):
 	description.text = options[menus[cur_selected]][selected_option].description
 	
 	desc_box.rect_size.y = description.rect_size.y + 22
-	desc_box.rect_position.y = 578 - (desc_box.rect_size.y - 46)
+	desc_box.rect_position.y = 585 - (desc_box.rect_size.y - 46)
 	
 	if move_shit:
 		var index = 0
@@ -249,7 +286,7 @@ var hold_timer:float = 0.0
 func _process(delta):
 	# just pressed
 	if Input.is_action_just_pressed("ui_back"):
-		if not Transition.transitioning:
+		if not keybind_menu.visible and not Transition.transitioning:
 			AudioHandler.stop_music()
 			AudioHandler.play_music("freakyMenu")
 			SceneHandler.switch_to("MainMenu")
@@ -261,27 +298,47 @@ func _process(delta):
 		if Input.is_action_just_pressed("ui_right"):
 			change_selection(1)
 	else:
-		if Input.is_action_just_pressed("ui_up"):
-			change_option(-1)
+		if not keybind_menu.visible:
+			if Input.is_action_just_pressed("ui_up"):
+				change_option(-1)
+				
+			if Input.is_action_just_pressed("ui_down"):
+				change_option(1)
 			
-		if Input.is_action_just_pressed("ui_down"):
-			change_option(1)
+			if Input.is_action_just_pressed("ui_accept"):
+				var option = visible_options.get_child(selected_option)
+				match option.type:
+					"bool":
+						Options.set_data(option.option, not Options.get_data(option.option))
+						option.checked = Options.get_data(option.option)
+						option.refresh()
+						
+						match option.option:
+							"memory-leaks":
+								if Options.get_data(option.option):
+									CoolUtil.leak_memory()
+								else:
+									CoolUtil.unleak_memory()
+							"vsync":
+								OS.vsync_enabled = Options.get_data("vsync")
+								
+					"menu":
+						match option.title.text:
+							"1k Keybind":
+								keybind_menu.keycount = 1
+								keybind_menu.visible = true
+								keybind_menu.show()
+							_:
+								if option.title.text.ends_with("k Keybinds"):
+									keybind_menu.keycount = int(option.title.text.split("k Keybinds")[0])
+									keybind_menu.visible = true
+									keybind_menu.show()
+									
+								if not Transition.transitioning:
+									print("SWITCHING MENUS...")
+									SceneHandler.switch_to(option.menu_to_load, option.menu_category)
 			
-		if Input.is_action_just_pressed("ui_accept"):
-			var option = visible_options.get_child(selected_option)
-			match option.type:
-				"bool":
-					Options.set_data(option.option, not Options.get_data(option.option))
-					option.checked = Options.get_data(option.option)
-					option.refresh()
-					
-					if option.option == "memory-leaks":
-						if Options.get_data(option.option):
-							CoolUtil.leak_memory()
-						else:
-							CoolUtil.unleak_memory()
-		
-	if Input.is_action_just_pressed("ui_focus_next"):
+	if not keybind_menu.visible and Input.is_action_just_pressed("ui_focus_next"):
 		selecting_a_menu = not selecting_a_menu
 		
 		change_option()
@@ -330,9 +387,8 @@ func _process(delta):
 						if final > option.limits[1]:
 							final = option.limits[1]
 							
-						# yes, this is a real issue lol
-						if final == -0:
-							final = 0
+						# ok i can fix the -0 issue using this
+						final = abs(final)
 							
 						Options.set_data(option.option, final)
 				else:
@@ -411,6 +467,11 @@ func spawn_options():
 				new_option.option_title = option.title
 				new_option.title.text = option.title
 				new_option.description = option.description
+				
+				if "menu_to_load" in option:
+					new_option.menu_to_load = option.menu_to_load
+					new_option.menu_category = option.menu_category
+				
 			"float", "int":
 				new_option = option_types["string"].duplicate()
 				new_option.type = option.type
@@ -427,8 +488,10 @@ func spawn_options():
 				
 				new_option.multiplier = option.multiplier
 				new_option.limits = option.limits
+				
+				new_option.decimals_lol = option.decimals
+				
 			"string":
-				print("STRING")
 				new_option = option_types["string"].duplicate()
 				new_option.type = "string"
 				
@@ -443,8 +506,8 @@ func spawn_options():
 				new_option.option = option.save_data_name
 				
 				new_option.values = option.values
+				
 			_:
-				print("BOOL / UNKNOWN")
 				new_option = option_types["bool"].duplicate()
 				new_option.type = "bool"
 				

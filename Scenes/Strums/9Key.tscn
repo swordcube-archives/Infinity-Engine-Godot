@@ -1,0 +1,41 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scenes/Strums/Strum.tscn" type="PackedScene" id=1]
+
+[node name="9Key" type="Node2D"]
+scale = Vector2( 0.45, 0.45 )
+
+[node name="Strum" parent="." instance=ExtResource( 1 )]
+position = Vector2( -625.221, 0 )
+
+[node name="Strum2" parent="." instance=ExtResource( 1 )]
+position = Vector2( -470.508, 0 )
+direction = "B"
+
+[node name="Strum3" parent="." instance=ExtResource( 1 )]
+position = Vector2( -315.793, 0 )
+direction = "C"
+
+[node name="Strum4" parent="." instance=ExtResource( 1 )]
+position = Vector2( -160.08, 0 )
+direction = "D"
+
+[node name="Strum5" parent="." instance=ExtResource( 1 )]
+position = Vector2( -0.873352, 0 )
+direction = "I"
+
+[node name="Strum6" parent="." instance=ExtResource( 1 )]
+position = Vector2( 156.207, 0 )
+direction = "F"
+
+[node name="Strum7" parent="." instance=ExtResource( 1 )]
+position = Vector2( 310.921, 0 )
+direction = "G"
+
+[node name="Strum8" parent="." instance=ExtResource( 1 )]
+position = Vector2( 465.635, 0 )
+direction = "H"
+
+[node name="Strum9" parent="." instance=ExtResource( 1 )]
+position = Vector2( 621.349, 0 )
+direction = "I"

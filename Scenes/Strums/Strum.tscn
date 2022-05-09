@@ -1,7 +1,14 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Assets/Images/UI Skins/Default/strums.res" type="SpriteFrames" id=1]
 [ext_resource path="res://Scripts/Strum.gd" type="Script" id=2]
+[ext_resource path="res://Assets/Fonts/nokiafc22.ttf" type="DynamicFontData" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+size = 64
+outline_size = 4
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 3 )
 
 [node name="Strum" type="Node2D"]
 script = ExtResource( 2 )
@@ -10,5 +17,16 @@ script = ExtResource( 2 )
 frames = ExtResource( 1 )
 animation = "A static"
 playing = true
+
+[node name="Label" type="Label" parent="."]
+visible = false
+margin_left = -25.0
+margin_top = -38.0
+margin_right = 32.0
+margin_bottom = 274.0
+custom_fonts/font = SubResource( 1 )
+text = "A"
+align = 1
+autowrap = true
 
 [connection signal="animation_finished" from="spr" to="." method="_on_spr_animation_finished"]

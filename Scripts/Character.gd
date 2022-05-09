@@ -2,6 +2,7 @@ extends Node2D
 
 class_name Character
 
+var anim_finished:bool = false
 var danced:bool = false
 
 var hold_timer = 0
@@ -17,6 +18,9 @@ export(float) var sing_duration = 4
 export(String) var death_character = "bf-dead"
 export(bool) var is_player = false
 export(bool) var dances = true
+export(AudioStream) var death_sound = preload("res://Assets/Sounds/fnf_loss_sfx.ogg")
+export(AudioStream) var death_music = preload("res://Assets/Music/gameOver.ogg")
+export(AudioStream) var retry_sound = preload("res://Assets/Sounds/gameOverEnd.ogg")
 
 var special_anim = false
 
@@ -34,6 +38,7 @@ func _ready():
 
 func play_anim(anim, force = false):
 	if name != "_" and anim_player.get_animation(anim) != null:
+		anim_finished = false
 		special_anim = false
 		last_anim = anim
 		
@@ -92,6 +97,8 @@ func is_dancing():
 	
 	return dancing
 
-func _on_frames_animation_finished():
+func _on_anim_animation_finished(anim_name):
+	anim_finished = true
+	
 	if anim_player.has_animation(last_anim + "-loop"):
 		play_anim(last_anim + "-loop")

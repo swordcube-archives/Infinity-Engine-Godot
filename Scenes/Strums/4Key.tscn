@@ -6,16 +6,16 @@
 scale = Vector2( 0.7, 0.7 )
 
 [node name="Strum" parent="." instance=ExtResource( 1 )]
-position = Vector2( -235, 0 )
+position = Vector2( -231.571, 0 )
 
 [node name="Strum2" parent="." instance=ExtResource( 1 )]
-position = Vector2( -78, 0 )
+position = Vector2( -76.8572, 0 )
 direction = "B"
 
 [node name="Strum3" parent="." instance=ExtResource( 1 )]
-position = Vector2( 79, 0 )
+position = Vector2( 77.8571, 0 )
 direction = "C"
 
 [node name="Strum4" parent="." instance=ExtResource( 1 )]
-position = Vector2( 237, 0 )
+position = Vector2( 233.571, 0 )
 direction = "D"

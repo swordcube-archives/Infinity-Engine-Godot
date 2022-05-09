@@ -1,5 +1,7 @@
 extends Node2D
 
+onready var note_splash_template = $CanvasLayer/HUD/NoteSplashTemplate
+
 onready var camera = $Camera2D
 onready var hud = $CanvasLayer/HUD
 onready var ratingtext = $CanvasLayer/HUD/RatingText
@@ -24,6 +26,7 @@ onready var notes:Node2D = $CanvasLayer/HUD/Notes
 onready var downscroll:bool = Options.get_data("downscroll")
 onready var middlescroll:bool = Options.get_data("middlescroll")
 onready var botplay:bool = Options.get_data("botplay")
+onready var note_splashes:bool = Options.get_data("note-splashes")
 
 var ending_song:bool = false
 
@@ -108,6 +111,9 @@ func _ready():
 	if not Options.get_data("optimization"):
 		load_stage_and_characters()
 		reload_healthbar()
+		
+	if botplay:
+		GameplaySettings.used_practice = true
 	
 	opponent_strums = load("res://Scenes/Strums/" + str(GameplaySettings.key_count) + "Key.tscn").instance()
 	player_strums = load("res://Scenes/Strums/" + str(GameplaySettings.key_count) + "Key.tscn").instance()
@@ -309,12 +315,7 @@ func _physics_process(delta):
 		
 		if a > b:
 			if not ending_song:
-				ending_song = true
-				AudioHandler.stop_music()
-				AudioHandler.play_music("freakyMenu")
-				AudioHandler.inst.stop()
-				AudioHandler.voices.stop()
-				SceneHandler.switch_to("FreeplayMenu")
+				end_song()
 		
 	for strum in opponent_strums.get_children():
 		if strum.anim_finished:
@@ -375,11 +376,50 @@ func _physics_process(delta):
 var countdown:int = 5
 var farded:bool = false
 
+onready var countdown_timer:Timer = $CanvasLayer/HUD/CountdownTimer
+
+func end_song():
+	ending_song = true
+	
+	var song = SONG.song + "-" + GameplaySettings.difficulty
+	
+	if not GameplaySettings.used_practice and not Options.get_data("pussy-mode") and GameplaySettings.song_multiplier >= 1:
+		if song_score > Highscores.get_song_score(song):
+			Highscores.set_song_score(song, song_score)
+			
+	if GameplaySettings.story_mode:
+		GameplaySettings.story_playlist.remove(0)
+		
+		if not GameplaySettings.used_practice and not Options.get_data("pussy-mode") and GameplaySettings.song_multiplier >= 1:
+			GameplaySettings.story_score += song_score
+			
+		if GameplaySettings.story_playlist.size() > 0:
+			var songName = SONG.song
+			GameplaySettings.SONG = CoolUtil.get_json(Paths.song_json(songName, GameplaySettings.difficulty))
+			get_tree().reload_current_scene()
+		else:
+			if GameplaySettings.song_multiplier >= 1:
+				if GameplaySettings.story_score > Highscores.get_week_score(GameplaySettings.week_name):
+					Highscores.set_week_score(GameplaySettings.week_name, GameplaySettings.story_score)
+			
+			AudioHandler.play_audio("freakyMenu")
+			SceneHandler.switch_to("StoryMenu")
+	else:
+		AudioHandler.stop_music()
+		AudioHandler.play_music("freakyMenu")			
+		SceneHandler.switch_to("FreeplayMenu")
+	
+	AudioHandler.inst.stop()
+	AudioHandler.voices.stop()
+
 func start_countdown():
 	farded = true
 	countdown_tick()
 	for i in 4:
-		yield(get_tree().create_timer(Conductor.crochet / 1000.0), "timeout")
+		countdown_timer.stop()
+		countdown_timer.wait_time = Conductor.crochet / 1000.0
+		countdown_timer.start()
+		yield(countdown_timer, "timeout")
 		countdown_tick()
 		
 onready var countdown_tween = $CanvasLayer/HUD/Tween
@@ -444,6 +484,8 @@ func countdown_tick():
 			countdown_tween.stop_all()
 			countdown_tween.interpolate_property(timebar, "modulate", timebar.modulate, Color(1, 1, 1, 1), 0.5, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
 			countdown_tween.start()
+			
+var started_countdown:bool = true
 		
 func _process(delta):
 	var display_health:float = health
@@ -469,11 +511,28 @@ func _process(delta):
 		iconP1.switch_to("normal")
 		iconP2.switch_to("normal")
 		
-	if countdown_active:
-		Conductor.song_position += (delta * 1000)
-	else:
-		if not Transition.transitioning:
-			Conductor.song_position += (delta * 1000) * GameplaySettings.song_multiplier
+	if not GameplaySettings.practice_mode and health == 0:
+		if bf:
+			GameplaySettings.death_shit["character"] = bf.death_character
+			GameplaySettings.death_shit["char_pos"] = bf.global_position
+			GameplaySettings.death_shit["cam_pos"] = camera.position
+		else:
+			GameplaySettings.death_shit["character"] = "bf-dead"
+			GameplaySettings.death_shit["char_pos"] = Vector2(700, 360)
+			GameplaySettings.death_shit["cam_pos"] = Vector2(700, 360)
+			
+		SceneHandler.switch_to("DeathScreen", "", false)
+		
+	if Input.is_action_just_pressed("reset"):
+		if Options.get_data("enable-insta-kill-button"):
+			health -= 999999999
+		
+	if started_countdown:
+		if countdown_active:
+			Conductor.song_position += (delta * 1000)
+		else:
+			if not Transition.transitioning:
+				Conductor.song_position += (delta * 1000) * GameplaySettings.song_multiplier
 		
 	if Input.is_action_just_pressed("ui_back"):
 		ending_song = true
@@ -694,6 +753,16 @@ func pop_up_score(strum_time, note):
 	var rating_tex = rating_textures[0]
 	match cur_rating:
 		"marvelous", "sick":
+			if note_splashes:
+				var splash = note_splash_template.duplicate()
+				var strum = player_strums.get_child(note.note_data)
+				splash.visible = true
+				splash.global_position = strum.global_position
+				splash.direction = strum.direction		
+				splash.scale = player_strums.scale + Vector2(0.3, 0.3)
+				hud.add_child(splash)
+				splash.splash()
+			
 			song_score += rating_scores[0]
 			
 			if cur_rating == "sick":
@@ -727,7 +796,10 @@ func pop_up_score(strum_time, note):
 	total_notes += 1
 	
 	var new_rating = rating_template.duplicate()
-	new_rating.global_position = Vector2(654, 237)
+	
+	var a = Options.get_data("rating-offset")
+	
+	new_rating.global_position = Vector2(654, 237) + Vector2(a[0], a[1])
 	ratings.add_child(new_rating)
 	
 	new_rating.spr.texture = rating_tex
@@ -813,9 +885,9 @@ func note_miss(direction = 0):
 	var miss_audio = "missnote" + str(randi()%3 + 1)
 	AudioHandler.play_audio(miss_audio)
 	
-	if bf and bf.special_anim != true:
+	if bf:
 		bf.hold_timer = 0
-		bf.play_anim(sing_anims[direction] + " miss", true)				
+		bf.play_anim(sing_anims[direction] + "miss", true)				
 	
 var old_keycount:int = -1
 func refresh_input_bullshit():

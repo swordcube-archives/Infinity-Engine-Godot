@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Assets/Images/menuDesat.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Fonts/font_alphabet.tres" type="BitmapFont" id=2]
 [ext_resource path="res://Scenes/OptionsMenu.gd" type="Script" id=3]
 [ext_resource path="res://Assets/Fonts/vcr.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://Scenes/Options/Keybinds/KeybindMenu.tscn" type="PackedScene" id=5]
 
 [sub_resource type="DynamicFont" id=1]
 size = 28
@@ -51,16 +52,16 @@ text = "Press TAB to select a menu, and press TAB again to change options!"
 align = 1
 
 [node name="DescriptionBox" type="ColorRect" parent="."]
-margin_left = 9.0
-margin_top = 578.0
+margin_left = 8.0
+margin_top = 582.0
 margin_right = 1271.0
-margin_bottom = 624.0
+margin_bottom = 628.0
 color = Color( 0, 0, 0, 0.501961 )
 
 [node name="Label" type="Label" parent="DescriptionBox"]
-margin_top = 8.0
-margin_right = 1262.0
-margin_bottom = 35.0
+margin_top = 9.0
+margin_right = 1263.0
+margin_bottom = 36.0
 custom_fonts/font = SubResource( 1 )
 text = "Option Description"
 align = 1
@@ -84,3 +85,6 @@ rect_scale = Vector2( 0.8, 0.8 )
 custom_fonts/font = ExtResource( 2 )
 text = ">"
 align = 1
+
+[node name="KeybindMenu" parent="." instance=ExtResource( 5 )]
+visible = false

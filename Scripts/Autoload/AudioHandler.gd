@@ -36,13 +36,13 @@ func play_inst(song):
 		file.stop()
 		
 	inst.stop()
-	inst.stream = load("res://Assets/Songs/" + song + "/Inst.ogg")
+	inst.stream = load(Paths.inst(song))
 	inst.play(0)
 	inst.volume_db = 0
 	
 func play_voices(song):
 	voices.stop()
-	voices.stream = load("res://Assets/Songs/" + song + "/Voices.ogg")
+	voices.stream = load(Paths.voices(song))
 	voices.play(0)
 	voices.volume_db = 0
 		
