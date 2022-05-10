@@ -54,6 +54,7 @@ position = Vector2( 24, 19 )
 scale = Vector2( 0.134722, 0.134722 )
 normal = ExtResource( 4 )
 action = "ui_confirm"
+visibility_mode = 1
 
 [connection signal="pressed" from="CanvasModulate/0" to="CanvasModulate" method="_on_0_pressed"]
 [connection signal="pressed" from="CanvasModulate/1" to="CanvasModulate" method="_on_1_pressed"]
