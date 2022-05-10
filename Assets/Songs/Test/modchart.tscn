@@ -1,0 +1,292 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Assets/Songs/Test/modchart.gd" type="Script" id=1]
+[ext_resource path="res://icon.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Songs/Test/DVD.gd" type="Script" id=3]
+[ext_resource path="res://Assets/Songs/Test/3D_Shader.tres" type="Material" id=4]
+[ext_resource path="res://Assets/Images/menuDesat.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Fonts/vcr.ttf" type="DynamicFontData" id=6]
+[ext_resource path="res://Assets/Sounds/Hitsounds/Vine Boom.ogg" type="AudioStream" id=7]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 100, 100 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 48
+font_data = ExtResource( 6 )
+
+[node name="Modchart" type="CanvasLayer"]
+layer = 100
+script = ExtResource( 1 )
+
+[node name="DVD" type="KinematicBody2D" parent="."]
+pause_mode = 2
+position = Vector2( 640, 360 )
+script = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DVD"]
+shape = SubResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Sprite" type="Sprite" parent="DVD"]
+scale = Vector2( 0.345, 0.345 )
+texture = ExtResource( 2 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="DVD2" type="KinematicBody2D" parent="."]
+pause_mode = 2
+position = Vector2( 640, 360 )
+script = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DVD2"]
+shape = SubResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Sprite" type="Sprite" parent="DVD2"]
+scale = Vector2( 0.345, 0.345 )
+texture = ExtResource( 2 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="DVD3" type="KinematicBody2D" parent="."]
+pause_mode = 2
+position = Vector2( 196, 159 )
+script = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DVD3"]
+shape = SubResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Sprite" type="Sprite" parent="DVD3"]
+scale = Vector2( 0.345, 0.345 )
+texture = ExtResource( 2 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="DVD4" type="KinematicBody2D" parent="."]
+pause_mode = 2
+position = Vector2( 934, 527 )
+script = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DVD4"]
+shape = SubResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Sprite" type="Sprite" parent="DVD4"]
+scale = Vector2( 0.345, 0.345 )
+texture = ExtResource( 2 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="DVD5" type="KinematicBody2D" parent="."]
+pause_mode = 2
+position = Vector2( 1155, 236 )
+script = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DVD5"]
+shape = SubResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Sprite" type="Sprite" parent="DVD5"]
+scale = Vector2( 0.345, 0.345 )
+texture = ExtResource( 2 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="DVD6" type="KinematicBody2D" parent="."]
+pause_mode = 2
+position = Vector2( 320, 521 )
+script = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DVD6"]
+shape = SubResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Sprite" type="Sprite" parent="DVD6"]
+scale = Vector2( 0.345, 0.345 )
+texture = ExtResource( 2 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="DVD7" type="KinematicBody2D" parent="."]
+pause_mode = 2
+position = Vector2( 320, 521 )
+script = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DVD7"]
+shape = SubResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Sprite" type="Sprite" parent="DVD7"]
+scale = Vector2( 0.345, 0.345 )
+texture = ExtResource( 2 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="DVD8" type="KinematicBody2D" parent="."]
+pause_mode = 2
+position = Vector2( 320, 521 )
+script = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DVD8"]
+shape = SubResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Sprite" type="Sprite" parent="DVD8"]
+scale = Vector2( 0.345, 0.345 )
+texture = ExtResource( 2 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="DVD9" type="KinematicBody2D" parent="."]
+pause_mode = 2
+position = Vector2( 320, 521 )
+script = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DVD9"]
+shape = SubResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Sprite" type="Sprite" parent="DVD9"]
+scale = Vector2( 0.345, 0.345 )
+texture = ExtResource( 2 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="DVD10" type="KinematicBody2D" parent="."]
+pause_mode = 2
+position = Vector2( 320, 521 )
+script = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DVD10"]
+shape = SubResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Sprite" type="Sprite" parent="DVD10"]
+scale = Vector2( 0.345, 0.345 )
+texture = ExtResource( 2 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="DVD11" type="KinematicBody2D" parent="."]
+pause_mode = 2
+position = Vector2( 320, 521 )
+script = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DVD11"]
+shape = SubResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Sprite" type="Sprite" parent="DVD11"]
+scale = Vector2( 0.345, 0.345 )
+texture = ExtResource( 2 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="DVD12" type="KinematicBody2D" parent="."]
+pause_mode = 2
+position = Vector2( 320, 521 )
+script = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DVD12"]
+shape = SubResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Sprite" type="Sprite" parent="DVD12"]
+scale = Vector2( 0.345, 0.345 )
+texture = ExtResource( 2 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="DVD13" type="KinematicBody2D" parent="."]
+pause_mode = 2
+position = Vector2( 320, 521 )
+script = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DVD13"]
+shape = SubResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Sprite" type="Sprite" parent="DVD13"]
+scale = Vector2( 0.345, 0.345 )
+texture = ExtResource( 2 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="DVD14" type="KinematicBody2D" parent="."]
+pause_mode = 2
+position = Vector2( 320, 521 )
+script = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DVD14"]
+shape = SubResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Sprite" type="Sprite" parent="DVD14"]
+scale = Vector2( 0.345, 0.345 )
+texture = ExtResource( 2 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Funyn!!!" type="Sprite" parent="."]
+modulate = Color( 1, 0, 0, 1 )
+material = ExtResource( 4 )
+position = Vector2( 719, 373 )
+scale = Vector2( 1.30093, 1.19726 )
+texture = ExtResource( 5 )
+
+[node name="Label" type="Label" parent="."]
+visible = false
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 86.0
+margin_bottom = 39.0
+custom_fonts/font = SubResource( 2 )
+text = "CUR STEP: 0
+CUR BEAT: 0"
+
+[node name="Soudnd" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )

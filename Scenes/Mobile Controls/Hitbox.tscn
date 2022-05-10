@@ -1,0 +1,61 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Assets/Images/Mobile/Hitbox.png" type="Texture" id=1]
+[ext_resource path="res://Scenes/Mobile Controls/HitboxShit.gd" type="Script" id=2]
+[ext_resource path="res://Scenes/Mobile Controls/HitboxThingie.gd" type="Script" id=3]
+[ext_resource path="res://Assets/Images/Mobile/PauseButton.png" type="Texture" id=4]
+
+[node name="Hitbox" type="CanvasLayer"]
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+script = ExtResource( 2 )
+
+[node name="0" type="TouchScreenButton" parent="CanvasModulate"]
+modulate = Color( 0.87451, 0, 1, 0.2 )
+scale = Vector2( 0.92, 1 )
+normal = ExtResource( 1 )
+passby_press = true
+action = "gameplay_0"
+visibility_mode = 1
+script = ExtResource( 3 )
+
+[node name="1" type="TouchScreenButton" parent="CanvasModulate"]
+modulate = Color( 0, 1, 0.882353, 0.2 )
+position = Vector2( 320, 0 )
+scale = Vector2( 0.92, 1 )
+normal = ExtResource( 1 )
+passby_press = true
+action = "gameplay_1"
+visibility_mode = 1
+script = ExtResource( 3 )
+
+[node name="2" type="TouchScreenButton" parent="CanvasModulate"]
+modulate = Color( 0, 1, 0.09, 0.2 )
+position = Vector2( 640, 0 )
+scale = Vector2( 0.92, 1 )
+normal = ExtResource( 1 )
+passby_press = true
+action = "gameplay_2"
+visibility_mode = 1
+script = ExtResource( 3 )
+
+[node name="3" type="TouchScreenButton" parent="CanvasModulate"]
+modulate = Color( 1, 0, 0.352941, 0.2 )
+position = Vector2( 960, 0 )
+scale = Vector2( 0.92, 1 )
+normal = ExtResource( 1 )
+passby_press = true
+action = "gameplay_3"
+visibility_mode = 1
+script = ExtResource( 3 )
+
+[node name="Pause" type="TouchScreenButton" parent="CanvasModulate"]
+position = Vector2( 24, 19 )
+scale = Vector2( 0.134722, 0.134722 )
+normal = ExtResource( 4 )
+action = "ui_confirm"
+
+[connection signal="pressed" from="CanvasModulate/0" to="CanvasModulate" method="_on_0_pressed"]
+[connection signal="pressed" from="CanvasModulate/1" to="CanvasModulate" method="_on_1_pressed"]
+[connection signal="pressed" from="CanvasModulate/2" to="CanvasModulate" method="_on_2_pressed"]
+[connection signal="pressed" from="CanvasModulate/3" to="CanvasModulate" method="_on_3_pressed"]

@@ -26,6 +26,8 @@ func _ready():
 	Conductor.connect("beat_hit", self, "beat_hit")
 	AudioHandler.play_music("optionsMenu")
 	
+	theRating.position = Vector2(654, 237)
+	
 	theRating.position += Vector2(offsets["rating"][0], offsets["rating"][1])
 	theCombo.position += Vector2(offsets["combo"][0], offsets["combo"][1])
 	
@@ -50,6 +52,12 @@ func _process(delta):
 	if Input.is_action_just_pressed("ui_right"):
 		change_thing(10)
 		
+	if Input.is_action_just_pressed("ui_up"):
+		change_thing(-10, true)
+		
+	if Input.is_action_just_pressed("ui_down"):
+		change_thing(10, true)
+		
 	label3.text = "Rating Offset: " + str(offsets["rating"])
 	label3.text += "\nCombo Offset: " + str(offsets["combo"])
 		
@@ -60,7 +68,7 @@ func change_thing(amount:int = 0, y_pos:bool = false):
 			fard = 1
 			
 		offsets["combo"][fard] += amount
-		theCombo.position.x += amount
+		theCombo.position = Vector2(offsets["combo"][0], offsets["combo"][1])
 		Options.set_data("combo-offset", offsets["combo"])
 	else:
 		var fard:int = 0
@@ -68,7 +76,7 @@ func change_thing(amount:int = 0, y_pos:bool = false):
 			fard = 1
 			
 		offsets["rating"][fard] += amount
-		theRating.position.x += amount
+		theRating.position = Vector2(654, 237) + Vector2(offsets["rating"][0], offsets["rating"][1])
 		Options.set_data("rating-offset", offsets["rating"])
 	
 func beat_hit():

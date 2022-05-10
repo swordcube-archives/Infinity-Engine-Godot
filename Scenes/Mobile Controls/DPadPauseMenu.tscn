@@ -1,0 +1,71 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Assets/Images/Mobile/DPad/Up.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Images/Mobile/DPad/Left.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Images/Mobile/DPad/Right.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Images/Mobile/DPad/Down.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Images/Mobile/DPad/A.png" type="Texture" id=5]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 300, 300 )
+
+[node name="DPadPauseMenu" type="CanvasLayer"]
+layer = 128
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color( 1, 1, 1, 0.65 )
+
+[node name="Up" type="TouchScreenButton" parent="CanvasModulate"]
+modulate = Color( 0.345098, 1, 0.356863, 1 )
+position = Vector2( 136, 402 )
+scale = Vector2( 0.15, 0.15 )
+normal = ExtResource( 1 )
+shape = SubResource( 1 )
+shape_visible = false
+action = "ui_up"
+visibility_mode = 1
+
+[node name="Left" type="TouchScreenButton" parent="CanvasModulate"]
+modulate = Color( 0.733333, 0.345098, 1, 1 )
+position = Vector2( 40, 498 )
+scale = Vector2( 0.15, 0.15 )
+normal = ExtResource( 2 )
+shape = SubResource( 1 )
+shape_visible = false
+action = "ui_left"
+visibility_mode = 1
+
+[node name="Right" type="TouchScreenButton" parent="CanvasModulate"]
+modulate = Color( 1, 0.345098, 0.345098, 1 )
+position = Vector2( 232, 498 )
+scale = Vector2( 0.15, 0.15 )
+normal = ExtResource( 3 )
+shape = SubResource( 1 )
+shape_visible = false
+action = "ui_left"
+visibility_mode = 1
+
+[node name="Down" type="TouchScreenButton" parent="CanvasModulate"]
+modulate = Color( 0.345098, 1, 0.984314, 1 )
+position = Vector2( 136, 594 )
+scale = Vector2( 0.15, 0.15 )
+normal = ExtResource( 4 )
+shape = SubResource( 1 )
+shape_visible = false
+action = "ui_down"
+visibility_mode = 1
+
+[node name="Accept" type="TouchScreenButton" parent="CanvasModulate"]
+position = Vector2( 1120, 594 )
+scale = Vector2( 0.15, 0.15 )
+normal = ExtResource( 5 )
+shape = SubResource( 1 )
+shape_visible = false
+action = "ui_confirm"
+visibility_mode = 1
+
+[connection signal="pressed" from="CanvasModulate/Up" to="CanvasModulate" method="_on_Up_pressed"]
+[connection signal="pressed" from="CanvasModulate/Left" to="CanvasModulate" method="_on_Up_pressed"]
+[connection signal="pressed" from="CanvasModulate/Right" to="CanvasModulate" method="_on_Up_pressed"]
+[connection signal="pressed" from="CanvasModulate/Down" to="CanvasModulate" method="_on_Up_pressed"]
+[connection signal="pressed" from="CanvasModulate/Accept" to="CanvasModulate" method="_on_Up_pressed"]

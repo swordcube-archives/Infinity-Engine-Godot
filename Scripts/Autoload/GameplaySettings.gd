@@ -31,6 +31,7 @@ var SONG = CoolUtil.get_json(Paths.song_json("Test"))
 var note_types = {}
 
 func _ready():
+	load_ui_skin()
 	reload_note_types()
 	
 	if get_tree().current_scene.name != "TitleScreen":

@@ -1,6 +1,8 @@
 extends Node
 
+var engine_name = "Infinity Engine"
 var engine_version = "1.0.0a"
+
 var screen_res = Vector2(
 	ProjectSettings.get_setting("display/window/size/width"),
 	ProjectSettings.get_setting("display/window/size/height")
@@ -9,7 +11,6 @@ var screen_res = Vector2(
 var memory_leak_shit:Array = []
 
 func _ready():
-	yield(get_tree().create_timer(0.1), "timeout")
 	if Options.get_data("memory-leaks"):
 		leak_memory()
 		

@@ -14,6 +14,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scripts/Character.gd"
 }, {
+"base": "CanvasModulate",
+"class": "MobileControlsClass",
+"language": "GDScript",
+"path": "res://Scripts/MobileControls.gd"
+}, {
+"base": "CanvasLayer",
+"class": "Modchart",
+"language": "GDScript",
+"path": "res://Scripts/Modchart.gd"
+}, {
 "base": "Node2D",
 "class": "Option",
 "language": "GDScript",
@@ -26,6 +36,8 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "Character": "",
+"MobileControlsClass": "",
+"Modchart": "",
 "Option": "",
 "Stage": ""
 }
@@ -38,18 +50,19 @@ config/icon="res://icon.png"
 
 [autoload]
 
+Options="*res://Scripts/Autoload/Options.gd"
 Conductor="*res://Scripts/Autoload/Conductor.gd"
 AudioHandler="*res://Scenes/Autoload/AudioHandler.tscn"
 SceneHandler="*res://Scripts/Autoload/SceneHandler.gd"
 Transition="*res://Scenes/Autoload/Transition.tscn"
-Paths="*res://Scripts/Autoload/Paths.gd"
-CoolUtil="*res://Scripts/Autoload/CoolUtil.gd"
 FPS="*res://Scenes/Autoload/FPS.tscn"
 VolumeControl="*res://Scenes/Autoload/VolumeControl.tscn"
+CoolUtil="*res://Scripts/Autoload/CoolUtil.gd"
+Paths="*res://Scripts/Autoload/Paths.gd"
 GameplaySettings="*res://Scripts/Autoload/GameplaySettings.gd"
-Options="*res://Scripts/Autoload/Options.gd"
 Keybinds="*res://Scripts/Autoload/Keybinds.gd"
 Highscores="*res://Scripts/Autoload/Highscores.gd"
+MobileControls="*res://Scenes/Autoload/MobileControls.tscn"
 
 [display]
 

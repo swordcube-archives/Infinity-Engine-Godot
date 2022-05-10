@@ -112,6 +112,12 @@ var options:Dictionary = {
 			"type": "bool",
 		},
 		{
+			"title": "Go Back during Gameplay",
+			"description": "When enabled, pressing BACKSPACE/ESCAPE will exit the song\n(without saving scores).",
+			"save_data_name": "go-back-during-gameplay",
+			"type": "bool",
+		},
+		{
 			"title": "VSync",
 			"description": "When enabled, The game will run at your monitors refresh rate.\nUsually 60hz or 120hz.",
 			"save_data_name": "vsync",
@@ -248,6 +254,8 @@ var cur_selected:int = 0
 var selected_option:int = 0
 
 func _ready():
+	MobileControls.switch_to("dpad_with_tab")
+	
 	if not AudioHandler.get_node("Music/optionsMenu").playing:
 		AudioHandler.stop_music()
 	

@@ -25,6 +25,7 @@ var og_save = {
 	"ghost-tapping": false,
 	"pussy-mode": false,
 	"enable-insta-kill-button": true,
+	"go-back-during-gameplay": true,
 	"ui-skin": "Default",
 	"vsync": false,
 	"rating-offset": [0, 0],

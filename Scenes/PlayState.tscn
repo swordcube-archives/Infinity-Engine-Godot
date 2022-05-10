@@ -21,7 +21,7 @@ current = true
 smoothing_enabled = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
-layer = 120
+layer = 100
 
 [node name="HUD" type="CanvasModulate" parent="CanvasLayer"]
 
@@ -74,5 +74,8 @@ Misses: 0"
 visible = false
 position = Vector2( 105, 136 )
 
-[node name="PauseMenu" parent="CanvasLayer/HUD" instance=ExtResource( 7 )]
+[node name="PauseMenu" type="CanvasLayer" parent="."]
+layer = 120
+
+[node name="PauseMenu" parent="PauseMenu" instance=ExtResource( 7 )]
 visible = false

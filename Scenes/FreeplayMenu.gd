@@ -25,6 +25,8 @@ func sort_ascending(a, b):
 	return false
 
 func _ready():
+	MobileControls.switch_to("dpad_with_shift")
+	
 	GameplaySettings.deaths = 0
 	AudioHandler.inst.stop()
 	AudioHandler.voices.stop()
@@ -53,7 +55,7 @@ var lerpScore:float = 0
 			
 func position_highscore():
 	pb.rect_size.x = 0
-	pb.text = "PERSONAL BEST: " + str(abs(int(lerpScore)))
+	pb.text = "PERSONAL BEST: " + str(abs(round(lerpScore)))
 	
 	speed.rect_size.x = 0
 	speed.text = "Speed: " + str(CoolUtil.round_decimal(cur_speed, 2)) + " (SHIFT+R)"
@@ -131,20 +133,21 @@ func _process(delta):
 		
 		AudioHandler.inst.seek(0)
 		AudioHandler.voices.seek(0)
+	elif Input.is_action_just_pressed("ui_accept"):
+		AudioHandler.stop_music()
+		
+		if not Transition.transitioning:
+			GameplaySettings.SONG = CoolUtil.get_json(Paths.song_json(visible_songs.get_child(cur_selected).name.split("_")[0], visible_songs.get_child(cur_selected).difficulties[cur_difficulty]))
+			var diff = visible_songs.get_child(cur_selected).difficulties[cur_difficulty]
+			print(diff)
+			GameplaySettings.difficulty = diff
+			GameplaySettings.song_multiplier = CoolUtil.round_decimal(cur_speed, 2)
+			SceneHandler.switch_to("PlayState")
 		
 	if Input.is_action_just_pressed("ui_back"):
 		if not Transition.transitioning:
 			AudioHandler.play_audio("cancelMenu")
 			SceneHandler.switch_to("MainMenu")
-			
-	if Input.is_action_just_pressed("ui_confirm"):
-		AudioHandler.stop_music()
-		
-		if not Transition.transitioning:
-			GameplaySettings.SONG = CoolUtil.get_json(Paths.song_json(visible_songs.get_child(cur_selected).name.split("_")[0], visible_songs.get_child(cur_selected).difficulties[cur_difficulty]))
-			GameplaySettings.difficulty = visible_songs.get_child(cur_selected).difficulties[cur_difficulty]
-			GameplaySettings.song_multiplier = CoolUtil.round_decimal(cur_speed, 2)
-			SceneHandler.switch_to("PlayState")
 		
 func change_selection(amount:int = 0):
 	cur_selected += amount

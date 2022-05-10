@@ -8,6 +8,8 @@ onready var death_music = $music
 var bf:Node2D
 
 func _ready():
+	MobileControls.switch_to("dpad")
+	
 	GameplaySettings.deaths += 1
 	
 	AudioHandler.inst.stop()

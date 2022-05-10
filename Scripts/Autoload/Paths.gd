@@ -41,3 +41,6 @@ func music(a):
 
 func sound(a):
 	return "res://Assets/Sounds/" + a + ".ogg"
+	
+func format_text_for_highscore(song):
+	return song.to_lower().replace(" ", "-")

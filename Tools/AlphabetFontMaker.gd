@@ -10,7 +10,7 @@ func _ready():
 	for i in range (0, chars.length()):
 		var spacing = 46
 		match chars[i]:
-			"A":
+			"A", "+", "G":
 				spacing = 50
 			" ", "L":
 				spacing = 40
@@ -20,8 +20,6 @@ func _ready():
 				spacing = 43
 			"(", ".", "!", "&":
 				spacing = 28
-			"+":
-				spacing = 50
 				
 		font.add_char(chars.ord_at(i), 0, Rect2(87 * i, 0, 87, 87), Vector2(-25, 0), spacing)
 		# allows you to type in lowercase if you want

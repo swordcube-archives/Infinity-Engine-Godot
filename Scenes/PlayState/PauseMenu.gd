@@ -13,7 +13,7 @@ var pause_options:Array = default_pause_options
 onready var volume_tween = $VolumeTween
 onready var pause_music = $PauseMusic
 onready var bg = $BG
-onready var PlayState = $"../../../"
+onready var PlayState = $"../../"
 onready var options = $Options
 onready var template = $Template
 
@@ -50,6 +50,8 @@ func _process(delta):
 			get_tree().paused = true
 			visible = get_tree().paused
 			
+			MobileControls.switch_to("dpad_pausemenu")
+			
 			pause_options = default_pause_options
 			spawn_options()
 			
@@ -72,7 +74,6 @@ func _process(delta):
 				index += 1
 			
 			cur_selected = 0
-			yield(get_tree().create_timer(0.1), "timeout")
 			change_selection()
 	else:
 		AudioHandler.inst.stop()
@@ -96,6 +97,8 @@ func _process(delta):
 						
 						volume_tween.stop_all()
 						pause_music.stop()
+						
+						MobileControls.switch_to("hitbox")
 					"Restart Song":
 						get_tree().paused = false
 						visible = get_tree().paused
@@ -135,7 +138,6 @@ func _process(delta):
 						spawn_options()
 						
 						cur_selected = 0
-						yield(get_tree().create_timer(0.1), "timeout")
 						change_selection()
 								
 					"Exit to Menu":
@@ -191,6 +193,7 @@ func change_selection(amount:int = 0):
 func spawn_options():
 	ready = false
 	for option in options.get_children():
+		options.remove_child(option)
 		option.queue_free()
 		
 	var index:int = 0

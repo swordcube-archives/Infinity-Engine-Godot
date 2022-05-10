@@ -23,11 +23,15 @@ var charter_note:bool = false
 
 var being_pressed:bool = false
 
+# used for opponent notes :D
+var hit_already:bool = false
+
 var can_be_hit:bool = false
 var too_late:bool = false
 var was_good_hit:bool = false
 
 func _ready():
+	spr.frames = GameplaySettings.ui_skin.note_tex
 	play_anim("")
 	
 func _process(delta):

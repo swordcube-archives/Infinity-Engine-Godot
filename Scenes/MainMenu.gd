@@ -8,12 +8,16 @@ onready var bg = $ParallaxBackground/BGLayer/BG
 onready var bg2 = $ParallaxBackground/BGLayer/BG2
 onready var buttons = $ParallaxBackground/Buttons.get_children()
 
+onready var label = $UI/Label
+
 func _ready():
+	MobileControls.switch_to("menudpad")
+	
 	AudioHandler.play_music("freakyMenu")
 	
 	change_selection()
 	
-	$UI/Label.text = "v" + CoolUtil.engine_version
+	label.text = "v" + CoolUtil.engine_version
 
 func _process(delta):
 	if Input.is_action_just_pressed("ui_up"):

@@ -9,6 +9,8 @@ var skipped = false
 var curWacky = ["???", "???"]
 
 func _ready():
+	MobileControls.switch_to("title")
+	
 	var txt = CoolUtil.get_txt(Paths.txt("Data/IntroText"))
 	
 	curWacky = txt[int(rand_range(0, len(txt) - 1))].split("--")

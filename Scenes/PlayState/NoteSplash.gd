@@ -46,6 +46,7 @@ var colors:Dictionary = {
 }
 
 func splash():
+	spr.frames = GameplaySettings.ui_skin.note_splash_tex
 	visible = true
 	spr.modulate.a = 0.6
 	spr.play(colors[direction][randi()%2])

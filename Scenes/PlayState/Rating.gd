@@ -31,7 +31,7 @@ func _ready():
 		new_num.position.x += (i * 65)
 		new_num.visible = true
 		new_num.texture = PlayState.combo_textures[int(combo_str[i])]
-		add_child(new_num)
+		combined_combo.add_child(new_num)
 	
 	rating_timer()
 	combo_timer()
