@@ -12,3 +12,6 @@ So amazing!
 basically this is my first godot project and i am using this to learn Godot
 
 I'm starting from scratch because the previous version kinda got slow to run lol
+-----
+# Credits
+Leather128 - XML, TXT, & Aseprite JSON Converters and other shit i forgor :skull:
