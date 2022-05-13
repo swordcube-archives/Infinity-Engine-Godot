@@ -44,6 +44,7 @@ func _process(delta):
 		ratingLol.text = "Rating"
 		
 	if Input.is_action_just_pressed("ui_back"):
+		AudioHandler.play_audio("cancelMenu")
 		SceneHandler.switch_to("OptionsMenu")
 	
 	if Input.is_action_just_pressed("ui_left"):

@@ -1,0 +1,7 @@
+{
+    "idle_anim": ["Pico Idle Dance", 24, [0, 0]],
+    "confirm_anim": ["Pico Idle Dance", 24, [0, 0]],
+    "scale": 0.75,
+    "flip_x": true,
+    "position": [-130, -50]
+}

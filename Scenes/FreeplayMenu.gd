@@ -128,8 +128,8 @@ func _process(delta):
 		hold_timer = 0
 		
 	if Input.is_action_just_pressed("ui_space"):
-		AudioHandler.play_inst(visible_songs.get_child(cur_selected).name.split("_")[0])
-		AudioHandler.play_voices(visible_songs.get_child(cur_selected).name.split("_")[0])
+		AudioHandler.play_inst(visible_songs.get_child(cur_selected).text)
+		AudioHandler.play_voices(visible_songs.get_child(cur_selected).text)
 		
 		AudioHandler.inst.seek(0)
 		AudioHandler.voices.seek(0)
@@ -137,9 +137,10 @@ func _process(delta):
 		AudioHandler.stop_music()
 		
 		if not Transition.transitioning:
-			GameplaySettings.SONG = CoolUtil.get_json(Paths.song_json(visible_songs.get_child(cur_selected).name.split("_")[0], visible_songs.get_child(cur_selected).difficulties[cur_difficulty]))
+			GameplaySettings.story_mode = false
+			GameplaySettings.SONG = CoolUtil.get_json(Paths.song_json(visible_songs.get_child(cur_selected).text, visible_songs.get_child(cur_selected).difficulties[cur_difficulty]))
+			
 			var diff = visible_songs.get_child(cur_selected).difficulties[cur_difficulty]
-			print(diff)
 			GameplaySettings.difficulty = diff
 			GameplaySettings.song_multiplier = CoolUtil.round_decimal(cur_speed, 2)
 			SceneHandler.switch_to("PlayState")

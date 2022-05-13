@@ -9,5 +9,9 @@
 			"shows_in_story": true,
 			"shows_in_freeplay": true
 		}
-	]
+	],
+	"difficulties": ["easy", "normal", "hard"],
+	"characters": ["", "bf", "gf"],
+	"week_name": "tutorial",
+	"week_title": "HOW TO FUNK"
 }

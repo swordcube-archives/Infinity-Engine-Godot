@@ -25,5 +25,9 @@
 			"shows_in_story": true,
 			"shows_in_freeplay": true
 		}
-	]
+	],
+	"difficulties": ["easy", "normal", "hard"],
+	"characters": ["dad", "bf", "gf"],
+	"week_name": "week1",
+	"week_title": "DADDY DEAREST"
 }

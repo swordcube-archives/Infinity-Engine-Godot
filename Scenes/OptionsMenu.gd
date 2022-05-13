@@ -60,7 +60,7 @@ var options:Dictionary = {
 		},
 		{
 			"title": "UI Skin",
-			"description": "Change how gameplay looks and sounds like by selecting a skin.",
+			"description": "Change how things like the arrows, countdown, and ratings look/sound.",
 			"save_data_name": "ui-skin",
 			"values": ["Default", "Circles"],
 			"type": "string",

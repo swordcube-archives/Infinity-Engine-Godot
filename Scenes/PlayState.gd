@@ -207,7 +207,7 @@ func _ready():
 	GameplaySettings.scroll_speed = SONG.speed
 	
 	if Options.get_data("scroll-speed") > 0:
-		match Options.get_data("scroll-type"):
+		match Options.get_data("scroll-type").to_lower():
 			"multiplicative":
 				GameplaySettings.scroll_speed *= Options.get_data("scroll-speed")
 			"constant":
@@ -431,7 +431,7 @@ func end_song():
 			GameplaySettings.story_score += song_score
 			
 		if GameplaySettings.story_playlist.size() > 0:
-			var songName = SONG.song
+			var songName = GameplaySettings.story_playlist[0]
 			GameplaySettings.SONG = CoolUtil.get_json(Paths.song_json(songName, GameplaySettings.difficulty))
 			get_tree().reload_current_scene()
 		else:
@@ -439,7 +439,7 @@ func end_song():
 				if GameplaySettings.story_score > Highscores.get_week_score(GameplaySettings.week_name):
 					Highscores.set_week_score(GameplaySettings.week_name, GameplaySettings.story_score)
 			
-			AudioHandler.play_audio("freakyMenu")
+			AudioHandler.play_music("freakyMenu")
 			SceneHandler.switch_to("StoryMenu")
 	else:
 		AudioHandler.stop_music()
@@ -516,6 +516,9 @@ func countdown_tick():
 			AudioHandler.inst.seek(0)
 			AudioHandler.voices.seek(0)
 			
+			AudioHandler.inst.pitch_scale = GameplaySettings.song_multiplier
+			AudioHandler.voices.pitch_scale = GameplaySettings.song_multiplier
+			
 			Conductor.song_position = 0
 			
 			countdown_tween.stop_all()
@@ -583,7 +586,10 @@ func _process(delta):
 		AudioHandler.inst.stop()
 		AudioHandler.voices.stop()
 		AudioHandler.play_music("freakyMenu")
-		SceneHandler.switch_to("FreeplayMenu")
+		if GameplaySettings.story_mode:
+			SceneHandler.switch_to("StoryMenu")
+		else:
+			SceneHandler.switch_to("FreeplayMenu")
 		
 	for note in notes.get_children():
 		if note.must_press:

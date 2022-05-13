@@ -1,5 +1,7 @@
 extends Node
 
+var godot_logo = load("res://godoticon.png")
+
 var engine_name = "Infinity Engine"
 var engine_version = "1.0.0a"
 
@@ -135,6 +137,12 @@ func unleak_memory():
 func leak_something(path):
 	for asset_path in get_filelist(path):
 		memory_leak_shit.push_back(load(asset_path))
+		
+func load_texture(path):
+	if ResourceLoader.exists(path):
+		return load(path)
+	else:
+		return godot_logo
 	
 func _process(delta):
 	if Input.is_action_just_pressed("fullscreen"):

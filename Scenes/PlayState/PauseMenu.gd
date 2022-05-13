@@ -148,7 +148,10 @@ func _process(delta):
 						PlayState.countdown_timer.stop()
 						
 						AudioHandler.play_music("freakyMenu")
-						SceneHandler.switch_to("FreeplayMenu")
+						if GameplaySettings.story_mode:
+							SceneHandler.switch_to("StoryMenu")
+						else:
+							SceneHandler.switch_to("FreeplayMenu")
 			else:
 				match pause_options[cur_selected]:
 					"back":

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/story-ui-assets.png-ee341401c00bb7e3d384473f9eca3498.stex"
+path="res://.import/godoticon.png-eaee106b78956644a8b971464519d49b.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Images/story-ui-assets.png"
-dest_files=[ "res://.import/story-ui-assets.png-ee341401c00bb7e3d384473f9eca3498.stex" ]
+source_file="res://godoticon.png"
+dest_files=[ "res://.import/godoticon.png-eaee106b78956644a8b971464519d49b.stex" ]
 
 [params]
 

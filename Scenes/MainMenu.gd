@@ -85,7 +85,7 @@ func change_selection(amount:int = 0):
 		else:
 			buttons[i].play("basic")
 			
-	cam.position.y = buttons[cur_selected].position.y - 69
+	cam.position.y = buttons[cur_selected].position.y - 69 # funni number
 	AudioHandler.play_audio("scrollMenu")
 	
 func select_thing():

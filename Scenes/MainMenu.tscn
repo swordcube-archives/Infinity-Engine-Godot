@@ -71,7 +71,7 @@ position = Vector2( 640, 516 )
 scale = Vector2( 0.95, 0.95 )
 frames = ExtResource( 3 )
 animation = "basic"
-frame = 5
+frame = 2
 playing = true
 
 [node name="Options" type="AnimatedSprite" parent="ParallaxBackground/Buttons"]

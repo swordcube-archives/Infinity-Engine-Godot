@@ -25,5 +25,9 @@
 			"shows_in_story": true,
 			"shows_in_freeplay": true
 		}
-	]
+	],
+	"difficulties": ["easy", "normal", "hard"],
+	"characters": ["spooky", "bf", "gf"],
+	"week_name": "week2",
+	"week_title": "SPOOKY MONTH"
 }

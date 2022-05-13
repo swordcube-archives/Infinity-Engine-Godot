@@ -1,0 +1,7 @@
+{
+    "idle_anim": ["Dad idle dance BLACK LINE", 24, [0, 0]],
+    "confirm_anim": ["Dad idle dance BLACK LINE", 24, [0, 0]],
+    "scale": 0.5,
+    "flip_x": false,
+    "position": [-120, -200]
+}

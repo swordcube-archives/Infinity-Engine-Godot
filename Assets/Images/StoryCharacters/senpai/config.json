@@ -1,0 +1,7 @@
+{
+    "idle_anim": ["SENPAI idle Black Lines", 24, [0, 0]],
+    "confirm_anim": ["SENPAI idle Black Lines", 24, [0, 0]],
+    "scale": 1,
+    "flip_x": false,
+    "position": [-70, 50]
+}
