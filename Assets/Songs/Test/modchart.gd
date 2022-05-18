@@ -22,19 +22,23 @@ func _ready():
 	
 var timer:int = 0
 
-func _physics_process(delta):
-	dad.position.y -= delta * 10
-	bf.position.y -= delta * 10
-	
+func _physics_process(delta):	
 	label.text = "CUR BEAT: " + str(Conductor.cur_beat)
 	label.text += "\nCUR STEP: " + str(Conductor.cur_step)
 	var value = sin(timer)
 	sprite.scale.x = value * 1
 	timer += delta * 90
 	
-	dad.rotation_degrees += 10
-	gf.rotation_degrees += 10
-	bf.rotation_degrees += 10
+	if dad:
+		dad.position.y -= delta * 10
+		dad.rotation_degrees += 10
+		
+	if gf:
+		gf.rotation_degrees += 10
+		
+	if bf:
+		bf.position.y -= delta * 10	
+		bf.rotation_degrees += 10
 	
 func beat_hit():
 	if Conductor.cur_beat % 4 == 0:

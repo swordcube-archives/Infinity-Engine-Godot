@@ -32,6 +32,7 @@ var ending_song:bool = false
 
 var rating_template:Node2D = load("res://Scenes/PlayState/Rating.tscn").instance()
 
+var can_pause:bool = true
 var countdown_active:bool = true
 var SONG:Dictionary = GameplaySettings.SONG.song
 
@@ -124,6 +125,9 @@ func refresh_combo_textures():
 	]
 
 func _ready():	
+	AudioHandler.inst.stop()
+	AudioHandler.voices.stop()
+	
 	MobileControls.switch_to("hitbox")
 	Keybinds.setup_Binds()	
 	
@@ -199,8 +203,11 @@ func _ready():
 				
 				if not "altAnim" in section:
 					section["altAnim"] = false
+					
+				var offset:float = Options.get_data("note-offset") + (AudioServer.get_output_latency() * 1000)
+				var strum_time:float = float(note[0]) + (offset * GameplaySettings.song_multiplier)
 				
-				noteDataArray.push_back([float(note[0]) + Options.get_data("note-offset") + (AudioServer.get_output_latency() * 1000), note[1], note[2], bool(section["mustHitSection"]), int(note[3]), type, bool(section["altAnim"])])
+				noteDataArray.push_back([strum_time + GameplaySettings.song_multiplier, note[1], note[2], bool(section["mustHitSection"]), int(note[3]), type, bool(section["altAnim"])])
 	
 	#print(noteDataArray[0])
 	
@@ -309,6 +316,10 @@ func load_stage_and_characters():
 			dad.scale.x *= -1
 		
 	dad.global_position = stage.dad_pos
+	
+	if SONG.player2 == gf_version:
+		dad.global_position = stage.get_node("gf_pos").position
+		gf.visible = false
 		
 	# load bf
 	if ResourceLoader.exists(Paths.character(SONG.player1)):
@@ -341,7 +352,7 @@ func _physics_process(delta):
 		start_countdown()
 		
 	if not countdown_active:
-		var a = (Conductor.song_position / 1000.0) / GameplaySettings.song_multiplier
+		var a = (AudioHandler.inst.get_playback_position()) / GameplaySettings.song_multiplier
 		var b = (AudioHandler.inst.stream.get_length()) / GameplaySettings.song_multiplier
 		var cur_time:String = CoolUtil.format_time(a)
 		var length:String = CoolUtil.format_time(b)
@@ -350,7 +361,7 @@ func _physics_process(delta):
 			timebar_progress.rect_scale.x = 1
 		timebar_text.text = cur_time + " / " + length
 		
-		if a > b:
+		if a >= b:
 			if not ending_song:
 				end_song()
 		
@@ -379,11 +390,13 @@ func _physics_process(delta):
 				if "character" in new_note:
 					new_note.character = note[4]
 					
+			notes.add_child(new_note)
+					
 			if float(note[2]) >= Conductor.step_crochet:
 				new_note.og_sustain_length = float(note[2]) - 50
 				new_note.sustain_length = float(note[2]) - 50
-				new_note.get_node("End").visible = true
-				new_note.get_node("Line2D").visible = true
+				new_note.end.visible = true
+				new_note.line2d.visible = true
 			
 			var must_press = true
 			
@@ -398,13 +411,11 @@ func _physics_process(delta):
 			else:
 				new_note.direction = opponent_strums.get_child(new_note.note_data).direction
 				new_note.play_anim("")
-				
-			new_note.load_sus_texture()
 			
 			new_note.must_press = must_press
 			#new_note.global_position.y = -5000
 			
-			notes.add_child(new_note)
+			new_note.load_sus_texture()
 					
 			noteDataArray.remove(index)
 					
@@ -416,6 +427,10 @@ var farded:bool = false
 onready var countdown_timer:Timer = $CanvasLayer/HUD/CountdownTimer
 
 func end_song():
+	for rating in ratings.get_children():
+		ratings.remove_child(rating)
+		rating.queue_free()
+		
 	ending_song = true
 	
 	var song = SONG.song + "-" + GameplaySettings.difficulty
@@ -572,6 +587,9 @@ func _process(delta):
 	if Input.is_action_just_pressed("reset"):
 		if Options.get_data("enable-insta-kill-button"):
 			health -= 999999999
+			
+	if Input.is_action_just_pressed("debug_1"):
+		SceneHandler.switch_to("ChartEditor")
 		
 	if started_countdown:
 		if countdown_active:
@@ -614,20 +632,25 @@ func _process(delta):
 			if Conductor.song_position >= note.strum_time:
 				cam_zooming = true
 				note.spr.visible = false
-				opponent_strums.get_child(note.note_data).play_anim("confirm")
 				note.sustain_length -= (delta * 1000) * GameplaySettings.song_multiplier
 				note.global_position.y = opponent_strums.get_child(note.note_data).global_position.y
+				
+				var strum = opponent_strums.get_child(note.note_data)
 				
 				if not note.hit_already:
 					dad_held = 0
 					note.hit_already = true
+					strum.play_anim("confirm")
 				
-				if dad and dad_held == 0:
-					dad.hold_timer = 0
-					dad.play_anim(sing_anims[note.note_data])
+				if dad_held == 0:
+					if dad:
+						dad.hold_timer = 0
+						dad.play_anim(sing_anims[note.note_data])
+						
+					strum.play_anim("confirm")
 					
 				dad_held += delta
-				if dad_held > (Conductor.step_crochet / 1000.0):
+				if dad_held > ((Conductor.step_crochet / 1000.0) / GameplaySettings.song_multiplier):
 					dad_held = 0
 					
 				AudioHandler.voices.volume_db = 0
@@ -718,16 +741,24 @@ func process_inputs(delta):
 			note.spr.visible = false
 			note.sustain_length -= (delta * 1000) * GameplaySettings.song_multiplier
 			
-			if bf and bf_held == 0 and bf.special_anim != true:
-				bf.hold_timer = 0
-				bf.play_anim(sing_anims[note.note_data], true)	
+			var strum:Node2D = player_strums.get_child(note.note_data)	
+			
+			if not note.hit_already:
+				bf_held = 0
+				note.hit_already = true
+				strum.play_anim("confirm")
+			
+			if bf_held == 0:
+				if bf and bf.special_anim != true:
+					bf.hold_timer = 0
+					bf.play_anim(sing_anims[note.note_data], true)
+					
+				strum.play_anim("confirm")
 
 			bf_held += delta
-			if bf_held > (Conductor.step_crochet / 1000.0):
+			if bf_held > ((Conductor.step_crochet / 1000.0) / GameplaySettings.song_multiplier):
 				bf_held = 0
-			
-			var strum:Node2D = player_strums.get_child(note.note_data)			
-			strum.play_anim("confirm")
+				
 			note.global_position.y = strum.global_position.y
 			AudioHandler.voices.volume_db = 0
 			
@@ -860,16 +891,17 @@ func pop_up_score(strum_time, note):
 	combo += 1
 	total_notes += 1
 	
-	var new_rating = rating_template.duplicate()
+	if not ending_song:
+		var new_rating = rating_template.duplicate()
+		
+		var a = Options.get_data("rating-offset")
+		
+		new_rating.global_position = Vector2(654, 237) + Vector2(a[0], a[1])
+		ratings.add_child(new_rating)
+		new_rating.spr.visible = show_rating
+		new_rating.combined_combo.visible = show_combo
 	
-	var a = Options.get_data("rating-offset")
-	
-	new_rating.global_position = Vector2(654, 237) + Vector2(a[0], a[1])
-	ratings.add_child(new_rating)
-	new_rating.spr.visible = show_rating
-	new_rating.combined_combo.visible = show_combo
-	
-	new_rating.spr.texture = rating_tex
+		new_rating.spr.texture = rating_tex
 	
 var rating_stuff:Array = [
 		['bruj', 0.1], #your accuracy is actual garbage if you get to this point
@@ -991,7 +1023,7 @@ func beat_hit():
 			bf.dance()
 			
 	if dad != null:
-		if dad.is_dancing() or (SONG.player2 == gf_version and dad.last_anim == "cheer" or dad.last_anim == "scared"):
+		if dad.is_dancing() or (dad.name == gf.name and dad.last_anim == "cheer" or dad.last_anim == "scared"):
 			dad.dance()
 			
 	if gf != null:
@@ -1079,7 +1111,7 @@ func trigger_event(event_name, value1 = "", value2 = ""):
 			
 			dad.global_position = stage.get_node("dad_pos").position
 
-			if SONG.player2 == gf_version:
+			if dad.name == gf.name:
 				dad.global_position = stage.get_node("gf_pos").position
 				gf.visible = false
 				

@@ -50,7 +50,7 @@ func splash():
 	visible = true
 	spr.modulate.a = 0.6
 	spr.play(colors[direction][randi()%2])
-	spr.speed_scale = rand_range(0.5, 0.8)
+	spr.speed_scale = rand_range(0.7, 1)
 
 func _on_spr_animation_finished():
 	queue_free()

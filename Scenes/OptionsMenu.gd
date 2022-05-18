@@ -22,7 +22,8 @@ var menus:Array = [
 	"Preferences",
 	"Appearance",
 	"Controls",
-	"Adjust Offsets"
+	"Adjust Offsets",
+	"Misc"
 ]
 
 var options:Dictionary = {
@@ -59,13 +60,6 @@ var options:Dictionary = {
 			"type": "string",
 		},
 		{
-			"title": "UI Skin",
-			"description": "Change how things like the arrows, countdown, and ratings look/sound.",
-			"save_data_name": "ui-skin",
-			"values": ["Default", "Circles"],
-			"type": "string",
-		},
-		{
 			"title": "Scroll Speed",
 			"description": "Change how fast the notes go in a song.\n(PRESS LEFT & RIGHT to change)",
 			"save_data_name": "scroll-speed",
@@ -80,12 +74,6 @@ var options:Dictionary = {
 			"save_data_name": "scroll-type",
 			"values": ["Multiplicative", "Constant"],
 			"type": "string",
-		},
-		{
-			"title": "Note Splashes",
-			"description": 'When enabled, a firework-like effect will play when\nyou hit a note and get a "SiCK!!" from it.',
-			"save_data_name": "note-splashes",
-			"type": "bool",
 		},
 		{
 			"title": "Memory Leaks",
@@ -168,6 +156,19 @@ var options:Dictionary = {
 			"save_data_name": "optimization",
 			"type": "bool",
 		},
+		{
+			"title": "Note Splashes",
+			"description": 'When enabled, a firework-like effect will play when\nyou hit a note and get a "SiCK!!" from it.',
+			"save_data_name": "note-splashes",
+			"type": "bool",
+		},
+		{
+			"title": "UI Skin",
+			"description": "Change how things like the arrows, countdown, and ratings look/sound.",
+			"save_data_name": "ui-skin",
+			"values": ["Default", "Circles"],
+			"type": "string",
+		},
 	],
 	
 	"Controls": [
@@ -234,6 +235,16 @@ var options:Dictionary = {
 			"type": "menu",
 			"menu_to_load": "RatingOffsetMenu",
 			"menu_category": "Options",
+		},
+	],
+	
+	"Misc": [
+		{
+			"title": "Tools Menu",
+			"description": "Access a menu with useful tools like the\nChart Editor, XML Converter, etc.",
+			"type": "menu",
+			"menu_to_load": "ToolsMenu",
+			"menu_category": "",
 		},
 	]
 }

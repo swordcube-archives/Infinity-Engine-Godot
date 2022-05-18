@@ -56,10 +56,6 @@ func _ready():
 	scan_weeks()
 	spawn_weeks()
 	
-	dad.dance()
-	gf.dance()
-	bf.dance()
-	
 func load_diff_textures():
 	var list = CoolUtil.list_files_in_directory("res://Assets/Images/Difficulties/")
 	for item in list:
@@ -190,7 +186,6 @@ func spawn_weeks():
 	yield(get_tree().create_timer(0.5), "timeout")
 	ready = true
 	
-var old_diff:int = 0
 var lerpScore:float = 0
 
 func change_difficulty(amount:int = 0):
@@ -202,21 +197,18 @@ func change_difficulty(amount:int = 0):
 	if cur_difficulty > difficulties.size() - 1:
 		cur_difficulty = 0
 		
-	if old_diff != cur_difficulty:
-		old_diff = cur_difficulty
+	var diff_tween = $Difficulty/Tween
 		
-		var diff_tween = $Difficulty/Tween
-			
-		diff_tween.stop_all()
-		diff.modulate.a = 0
-		diff.position.y = -10
+	diff_tween.stop_all()
+	diff.modulate.a = 0
+	diff.position.y = -10
+	
+	diff_tween.interpolate_property(diff, "modulate:a", diff.modulate.a, 1, 0.1)
+	diff_tween.interpolate_property(diff, "position:y", diff.position.y, 0, 0.1)
+	diff_tween.start()
 		
-		diff_tween.interpolate_property(diff, "modulate:a", diff.modulate.a, 1, 0.1)
-		diff_tween.interpolate_property(diff, "position:y", diff.position.y, 0, 0.1)
-		diff_tween.start()
-			
-		var diff_str:String = difficulties[cur_difficulty]
-		diff.texture = diff_textures[diff_str]
+	var diff_str:String = difficulties[cur_difficulty]
+	diff.texture = diff_textures[diff_str]
 	
 func change_selection(amount:int = 0):
 	cur_selected += amount
@@ -279,22 +271,22 @@ func load_characters():
 		characters.remove_child(dad)
 		dad = loaded_characters[swag_characters[0]].duplicate()
 		dad.global_position = Vector2(origin_x, 450)
-		dad.dance()
 		characters.add_child(dad)
+		dad.dance()
 	
 	if first_init or not bf.name == swag_characters[1]:
 		characters.remove_child(bf)
 		bf = loaded_characters[swag_characters[1]].duplicate()
 		bf.global_position = Vector2(origin_x + (spacing * 1), 450)
-		bf.dance()
 		characters.add_child(bf)
+		bf.dance()
 	
 	if first_init or not gf.name == swag_characters[2]:
 		characters.remove_child(gf)
 		gf = loaded_characters[swag_characters[2]].duplicate()
 		gf.global_position = Vector2(origin_x + (spacing * 2), 450)
-		gf.dance()
 		characters.add_child(gf)
+		gf.dance()
 	
 	first_init = false
 	

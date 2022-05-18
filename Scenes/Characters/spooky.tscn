@@ -312,7 +312,7 @@ tracks/3/keys = {
 "values": [ Vector2( -20, -7 ) ]
 }
 
-[node name="char" type="Node2D"]
+[node name="spooky" type="Node2D"]
 script = ExtResource( 3 )
 health_color = Color( 0.835294, 0.490196, 0, 1 )
 health_icon = ExtResource( 1 )

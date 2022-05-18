@@ -6,8 +6,11 @@ export(StreamTexture) var sustain_end_tex = null
 export(bool) var should_hit = true
 
 onready var spr = $spr
+onready var charter_sustain = $CharterSustain
 onready var line2d = $Line2D
-onready var end = $End
+
+onready var rect = $ColorRect
+onready var end = $ColorRect/End
 
 onready var PlayState = $"../../../../"
 
@@ -36,13 +39,28 @@ func _ready():
 	
 func _process(delta):
 	var y_pos = ((sustain_length / 1.5) * GameplaySettings.scroll_speed) / (scale.y + 0.3)
-	if PlayState.downscroll:
-		line2d.points[1].y = 0 - y_pos
-		end.flip_v = true
-		end.position.y = line2d.points[1].y - (end.texture.get_height() / 2)
+	var fixed_y_pos = max(((sustain_length / 1.5) * GameplaySettings.scroll_speed) / (scale.y + 0.3), 0)
+	
+	if not charter_note:
+		if PlayState.downscroll:
+			line2d.points[1].y = 0 - fixed_y_pos
+			end.flip_v = true
+			if sustain_length <= 0:
+				rect.rect_position.y = -70
+				end.position.y = 45 + ((0 - y_pos) - (end.texture.get_height() / 2))
+			else:
+				rect.rect_position.y = (0 - y_pos) - (end.texture.get_height() * 1.2)
+				end.position.y = 45
+		else:
+			line2d.points[1].y = fixed_y_pos
+			if sustain_length <= 0:
+				rect.rect_position.y = -70
+				end.position.y = 45 + (y_pos + (end.texture.get_height() / 2))
+			else:
+				rect.rect_position.y = y_pos - (end.texture.get_height() * 1.2)
+				end.position.y = 45
 	else:
-		line2d.points[1].y = y_pos
-		end.position.y = line2d.points[1].y + (end.texture.get_height() / 2)
+		end.visible = false
 
 func play_anim(anim):
 	# check if the note is animated lol
@@ -55,16 +73,16 @@ func play_anim(anim):
 			
 func load_sus_texture():
 	if GameplaySettings.ui_skin.sustain_tex:
-		$Line2D.texture = load(GameplaySettings.ui_skin.sustain_tex.replace("hold.png", direction + " hold.png"))
+		line2d.texture = load(GameplaySettings.ui_skin.sustain_tex.replace("hold.png", direction + " hold.png"))
 		
 	if GameplaySettings.ui_skin.sustain_end_tex:
-		$End.texture = load(GameplaySettings.ui_skin.sustain_end_tex.replace("tail.png", direction + " tail.png"))
+		end.texture = load(GameplaySettings.ui_skin.sustain_end_tex.replace("tail.png", direction + " tail.png"))
 		
 	if sustain_tex:
-		$Line2D.texture = sustain_tex
+		line2d.texture = sustain_tex
 		
 	if sustain_end_tex:
-		$End.texture = sustain_end_tex
+		end.texture = sustain_end_tex
 		
 func calculate_can_be_hit():
 	if(must_press):

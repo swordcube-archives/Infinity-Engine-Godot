@@ -1,8 +1,9 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Assets/Images/Characters/gf/assets.res" type="SpriteFrames" id=1]
 [ext_resource path="res://Scenes/Characters/gf.gd" type="Script" id=2]
 [ext_resource path="res://Assets/Images/Characters/gf/speakers/assets.res" type="SpriteFrames" id=3]
+[ext_resource path="res://Assets/Images/Icons/gf.png" type="Texture" id=4]
 
 [sub_resource type="Animation" id=140]
 resource_name = "cheer"
@@ -52,7 +53,7 @@ tracks/3/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( 40, -12 ) ]
+"values": [ Vector2( 10, -4 ) ]
 }
 
 [sub_resource type="Animation" id=134]
@@ -154,7 +155,7 @@ tracks/3/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( 0, 0 ) ]
+"values": [ Vector2( 3, 3 ) ]
 }
 
 [sub_resource type="Animation" id=143]
@@ -205,7 +206,7 @@ tracks/3/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( -92, 0 ) ]
+"values": [ Vector2( -116, 0 ) ]
 }
 
 [sub_resource type="Animation" id=142]
@@ -256,7 +257,7 @@ tracks/3/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( -42, 0 ) ]
+"values": [ Vector2( -70, 0 ) ]
 }
 
 [sub_resource type="Animation" id=141]
@@ -307,7 +308,7 @@ tracks/3/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( 0, 4 ) ]
+"values": [ Vector2( 10, -3 ) ]
 }
 
 [sub_resource type="Animation" id=138]
@@ -358,7 +359,7 @@ tracks/3/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( 35, 0 ) ]
+"values": [ Vector2( 10, 10 ) ]
 }
 
 [sub_resource type="Animation" id=136]
@@ -409,7 +410,7 @@ tracks/3/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( 20, -3 ) ]
+"values": [ Vector2( -10, 7 ) ]
 }
 
 [sub_resource type="Animation" id=137]
@@ -460,7 +461,7 @@ tracks/3/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( 25, -2 ) ]
+"values": [ Vector2( 0, 8 ) ]
 }
 
 [sub_resource type="Animation" id=139]
@@ -511,11 +512,13 @@ tracks/3/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( 35, -15 ) ]
+"values": [ Vector2( 5, -4 ) ]
 }
 
 [node name="gf" type="Node2D"]
 script = ExtResource( 2 )
+health_color = Color( 0.647059, 0, 0.301961, 1 )
+health_icon = ExtResource( 4 )
 
 [node name="speakers" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -174 )
@@ -525,12 +528,11 @@ frame = 6
 playing = true
 
 [node name="girl" type="AnimatedSprite" parent="."]
-position = Vector2( -30, -437 )
+position = Vector2( -6, -438 )
 frames = ExtResource( 1 )
-animation = "GF Cheer"
-frame = 20
+animation = "danceLeft"
+frame = 14
 playing = true
-offset = Vector2( 40, -12 )
 
 [node name="anim" type="AnimationPlayer" parent="."]
 root_node = NodePath("../girl")

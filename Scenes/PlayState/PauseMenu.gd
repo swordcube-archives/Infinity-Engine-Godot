@@ -44,6 +44,9 @@ func _physics_process(delta):
 func _process(delta):
 	text[3].visible = GameplaySettings.practice_mode
 	if not get_tree().paused:
+		if not PlayState.can_pause:
+			return
+			
 		if not Transition.transitioning and Input.is_action_just_pressed("ui_confirm"):
 			bg.modulate.a = 0
 			
