@@ -109,8 +109,8 @@ tracks/3/keys = {
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( 760, 334 )
 frames = ExtResource( 1 )
-animation = "ENTER PRESSED"
-frame = 7
+animation = "Press Enter to Begin"
+frame = 43
 playing = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

@@ -49,13 +49,14 @@ motion_scale = Vector2( 1, 0.55 )
 position = Vector2( 640, 68 )
 frames = ExtResource( 2 )
 animation = "basic"
-frame = 1
+frame = 3
 playing = true
 
 [node name="Freeplay" type="AnimatedSprite" parent="ParallaxBackground/Buttons"]
 position = Vector2( 640, 212 )
 frames = ExtResource( 6 )
 animation = "basic"
+frame = 2
 playing = true
 
 [node name="Mods" type="AnimatedSprite" parent="ParallaxBackground/Buttons"]
@@ -63,7 +64,7 @@ position = Vector2( 640, 364 )
 scale = Vector2( 0.95, 0.95 )
 frames = ExtResource( 4 )
 animation = "basic"
-frame = 5
+frame = 7
 playing = true
 
 [node name="Credits" type="AnimatedSprite" parent="ParallaxBackground/Buttons"]
@@ -71,14 +72,14 @@ position = Vector2( 640, 516 )
 scale = Vector2( 0.95, 0.95 )
 frames = ExtResource( 3 )
 animation = "basic"
-frame = 2
+frame = 3
 playing = true
 
 [node name="Options" type="AnimatedSprite" parent="ParallaxBackground/Buttons"]
 position = Vector2( 640, 660 )
 frames = ExtResource( 5 )
 animation = "basic"
-frame = 4
+frame = 6
 playing = true
 
 [node name="Tween" type="Tween" parent="."]

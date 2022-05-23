@@ -19,6 +19,8 @@ onready var timebar = $CanvasLayer/HUD/TimeBar
 onready var timebar_progress = $CanvasLayer/HUD/TimeBar/Color1
 onready var timebar_text = $CanvasLayer/HUD/TimeBar/Label
 
+onready var pussy_mode_warning = $CanvasLayer/HUD/PussyModeWarning
+
 onready var opponent_strums:Node2D = null
 onready var player_strums:Node2D = null
 onready var notes:Node2D = $CanvasLayer/HUD/Notes
@@ -125,6 +127,8 @@ func refresh_combo_textures():
 	]
 
 func _ready():	
+	pussy_mode_warning.visible = Options.get_data("pussy-mode")
+	
 	AudioHandler.inst.stop()
 	AudioHandler.voices.stop()
 	
@@ -749,6 +753,9 @@ func process_inputs(delta):
 				strum.play_anim("confirm")
 			
 			if bf_held == 0:
+				if Options.get_data("pussy-mode"):
+					health += 0.023
+					
 				if bf and bf.special_anim != true:
 					bf.hold_timer = 0
 					bf.play_anim(sing_anims[note.note_data], true)
@@ -982,7 +989,7 @@ func note_miss(direction = 0):
 	calculate_accuracy()
 	
 	var miss_audio = "missnote" + str(randi()%3 + 1)
-	AudioHandler.play_audio(miss_audio)
+	AudioHandler.play_audio(miss_audio, 0, rand_range(-25, -10))
 	
 	if bf and bf.special_anim != true:
 		bf.hold_timer = 0

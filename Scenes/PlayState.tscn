@@ -76,8 +76,20 @@ margin_top = 694.0
 margin_right = 1267.0
 margin_bottom = 709.0
 custom_fonts/font = SubResource( 1 )
-text = "1.0a (51722) ALPHA"
+text = "1.0a (52222) ALPHA"
 align = 2
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="PussyModeWarning" type="Label" parent="CanvasLayer/HUD"]
+margin_left = 12.0
+margin_top = 694.0
+margin_right = 1267.0
+margin_bottom = 709.0
+custom_colors/font_color = Color( 1, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "PUSSY MODE ENABLED - SCORES WON'T SAVE!"
 __meta__ = {
 "_edit_lock_": true
 }

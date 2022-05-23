@@ -47,8 +47,11 @@ func play_voices(song):
 	voices.volume_db = 0
 		
 # for sound effects
-func play_audio(audio, pos = 0):
-	get_node(audio).play(pos)
+# 0 = full volume btw, volume works in decibels in godot
+func play_audio(audio, pos:float = 0, volume:float = 0):
+	var node = get_node(audio)
+	node.play(pos)
+	node.volume_db = volume
 	
 func stop_audio(audio):
 	get_node(audio).stop()
