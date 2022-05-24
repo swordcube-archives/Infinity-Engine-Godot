@@ -25,6 +25,12 @@ layer = 100
 
 [node name="HUD" type="CanvasModulate" parent="CanvasLayer"]
 
+[node name="ArrowUnderlay" type="ColorRect" parent="CanvasLayer/HUD"]
+margin_left = 400.0
+margin_right = 880.0
+margin_bottom = 720.0
+color = Color( 0, 0, 0, 1 )
+
 [node name="Notes" type="Node2D" parent="CanvasLayer/HUD"]
 
 [node name="Ratings" type="Node2D" parent="CanvasLayer/HUD"]

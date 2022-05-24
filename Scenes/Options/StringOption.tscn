@@ -9,6 +9,7 @@ font_data = ExtResource( 2 )
 
 [node name="StringOption" type="Node2D"]
 script = ExtResource( 1 )
+type = "string"
 
 [node name="text" type="Label" parent="."]
 margin_left = -39.0

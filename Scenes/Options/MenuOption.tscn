@@ -5,6 +5,7 @@
 
 [node name="MenuOption" type="Node2D"]
 script = ExtResource( 2 )
+type = "menu"
 
 [node name="text" type="Label" parent="."]
 margin_left = -31.0

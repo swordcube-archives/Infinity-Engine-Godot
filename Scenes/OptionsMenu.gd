@@ -18,242 +18,7 @@ onready var tabnotif = $TabNotif
 onready var desc_box = $DescriptionBox
 onready var description = $DescriptionBox/Label
 
-var menus:Array = [
-	"Preferences",
-	"Appearance",
-	"Controls",
-	"Adjust Offsets",
-	"Misc"
-]
-
-var options:Dictionary = {
-	"Preferences": [
-		{
-			"title": "Downscroll",
-			"description": "Makes all notes scroll downwards instead of upwards.",
-			"save_data_name": "downscroll",
-			"type": "bool",
-		},
-		{
-			"title": "Middlescroll",
-			"description": "Makes all notes centered on-screen.",
-			"save_data_name": "middlescroll",
-			"type": "bool",
-		},
-		{
-			"title": "Botplay",
-			"description": "The game plays itself for you when enabled.\nScores will not be saved with Botplay enabled.",
-			"save_data_name": "botplay",
-			"type": "bool",
-		},
-		{
-			"title": "Keybind Reminders",
-			"description": "At the start of every song, You will be reminded\nwhat your keybinds are.",
-			"save_data_name": "keybind-reminders",
-			"type": "bool",
-		},
-		{
-			"title": "Hitsound",
-			"description": "Change what sound plays when hitting a note.",
-			"save_data_name": "hitsound",
-			"values": ["None", "osu!", "Dave and Bambi", "Vine Boom", "Generic"],
-			"type": "string",
-		},
-		{
-			"title": "Scroll Speed",
-			"description": "Change how fast the notes go in a song.\n(PRESS LEFT & RIGHT to change)",
-			"save_data_name": "scroll-speed",
-			"multiplier": 0.1,
-			"limits": [0, 10],
-			"decimals": 1,
-			"type": "float",
-		},
-		{
-			"title": "Scroll Speed Type",
-			"description": "Change how scroll speed is used in a song.\nMultiplicative = Adds onto the speed, Constant = Directly sets the speed.\n(PRESS LEFT & RIGHT to change)",
-			"save_data_name": "scroll-type",
-			"values": ["Multiplicative", "Constant"],
-			"type": "string",
-		},
-		{
-			"title": "Memory Leaks",
-			"description": "Loads every image, sound, song, etc all at once.",
-			"save_data_name": "memory-leaks",
-			"type": "bool",
-		},
-		{
-			"title": "Ghost Tapping",
-			"description": "Allows you to press notes that don't exist when enabled.",
-			"save_data_name": "ghost-tapping",
-			"type": "bool",
-		},
-		{
-			"title": "Pussy Mode",
-			"description": "Disables anti-mash and allows gaining health from sustains.",
-			"save_data_name": "pussy-mode",
-			"type": "bool",
-		},
-		{
-			"title": "Enable Insta-Kill Button",
-			"description": "When enabled, pressing R will insta-kill you.\nDisable if this causes annoyance.",
-			"save_data_name": "pussy-mode",
-			"type": "bool",
-		},
-		{
-			"title": "Go Back during Gameplay",
-			"description": "When enabled, pressing BACKSPACE/ESCAPE will exit the song\n(without saving scores).",
-			"save_data_name": "go-back-during-gameplay",
-			"type": "bool",
-		},
-		{
-			"title": "VSync",
-			"description": "When enabled, The game will run at your monitors refresh rate.\nUsually 60hz or 120hz.",
-			"save_data_name": "vsync",
-			"type": "bool",
-		},
-		{
-			"title": "Sick Timing",
-			"description": 'Change the milliseconds required to get a "SiCK!!"\nNegative = Earlier, Positive = Later\n(PRESS LEFT & RIGHT to change)',
-			"save_data_name": "sick-timing",
-			"type": "float",
-			"multiplier": 0.1,
-			"limits": [0, 130],
-			"decimals": 1,
-		},
-		{
-			"title": "Good Timing",
-			"description": 'Change the milliseconds required to get a "Good!"\nNegative = Earlier, Positive = Later\n(PRESS LEFT & RIGHT to change)',
-			"save_data_name": "good-timing",
-			"type": "float",
-			"multiplier": 0.1,
-			"limits": [0, 130],
-			"decimals": 1,
-		},
-		{
-			"title": "Bad Timing",
-			"description": 'Change the milliseconds required to get a "Bad"\nNegative = Earlier, Positive = Later\n(PRESS LEFT & RIGHT to change)',
-			"save_data_name": "bad-timing",
-			"type": "float",
-			"multiplier": 0.1,
-			"limits": [0, 130],
-			"decimals": 1,
-		},
-		{
-			"title": "Shit Timing",
-			"description": 'Change the milliseconds required to get a "SHIT"\nNegative = Earlier, Positive = Later\n(PRESS LEFT & RIGHT to change)',
-			"save_data_name": "shit-timing",
-			"type": "float",
-			"multiplier": 0.1,
-			"limits": [0, 130],
-			"decimals": 1,
-		},
-	],
-	
-	"Appearance": [
-		{
-			"title": "Optimization",
-			"description": "The stage and characters will not be loaded\nwhen enabled for extra performance.",
-			"save_data_name": "optimization",
-			"type": "bool",
-		},
-		{
-			"title": "Note Splashes",
-			"description": 'When enabled, a firework-like effect will play when\nyou hit a note and get a "SiCK!!" from it.',
-			"save_data_name": "note-splashes",
-			"type": "bool",
-		},
-		{
-			"title": "UI Skin",
-			"description": "Change how things like the arrows, countdown, and ratings look/sound.",
-			"save_data_name": "ui-skin",
-			"values": ["Default", "Circles"],
-			"type": "string",
-		},
-	],
-	
-	"Controls": [
-		{
-			"title": "1k Keybind",
-			"description": "Change the bind used for 1 key.\n(Press ACCEPT (ENTER/SPACE) to change)",
-			"type": "menu",
-		},
-		{
-			"title": "2k Keybinds",
-			"description": "Change the keybinds used for 2 key.\n(Press ACCEPT (ENTER/SPACE) to change)",
-			"type": "menu",
-		},
-		{
-			"title": "3k Keybinds",
-			"description": "Change the keybinds used for 3 key.\n(Press ACCEPT (ENTER/SPACE) to change)",
-			"type": "menu",
-		},
-		{
-			"title": "4k Keybinds",
-			"description": "Change the keybinds used for 4 key.\n(Press ACCEPT (ENTER/SPACE) to change)",
-			"type": "menu",
-		},
-		{
-			"title": "5k Keybinds",
-			"description": "Change the keybinds used for 5 key.\n(Press ACCEPT (ENTER/SPACE) to change)",
-			"type": "menu",
-		},
-		{
-			"title": "6k Keybinds",
-			"description": "Change the keybinds used for 6 key.\n(Press ACCEPT (ENTER/SPACE) to change)",
-			"type": "menu",
-		},
-		{
-			"title": "7k Keybinds",
-			"description": "Change the keybinds used for 7 key.\n(Press ACCEPT (ENTER/SPACE) to change)",
-			"type": "menu",
-		},
-		{
-			"title": "8k Keybinds",
-			"description": "Change the keybinds used for 8 key.\n(Press ACCEPT (ENTER/SPACE) to change)",
-			"type": "menu",
-		},
-		{
-			"title": "9k Keybinds",
-			"description": "Change the keybinds used for 9 key.\n(Press ACCEPT (ENTER/SPACE) to change)",
-			"type": "menu",
-		},
-	],
-	
-	"Adjust Offsets": [
-		{
-			"title": "Note Offset",
-			"description": "Change how early or late notes spawn.\nNegative = Earlier, Positive = Later\n(PRESS LEFT & RIGHT to change)",
-			"save_data_name": "note-offset",
-			"type": "float",
-			"multiplier": 0.1,
-			"limits": [-1000, 1000],
-			"decimals": 1,
-		},
-		{
-			"title": "Rating & Combo Offset",
-			"description": "Change the positions of the Ratings & Combos.\n(Press ACCEPT (ENTER/SPACE) to change)",
-			"type": "menu",
-			"menu_to_load": "RatingOffsetMenu",
-			"menu_category": "Options",
-		},
-	],
-	
-	"Misc": [
-		{
-			"title": "Tools Menu",
-			"description": "Access a menu with useful tools like the\nChart Editor, XML Converter, etc.",
-			"type": "menu",
-			"menu_to_load": "ToolsMenu",
-			"menu_category": "",
-		},
-	]
-}
-
-var option_types:Dictionary = {
-	"bool": load("res://Scenes/Options/BoolOption.tscn").instance(),
-	"menu": load("res://Scenes/Options/MenuOption.tscn").instance(),
-	"string": load("res://Scenes/Options/StringOption.tscn").instance(),
-}
+var pages:Dictionary = {}
 
 #### OPTIONS MENU CODE!!!! ####
 
@@ -265,6 +30,11 @@ var cur_selected:int = 0
 var selected_option:int = 0
 
 func _ready():
+	# makes it so you just add nodes to make pages
+	# the options menu system makes more sense now i think
+	for page in $Pages.get_children():
+		pages[page.name] = page
+		
 	MobileControls.switch_to("dpad_with_tab")
 	
 	if not AudioHandler.get_node("Music/optionsMenu").playing:
@@ -284,13 +54,14 @@ func _ready():
 func _physics_process(delta):
 	visible_menus.position.x = lerp(visible_menus.position.x, -1600 * cur_selected, delta * 15)
 	
-	description.rect_size.y = 0
-	description.text = options[menus[cur_selected]][selected_option].description
-	
-	desc_box.rect_size.y = description.rect_size.y + 22
-	desc_box.rect_position.y = 585 - (desc_box.rect_size.y - 46)
-	
 	if move_shit:
+		description.rect_size.y = 0
+		var desc:String = visible_options.get_child(selected_option).description
+		description.text = desc.replace('\\n', "\n")
+		
+		desc_box.rect_size.y = description.rect_size.y + 22
+		desc_box.rect_position.y = 585 - (desc_box.rect_size.y - 46)
+		
 		var index = 0
 		for option in visible_options.get_children():
 			var x = option.global_position.x
@@ -406,8 +177,11 @@ func _process(delta):
 						if final > option.limits[1]:
 							final = option.limits[1]
 							
-						# ok i can fix the -0 issue using this
-						final = abs(final)
+						# ok nvm we go back to this
+						# i just realized, i think this would make
+						# negative shit impossible to do with abs
+						if final == -0:
+							final = 0
 							
 						Options.set_data(option.option, final)
 				else:
@@ -459,87 +233,30 @@ func change_option(amount:int = 0):
 	AudioHandler.play_audio("scrollMenu")
 	
 func spawn_menu_options():
-	for i in menus.size():
+	for i in pages.keys().size():
 		var new_menu = menu_template.duplicate()
 		new_menu.visible = true
-		new_menu.text = menus[i]
+		new_menu.text = pages.keys()[i]
 		new_menu.rect_position.x = 1600 * i
 		visible_menus.add_child(new_menu)
 		
 func spawn_options():
 	move_shit = false
 	for i in visible_options.get_children():
+		visible_options.remove_child(i)
 		i.queue_free()
 		
 	var index:int = 0
-	for option in options[menus[cur_selected]]:
-		var new_option = null
-		match option.type:
-			"menu":
-				new_option = option_types["menu"].duplicate()
-				new_option.type = "menu"
-				
-				new_option.global_position.x = 72 + (index * 17)
-				new_option.global_position.y = 100 + (index * 70)
-				visible_options.add_child(new_option)
-				
-				new_option.option_title = option.title
-				new_option.title.text = option.title
-				new_option.description = option.description
-				
-				if "menu_to_load" in option:
-					new_option.menu_to_load = option.menu_to_load
-					new_option.menu_category = option.menu_category
-				
-			"float", "int":
-				new_option = option_types["string"].duplicate()
-				new_option.type = option.type
-				
-				new_option.global_position.x = 72 + (index * 17)
-				new_option.global_position.y = 100 + (index * 70)
-				visible_options.add_child(new_option)
-				
-				new_option.option_title = option.title
-				new_option.title.text = option.title
-				new_option.description = option.description
-				
-				new_option.option = option.save_data_name
-				
-				new_option.multiplier = option.multiplier
-				new_option.limits = option.limits
-				
-				new_option.decimals_lol = option.decimals
-				
-			"string":
-				new_option = option_types["string"].duplicate()
-				new_option.type = "string"
-				
-				new_option.global_position.x = 72 + (index * 17)
-				new_option.global_position.y = 100 + (index * 70)
-				visible_options.add_child(new_option)
-				
-				new_option.option_title = option.title
-				new_option.title.text = option.title
-				new_option.description = option.description
-				
-				new_option.option = option.save_data_name
-				
-				new_option.values = option.values
-				
-			_:
-				new_option = option_types["bool"].duplicate()
-				new_option.type = "bool"
-				
-				new_option.global_position.x = 72 + (index * 17)
-				new_option.global_position.y = 100 + (index * 70)
-				visible_options.add_child(new_option)
-				
-				new_option.option_title = option.title
-				new_option.title.text = option.title
-				new_option.description = option.description
-				
-				new_option.option = option.save_data_name
-				new_option.checked = Options.get_data(option.save_data_name)
+	for option in pages[pages.keys()[cur_selected]].get_children():
+		var new_option = option.duplicate()
+		new_option.visible = true
+		new_option.global_position.x = 72 + (index * 17)
+		new_option.global_position.y = 100 + (index * 70)
+		visible_options.add_child(new_option)
+		
+		match new_option.type:
+			"bool":
+				new_option.checked = Options.get_data(new_option.option)
 				new_option.refresh()
 				
 		index += 1

@@ -27,6 +27,8 @@ var og_save = {
 	"enable-insta-kill-button": true,
 	"go-back-during-gameplay": true,
 	"ui-skin": "Default",
+	"underlay-opacity": 0,
+	"sustain-clipping-style": "FNF",
 	"vsync": false,
 	"rating-offset": [0, 0],
 	"combo-offset": [0, 0],

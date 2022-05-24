@@ -34,6 +34,14 @@ var too_late:bool = false
 var was_good_hit:bool = false
 
 func _ready():
+	line2d.position.x -= 2.5
+	rect.rect_position.x -= 2.5
+	
+	match Options.get_data("sustain-clipping-style"):
+		"StepMania":
+			line2d.z_index = -999
+			end.z_index = -998
+			
 	spr.frames = GameplaySettings.ui_skin.note_tex
 	play_anim("")
 	

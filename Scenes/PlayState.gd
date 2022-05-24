@@ -19,6 +19,8 @@ onready var timebar = $CanvasLayer/HUD/TimeBar
 onready var timebar_progress = $CanvasLayer/HUD/TimeBar/Color1
 onready var timebar_text = $CanvasLayer/HUD/TimeBar/Label
 
+onready var arrow_underlay = $CanvasLayer/HUD/ArrowUnderlay
+
 onready var pussy_mode_warning = $CanvasLayer/HUD/PussyModeWarning
 
 onready var opponent_strums:Node2D = null
@@ -148,15 +150,18 @@ func _ready():
 		GameplaySettings.used_practice = false
 	
 	opponent_strums = load("res://Scenes/Strums/" + str(GameplaySettings.key_count) + "Key.tscn").instance()
+	opponent_strums.name = "Opponent Strums"
+	
 	player_strums = load("res://Scenes/Strums/" + str(GameplaySettings.key_count) + "Key.tscn").instance()
+	player_strums.name = "Player Strums"
 	
 	var arrow_move = 320
-	opponent_strums.global_position.x = arrow_move
-	player_strums.global_position.x = arrow_move + (CoolUtil.screen_res.x / 2)
+	opponent_strums.position.x = arrow_move
+	player_strums.position.x = arrow_move + (CoolUtil.screen_res.x / 2)
 	
 	if middlescroll:
-		opponent_strums.global_position.x -= 9999
-		player_strums.global_position.x = 640
+		opponent_strums.position.x -= 9999
+		player_strums.position.x = (CoolUtil.screen_res.x / 2)
 	
 	var strum_y = 100
 	if downscroll:
@@ -172,6 +177,7 @@ func _ready():
 	
 	hud.move_child(opponent_strums, 0)
 	hud.move_child(player_strums, 0)
+	hud.move_child(arrow_underlay, 0)
 		
 	bpm_changes = Conductor.map_bpm_changes(SONG)
 	
@@ -590,7 +596,7 @@ func _process(delta):
 		
 	if Input.is_action_just_pressed("reset"):
 		if Options.get_data("enable-insta-kill-button"):
-			health -= 999999999
+			add_health(-999999)
 			
 	if Input.is_action_just_pressed("debug_1"):
 		SceneHandler.switch_to("ChartEditor")
@@ -754,7 +760,7 @@ func process_inputs(delta):
 			
 			if bf_held == 0:
 				if Options.get_data("pussy-mode"):
-					health += 0.023
+					add_health(0.023)
 					
 				if bf and bf.special_anim != true:
 					bf.hold_timer = 0
@@ -793,7 +799,7 @@ func process_inputs(delta):
 						note_miss(note.note_data)
 						
 						if note.sustain_length >= 150:
-							health -= 0.2
+							add_health(-0.2)
 						
 					note.queue_free()
 					
@@ -817,13 +823,16 @@ func good_note_hit(note):
 		
 		note.queue_free()
 		
-var cur_rating = "marvelous"
-func pop_up_score(strum_time, note):
-	health += 0.023 
+func add_health(amount):
+	health += amount
 	if health <= 0:
 		health = 0
 	if health > 2:
 		health = 2
+		
+var cur_rating = "marvelous"
+func pop_up_score(strum_time, note):
+	add_health(0.023)
 		
 	var note_ms = (Conductor.song_position - strum_time) / GameplaySettings.song_multiplier
 	
@@ -893,7 +902,7 @@ func pop_up_score(strum_time, note):
 			rating_tex = rating_textures[4]
 			
 			if not Options.get_data("pussy-mode"):
-				health -= 0.1
+				add_health(-0.1)
 	
 	combo += 1
 	total_notes += 1
@@ -971,10 +980,7 @@ func calculate_accuracy():
 	health_bar.scoretext.text = "Score: " + str(song_score) + " // Misses: " + str(song_misses) + " // Accuracy: " + str(CoolUtil.round_decimal(song_accuracy * 100, 2)) + "% [" + rating1 + " - " + rating2 + "]"
 			
 func note_miss(direction = 0):
-	health -= 0.0475
-	
-	if health <= 0:
-		health = 0
+	add_health(-0.0475)
 	
 	song_misses += 1
 	AudioHandler.voices.volume_db = -999

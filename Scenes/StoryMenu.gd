@@ -57,12 +57,14 @@ func _ready():
 	spawn_weeks()
 	
 func load_diff_textures():
-	var list = CoolUtil.list_files_in_directory("res://Assets/Images/Difficulties/")
+	pass
+	"""var list = CoolUtil.list_files_in_directory("res://Assets/Images/Difficulties")
 	for item in list:
+		print(item)
 		if not item.begins_with(".") and item.ends_with(".png"):
 			diff_textures[item.split(".png")[0]] = load("res://Assets/Images/Difficulties/" + item)
 			
-	print(diff_textures.keys())
+	print(diff_textures.keys())"""
 	
 func scan_weeks():
 	var list = CoolUtil.list_files_in_directory("res://Assets/Weeks")
@@ -208,7 +210,7 @@ func change_difficulty(amount:int = 0):
 	diff_tween.start()
 		
 	var diff_str:String = difficulties[cur_difficulty]
-	diff.texture = diff_textures[diff_str]
+	diff.texture = load("res://Assets/Images/Difficulties/" + diff_str + ".png")
 	
 func change_selection(amount:int = 0):
 	cur_selected += amount

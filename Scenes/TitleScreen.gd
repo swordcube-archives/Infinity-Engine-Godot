@@ -9,11 +9,12 @@ var skipped = false
 var curWacky = ["???", "???"]
 
 func _ready():
+	yield(get_tree().create_timer(1), "timeout")
 	MobileControls.switch_to("title")
 	
 	var txt = CoolUtil.get_txt(Paths.txt("Data/IntroText"))
 	
-	curWacky = txt[int(rand_range(0, len(txt) - 1))].split("--")
+	curWacky = txt[int(rand_range(0, txt.size() - 1))].split("--")
 	
 	AudioHandler.play_music("freakyMenu")
 	
