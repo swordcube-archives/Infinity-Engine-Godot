@@ -38,13 +38,9 @@ option = "middlescroll"
 
 [node name="Botplay" parent="Pages/Preferences" instance=ExtResource( 6 )]
 visible = false
-description = "The game plays itself for you when enabled.\\nScores will not be saved with Botplay enabled."
+description = "The game plays itself for you when enabled.
+Scores will not be saved with Botplay enabled."
 option = "botplay"
-
-[node name="Keybind Reminders" parent="Pages/Preferences" instance=ExtResource( 6 )]
-visible = false
-description = "At the start of every song, You will be reminded\\nwhat your keybinds are."
-option = "keybind-reminders"
 
 [node name="Ghost Tapping" parent="Pages/Preferences" instance=ExtResource( 6 )]
 visible = false
@@ -57,29 +53,19 @@ description = "Change what sound plays when hitting a note."
 option = "hitsound"
 values = [ "None", "osu!", "Dave and Bambi", "Vine Boom", "Generic" ]
 
-[node name="Clip Style" parent="Pages/Preferences" instance=ExtResource( 7 )]
-visible = false
-description = "Choose a style for sustain note clippings.\\nStepMania: Holds under Receptors - FNF: Holds over Receptors"
-option = "sustain-clipping-style"
-values = [ "FNF", "StepMania" ]
-
-[node name="Underlay Opacity" parent="Pages/Preferences" instance=ExtResource( 8 )]
-visible = false
-description = "When set above 0, A black box will appear behind the notes.\\nHelps with focusing on the notes."
-option = "underlay-opacity"
-multiplier = 0.1
-limits = [ 0, 1 ]
-
 [node name="Scroll Speed" parent="Pages/Preferences" instance=ExtResource( 8 )]
 visible = false
-description = "Change how fast the notes go in a song.\\n(PRESS LEFT & RIGHT to change)"
+description = "Change how fast the notes go in a song.
+(PRESS LEFT & RIGHT to change)"
 option = "scroll-speed"
 multiplier = 0.1
 limits = [ 0, 10 ]
 
 [node name="Scroll Speed Type" parent="Pages/Preferences" instance=ExtResource( 7 )]
 visible = false
-description = "Change how scroll speed is used in a song.\\nMultiplicative = Adds onto the speed, Constant = Directly sets the speed.\\n(PRESS LEFT & RIGHT to change)"
+description = "Change how scroll speed is used in a song.
+Multiplicative = Adds onto the speed, Constant = Directly sets the speed.
+(PRESS LEFT & RIGHT to change)"
 option = "scroll-type"
 values = [ "Multiplicative", "Constant" ]
 
@@ -95,43 +81,48 @@ option = "pussy-mode"
 
 [node name="Enable Insta-Kill Button" parent="Pages/Preferences" instance=ExtResource( 6 )]
 visible = false
-description = "When enabled, pressing R will insta-kill you.\\nDisable if this causes annoyance."
+description = "When enabled, pressing R will insta-kill you.
+Disable if this causes annoyance."
 option = "enable-insta-kill-button"
 
 [node name="Go Back During Gameplay" parent="Pages/Preferences" instance=ExtResource( 6 )]
 visible = false
-description = "When enabled, pressing BACKSPACE/ESCAPE will exit the song\\n(without saving scores)."
+description = "When enabled, pressing BACKSPACE/ESCAPE will exit the song
+(without saving scores)."
 option = "go-back-during-gameplay"
-
-[node name="VSync" parent="Pages/Preferences" instance=ExtResource( 6 )]
-visible = false
-description = "When enabled, The game's framerate will match\\nyour monitor's refresh rate."
-option = "vsync"
 
 [node name="Sick Timing" parent="Pages/Preferences" instance=ExtResource( 8 )]
 visible = false
-description = "Change the milliseconds required to get a \"SiCK!!\"\\nNegative = Earlier, Positive = Later\\n(PRESS LEFT & RIGHT to change)"
+description = "Change the milliseconds required to get a \"SiCK!!\"
+Negative = Earlier, Positive = Later
+(PRESS LEFT & RIGHT to change)"
 option = "sick-timing"
 multiplier = 0.1
 limits = [ 0, 130 ]
 
 [node name="Good Timing" parent="Pages/Preferences" instance=ExtResource( 8 )]
 visible = false
-description = "Change the milliseconds required to get a \"Good!\"\\nNegative = Earlier, Positive = Later\\n(PRESS LEFT & RIGHT to change)"
+description = "Change the milliseconds required to get a \"Good!\"
+Negative = Earlier, Positive = Later
+(PRESS LEFT & RIGHT to change)"
 option = "good-timing"
 multiplier = 0.1
 limits = [ 0, 130 ]
 
 [node name="Bad Timing" parent="Pages/Preferences" instance=ExtResource( 8 )]
 visible = false
-description = "Change the milliseconds required to get a \"Bad\"\\nNegative = Earlier, Positive = Later\\n(PRESS LEFT & RIGHT to change)"
+description = "Change the milliseconds required to get a \"Bad\"
+Negative = Earlier, Positive = Later
+(PRESS LEFT & RIGHT to change)"
 option = "bad-timing"
 multiplier = 0.1
 limits = [ 0, 130 ]
 
 [node name="Shit Timing" parent="Pages/Preferences" instance=ExtResource( 8 )]
 visible = false
-description = "Change the milliseconds required to get a \"SHiT\"\\nNegative = Earlier, Positive = Later\\n(PRESS LEFT & RIGHT to change)"
+description = "Change the milliseconds required to get a \"SHiT\"
+Negative = Earlier, Positive = Later
+(PRESS LEFT & RIGHT to change)"
 option = "shit-timing"
 multiplier = 0.1
 limits = [ 0, 130 ]
@@ -145,8 +136,43 @@ option = "optimization"
 
 [node name="Note Splashes" parent="Pages/Appearance" instance=ExtResource( 6 )]
 visible = false
-description = "When enabled, A splash/firework like effect will appear\\nwhen you hit a note and get a \"SiCK!!\"."
+description = "When enabled, A splash/firework like effect will appear
+when you hit a note and get a \"SiCK!!\"."
 option = "note-splashes"
+
+[node name="FPS Counter" parent="Pages/Appearance" instance=ExtResource( 6 )]
+visible = false
+description = "When enabled, The FPS will show up at the top left of the screen."
+option = "fps-counter"
+
+[node name="Show Memory" parent="Pages/Appearance" instance=ExtResource( 6 )]
+visible = false
+description = "When enabled, The amount of memory being used will show up at the top left of the screen."
+option = "show-memory"
+
+[node name="Show Memory Peak" parent="Pages/Appearance" instance=ExtResource( 6 )]
+visible = false
+description = "When enabled, The max amount of memory used will show up at the top left of the screen."
+option = "show-mem-peak"
+
+[node name="Keybind Reminders" parent="Pages/Appearance" instance=ExtResource( 6 )]
+visible = false
+description = "At the start of every song, You will be reminded
+what your keybinds are."
+option = "keybind-reminders"
+
+[node name="VSync" parent="Pages/Appearance" instance=ExtResource( 6 )]
+visible = false
+description = "When enabled, The game's framerate will match
+your monitor's refresh rate."
+option = "vsync"
+
+[node name="Clip Style" parent="Pages/Appearance" instance=ExtResource( 7 )]
+visible = false
+description = "Choose a style for sustain note clippings.
+StepMania: Holds under Receptors - FNF: Holds over Receptors"
+option = "sustain-clipping-style"
+values = [ "FNF", "StepMania" ]
 
 [node name="UI Skin" parent="Pages/Appearance" instance=ExtResource( 7 )]
 visible = false
@@ -154,56 +180,83 @@ description = "Change how things like the arrows, countdown, and ratings look/so
 option = "ui-skin"
 values = [ "Default", "Circles" ]
 
+[node name="Rating Camera" parent="Pages/Appearance" instance=ExtResource( 7 )]
+visible = false
+description = "Change if the ratings & combo appear on the
+world camera or on the HUD camera."
+option = "rating-camera"
+values = [ "Game", "HUD" ]
+
+[node name="Underlay Opacity" parent="Pages/Appearance" instance=ExtResource( 8 )]
+visible = false
+description = "When set above 0, A black box will appear behind the notes.
+Helps with focusing on the notes."
+option = "underlay-opacity"
+multiplier = 0.1
+limits = [ 0, 1 ]
+
 [node name="Controls" type="Node" parent="Pages"]
 
 [node name="1k Keybind" parent="Pages/Controls" instance=ExtResource( 9 )]
 visible = false
-description = "Change the bind used for 1 key.\\n(Press ACCEPT (ENTER/SPACE) to change)"
+description = "Change the bind used for 1 key.
+(Press ACCEPT (ENTER/SPACE) to change)"
 
 [node name="2k Keybinds" parent="Pages/Controls" instance=ExtResource( 9 )]
 visible = false
-description = "Change the bind used for 2 key.\\n(Press ACCEPT (ENTER/SPACE) to change)"
+description = "Change the bind used for 2 key.
+(Press ACCEPT (ENTER/SPACE) to change)"
 
 [node name="3k Keybinds" parent="Pages/Controls" instance=ExtResource( 9 )]
 visible = false
-description = "Change the bind used for 3 key.\\n(Press ACCEPT (ENTER/SPACE) to change)"
+description = "Change the bind used for 3 key.
+(Press ACCEPT (ENTER/SPACE) to change)"
 
 [node name="4k Keybinds" parent="Pages/Controls" instance=ExtResource( 9 )]
 visible = false
-description = "Change the bind used for 4 key.\\n(Press ACCEPT (ENTER/SPACE) to change)"
+description = "Change the bind used for 4 key.
+(Press ACCEPT (ENTER/SPACE) to change)"
 
 [node name="5k Keybinds" parent="Pages/Controls" instance=ExtResource( 9 )]
 visible = false
-description = "Change the bind used for 5 key.\\n(Press ACCEPT (ENTER/SPACE) to change)"
+description = "Change the bind used for 5 key.
+(Press ACCEPT (ENTER/SPACE) to change)"
 
 [node name="6k Keybinds" parent="Pages/Controls" instance=ExtResource( 9 )]
 visible = false
-description = "Change the bind used for 6 key.\\n(Press ACCEPT (ENTER/SPACE) to change)"
+description = "Change the bind used for 6 key.
+(Press ACCEPT (ENTER/SPACE) to change)"
 
 [node name="7k Keybinds" parent="Pages/Controls" instance=ExtResource( 9 )]
 visible = false
-description = "Change the bind used for 7 key.\\n(Press ACCEPT (ENTER/SPACE) to change)"
+description = "Change the bind used for 7 key.
+(Press ACCEPT (ENTER/SPACE) to change)"
 
 [node name="8k Keybinds" parent="Pages/Controls" instance=ExtResource( 9 )]
 visible = false
-description = "Change the bind used for 8 key.\\n(Press ACCEPT (ENTER/SPACE) to change)"
+description = "Change the bind used for 8 key.
+(Press ACCEPT (ENTER/SPACE) to change)"
 
 [node name="9k Keybinds" parent="Pages/Controls" instance=ExtResource( 9 )]
 visible = false
-description = "Change the bind used for 9 key.\\n(Press ACCEPT (ENTER/SPACE) to change)"
+description = "Change the bind used for 9 key.
+(Press ACCEPT (ENTER/SPACE) to change)"
 
 [node name="Adjust Offsets" type="Node" parent="Pages"]
 
 [node name="Note Offset" parent="Pages/Adjust Offsets" instance=ExtResource( 8 )]
 visible = false
-description = "Change how early or late notes spawn.\\nNegative = Earlier, Positive = Later\\n(PRESS LEFT & RIGHT to change)"
+description = "Change how early or late notes spawn.
+Negative = Earlier, Positive = Later
+(PRESS LEFT & RIGHT to change)"
 option = "note-offset"
 multiplier = 0.1
 limits = [ -1000, 1000 ]
 
 [node name="Rating & Combo Offset" parent="Pages/Adjust Offsets" instance=ExtResource( 9 )]
 visible = false
-description = "Change the positions of the Ratings & Combos.\\n(Press ACCEPT (ENTER/SPACE) to change)"
+description = "Change the positions of the Ratings & Combos.
+(Press ACCEPT (ENTER/SPACE) to change)"
 menu_to_load = "RatingOffsetMenu"
 menu_category = "Options"
 
@@ -211,7 +264,8 @@ menu_category = "Options"
 
 [node name="Tools Menu" parent="Pages/Misc" instance=ExtResource( 9 )]
 visible = false
-description = "Access a menu with useful tools like the\\nChart Editor, XML Converter, etc."
+description = "Access a menu with useful tools like the
+Chart Editor, XML Converter, etc."
 menu_to_load = "ToolsMenu"
 
 [node name="Options" type="Node2D" parent="."]
@@ -261,6 +315,7 @@ margin_bottom = 36.0
 custom_fonts/font = SubResource( 1 )
 text = "Option Description"
 align = 1
+autowrap = true
 
 [node name="LeftArrow" type="Label" parent="."]
 margin_left = 189.0

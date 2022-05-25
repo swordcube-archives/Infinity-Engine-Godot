@@ -24,6 +24,8 @@ var is_alt:bool = false
 var character:String = ""
 var charter_note:bool = false
 
+var downscroll:bool = false
+
 var being_pressed:bool = false
 
 # used for opponent notes :D
@@ -39,8 +41,8 @@ func _ready():
 	
 	match Options.get_data("sustain-clipping-style"):
 		"StepMania":
-			line2d.z_index = -999
-			end.z_index = -998
+			line2d.z_index = -1
+			end.z_index = -1
 			
 	spr.frames = GameplaySettings.ui_skin.note_tex
 	play_anim("")
@@ -50,7 +52,7 @@ func _process(delta):
 	var fixed_y_pos = max(((sustain_length / 1.5) * GameplaySettings.scroll_speed) / (scale.y + 0.3), 0)
 	
 	if not charter_note:
-		if PlayState.downscroll:
+		if downscroll:
 			line2d.points[1].y = 0 - fixed_y_pos
 			end.flip_v = true
 			if sustain_length <= 0:

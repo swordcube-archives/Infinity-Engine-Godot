@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scripts/Event.gd" type="Script" id=1]
+
+[node name="Add Camera Zoom" type="Node2D"]
+script = ExtResource( 1 )
+description = "Plays the \"Hey!\" animation from Bopeebo,
+Value 1: BF = Only Boyfriend, GF = Only Girlfriend,
+Something else = Both."
+parameters = [ "World Zoom", "HUD Zoom" ]

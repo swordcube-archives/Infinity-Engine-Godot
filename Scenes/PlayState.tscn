@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Scenes/PlayState.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/PlayState/HealthBar.tscn" type="PackedScene" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://Assets/Fonts/vcr.ttf" type="DynamicFontData" id=5]
 [ext_resource path="res://Scenes/PlayState/NoteSplash.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Scenes/PlayState/PauseMenu.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Assets/Images/menuDesat.png" type="Texture" id=8]
 
 [sub_resource type="DynamicFont" id=1]
 outline_size = 2
@@ -25,11 +26,12 @@ layer = 100
 
 [node name="HUD" type="CanvasModulate" parent="CanvasLayer"]
 
-[node name="ArrowUnderlay" type="ColorRect" parent="CanvasLayer/HUD"]
-margin_left = 400.0
-margin_right = 880.0
-margin_bottom = 720.0
-color = Color( 0, 0, 0, 1 )
+[node name="ArrowUnderlay" type="Sprite" parent="CanvasLayer/HUD"]
+modulate = Color( 0, 0, 0, 1 )
+position = Vector2( 640, 360 )
+scale = Vector2( 0.36, 1 )
+z_index = -1
+texture = ExtResource( 8 )
 
 [node name="Notes" type="Node2D" parent="CanvasLayer/HUD"]
 

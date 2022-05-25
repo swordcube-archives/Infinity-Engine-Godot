@@ -172,6 +172,14 @@ func _ready():
 	opponent_strums.global_position.y = strum_y
 	player_strums.global_position.y = strum_y
 	
+	var underlay_opacity:float = Options.get_data("underlay-opacity")
+	
+	if underlay_opacity <= 0:
+		hud.remove_child(arrow_underlay)
+		arrow_underlay.queue_free()
+	else:
+		arrow_underlay.modulate.a = underlay_opacity
+	
 	hud.add_child(opponent_strums)
 	hud.add_child(player_strums)
 	
@@ -242,6 +250,11 @@ func _ready():
 	
 	camera.zoom = Vector2(goodZoom, goodZoom)
 	default_cam_zoom = goodZoom
+	
+	if Options.get_data("optimization"):
+		default_cam_zoom = 1
+		camera.zoom = Vector2.ONE
+		camera.position = Vector2(640, 360)
 	
 	# loading modcharts
 	
@@ -399,6 +412,8 @@ func _physics_process(delta):
 			if int(note[4]) != null:
 				if "character" in new_note:
 					new_note.character = note[4]
+					
+			new_note.downscroll = downscroll
 					
 			notes.add_child(new_note)
 					
@@ -625,7 +640,7 @@ func _process(delta):
 			note.global_position.x = player_strums.get_child(note.note_data).global_position.x
 			note.global_position.y = player_strums.get_child(note.note_data).global_position.y
 			
-			if downscroll:
+			if note.downscroll:
 				note.global_position.y += (0.45 * (Conductor.song_position - note.strum_time)) * GameplaySettings.scroll_speed
 			else:
 				note.global_position.y -= (0.45 * (Conductor.song_position - note.strum_time)) * GameplaySettings.scroll_speed
@@ -634,7 +649,7 @@ func _process(delta):
 			note.global_position.x = opponent_strums.get_child(note.note_data).global_position.x
 			note.global_position.y = opponent_strums.get_child(note.note_data).global_position.y
 			
-			if downscroll:
+			if note.downscroll:
 				note.global_position.y += (0.45 * (Conductor.song_position - note.strum_time)) * GameplaySettings.scroll_speed
 			else:
 				note.global_position.y -= (0.45 * (Conductor.song_position - note.strum_time)) * GameplaySettings.scroll_speed
@@ -913,7 +928,15 @@ func pop_up_score(strum_time, note):
 		var a = Options.get_data("rating-offset")
 		
 		new_rating.global_position = Vector2(654, 237) + Vector2(a[0], a[1])
-		ratings.add_child(new_rating)
+		match Options.get_data("rating-camera"):
+			"Game":
+				add_child(new_rating)
+				new_rating.PlayState = self
+			"HUD":
+				ratings.add_child(new_rating)
+				
+		new_rating.do_shit()
+				
 		new_rating.spr.visible = show_rating
 		new_rating.combined_combo.visible = show_combo
 	

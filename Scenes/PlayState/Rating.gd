@@ -14,7 +14,7 @@ var yvel:float = 5.0
 var kill_spr:bool = false
 var kill_combo:bool = false
 
-func _ready():
+func do_shit():
 	var a = Options.get_data("combo-offset")
 	combined_combo.position += Vector2(a[0], a[1])
 	

@@ -57,7 +57,8 @@ func _physics_process(delta):
 	if move_shit:
 		description.rect_size.y = 0
 		var desc:String = visible_options.get_child(selected_option).description
-		description.text = desc.replace('\\n', "\n")
+		description.text = desc
+		description.rect_size.x = 1263
 		
 		desc_box.rect_size.y = description.rect_size.y + 22
 		desc_box.rect_position.y = 585 - (desc_box.rect_size.y - 46)
@@ -123,10 +124,10 @@ func _process(delta):
 									keybind_menu.keycount = int(option.title.text.split("k Keybinds")[0])
 									keybind_menu.visible = true
 									keybind_menu.show()
-									
-								if not Transition.transitioning:
-									print("SWITCHING MENUS...")
-									SceneHandler.switch_to(option.menu_to_load, option.menu_category)
+								else:
+									if not Transition.transitioning:
+										print("SWITCHING MENUS...")
+										SceneHandler.switch_to(option.menu_to_load, option.menu_category)
 			
 	if not keybind_menu.visible and Input.is_action_just_pressed("ui_focus_next"):
 		selecting_a_menu = not selecting_a_menu

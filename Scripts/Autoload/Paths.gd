@@ -33,6 +33,9 @@ func txt(file):
 func week_json(week_name):
 	return "res://Assets/Weeks/" + week_name + ".json"
 	
+func event(event):
+	return "res://Scenes/Events/" + event + ".tscn"
+	
 func char_icon(a):
 	return "res://Assets/Images/Icons/" + a + ".png"
 
