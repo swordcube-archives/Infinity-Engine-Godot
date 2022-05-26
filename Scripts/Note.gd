@@ -44,7 +44,9 @@ func _ready():
 			line2d.z_index = -1
 			end.z_index = -1
 			
-	spr.frames = GameplaySettings.ui_skin.note_tex
+	if !spr.frames:
+		spr.frames = GameplaySettings.ui_skin.note_tex
+		
 	play_anim("")
 	
 func _process(delta):
@@ -74,12 +76,12 @@ func _process(delta):
 
 func play_anim(anim):
 	# check if the note is animated lol
-	if $spr is AnimatedSprite:
+	if spr is AnimatedSprite:
 		match anim:
 			"":
-				$spr.play(direction)
+				spr.play(direction)
 			_:
-				$spr.play(anim)
+				spr.play(anim)
 			
 func load_sus_texture():
 	if GameplaySettings.ui_skin.sustain_tex:

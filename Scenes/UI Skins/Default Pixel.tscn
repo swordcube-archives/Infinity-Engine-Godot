@@ -2,5 +2,5 @@
 
 [ext_resource path="res://Scripts/Skin.gd" type="Script" id=1]
 
-[node name="Default" type="Node"]
+[node name="Default Pixel" type="Node"]
 script = ExtResource( 1 )

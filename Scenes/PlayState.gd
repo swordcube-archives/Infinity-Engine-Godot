@@ -19,6 +19,7 @@ onready var timebar = $CanvasLayer/HUD/TimeBar
 onready var timebar_progress = $CanvasLayer/HUD/TimeBar/Color1
 onready var timebar_text = $CanvasLayer/HUD/TimeBar/Label
 
+onready var opponent_underlay = $CanvasLayer/HUD/OpponentUnderlay
 onready var arrow_underlay = $CanvasLayer/HUD/ArrowUnderlay
 
 onready var pussy_mode_warning = $CanvasLayer/HUD/PussyModeWarning
@@ -162,6 +163,17 @@ func _ready():
 	if middlescroll:
 		opponent_strums.position.x -= 9999
 		player_strums.position.x = (CoolUtil.screen_res.x / 2)
+	else:
+		var underlay_opacity:float = Options.get_data("underlay-opacity")
+		
+		if underlay_opacity <= 0:
+			hud.remove_child(opponent_underlay)
+			opponent_underlay.queue_free()
+		else:
+			opponent_underlay.visible = true
+			opponent_underlay.modulate.a = underlay_opacity
+			opponent_underlay.position.x = opponent_strums.position.x
+			arrow_underlay.position.x = player_strums.position.x
 	
 	var strum_y = 100
 	if downscroll:

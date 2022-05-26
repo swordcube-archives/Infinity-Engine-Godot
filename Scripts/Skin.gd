@@ -28,3 +28,4 @@ export(String) var combo_num_path = "res://Assets/Images/UI Skins/Default/num"
 
 export(float) var strum_scale = 1.0
 export(float) var note_scale = 1.0
+export(float) var rating_scale = 1.0

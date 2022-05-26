@@ -33,6 +33,14 @@ scale = Vector2( 0.36, 1 )
 z_index = -1
 texture = ExtResource( 8 )
 
+[node name="OpponentUnderlay" type="Sprite" parent="CanvasLayer/HUD"]
+visible = false
+modulate = Color( 0, 0, 0, 1 )
+position = Vector2( 640, 360 )
+scale = Vector2( 0.36, 1 )
+z_index = -1
+texture = ExtResource( 8 )
+
 [node name="Notes" type="Node2D" parent="CanvasLayer/HUD"]
 
 [node name="Ratings" type="Node2D" parent="CanvasLayer/HUD"]

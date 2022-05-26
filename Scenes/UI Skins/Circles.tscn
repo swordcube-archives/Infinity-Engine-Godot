@@ -4,7 +4,7 @@
 [ext_resource path="res://Assets/Images/UI Skins/Circles/notes.res" type="SpriteFrames" id=2]
 [ext_resource path="res://Assets/Images/UI Skins/Circles/strums.res" type="SpriteFrames" id=3]
 
-[node name="Skin" type="Node"]
+[node name="Circles" type="Node"]
 script = ExtResource( 1 )
 strum_tex = ExtResource( 3 )
 note_tex = ExtResource( 2 )
