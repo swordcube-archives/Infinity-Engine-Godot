@@ -9,8 +9,8 @@ script = ExtResource( 2 )
 
 [node name="CharterSustain" type="ColorRect" parent="."]
 visible = false
-margin_left = -10.0
-margin_right = 10.0
+margin_left = -15.0
+margin_right = 15.0
 margin_bottom = 39.0
 
 [node name="Line2D" type="Line2D" parent="."]
@@ -35,5 +35,4 @@ position = Vector2( 32, 45 )
 texture = ExtResource( 4 )
 
 [node name="spr" type="AnimatedSprite" parent="."]
-animation = "A"
 playing = true

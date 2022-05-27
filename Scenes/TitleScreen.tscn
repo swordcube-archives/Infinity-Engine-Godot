@@ -140,7 +140,7 @@ animation = "danceLeft"
 position = Vector2( 840, 636 )
 frames = ExtResource( 4 )
 animation = "Press Enter to Begin"
-frame = 20
+frame = 39
 playing = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="EnterText"]
