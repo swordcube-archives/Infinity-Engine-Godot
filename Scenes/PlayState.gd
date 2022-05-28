@@ -132,6 +132,12 @@ func refresh_combo_textures():
 func _ready():	
 	pussy_mode_warning.visible = Options.get_data("pussy-mode")
 	
+	var key_count:int = 4
+	if "keyCount" in SONG:
+		key_count = SONG["keyCount"]
+		
+	GameplaySettings.key_count = key_count
+	
 	AudioHandler.inst.stop()
 	AudioHandler.voices.stop()
 	
@@ -173,6 +179,7 @@ func _ready():
 			opponent_underlay.visible = true
 			opponent_underlay.modulate.a = underlay_opacity
 			opponent_underlay.position.x = opponent_strums.position.x
+			opponent_underlay.scale.x /= opponent_strums.scale.x * 3.7
 			arrow_underlay.position.x = player_strums.position.x
 	
 	var strum_y = 100
@@ -190,6 +197,7 @@ func _ready():
 		hud.remove_child(arrow_underlay)
 		arrow_underlay.queue_free()
 	else:
+		arrow_underlay.scale.x /= player_strums.scale.x * 3.7
 		arrow_underlay.modulate.a = underlay_opacity
 	
 	hud.add_child(opponent_strums)

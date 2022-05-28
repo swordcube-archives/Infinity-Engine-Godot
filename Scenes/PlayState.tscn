@@ -29,7 +29,6 @@ layer = 100
 [node name="ArrowUnderlay" type="Sprite" parent="CanvasLayer/HUD"]
 modulate = Color( 0, 0, 0, 1 )
 position = Vector2( 640, 360 )
-scale = Vector2( 0.36, 1 )
 z_index = -1
 texture = ExtResource( 8 )
 
@@ -37,7 +36,6 @@ texture = ExtResource( 8 )
 visible = false
 modulate = Color( 0, 0, 0, 1 )
 position = Vector2( 640, 360 )
-scale = Vector2( 0.36, 1 )
 z_index = -1
 texture = ExtResource( 8 )
 

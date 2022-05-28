@@ -26,7 +26,7 @@ var death_shit:Dictionary = {
 	"cam_pos": Vector2.ZERO,
 }
 
-var SONG = CoolUtil.get_json(Paths.song_json("Fresh", "hard"))
+var SONG = CoolUtil.get_json(Paths.song_json("Test", "normal"))
 
 var note_types = {}
 

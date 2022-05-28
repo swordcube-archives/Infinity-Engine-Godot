@@ -1,10 +1,575 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Scenes/ChartEditor/Grid.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/ChartEditor.gd" type="Script" id=2]
+[ext_resource path="res://Assets/Images/Icons/dad.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Images/Icons/bf.png" type="Texture" id=4]
+[ext_resource path="res://Scripts/LineEdit.gd" type="Script" id=5]
+[ext_resource path="res://Assets/Sounds/Hitsounds/osu!.ogg" type="AudioStream" id=6]
+[ext_resource path="res://Scenes/NumericStepper.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Assets/Fonts/vcr.ttf" type="DynamicFontData" id=8]
+[ext_resource path="res://Scripts/HealthIcon.gd" type="Script" id=9]
+[ext_resource path="res://Scripts/HSlider.gd" type="Script" id=10]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.0745098, 0.0784314, 0.0901961, 1 )
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="DynamicFont" id=2]
+size = 32
+font_data = ExtResource( 8 )
+
+[sub_resource type="DynamicFont" id=3]
+font_data = ExtResource( 8 )
 
 [node name="ChartEditor" type="Node2D"]
 script = ExtResource( 2 )
 
 [node name="Grid" parent="." instance=ExtResource( 1 )]
 position = Vector2( 470, 64 )
+
+[node name="iconP2" type="Sprite" parent="Grid"]
+position = Vector2( 62, -31 )
+scale = Vector2( 0.4, 0.4 )
+texture = ExtResource( 3 )
+hframes = 3
+script = ExtResource( 9 )
+
+[node name="iconP1" type="Sprite" parent="Grid"]
+position = Vector2( 222, -31 )
+scale = Vector2( 0.4, 0.4 )
+texture = ExtResource( 4 )
+hframes = 3
+script = ExtResource( 9 )
+
+[node name="Notes" type="Node2D" parent="."]
+position = Vector2( 470, 104 )
+
+[node name="square" type="ColorRect" parent="Notes"]
+margin_top = -40.0
+margin_right = 40.0
+
+[node name="TabContainer" type="TabContainer" parent="."]
+margin_left = 857.0
+margin_top = 20.0
+margin_right = 1264.0
+margin_bottom = 702.0
+
+[node name="Song" type="Tabs" parent="TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="SongName" type="Label" parent="TabContainer/Song"]
+margin_left = 5.0
+margin_top = 4.0
+margin_right = 45.0
+margin_bottom = 18.0
+text = "Song"
+
+[node name="LineEdit" type="LineEdit" parent="TabContainer/Song/SongName"]
+margin_top = 20.0
+margin_right = 159.0
+margin_bottom = 44.0
+focus_mode = 1
+text = "Bopeebo"
+script = ExtResource( 5 )
+
+[node name="Opponent" type="Label" parent="TabContainer/Song"]
+margin_left = 5.0
+margin_top = 116.0
+margin_right = 45.0
+margin_bottom = 130.0
+text = "Opponent"
+
+[node name="OptionButton" type="OptionButton" parent="TabContainer/Song/Opponent"]
+margin_top = 20.0
+margin_right = 190.0
+margin_bottom = 44.0
+focus_mode = 0
+enabled_focus_mode = 0
+text = "dad"
+
+[node name="Player" type="Label" parent="TabContainer/Song"]
+margin_left = 202.0
+margin_top = 116.0
+margin_right = 266.0
+margin_bottom = 130.0
+text = "Player"
+
+[node name="OptionButton" type="OptionButton" parent="TabContainer/Song/Player"]
+margin_top = 20.0
+margin_right = 190.0
+margin_bottom = 44.0
+focus_mode = 0
+enabled_focus_mode = 0
+text = "bf"
+
+[node name="GF" type="Label" parent="TabContainer/Song"]
+margin_left = 5.0
+margin_top = 172.0
+margin_right = 69.0
+margin_bottom = 186.0
+text = "GF/Speakers"
+
+[node name="OptionButton" type="OptionButton" parent="TabContainer/Song/GF"]
+margin_top = 20.0
+margin_right = 190.0
+margin_bottom = 44.0
+focus_mode = 0
+enabled_focus_mode = 0
+text = "gf"
+
+[node name="Stage" type="Label" parent="TabContainer/Song"]
+margin_left = 202.0
+margin_top = 172.0
+margin_right = 281.0
+margin_bottom = 186.0
+text = "Stage"
+
+[node name="OptionButton" type="OptionButton" parent="TabContainer/Song/Stage"]
+margin_top = 20.0
+margin_right = 190.0
+margin_bottom = 44.0
+focus_mode = 0
+enabled_focus_mode = 0
+text = "stage"
+
+[node name="Difficulty" type="Label" parent="TabContainer/Song"]
+margin_left = 173.0
+margin_top = 4.0
+margin_right = 213.0
+margin_bottom = 18.0
+text = "Difficulty"
+
+[node name="LineEdit" type="LineEdit" parent="TabContainer/Song/Difficulty"]
+margin_top = 20.0
+margin_right = 58.0
+margin_bottom = 44.0
+focus_mode = 1
+text = "normal"
+script = ExtResource( 5 )
+
+[node name="KeyCount" type="Label" parent="TabContainer/Song"]
+margin_left = 5.0
+margin_top = 60.0
+margin_right = 62.0
+margin_bottom = 74.0
+text = "Key Count"
+
+[node name="LineEdit" type="LineEdit" parent="TabContainer/Song/KeyCount"]
+margin_top = 20.0
+margin_right = 58.0
+margin_bottom = 44.0
+focus_mode = 1
+text = "4"
+script = ExtResource( 5 )
+
+[node name="BPM" type="Label" parent="TabContainer/Song"]
+margin_left = 85.0
+margin_top = 60.0
+margin_right = 149.0
+margin_bottom = 74.0
+text = "BPM"
+
+[node name="LineEdit" type="LineEdit" parent="TabContainer/Song/BPM"]
+margin_top = 20.0
+margin_right = 58.0
+margin_bottom = 44.0
+focus_mode = 1
+text = "100"
+script = ExtResource( 5 )
+
+[node name="ReloadAudio" type="Button" parent="TabContainer/Song"]
+margin_left = 290.0
+margin_top = 4.0
+margin_right = 392.0
+margin_bottom = 24.0
+focus_mode = 0
+enabled_focus_mode = 0
+text = "Reload Audio"
+
+[node name="ReloadJSON" type="Button" parent="TabContainer/Song"]
+margin_left = 290.0
+margin_top = 28.0
+margin_right = 392.0
+margin_bottom = 48.0
+focus_mode = 0
+enabled_focus_mode = 0
+text = "Reload JSON"
+
+[node name="ClearAllNotes" type="Button" parent="TabContainer/Song"]
+modulate = Color( 1, 0, 0, 1 )
+margin_left = 290.0
+margin_top = 596.0
+margin_right = 392.0
+margin_bottom = 616.0
+focus_mode = 0
+enabled_focus_mode = 0
+text = "Clear Notes"
+
+[node name="ClearAllEvents" type="Button" parent="TabContainer/Song"]
+modulate = Color( 1, 0, 0, 1 )
+margin_left = 290.0
+margin_top = 620.0
+margin_right = 392.0
+margin_bottom = 640.0
+focus_mode = 0
+enabled_focus_mode = 0
+text = "Clear Events"
+
+[node name="Charting" type="Tabs" parent="TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="Hitsounds" type="CheckBox" parent="TabContainer/Charting"]
+margin_right = 24.0
+margin_bottom = 24.0
+focus_mode = 0
+enabled_focus_mode = 0
+text = "Toggle Hitsounds"
+
+[node name="Label" type="Label" parent="TabContainer/Charting"]
+margin_left = 5.0
+margin_top = 32.0
+margin_right = 45.0
+margin_bottom = 46.0
+text = "Hitsound Volume"
+
+[node name="HSlider" type="HSlider" parent="TabContainer/Charting/Label"]
+margin_top = 16.0
+margin_right = 109.0
+margin_bottom = 32.0
+min_value = -50.0
+max_value = 0.0
+script = ExtResource( 10 )
+
+[node name="Section" type="Tabs" parent="TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="CopyLastSection" type="Button" parent="TabContainer/Section"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 17.0
+margin_bottom = 25.0
+focus_mode = 0
+enabled_focus_mode = 0
+text = "Copy Last Section"
+
+[node name="CopySection" type="Button" parent="TabContainer/Section"]
+margin_left = 5.0
+margin_top = 37.0
+margin_right = 129.0
+margin_bottom = 57.0
+focus_mode = 0
+enabled_focus_mode = 0
+text = "Copy Section"
+
+[node name="ClearCurrent" type="Button" parent="TabContainer/Section"]
+margin_left = 5.0
+margin_top = 69.0
+margin_right = 129.0
+margin_bottom = 89.0
+focus_mode = 0
+enabled_focus_mode = 0
+text = "Clear Current"
+
+[node name="SwapSection" type="Button" parent="TabContainer/Section"]
+margin_left = 5.0
+margin_top = 101.0
+margin_right = 129.0
+margin_bottom = 121.0
+focus_mode = 0
+enabled_focus_mode = 0
+text = "Swap Current"
+
+[node name="NumericStepper" parent="TabContainer/Section" instance=ExtResource( 7 )]
+position = Vector2( 136, 3 )
+minimum = -9999.0
+maximum = 9999.0
+multiplier = 1.0
+value = 1.0
+
+[node name="NumericStepper2" parent="TabContainer/Section" instance=ExtResource( 7 )]
+position = Vector2( 136, 35 )
+minimum = -9999.0
+maximum = 9999.0
+multiplier = 1.0
+
+[node name="MustHitSection" type="CheckBox" parent="TabContainer/Section"]
+margin_left = 133.0
+margin_top = 66.0
+margin_right = 157.0
+margin_bottom = 90.0
+focus_mode = 0
+text = "Must Hit Section"
+
+[node name="Notes" type="Tabs" parent="TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="Events" type="Tabs" parent="TabContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="Label" type="Label" parent="TabContainer/Events"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 45.0
+margin_bottom = 19.0
+text = "Event"
+
+[node name="OptionButton" type="OptionButton" parent="TabContainer/Events/Label"]
+margin_top = 20.0
+margin_right = 267.0
+margin_bottom = 40.0
+focus_mode = 0
+
+[node name="Button" type="Button" parent="TabContainer/Events/Label"]
+margin_left = 274.0
+margin_top = 20.0
+margin_right = 387.0
+margin_bottom = 40.0
+text = "See Description"
+
+[node name="Parameters" type="Label" parent="TabContainer/Events"]
+margin_left = 5.0
+margin_top = 61.0
+margin_right = 78.0
+margin_bottom = 75.0
+text = "Parameters"
+
+[node name="HSeparator" type="HSeparator" parent="TabContainer/Events/Parameters"]
+margin_top = 24.0
+margin_right = 387.0
+margin_bottom = 29.0
+
+[node name="Them" type="Node2D" parent="TabContainer/Events/Parameters"]
+position = Vector2( 0, 40 )
+
+[node name="hitsound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+
+[node name="Warnings" type="CanvasLayer" parent="."]
+
+[node name="ClearCurrentSection" type="Panel" parent="Warnings"]
+visible = false
+margin_left = 361.0
+margin_top = 210.0
+margin_right = 919.0
+margin_bottom = 510.0
+custom_styles/panel = SubResource( 1 )
+
+[node name="Label" type="Label" parent="Warnings/ClearCurrentSection"]
+margin_top = 80.0
+margin_right = 558.0
+margin_bottom = 113.0
+custom_fonts/font = SubResource( 2 )
+text = "Are you sure?"
+align = 1
+
+[node name="Label2" type="Label" parent="Warnings/ClearCurrentSection"]
+margin_left = 20.0
+margin_top = 120.0
+margin_right = 541.0
+margin_bottom = 181.0
+custom_fonts/font = SubResource( 3 )
+text = "The currently selected section will be deleted. This cannot be undone."
+align = 1
+autowrap = true
+
+[node name="YesDeleteSection" type="Button" parent="Warnings/ClearCurrentSection"]
+margin_left = 116.0
+margin_top = 208.0
+margin_right = 267.0
+margin_bottom = 228.0
+focus_mode = 0
+enabled_focus_mode = 0
+text = "Yes"
+
+[node name="NoDeleteSection" type="Button" parent="Warnings/ClearCurrentSection"]
+margin_left = 284.0
+margin_top = 208.0
+margin_right = 435.0
+margin_bottom = 228.0
+focus_mode = 0
+enabled_focus_mode = 0
+text = "No"
+
+[node name="ClearAllNotes" type="Panel" parent="Warnings"]
+visible = false
+margin_left = 361.0
+margin_top = 210.0
+margin_right = 919.0
+margin_bottom = 510.0
+custom_styles/panel = SubResource( 1 )
+
+[node name="Label" type="Label" parent="Warnings/ClearAllNotes"]
+margin_top = 80.0
+margin_right = 558.0
+margin_bottom = 113.0
+custom_fonts/font = SubResource( 2 )
+text = "Are you sure?"
+align = 1
+
+[node name="Label2" type="Label" parent="Warnings/ClearAllNotes"]
+margin_left = 20.0
+margin_top = 120.0
+margin_right = 541.0
+margin_bottom = 181.0
+custom_fonts/font = SubResource( 3 )
+text = "All of the notes in the song will be deleted. This cannot be undone."
+align = 1
+autowrap = true
+
+[node name="YesDeleteNotes" type="Button" parent="Warnings/ClearAllNotes"]
+margin_left = 116.0
+margin_top = 208.0
+margin_right = 267.0
+margin_bottom = 228.0
+focus_mode = 0
+enabled_focus_mode = 0
+text = "Yes"
+
+[node name="NoDeleteNotes" type="Button" parent="Warnings/ClearAllNotes"]
+margin_left = 284.0
+margin_top = 208.0
+margin_right = 435.0
+margin_bottom = 228.0
+focus_mode = 0
+enabled_focus_mode = 0
+text = "No"
+
+[node name="ClearAllEvents" type="Panel" parent="Warnings"]
+visible = false
+margin_left = 361.0
+margin_top = 210.0
+margin_right = 919.0
+margin_bottom = 510.0
+custom_styles/panel = SubResource( 1 )
+
+[node name="Label" type="Label" parent="Warnings/ClearAllEvents"]
+margin_top = 80.0
+margin_right = 558.0
+margin_bottom = 113.0
+custom_fonts/font = SubResource( 2 )
+text = "Are you sure?"
+align = 1
+
+[node name="Label2" type="Label" parent="Warnings/ClearAllEvents"]
+margin_left = 20.0
+margin_top = 120.0
+margin_right = 541.0
+margin_bottom = 181.0
+custom_fonts/font = SubResource( 3 )
+text = "All of the events in the song will be deleted. This cannot be undone."
+align = 1
+autowrap = true
+
+[node name="YesDeleteEvents" type="Button" parent="Warnings/ClearAllEvents"]
+margin_left = 116.0
+margin_top = 208.0
+margin_right = 267.0
+margin_bottom = 228.0
+focus_mode = 0
+enabled_focus_mode = 0
+text = "Yes"
+
+[node name="NoDeleteEvents" type="Button" parent="Warnings/ClearAllEvents"]
+margin_left = 284.0
+margin_top = 208.0
+margin_right = 435.0
+margin_bottom = 228.0
+focus_mode = 0
+enabled_focus_mode = 0
+text = "No"
+
+[node name="EventDescription" type="Panel" parent="Warnings"]
+visible = false
+margin_left = 361.0
+margin_top = 210.0
+margin_right = 919.0
+margin_bottom = 510.0
+custom_styles/panel = SubResource( 1 )
+
+[node name="Label" type="Label" parent="Warnings/EventDescription"]
+margin_left = 20.0
+margin_top = 80.0
+margin_right = 541.0
+margin_bottom = 113.0
+custom_fonts/font = SubResource( 2 )
+text = "Event Name"
+
+[node name="Label2" type="Label" parent="Warnings/EventDescription"]
+margin_left = 20.0
+margin_top = 120.0
+margin_right = 541.0
+margin_bottom = 181.0
+custom_fonts/font = SubResource( 3 )
+text = "Event Description"
+autowrap = true
+
+[node name="Exit" type="Button" parent="Warnings/EventDescription"]
+margin_left = 196.0
+margin_top = 208.0
+margin_right = 347.0
+margin_bottom = 228.0
+focus_mode = 0
+enabled_focus_mode = 0
+text = "Exit"
+
+[connection signal="focus_entered" from="TabContainer/Song/SongName/LineEdit" to="." method="_on_LineEdit_focus_entered"]
+[connection signal="focus_exited" from="TabContainer/Song/SongName/LineEdit" to="." method="_on_LineEdit_focus_exited"]
+[connection signal="focus_entered" from="TabContainer/Song/Difficulty/LineEdit" to="." method="_on_LineEdit_focus_entered"]
+[connection signal="focus_exited" from="TabContainer/Song/Difficulty/LineEdit" to="." method="_on_LineEdit_focus_exited"]
+[connection signal="focus_entered" from="TabContainer/Song/KeyCount/LineEdit" to="." method="_on_LineEdit_focus_entered"]
+[connection signal="focus_exited" from="TabContainer/Song/KeyCount/LineEdit" to="." method="_on_LineEdit_focus_exited"]
+[connection signal="text_changed" from="TabContainer/Song/KeyCount/LineEdit" to="." method="_on_LineEdit_text_changed"]
+[connection signal="focus_entered" from="TabContainer/Song/BPM/LineEdit" to="." method="_on_LineEdit_focus_entered"]
+[connection signal="focus_exited" from="TabContainer/Song/BPM/LineEdit" to="." method="_on_LineEdit_focus_exited"]
+[connection signal="text_changed" from="TabContainer/Song/BPM/LineEdit" to="." method="_on_BPM_changed"]
+[connection signal="pressed" from="TabContainer/Song/ReloadAudio" to="." method="_on_ReloadAudio_pressed"]
+[connection signal="pressed" from="TabContainer/Song/ReloadJSON" to="." method="_on_ReloadJSON_pressed"]
+[connection signal="pressed" from="TabContainer/Song/ClearAllNotes" to="." method="_on_ClearAllNotes_pressed"]
+[connection signal="pressed" from="TabContainer/Song/ClearAllEvents" to="." method="_on_ClearAllEvents_pressed"]
+[connection signal="pressed" from="TabContainer/Section/CopyLastSection" to="." method="_on_CopyLastSection_pressed"]
+[connection signal="pressed" from="TabContainer/Section/CopySection" to="." method="_on_CopySection_pressed"]
+[connection signal="pressed" from="TabContainer/Section/ClearCurrent" to="." method="_on_ClearCurrent_pressed"]
+[connection signal="pressed" from="TabContainer/Section/SwapSection" to="." method="_on_SwapSection_pressed"]
+[connection signal="pressed" from="TabContainer/Section/MustHitSection" to="." method="_on_MustHitSection_pressed"]
+[connection signal="item_selected" from="TabContainer/Events/Label/OptionButton" to="." method="_on_Event_item_selected"]
+[connection signal="pressed" from="TabContainer/Events/Label/Button" to="." method="_on_SeeEventDescription_pressed"]
+[connection signal="pressed" from="Warnings/ClearCurrentSection/YesDeleteSection" to="." method="_on_YesDeleteSection_pressed"]
+[connection signal="pressed" from="Warnings/ClearCurrentSection/NoDeleteSection" to="." method="_on_NoDeleteSection_pressed"]
+[connection signal="pressed" from="Warnings/ClearAllNotes/YesDeleteNotes" to="." method="_on_YesDeleteNotes_pressed"]
+[connection signal="pressed" from="Warnings/ClearAllNotes/NoDeleteNotes" to="." method="_on_NoDeleteNotes_pressed"]
+[connection signal="pressed" from="Warnings/ClearAllEvents/YesDeleteEvents" to="." method="_on_YesDeleteEvents_pressed"]
+[connection signal="pressed" from="Warnings/ClearAllEvents/NoDeleteEvents" to="." method="_on_NoDeleteEvents_pressed"]
+[connection signal="pressed" from="Warnings/EventDescription/Exit" to="." method="_on_Exit_pressed"]

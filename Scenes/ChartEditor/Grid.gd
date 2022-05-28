@@ -10,6 +10,7 @@ onready var square = $square
 
 onready var separator1 = $Separator1
 onready var separator2 = $Separator2
+onready var line = $Line
 
 var selected_x:int = 0
 var selected_y:int = 0

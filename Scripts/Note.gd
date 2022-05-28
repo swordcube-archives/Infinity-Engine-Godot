@@ -46,7 +46,7 @@ func _ready():
 			
 	if !spr.frames:
 		spr.frames = GameplaySettings.ui_skin.note_tex
-		
+
 	play_anim("")
 	
 func _process(delta):
@@ -73,6 +73,11 @@ func _process(delta):
 				end.position.y = 45
 	else:
 		end.visible = false
+		if sustain_length > 0:
+			charter_sustain.visible = true
+			charter_sustain.rect_size.y = sustain_length
+		else:
+			charter_sustain.visible = false
 
 func play_anim(anim):
 	# check if the note is animated lol
