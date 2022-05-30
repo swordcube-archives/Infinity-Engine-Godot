@@ -90,7 +90,7 @@ margin_top = 694.0
 margin_right = 1267.0
 margin_bottom = 709.0
 custom_fonts/font = SubResource( 1 )
-text = "1.0a (52222) ALPHA"
+text = "1.0a (53022) ALPHA"
 align = 2
 __meta__ = {
 "_edit_lock_": true
