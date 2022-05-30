@@ -242,9 +242,9 @@ visible = false
 description = "Change the bind used for 9 key.
 (Press ACCEPT (ENTER/SPACE) to change)"
 
-[node name="Adjust Offsets" type="Node" parent="Pages"]
+[node name="Advanced" type="Node" parent="Pages"]
 
-[node name="Note Offset" parent="Pages/Adjust Offsets" instance=ExtResource( 8 )]
+[node name="Note Offset" parent="Pages/Advanced" instance=ExtResource( 8 )]
 visible = false
 description = "Change how early or late notes spawn.
 Negative = Earlier, Positive = Later
@@ -253,7 +253,7 @@ option = "note-offset"
 multiplier = 0.1
 limits = [ -1000, 1000 ]
 
-[node name="Rating & Combo Offset" parent="Pages/Adjust Offsets" instance=ExtResource( 9 )]
+[node name="Rating & Combo Offset" parent="Pages/Advanced" instance=ExtResource( 9 )]
 visible = false
 description = "Change the positions of the Ratings & Combos.
 (Press ACCEPT (ENTER/SPACE) to change)"
