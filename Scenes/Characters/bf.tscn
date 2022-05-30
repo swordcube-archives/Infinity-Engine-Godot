@@ -563,10 +563,9 @@ is_player = true
 [node name="frames" type="AnimatedSprite" parent="."]
 position = Vector2( 1, -207 )
 frames = ExtResource( 2 )
-animation = "hey"
-frame = 25
+animation = "idle"
+frame = 13
 playing = true
-offset = Vector2( 0, -2 )
 flip_h = true
 
 [node name="anim" type="AnimationPlayer" parent="."]

@@ -140,6 +140,11 @@ description = "When enabled, A splash/firework like effect will appear
 when you hit a note and get a \"SiCK!!\"."
 option = "note-splashes"
 
+[node name="Winning Icons in Freeplay" parent="Pages/Appearance" instance=ExtResource( 6 )]
+visible = false
+description = "Makes the icon for a song switch to the winning icon when selected in freeplay."
+option = "winning-icons-in-freeplay"
+
 [node name="FPS Counter" parent="Pages/Appearance" instance=ExtResource( 6 )]
 visible = false
 description = "When enabled, The FPS will show up at the top left of the screen."

@@ -149,6 +149,10 @@ func _process(delta):
 		if not Transition.transitioning:
 			AudioHandler.play_audio("cancelMenu")
 			SceneHandler.switch_to("MainMenu")
+			
+var swap_winning_icons:Array = [
+	"gf"
+]
 		
 func change_selection(amount:int = 0):
 	cur_selected += amount
@@ -160,10 +164,21 @@ func change_selection(amount:int = 0):
 		cur_selected = 0
 		
 	for i in visible_songs.get_child_count():
+		var song = visible_songs.get_child(i)
 		if cur_selected == i:
-			visible_songs.get_child(i).modulate.a = 1
+			song.modulate.a = 1
+			
+			if Options.get_data("winning-icons-in-freeplay"):
+				var texture:StreamTexture = song.get_node("Icon").texture
+				for item in swap_winning_icons:
+					if item in texture.resource_path:
+						song.get_node("Icon").switch_to("losing")
+					else:
+						song.get_node("Icon").switch_to("winning")
 		else:
-			visible_songs.get_child(i).modulate.a = 0.6
+			song.modulate.a = 0.6
+			if Options.get_data("winning-icons-in-freeplay"):
+				song.get_node("Icon").switch_to("normal")
 			
 	AudioHandler.play_audio("scrollMenu")
 

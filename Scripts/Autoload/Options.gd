@@ -18,6 +18,7 @@ var og_save = {
 	"note-offset": 0,
 	"botplay": false,
 	"keybind-reminders": false,
+	"winning-icons-in-freeplay": false,
 	"optimization": false,
 	"hitsound": "None",
 	"note-splashes": true,
