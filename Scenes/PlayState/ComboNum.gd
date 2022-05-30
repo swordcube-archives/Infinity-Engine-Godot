@@ -7,7 +7,7 @@ func _ready():
 	yield(get_tree().create_timer((Conductor.crochet / 1000) * 1.5), "timeout")
 	your = true
 
-func _process(delta):
+func _physics_process(delta):
 	position.y -= yvel
 	yvel -= delta * 10
 	

@@ -22,7 +22,7 @@ direction = "D"
 
 [node name="Strum5" parent="." instance=ExtResource( 1 )]
 position = Vector2( -0.873352, 0 )
-direction = "I"
+direction = "E"
 
 [node name="Strum6" parent="." instance=ExtResource( 1 )]
 position = Vector2( 156.207, 0 )

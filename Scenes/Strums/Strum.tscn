@@ -19,11 +19,10 @@ animation = "A static"
 playing = true
 
 [node name="Label" type="Label" parent="."]
-visible = false
-margin_left = -25.0
+margin_left = -32.0
 margin_top = -38.0
-margin_right = 32.0
-margin_bottom = 274.0
+margin_right = 40.0
+margin_bottom = 42.0
 custom_fonts/font = SubResource( 1 )
 text = "A"
 align = 1
