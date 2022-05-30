@@ -296,6 +296,9 @@ func _ready():
 			var modchart = load(path + "/" + file).instance()
 			loaded_modcharts.append(modchart)
 			add_child(modchart)
+			
+	if botplay:
+		health_bar.scoretext.text += " [BOT]"
 	
 var cur_stage = "stage"
 var gf_version = "gf"

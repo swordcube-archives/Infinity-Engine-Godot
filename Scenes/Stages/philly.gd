@@ -86,6 +86,7 @@ func updateTrainPos():
 
 func trainReset():
 	PlayState.gf.play_anim("hairFall", true)
+	PlayState.gf.danced = true
 	
 	train.position.x = 2000
 	trainMoving = false
