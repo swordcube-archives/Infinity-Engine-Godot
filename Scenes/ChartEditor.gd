@@ -643,3 +643,15 @@ func _on_SeeEventDescription_pressed():
 func _on_Exit_pressed():
 	can_interact = true
 	$Warnings/EventDescription.visible = false
+
+func _on_DadDropdown_item_selected(index):
+	song.player2 = $TabContainer/Song/Opponent/OptionButton.text
+
+func _on_PlayerDropdown_item_selected(index):
+	song.player1 = $TabContainer/Song/Player/OptionButton.text
+
+func _on_GFDropDown_item_selected(index):
+	song.gf = $TabContainer/Song/GF/OptionButton.text
+
+func _on_StageDropdown_item_selected(index):
+	song.stage = $TabContainer/Song/Stage/OptionButton.text
