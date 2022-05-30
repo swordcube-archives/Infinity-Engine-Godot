@@ -19,6 +19,7 @@ animation = "A static"
 playing = true
 
 [node name="Label" type="Label" parent="."]
+visible = false
 margin_left = -32.0
 margin_top = -38.0
 margin_right = 40.0

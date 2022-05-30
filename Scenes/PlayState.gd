@@ -49,7 +49,17 @@ var dad:Node2D
 var gf:Node2D
 var bf:Node2D
 
-var sing_anims:Array = ["singLEFT", "singDOWN", "singUP", "singRIGHT"]
+var sing_anims:Dictionary = {
+	"1k": ["singUP"],
+	"2k": ["singLEFT", "singRIGHT"],
+	"3k": ["singLEFT", "singUP", "singRIGHT"],
+	"4k": ["singLEFT", "singDOWN", "singUP", "singRIGHT"],
+	"5k": ["singLEFT", "singDOWN", "singUP", "singUP", "singRIGHT"],
+	"6k": ["singLEFT", "singDOWN", "singRIGHT", "singLEFT", "singUP", "singRIGHT"],
+	"7k": ["singLEFT", "singDOWN", "singRIGHT", "singUP", "singLEFT", "singUP", "singRIGHT"],
+	"8k": ["singLEFT", "singDOWN", "singUP", "singRIGHT", "singLEFT", "singDOWN", "singUP", "singRIGHT"],
+	"9k": ["singLEFT", "singDOWN", "singUP", "singRIGHT", "singUP", "singLEFT", "singDOWN", "singUP", "singRIGHT"],
+}
 
 var cam_zooming:bool = false
 
@@ -403,6 +413,8 @@ func _physics_process(delta):
 		if timebar_progress.rect_scale.x > 1:
 			timebar_progress.rect_scale.x = 1
 		timebar_text.text = cur_time + " / " + length
+		if botplay:
+			timebar_text.text += " [BOT]"
 		
 		if a >= b:
 			if not ending_song:
@@ -690,7 +702,7 @@ func _process(delta):
 				if dad_held == 0:
 					if dad:
 						dad.hold_timer = 0
-						dad.play_anim(sing_anims[note.note_data])
+						dad.play_anim(sing_anims[str(GameplaySettings.key_count) + "k"][note.note_data])
 						
 					strum.play_anim("confirm")
 					
@@ -709,17 +721,18 @@ func _process(delta):
 func process_inputs(delta):
 	refresh_input_bullshit()
 	
-	for i in just_pressed.size():
-		just_pressed[i] = Input.is_action_just_pressed("gameplay_" + str(i))
-		pressed[i] = Input.is_action_pressed("gameplay_" + str(i))
-		just_released[i] = Input.is_action_just_released("gameplay_" + str(i))
-		released[i] = not Input.is_action_pressed("gameplay_" + str(i))
-		
-		if just_pressed[i]:
-			player_strums.get_child(i).play_anim("press")
+	if not botplay:
+		for i in just_pressed.size():
+			just_pressed[i] = Input.is_action_just_pressed("gameplay_" + str(i))
+			pressed[i] = Input.is_action_pressed("gameplay_" + str(i))
+			just_released[i] = Input.is_action_just_released("gameplay_" + str(i))
+			released[i] = not Input.is_action_pressed("gameplay_" + str(i))
 			
-		if just_released[i]:
-			player_strums.get_child(i).play_anim("static")
+			if just_pressed[i]:
+				player_strums.get_child(i).play_anim("press")
+				
+			if just_released[i]:
+				player_strums.get_child(i).play_anim("static")
 			
 	if not botplay:
 		if just_pressed.has(true):
@@ -780,9 +793,29 @@ func process_inputs(delta):
 				for i in len(just_pressed):
 					if just_pressed[i] and not note_data_possibles[i] and not rythm_array[i]:
 						note_miss(i)
+	else:
+		for i in just_pressed.size():
+			if player_strums.get_child(i).anim_finished:
+				player_strums.get_child(i).play_anim("static")
+				
+		for note in notes.get_children():
+			if note.must_press:
+				if Conductor.song_position >= note.strum_time:
+					note.spr.visible = false
+					if note.og_sustain_length <= 0:
+						good_note_hit(note)
+					else:
+						if not note.being_pressed:
+							pop_up_score(note.strum_time, note)
+							
+						if note.sustain_length <= 0:
+							notes.remove_child(note)
+							note.queue_free()
+					
+					note.being_pressed = true
 							
 	for note in notes.get_children():
-		if note.sustain_length >= -50 and note.being_pressed and pressed[note.note_data]: 
+		if note.sustain_length >= -50 and note.being_pressed and (pressed[note.note_data] or botplay): 
 			note.spr.visible = false
 			note.sustain_length -= (delta * 1000) * GameplaySettings.song_multiplier
 			
@@ -799,7 +832,7 @@ func process_inputs(delta):
 					
 				if bf and bf.special_anim != true:
 					bf.hold_timer = 0
-					bf.play_anim(sing_anims[note.note_data], true)
+					bf.play_anim(sing_anims[str(GameplaySettings.key_count) + "k"][note.note_data], true)
 					
 				strum.play_anim("confirm")
 
@@ -814,29 +847,30 @@ func process_inputs(delta):
 				note.queue_free()
 				
 		# missing
-		var sustainMissRange = 200
-		
-		var your = (note.must_press and note.sustain_length <= 0 and not botplay)
-		var your2 = (note.must_press and note.sustain_length >= 0 and not pressed[note.note_data % GameplaySettings.key_count] and not botplay)
-		
-		if not pressed[note.note_data] and note.being_pressed and note.sustain_length <= sustainMissRange:
-			note.sustain_length -= (delta * 1000) * GameplaySettings.song_multiplier
-			note.global_position.y = player_strums.get_child(note.note_data % GameplaySettings.key_count).global_position.y
+		if not botplay:
+			var sustainMissRange = 200
 			
-			AudioHandler.voices.volume_db = 0
+			var your = (note.must_press and note.sustain_length <= 0 and not botplay)
+			var your2 = (note.must_press and note.sustain_length >= 0 and not pressed[note.note_data % GameplaySettings.key_count] and not botplay)
 			
-			if note.sustain_length <= -50:
-				note.queue_free()
-		else:
-			if your2 or (note.must_press and not note.being_pressed and pressed[note.note_data]):
-				if Conductor.song_position > note.strum_time + Conductor.safe_zone_offset:
-					if note.should_hit:
-						note_miss(note.note_data)
-						
-						if note.sustain_length >= 150:
-							add_health(-0.2)
-						
+			if not pressed[note.note_data] and note.being_pressed and note.sustain_length <= sustainMissRange:
+				note.sustain_length -= (delta * 1000) * GameplaySettings.song_multiplier
+				note.global_position.y = player_strums.get_child(note.note_data % GameplaySettings.key_count).global_position.y
+				
+				AudioHandler.voices.volume_db = 0
+				
+				if note.sustain_length <= -50:
 					note.queue_free()
+			else:
+				if your2 or (note.must_press and not note.being_pressed and pressed[note.note_data]):
+					if Conductor.song_position > note.strum_time + Conductor.safe_zone_offset:
+						if note.should_hit:
+							note_miss(note.note_data)
+							
+							if note.sustain_length >= 150:
+								add_health(-0.2)
+							
+						note.queue_free()
 					
 func good_note_hit(note):
 	if not note.was_good_hit:
@@ -847,7 +881,7 @@ func good_note_hit(note):
 		
 		if bf and bf.special_anim != true:
 			bf.hold_timer = 0
-			bf.play_anim(sing_anims[note.note_data], true)
+			bf.play_anim(sing_anims[str(GameplaySettings.key_count) + "k"][note.note_data], true)
 		
 		player_strums.get_child(note.note_data).play_anim("confirm")
 		
@@ -870,6 +904,8 @@ func pop_up_score(strum_time, note):
 	add_health(0.023)
 		
 	var note_ms = (Conductor.song_position - strum_time) / GameplaySettings.song_multiplier
+	if botplay:
+		note_ms = 0.0
 	
 	var judgement_timings = [
 		Options.get_data("sick-timing"),
@@ -907,7 +943,8 @@ func pop_up_score(strum_time, note):
 				hud.add_child(splash)
 				splash.splash()
 			
-			song_score += rating_scores[0]
+			if not botplay:
+				song_score += rating_scores[0]
 			
 			if cur_rating == "sick":
 				rating_tex = rating_textures[1]
@@ -919,21 +956,24 @@ func pop_up_score(strum_time, note):
 		"good":
 			goods += 1
 			
-			song_score += rating_scores[1]	
+			if not botplay:
+				song_score += rating_scores[1]	
 			rating_tex = rating_textures[2]
 			
 			total_hit += 0.7
 		"bad":
 			bads += 1
 			
-			song_score += rating_scores[2]	
+			if not botplay:
+				song_score += rating_scores[2]	
 			rating_tex = rating_textures[3]
 			
 			total_hit += 0.3
 		"shit":
 			shits += 1
 			
-			song_score += rating_scores[3]	
+			if not botplay:
+				song_score += rating_scores[3]	
 			rating_tex = rating_textures[4]
 			
 			if not Options.get_data("pussy-mode"):
@@ -1021,6 +1061,8 @@ func calculate_accuracy():
 		rating1 = "SDCB"
 	
 	health_bar.scoretext.text = "Score: " + str(song_score) + " // Misses: " + str(song_misses) + " // Accuracy: " + str(CoolUtil.round_decimal(song_accuracy * 100, 2)) + "% [" + rating1 + " - " + rating2 + "]"
+	if botplay:
+		health_bar.scoretext.text += " [BOT]"
 			
 func note_miss(direction = 0):
 	add_health(-0.0475)
@@ -1042,7 +1084,7 @@ func note_miss(direction = 0):
 	
 	if bf and bf.special_anim != true:
 		bf.hold_timer = 0
-		bf.play_anim(sing_anims[direction] + "miss", true)				
+		bf.play_anim(sing_anims[str(GameplaySettings.key_count) + "k"][direction] + "miss", true)				
 	
 var old_keycount:int = -1
 func refresh_input_bullshit():
