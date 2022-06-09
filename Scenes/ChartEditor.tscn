@@ -59,6 +59,7 @@ margin_right = 1264.0
 margin_bottom = 702.0
 
 [node name="Song" type="Tabs" parent="TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -331,7 +332,6 @@ margin_right = -4.0
 margin_bottom = -4.0
 
 [node name="Events" type="Tabs" parent="TabContainer"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0

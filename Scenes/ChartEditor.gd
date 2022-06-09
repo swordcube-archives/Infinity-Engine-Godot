@@ -359,7 +359,7 @@ func select_note(x, y):
 		if note.name != "square":
 			if selected_x * grid.grid_size == note.position.x:
 				if mouse_pos.y >= note.position.y and mouse_pos.y <= note.position.y + grid.grid_size:
-					for note_object in charter.song.notes[charter.selected_section].sectionNotes:
+					for note_object in song.notes[charter.selected_section].sectionNotes:
 						if note_object[1] == int(x - 1):
 							if int(note_object[0]) == int(y_to_time(note.position.y) + section_start_time()):
 								current_note = note_object
@@ -372,7 +372,7 @@ func select_note(x, y):
 			if selected_x * grid.grid_size == note.position.x:
 				if mouse_pos.y >= note.position.y and mouse_pos.y <= note.position.y + grid.grid_size:
 					var index:int = 0
-					for note_object in charter.song.events[charter.selected_section]:
+					for note_object in song.events[charter.selected_section]:
 						if int(note_object[0]) == int(y_to_time(note.position.y) + section_start_time()):
 							current_note = note_object
 							current_note_node = note
@@ -383,7 +383,8 @@ func select_note(x, y):
 							if "EventNote" in current_note_node.name:
 								event_data = note_object[1]
 								
-							_on_Event_item_selected(0)
+							dropdowns["events"].text = current_note_node.event_name
+							fortnite()
 								
 							print("PARAMS: " + str(event_data.params))
 							
@@ -396,13 +397,26 @@ func add_note(x, y):
 	mouse_pos.y -= notes.position.y
 	
 	for note in notes.get_children():
-		if note.name != "square":
+		if not "EventNote" in note.name and note.name != "square":
+			print("DELETING NOTE")
 			if selected_x * grid.grid_size == note.position.x:
 				if mouse_pos.y >= note.position.y and mouse_pos.y <= note.position.y + grid.grid_size:
 					for note_object in charter.song.notes[charter.selected_section].sectionNotes:
 						if note_object[1] == int(x - 1):
 							if int(note_object[0]) == int(y_to_time(note.position.y) + section_start_time()):
 								charter.song.notes[charter.selected_section].sectionNotes.erase(note_object)
+					
+					note.queue_free()
+					return
+					
+	for note in notes.get_children():
+		if "EventNote" in note.name and note.name != "square":
+			print("DELETING EVENT")
+			if selected_x * grid.grid_size == note.position.x:
+				if mouse_pos.y >= note.position.y and mouse_pos.y <= note.position.y + grid.grid_size:
+					for note_object in charter.song.events[charter.selected_section]:
+						if int(note_object[0]) == int(y_to_time(note.position.y) + section_start_time()):
+							charter.song.events[charter.selected_section].erase(note_object)
 					
 					note.queue_free()
 					return
@@ -420,7 +434,7 @@ func add_note(x, y):
 		current_note = data
 		current_note_node = note
 		
-		_on_Event_item_selected(0)
+		fortnite()
 	else:
 		note = spawn_note(x, y, null, 0)
 		
@@ -449,6 +463,7 @@ func spawn_event(x, y, custom_y = null, sustain_length:float = 0.0):
 	mouse_pos.y -= position.y
 	
 	var new_note = event_note.duplicate()
+	new_note.event_name = dropdowns["events"].text
 	new_note.position = Vector2(x * grid.grid_size, custom_y)
 	notes.add_child(new_note)
 	
@@ -608,6 +623,9 @@ func _on_Event_item_selected(index):
 	var path = "res://Scenes/Events/" + dropdowns["events"].text + ".tscn"
 	event_data = load(path).instance()
 	
+	if current_note_node:
+		current_note_node.event_name = dropdowns["events"].text
+	
 	for param in event_data.parameters:
 		event_data.params[param] = ""
 		
@@ -625,6 +643,23 @@ func _on_Event_item_selected(index):
 		parameters.add_child(new_shit)
 		
 		new_shit.label.text = param
+		new_shit.input.text = event_data.params[param]
+		i += 1
+		
+func fortnite():
+	for param in parameters.get_children():
+		parameters.remove_child(param)
+		param.queue_free()
+		
+	var i:int = 0
+	for param in event_data.params.keys():
+		var new_shit:Node2D = parameter_shit.duplicate()
+		new_shit.position.y = i * 50
+		new_shit.event_data = event_data
+		parameters.add_child(new_shit)
+		
+		new_shit.label.text = param
+		new_shit.input.text = event_data.params[param]
 		i += 1
 
 func _on_SeeEventDescription_pressed():
