@@ -4,6 +4,8 @@
 -----
 ## Welcome to the repo for [Infinity Engine](https://github.com/CubeSword/Infinity-Engine/) in Godot!
 
+***THIS BRANCH IS NOT MAINTAINED ANYMORE, PLEASE GO TO MAIN!***
+
 You get to experience my shitty code!
 
 Wow!
