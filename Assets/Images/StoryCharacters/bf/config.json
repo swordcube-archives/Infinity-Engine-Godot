@@ -1,7 +1,0 @@
-{
-    "idle_anim": ["BF idle dance white", 24, [0, 0]],
-    "confirm_anim": ["BF HEY!!", 24, [0, 0]],
-    "scale": 0.9,
-    "flip_x": false,
-    "position": [-60, -20]
-}

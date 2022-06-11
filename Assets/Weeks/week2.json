@@ -1,33 +1,34 @@
-﻿{
-	"week_num": 2,
-	"songs": [
-		{
-			"name": "Spookeez",
-			"icon": "spooky",
-			"color": "#223344",
-			"difficulties": ["easy", "normal", "hard"],
-			"shows_in_story": true,
-			"shows_in_freeplay": true
-		},
-		{
-			"name": "South",
-			"icon": "spooky",
-			"color": "#223344",
-			"difficulties": ["easy", "normal", "hard"],
-			"shows_in_story": true,
-			"shows_in_freeplay": true
-		},
-		{
-			"name": "Monster",
-			"icon": "monster",
-			"color": "#223344",
-			"difficulties": ["easy", "normal", "hard"],
-			"shows_in_story": true,
-			"shows_in_freeplay": true
-		}
-	],
-	"difficulties": ["easy", "normal", "hard"],
-	"characters": ["spooky", "bf", "gf"],
-	"week_name": "week2",
-	"week_title": "SPOOKY MONTH"
+{
+    "songs": [
+        {
+            "song": "spookeez",
+            "icon": "spooky-icons",
+            "color": "DD8B13",
+            "story": true
+        },
+        {
+            "song": "south",
+            "icon": "spooky-icons",
+            "color": "DD8B13",
+            "story": true
+        },
+        {
+            "song": "monster",
+            "icon": "monster-icons",
+            "color": "F5FF6B",
+            "story": true
+        }
+    ],
+    "hide_from_story_mode": false,
+    "chars": [
+        "spooky",
+        "bf",
+        "gf"
+    ],
+    "week_name": "Spooky Kids",
+    "difficulties": [
+        "easy",
+        "normal",
+        "hard"
+    ]
 }

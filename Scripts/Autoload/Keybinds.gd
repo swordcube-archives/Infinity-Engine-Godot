@@ -4,10 +4,9 @@ func _ready():
 	setup_Binds()
 
 func setup_Binds():
-	var binds = Options.get_data("keybinds_" + str(GameplaySettings.key_count))
+	var binds = Settings.get_data("binds_" + str(GameplaySettings.key_count))
 	
 	for action_num in GameplaySettings.key_count:
-		#print(action_num)
 		var action = "gameplay_" + str(action_num)
 		
 		var keys = InputMap.get_action_list(action)

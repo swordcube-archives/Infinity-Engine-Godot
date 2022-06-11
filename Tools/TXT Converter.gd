@@ -72,7 +72,9 @@ func convert_xml():
 				yield(get_tree().create_timer(0.01), "timeout")
 		else:
 			print(path_string + " loading failed.")
-			
-func _process(delta):
-	if Input.is_action_just_pressed("ui_back"):
-		SceneHandler.switch_to("ToolsMenu")
+
+func _process(_delta):
+	if Input.is_action_just_pressed("ui_cancel"):
+		Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+		
+		Scenes.switch_scene("Tools Menu")

@@ -1,33 +1,34 @@
-﻿{
-	"week_num": 1,
-	"songs": [
-		{
-			"name": "Bopeebo",
-			"icon": "dad",
-			"color": "#9271fd",
-			"difficulties": ["easy", "normal", "hard"],
-			"shows_in_story": true,
-			"shows_in_freeplay": true
-		},
-		{
-			"name": "Fresh",
-			"icon": "dad",
-			"color": "#9271fd",
-			"difficulties": ["easy", "normal", "hard"],
-			"shows_in_story": true,
-			"shows_in_freeplay": true
-		},
-		{
-			"name": "Dad Battle",
-			"icon": "dad",
-			"color": "#9271fd",
-			"difficulties": ["easy", "normal", "hard"],
-			"shows_in_story": true,
-			"shows_in_freeplay": true
-		}
-	],
-	"difficulties": ["easy", "normal", "hard"],
-	"characters": ["dad", "bf", "gf"],
-	"week_name": "week1",
-	"week_title": "DADDY DEAREST"
+{
+    "songs": [
+        {
+            "song": "bopeebo",
+            "icon": "dad-icons",
+            "color": "C96ED4",
+            "story": true
+        },
+        {
+            "song": "fresh",
+            "icon": "dad-icons",
+            "color": "C96ED4",
+            "story": true
+        },
+        {
+            "song": "dad battle",
+            "icon": "dad-icons",
+            "color": "C96ED4",
+            "story": true
+        }
+    ],
+    "hide_from_story_mode": false,
+    "chars": [
+        "dad",
+        "bf",
+        "gf"
+    ],
+    "week_name": "Daddy Dearest",
+    "difficulties": [
+        "easy",
+        "normal",
+        "hard"
+    ]
 }

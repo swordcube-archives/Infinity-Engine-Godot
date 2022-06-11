@@ -1,32 +1,60 @@
 extends Node
 
-var song_position:float = 0.0
+var songPosition:float = 0.0
 var bpm:float = 100.0
+var speed:float = 1.0
 
-var crochet:float = ((60 / bpm) * 1000)
-var step_crochet:float = crochet / 4
+var timeBetweenBeats:float = ((60 / bpm) * 1000)
+var timeBetweenSteps:float = timeBetweenBeats / 4
 
-var cur_beat:int = 0
-var cur_step:int = 0
+var curBeat:int = 0
+var curStep:int = 0
 
-var safe_zone_offset:float = 220
+# basically amount of MS you can have for safe frames
+var safeZoneOffset:float = 166
 
+# funny array of [position_in_song, bpm, step_change_is_at]
 var bpm_changes:Array = []
 
 signal beat_hit
 signal step_hit
 
+func _process(_delta):
+	var oldBeat = curBeat
+	var oldStep = curStep
+
+	var lastChange:Array = [0,0,0]
+	
+	for change in bpm_changes:
+		if songPosition >= change[0]:
+			lastChange = change
+			
+			bpm = change[1]
+			recalculate_values()
+		else:
+			break
+	
+	if len(lastChange) < 3:
+		lastChange.append(0)
+	
+	curStep = lastChange[2] + floor((songPosition - lastChange[0]) / timeBetweenSteps)
+	curBeat = floor(curStep / 4)
+	
+	if curStep != oldStep and curStep > oldStep:
+		emit_signal("step_hit")
+	if curBeat != oldBeat and curBeat > oldBeat:
+		emit_signal("beat_hit")
+
 func recalculate_values():
-	crochet = ((60 / bpm) * 1000)
-	step_crochet = crochet / 4
-	safe_zone_offset = 220 * GameplaySettings.song_multiplier
+	timeBetweenBeats = ((60 / bpm) * 1000)
+	timeBetweenSteps = timeBetweenBeats / 4
 
 func change_bpm(new_bpm, changes = []):
 	if len(changes) == 0:
-		changes = [[0, float(new_bpm), 0]]
+		changes = [[0, new_bpm, 0]]
 	
 	bpm_changes = changes
-	bpm = float(new_bpm)
+	bpm = new_bpm
 	recalculate_values()
 
 func map_bpm_changes(songData):
@@ -38,7 +66,7 @@ func map_bpm_changes(songData):
 	
 	for section in songData["notes"]:
 		if "changeBPM" in section:
-			if section["changeBPM"] and section["bpm"] != cur_bpm:
+			if section["changeBPM"] and section["bpm"] != cur_bpm and section["bpm"] > 0:
 				cur_bpm = section["bpm"]
 				
 				var change = [total_pos, section["bpm"], total_steps]
@@ -54,29 +82,3 @@ func map_bpm_changes(songData):
 		total_pos += ((60 / cur_bpm) * 1000 / 4) * section_length
 	
 	return changes
-
-func _physics_process(delta):
-	var old_beat = cur_beat
-	var old_step = cur_step
-
-	var last_change:Array = [0,0,0]
-	
-	for change in bpm_changes:
-		if song_position >= change[0]:
-			last_change = change
-			
-			bpm = change[1]
-			recalculate_values()
-		else:
-			break
-	
-	if len(last_change) < 3:
-		last_change.append(0)
-	
-	cur_step = last_change[2] + floor((song_position - last_change[0]) / step_crochet)
-	cur_beat = floor(cur_step / 4)
-	
-	if cur_step != old_step and cur_step > old_step:
-		emit_signal("step_hit")
-	if cur_beat != old_beat and cur_beat > old_beat:
-		emit_signal("beat_hit")

@@ -1,148 +1,33 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Assets/Images/Stages/spooky/halloween_bg.res" type="SpriteFrames" id=1]
 [ext_resource path="res://Scenes/Stages/spooky.gd" type="Script" id=2]
-[ext_resource path="res://Assets/Sounds/thunder_2.ogg" type="AudioStream" id=3]
-[ext_resource path="res://Assets/Sounds/thunder_1.ogg" type="AudioStream" id=4]
+[ext_resource path="res://Assets/Sounds/Stages/spooky/thunder_1.ogg" type="AudioStream" id=3]
+[ext_resource path="res://Assets/Sounds/Stages/spooky/thunder_2.ogg" type="AudioStream" id=4]
 
-[sub_resource type="Animation" id=1]
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:animation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ "halloweem bg" ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath(".:playing")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ true ]
-}
-tracks/2/type = "value"
-tracks/2/path = NodePath(".:frame")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ 0 ]
-}
-tracks/3/type = "value"
-tracks/3/path = NodePath(".:offset")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 0, 0 ) ]
-}
-
-[sub_resource type="Animation" id=2]
-resource_name = "strike"
-length = 0.75
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:animation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ "halloweem bg lightning strike" ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath(".:playing")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ true ]
-}
-tracks/2/type = "value"
-tracks/2/path = NodePath(".:frame")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ 0 ]
-}
-tracks/3/type = "value"
-tracks/3/path = NodePath(".:offset")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 0, 5 ) ]
-}
-
-[node name="stage" type="Node2D"]
+[node name="spooky" type="Node2D"]
 script = ExtResource( 2 )
-default_cam_zoom = 1.05
 
-[node name="bg" type="ParallaxBackground" parent="."]
+[node name="Background" type="Node2D" parent="."]
+position = Vector2( -200, -100 )
 
-[node name="parallax" type="ParallaxLayer" parent="bg"]
-motion_scale = Vector2( 0.8, 0.8 )
-
-[node name="spr" type="AnimatedSprite" parent="bg/parallax"]
-position = Vector2( 469, 252 )
-scale = Vector2( 1.06744, 1.06744 )
+[node name="AnimatedSprite" type="AnimatedSprite" parent="Background"]
 frames = ExtResource( 1 )
-animation = "halloweem bg lightning strike"
-frame = 21
+animation = "idle"
 playing = true
-offset = Vector2( 0, 5 )
+centered = false
 
-[node name="anim" type="AnimationPlayer" parent="bg/parallax"]
-root_node = NodePath("../spr")
-anims/idle = SubResource( 1 )
-anims/strike = SubResource( 2 )
+[node name="Player Point" type="Node2D" parent="."]
+position = Vector2( 1000, 800 )
 
-[node name="dad_pos" type="Node2D" parent="."]
-position = Vector2( 175, 686 )
+[node name="Dad Point" type="Node2D" parent="."]
+position = Vector2( 265, 800 )
 
-[node name="gf_pos" type="Node2D" parent="."]
-position = Vector2( 602, 640 )
+[node name="GF Point" type="Node2D" parent="."]
+position = Vector2( 600, 750 )
 
-[node name="bf_pos" type="Node2D" parent="."]
-position = Vector2( 893, 687 )
-
-[node name="thunder_1" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 4 )
-
-[node name="thunder_2" type="AudioStreamPlayer" parent="."]
+[node name="Strike 1" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )
 
-[connection signal="animation_finished" from="bg/parallax/spr" to="." method="_on_spr_animation_finished"]
+[node name="Strike 2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )

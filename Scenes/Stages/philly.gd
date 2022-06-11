@@ -1,4 +1,4 @@
-extends Stage
+extends "res://Scripts/Stage.gd"
 
 var trainCooldown: float = 0.0
 var trainFrameTiming: float = 0.0
@@ -9,14 +9,13 @@ var trainMoving = false
 var startedMoving = false
 var trainFinishing = false
 
-var die = false
+onready var parallax_bg = get_node("ParallaxBackground/BG")
 
-onready var PlayState:Node2D = $"../"
+onready var train = $Train
+onready var train_spr = $ParallaxBackground/Foreground/Train
 
-onready var train = $sky/parallax4/spr
-onready var train_sound = $train_sound
-
-onready var windows = $sky/parallax2/windows
+onready var gf = $"../".gf
+onready var gf_anim = gf.get_node("AnimationPlayer")
 
 onready var tween = Tween.new()
 
@@ -25,74 +24,75 @@ func _ready():
 	
 	randomize()
 	
-	Conductor.connect("beat_hit", self, "beat_hit")
+	Conductor.connect("beat_hit", self, "on_beat")
 
-func _process(delta):
+func _physics_process(delta):
 	if trainMoving:
 		trainFrameTiming += delta
 
 		if trainFrameTiming >= 1.0 / 24.0:
 			updateTrainPos()
-			trainFrameTiming = 0
-			
-var lightSelected = -1
+			trainFrameTiming = 0.0
 
-func beat_hit():
+func on_beat():
 	if not trainMoving:
 		trainCooldown = trainCooldown + 1
 
-	if Conductor.cur_beat % 4 == 0:
-		lightSelected += 1
-		if lightSelected > 4:
-			lightSelected = 0
+	if Conductor.curBeat % 4 == 0:
+		var lightSelected = int(rand_range(1, 5))
 
-		windows.texture = load("res://Assets/Images/Stages/philly/win" + str(lightSelected) + ".png")
+		for child in parallax_bg.get_children():
+			if child.name.begins_with("Light "):
+				child.visible = false
 		
-		tween.interpolate_property(windows, "modulate", Color(1,1,1,1), Color(1,1,1,0), (Conductor.crochet / 1000) * 4, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+		var light = parallax_bg.get_node("Light " + str(lightSelected))
+		
+		light.visible = true
+		
+		tween.interpolate_property(light, "modulate", Color(1,1,1,1), Color(1,1,1,0), (Conductor.timeBetweenBeats / 1000) * 4, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 		tween.stop_all()
 		tween.start()
 
-	if Conductor.cur_beat % 8 == 4 and rand_range(0, 100) < 20 and not trainMoving and trainCooldown > 8:
+	if Conductor.curBeat % 8 == 4 and rand_range(0, 100) < 20 and not trainMoving and trainCooldown > 8:
 		trainCooldown = int(rand_range(-4, 0))
 		
 		trainMoving = true
-		train_sound.play(0)
+		train.play(0)
 
 func updateTrainPos():
-	if train_sound.get_playback_position() * 1000 >= 4700:
-		if "dances" in PlayState.gf:
-			PlayState.gf.dances = false
+	if train.get_playback_position() * 1000 >= 4700:
+		if "dances" in gf:
+			gf.dances = false
 		
 		if !startedMoving:
-			PlayState.gf.play_anim("hairBlow", true)
+			gf.play_animation("hairBlow", true)
 		
 		startedMoving = true
 		
-		if PlayState.gf.anim_player.get_current_animation_position() >= 0.16:
-			PlayState.gf.play_anim("hairBlow", true)
+		if gf_anim.get_current_animation_position() >= 0.16:
+			gf.play_animation("hairBlow", true)
 
 	if startedMoving:
-		train.position.x -= 400
-
-		if train.position.x < -2000 and not trainFinishing:
-			train.position.x = -1150
+		train_spr.position.x = train_spr.position.x - 400
+		
+		if train_spr.position.x < -2000 and not trainFinishing:
+			train_spr.position.x = -1150
 			trainCars = trainCars - 1
-
+			
 			if trainCars <= 0:
 				trainFinishing = true
-
-		if train.position.x < -4000 and trainFinishing:
+		
+		if train_spr.position.x < -4000 and trainFinishing:
 			trainReset()
 
 func trainReset():
-	PlayState.gf.play_anim("hairFall", true)
-	PlayState.gf.danced = true
+	gf.play_animation("hairFall", true)
 	
-	train.position.x = 2000
+	train_spr.position.x = 2000
 	trainMoving = false
 	trainCars = 8
 	trainFinishing = false
 	startedMoving = false
 	
-	if "dances" in PlayState.gf:
-		PlayState.gf.dances = true
+	if "dances" in gf:
+		gf.dances = true

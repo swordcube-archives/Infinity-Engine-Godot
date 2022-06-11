@@ -1,8 +1,0 @@
-[gd_scene load_steps=2 format=2]
-
-[ext_resource path="res://Scenes/Events/Add Camera Zoom.gd" type="Script" id=1]
-
-[node name="Add Camera Zoom" type="Node2D"]
-script = ExtResource( 1 )
-description = "Add zoom to the world camera or HUD!"
-parameters = [ "World Zoom", "HUD Zoom" ]

@@ -1,34 +1,36 @@
 extends Node
 
-func switch_to(scene:String, type:String = "", transition:bool = true):
-	if not Transition.transitioning:
-		var path = scene
+var current_scene:String = ""
+
+var switching:bool = false
+
+var startup:bool = true
+
+func switch_scene(scenePath, no_trans:bool = false):
+	if !switching:
+		switching = true
 		
-		if len(type) > 0:
-			path = type + "/" + scene
-			
-		if ResourceLoader.exists("res://Scenes/" + path + ".tscn"):
-			if transition:
-				Transition.fade_in()
-				yield(get_tree().create_timer(Transition.anim.get_animation("in").length), "timeout")
-				get_tree().change_scene("res://Scenes/" + path + ".tscn")
-			else:
-				get_tree().change_scene("res://Scenes/" + path + ".tscn")
-			
-			if transition:
-				Transition.fade_out()
-				
-func switch_to_raw(scene:String, transition:bool = true):
-	if not Transition.transitioning:
-		var path:String = scene
+		GameplaySettings.do_cutscenes = true
 		
-		if ResourceLoader.exists(path):
-			if transition:
-				Transition.fade_in()
-				yield(get_tree().create_timer(Transition.anim.get_animation("in").length), "timeout")
-				get_tree().change_scene(path)
-			else:
-				get_tree().change_scene(path)
+		if Settings.get_data("scene_transitions") and !no_trans:
+			Transition.trans_in()
 			
-			if transition:
-				Transition.fade_out()
+			yield(get_tree().create_timer(0.5), "timeout")
+		
+		var success:int
+		
+		if not scenePath.begins_with("res://"):
+			success = get_tree().change_scene(Paths.scene_path(scenePath))
+		else:
+			success = get_tree().change_scene(scenePath)
+		
+		if Settings.get_data("scene_transitions") and !no_trans:
+			Transition.trans_out()
+		
+		switching = false
+		
+		current_scene = scenePath
+		
+		if OS.is_debug_build():
+			if success != 0:
+				print("Menu Loaded Inproperly! Code: " + str(success))

@@ -1,33 +1,34 @@
-﻿{
-	"week_num": 3,
-	"songs": [
-		{
-			"name": "Pico",
-			"icon": "pico",
-			"color": "#941653",
-			"difficulties": ["easy", "normal", "hard"],
-			"shows_in_story": true,
-			"shows_in_freeplay": true
-		},
-		{
-			"name": "Philly Nice",
-			"icon": "pico",
-			"color": "#941653",
-			"difficulties": ["easy", "normal", "hard"],
-			"shows_in_story": true,
-			"shows_in_freeplay": true
-		},
-		{
-			"name": "Blammed",
-			"icon": "pico",
-			"color": "#941653",
-			"difficulties": ["easy", "normal", "hard"],
-			"shows_in_story": true,
-			"shows_in_freeplay": true
-		}
-	],
-	"difficulties": ["easy", "normal", "hard"],
-	"characters": ["pico", "bf", "gf"],
-	"week_name": "week3",
-	"week_title": "PICO"
+{
+    "songs": [
+        {
+            "song": "pico",
+            "icon": "pico-icons",
+            "color": "CAE46C",
+            "story": true
+        },
+        {
+            "song": "philly nice",
+            "icon": "pico-icons",
+            "color": "CAE46C",
+            "story": true
+        },
+        {
+            "song": "blammed",
+            "icon": "pico-icons",
+            "color": "CAE46C",
+            "story": true
+        }
+    ],
+    "hide_from_story_mode": false,
+    "chars": [
+        "pico",
+        "bf",
+        "gf"
+    ],
+    "week_name": "Pico",
+    "difficulties": [
+        "easy",
+        "normal",
+        "hard"
+    ]
 }
