@@ -12,7 +12,7 @@ var last_anim:String = ""
 onready var PlayState = $"../"
 
 export(Color) var health_color = Color("A1A1A1")
-export(Texture) var health_icon = preload("res://Assets/Images/Icons/placeholder.png")
+export(Texture) var health_icon = preload("res://Assets/Images/Icons/face.png")
 export(bool) var dances_left_right = false
 export(float) var sing_duration = 4
 export(String) var death_character = "bf-dead"
@@ -37,7 +37,7 @@ func _ready():
 		dance(true)
 
 func play_anim(anim, force = false):
-	if name != "_" and anim_player.get_animation(anim) != null:
+	if (name != "_" or force) and anim_player.get_animation(anim) != null:
 		anim_finished = false
 		special_anim = false
 		last_anim = anim

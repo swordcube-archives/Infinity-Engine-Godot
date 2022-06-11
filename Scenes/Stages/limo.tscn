@@ -26,7 +26,6 @@ motion_scale = Vector2( 0.4, 0.4 )
 position = Vector2( -150, 480 )
 frames = ExtResource( 3 )
 animation = "background limo pink"
-frame = 1
 playing = true
 centered = false
 
@@ -37,7 +36,7 @@ motion_scale = Vector2( 0.4, 0.4 )
 position = Vector2( 130, 88 )
 frames = ExtResource( 2 )
 animation = "bg dancer sketch PINK"
-frame = 1
+frame = 24
 playing = true
 centered = false
 
@@ -45,7 +44,7 @@ centered = false
 position = Vector2( 500, 88 )
 frames = ExtResource( 2 )
 animation = "bg dancer sketch PINK"
-frame = 1
+frame = 24
 playing = true
 centered = false
 
@@ -53,7 +52,7 @@ centered = false
 position = Vector2( 872, 88 )
 frames = ExtResource( 2 )
 animation = "bg dancer sketch PINK"
-frame = 1
+frame = 24
 playing = true
 centered = false
 
@@ -61,7 +60,7 @@ centered = false
 position = Vector2( 1248, 88 )
 frames = ExtResource( 2 )
 animation = "bg dancer sketch PINK"
-frame = 1
+frame = 24
 playing = true
 centered = false
 
@@ -69,26 +68,25 @@ centered = false
 position = Vector2( 1624, 88 )
 frames = ExtResource( 2 )
 animation = "bg dancer sketch PINK"
-frame = 1
+frame = 24
 playing = true
 centered = false
 
 [node name="fgLimoLayer" type="ParallaxLayer" parent="parallax"]
 
 [node name="fgLimo" type="AnimatedSprite" parent="parallax/fgLimoLayer"]
-position = Vector2( 888, 1244 )
-z_index = 1
+position = Vector2( 888, 1036 )
 frames = ExtResource( 5 )
 animation = "Limo stage"
-frame = 3
+frame = 2
 playing = true
 centered = false
 
 [node name="dad_pos" type="Node2D" parent="."]
-position = Vector2( 1527, 1507 )
+position = Vector2( 1527, 1299 )
 
 [node name="gf_pos" type="Node2D" parent="."]
-position = Vector2( 1869, 1463 )
+position = Vector2( 1869, 1255 )
 
 [node name="bf_pos" type="Node2D" parent="."]
-position = Vector2( 2287, 1305 )
+position = Vector2( 2287, 1097 )

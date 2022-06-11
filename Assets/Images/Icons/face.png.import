@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/gf-pixel.png-5e559a93a537db88c51b66639096a95a.stex"
+path="res://.import/face.png-1b7f7739814321fa5b8ac27e327d87d9.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Images/Icons/gf-pixel.png"
-dest_files=[ "res://.import/gf-pixel.png-5e559a93a537db88c51b66639096a95a.stex" ]
+source_file="res://Assets/Images/Icons/face.png"
+dest_files=[ "res://.import/face.png-1b7f7739814321fa5b8ac27e327d87d9.stex" ]
 
 [params]
 

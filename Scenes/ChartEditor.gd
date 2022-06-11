@@ -434,7 +434,9 @@ func add_note(x, y):
 		current_note = data
 		current_note_node = note
 		
-		fortnite()
+		kill_me = charter.song.events[charter.selected_section].size() - 1
+		
+		_on_Event_item_selected(0)
 	else:
 		note = spawn_note(x, y, null, 0)
 		

@@ -5,57 +5,6 @@
 [ext_resource path="res://Assets/Images/Characters/gf/speakers/assets.res" type="SpriteFrames" id=3]
 [ext_resource path="res://Assets/Images/Icons/gf.png" type="Texture" id=4]
 
-[sub_resource type="Animation" id=140]
-resource_name = "cheer"
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:animation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ "GF Cheer" ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath(".:playing")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ true ]
-}
-tracks/2/type = "value"
-tracks/2/path = NodePath(".:frame")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ 0 ]
-}
-tracks/3/type = "value"
-tracks/3/path = NodePath(".:offset")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 10, -4 ) ]
-}
-
 [sub_resource type="Animation" id=134]
 resource_name = "danceLeft"
 tracks/0/type = "value"
@@ -258,6 +207,57 @@ tracks/3/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ Vector2( -70, 0 ) ]
+}
+
+[sub_resource type="Animation" id=140]
+resource_name = "hey"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "GF Cheer" ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:playing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath(".:offset")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 10, -4 ) ]
 }
 
 [sub_resource type="Animation" id=141]
@@ -530,17 +530,18 @@ playing = true
 [node name="girl" type="AnimatedSprite" parent="."]
 position = Vector2( -6, -438 )
 frames = ExtResource( 1 )
-animation = "danceLeft"
-frame = 14
+animation = "GF Cheer"
+frame = 20
 playing = true
+offset = Vector2( 10, -4 )
 
 [node name="anim" type="AnimationPlayer" parent="."]
 root_node = NodePath("../girl")
-anims/cheer = SubResource( 140 )
 anims/danceLeft = SubResource( 134 )
 anims/danceRight = SubResource( 135 )
 anims/hairBlow = SubResource( 143 )
 anims/hairFall = SubResource( 142 )
+anims/hey = SubResource( 140 )
 anims/scared = SubResource( 141 )
 anims/singDOWN = SubResource( 138 )
 anims/singLEFT = SubResource( 136 )

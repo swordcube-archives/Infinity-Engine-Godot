@@ -1,5 +1,8 @@
 extends Event
 
 func on_event():
-	print(params["World Zoom"])
-	print(params["HUD Zoom"])
+	var world_zoom:float = float(params["World Zoom"])
+	var hud_zoom:float = float(params["HUD Zoom"])
+
+	print(world_zoom)
+	print(hud_zoom)

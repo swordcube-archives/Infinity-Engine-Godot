@@ -36,7 +36,7 @@ rect_pivot_offset = Vector2( 295, 0 )
 color = Color( 0.25098, 0.647059, 0.819608, 1 )
 
 [node name="IconP2" type="Sprite" parent="."]
-position = Vector2( 21, -78 )
+position = Vector2( 27, -78 )
 texture = ExtResource( 3 )
 centered = false
 offset = Vector2( -150, 0 )
@@ -44,7 +44,7 @@ hframes = 3
 script = ExtResource( 2 )
 
 [node name="IconP1" type="Sprite" parent="."]
-position = Vector2( -19, -78 )
+position = Vector2( -21, -78 )
 texture = ExtResource( 4 )
 centered = false
 flip_h = true

@@ -41,6 +41,8 @@ var can_pause:bool = true
 var countdown_active:bool = true
 var SONG:Dictionary = GameplaySettings.SONG.song
 
+var events:Array = []
+
 var show_rating:bool = true
 var show_combo:bool = true
 
@@ -145,6 +147,9 @@ func _ready():
 	var key_count:int = 4
 	if "keyCount" in SONG:
 		key_count = SONG["keyCount"]
+		
+	if "events" in SONG:
+		events = SONG.events.duplicate()
 		
 	GameplaySettings.key_count = key_count
 	
@@ -426,6 +431,19 @@ func _physics_process(delta):
 	for strum in opponent_strums.get_children():
 		if strum.anim_finished:
 			strum.play_anim("static")
+			
+	var event_index = 0
+	for e in events:
+		if e != []:
+			var event = e[0]
+			if Conductor.song_position >= event[0]:
+				event[1].PlayState = self
+				event[1].on_event()
+				events.remove(event_index)
+		else:
+			events.remove(event_index)
+			
+		event_index += 1
 		
 	var index = 0
 	# yes, i did take this note spawning code from
@@ -617,8 +635,8 @@ func _process(delta):
 		
 	health_bar.color2.rect_scale.x = display_health
 		
-	iconP2.position.x = 21 - ((display_health - 1) * 295)
-	iconP1.position.x = -19 - ((display_health - 1) * 295)
+	iconP2.position.x = 27 - ((display_health - 1) * 295)
+	iconP1.position.x = -21 - ((display_health - 1) * 295)
 	
 	var health_percentage:int = floor((display_health / 2) * 100)
 	

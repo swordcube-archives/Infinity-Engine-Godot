@@ -1,5 +1,7 @@
 extends Modchart
 
+var heyEvent = load("res://Scenes/Events/Hey!.tscn").instance()
+
 onready var PlayState = $"../"
 
 func _ready():
@@ -11,8 +13,11 @@ func _ready():
 func beat_hit():
 	if Conductor.cur_beat % 16 == 15 and Conductor.cur_beat > 16 and Conductor.cur_beat < 48:
 		if PlayState.bf:
-			PlayState.trigger_event("Hey!", "bf")
+			heyEvent.params["Character"] = "bf"
+			heyEvent.PlayState = PlayState
+			heyEvent.on_event()
 		
 		if PlayState.dad:
-			PlayState.dad.play_anim('cheer', true)
-			PlayState.dad.special_anim = true
+			heyEvent.params["Character"] = "dad"
+			heyEvent.PlayState = PlayState
+			heyEvent.on_event()
