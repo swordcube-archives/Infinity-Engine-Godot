@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://assets/images/title/fnfLogo.res" type="SpriteFrames" id=1]
+[ext_resource path="res://assets/images/title/gfTitle.res" type="SpriteFrames" id=2]
+[ext_resource path="res://assets/images/title/titleEnter.res" type="SpriteFrames" id=3]
+[ext_resource path="res://scenes/TitleScreen.gd" type="Script" id=4]
+
+[node name="TitleScreen" type="Node2D"]
+script = ExtResource( 4 )
+
+[node name="bg" type="ColorRect" parent="."]
+margin_right = 1280.0
+margin_bottom = 720.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="logo" type="AnimatedSprite" parent="."]
+position = Vector2( -150, -100 )
+frames = ExtResource( 1 )
+animation = "bump"
+centered = false
+
+[node name="gfDance" type="AnimatedSprite" parent="."]
+position = Vector2( 512, 50.4 )
+frames = ExtResource( 2 )
+animation = "danceLeft"
+centered = false
+
+[node name="titleText" type="AnimatedSprite" parent="."]
+position = Vector2( 100, 576 )
+frames = ExtResource( 3 )
+animation = "Press Enter to Begin"
+centered = false

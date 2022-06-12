@@ -1,0 +1,29 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://assets/sounds/menus/scrollMenu.ogg" type="AudioStream" id=1]
+[ext_resource path="res://assets/sounds/menus/cancelMenu.ogg" type="AudioStream" id=2]
+[ext_resource path="res://assets/sounds/menus/confirmMenu.ogg" type="AudioStream" id=3]
+[ext_resource path="res://scenes/audio/AudioHandler.gd" type="Script" id=4]
+[ext_resource path="res://scenes/audio/AudioPlayer.gd" type="Script" id=5]
+[ext_resource path="res://assets/sounds/flixel_beep.ogg" type="AudioStream" id=6]
+
+[node name="AudioHandler" type="Node"]
+script = ExtResource( 4 )
+
+[node name="SFX" type="Node" parent="."]
+
+[node name="flixelBeep" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource( 6 )
+script = ExtResource( 5 )
+
+[node name="scrollMenu" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource( 1 )
+script = ExtResource( 5 )
+
+[node name="cancelMenu" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource( 2 )
+script = ExtResource( 5 )
+
+[node name="confirmMenu" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource( 3 )
+script = ExtResource( 5 )
