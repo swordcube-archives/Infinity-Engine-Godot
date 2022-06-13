@@ -11,7 +11,8 @@ var curBeat:int = 0
 var curStep:int = 0
 
 # basically amount of MS you can have for safe frames
-var safeZoneOffset:float = 166
+var safeFrames:int = 15
+var safeZoneOffset:float = (safeFrames / 60.0) * 1000.0
 
 # funny array of [position_in_song, bpm, step_change_is_at]
 var bpmChanges:Array = []
@@ -40,16 +41,17 @@ func _process(_delta):
 	curStep = lastChange[2] + floor((songPosition - lastChange[0]) / timeBetweenSteps)
 	curBeat = floor(curStep / 4)
 	
-	if curStep != oldStep and curStep > oldStep:
+	if curStep > 0 and curStep != oldStep and curStep > oldStep:
 		emit_signal("stepHit")
-	if curBeat != oldBeat and curBeat > oldBeat:
+	if curBeat > 0 and curBeat != oldBeat and curBeat > oldBeat:
 		emit_signal("beatHit")
 
 func recalculateValues():
 	timeBetweenBeats = ((60 / bpm) * 1000)
 	timeBetweenSteps = timeBetweenBeats / 4
+	safeZoneOffset = (safeFrames / 60.0) * 1000.0
 
-func change_bpm(newBPM, changes = []):
+func changeBPM(newBPM, changes = []):
 	if len(changes) == 0:
 		changes = [[0, newBPM, 0]]
 	

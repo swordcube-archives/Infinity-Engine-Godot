@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Inst.ogg-b30aeb32ad6a2c0030ba1c9822a9933d.oggstr"
+
+[deps]
+
+source_file="res://assets/songs/m.i.l.f/Inst.ogg"
+dest_files=[ "res://.import/Inst.ogg-b30aeb32ad6a2c0030ba1c9822a9933d.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

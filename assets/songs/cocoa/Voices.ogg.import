@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Voices.ogg-c835bafa948e1a5fdfeca6e2498cd0bf.oggstr"
+
+[deps]
+
+source_file="res://assets/songs/cocoa/Voices.ogg"
+dest_files=[ "res://.import/Voices.ogg-c835bafa948e1a5fdfeca6e2498cd0bf.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

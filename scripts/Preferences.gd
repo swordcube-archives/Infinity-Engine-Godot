@@ -8,6 +8,9 @@ var defaultSaveData:Dictionary = {
 	"middlescroll": false,
 	"custom-scroll-speed": false,
 	"scroll-speed": 0,
+	"note-offset": 0,
+	"ui-skin": "Arrows",
+	"icon-bounce-style": "Default"
 }
 # ^^^ MODIFY THIS!
 

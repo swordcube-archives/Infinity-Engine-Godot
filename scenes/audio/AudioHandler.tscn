@@ -27,3 +27,9 @@ script = ExtResource( 5 )
 [node name="confirmMenu" type="AudioStreamPlayer" parent="SFX"]
 stream = ExtResource( 3 )
 script = ExtResource( 5 )
+
+[node name="Song" type="Node" parent="."]
+
+[node name="Inst" type="AudioStreamPlayer" parent="Song"]
+
+[node name="Voices" type="AudioStreamPlayer" parent="Song"]

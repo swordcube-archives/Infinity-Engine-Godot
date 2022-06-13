@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Inst.ogg-3c57aa4810da3e66b7fd573e80471fcc.oggstr"
+
+[deps]
+
+source_file="res://assets/songs/stress/Inst.ogg"
+dest_files=[ "res://.import/Inst.ogg-3c57aa4810da3e66b7fd573e80471fcc.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

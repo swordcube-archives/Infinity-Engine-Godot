@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Inst.ogg-2d6318378b868940f471d351b06d2562.oggstr"
+
+[deps]
+
+source_file="res://assets/songs/eggnog/Inst.ogg"
+dest_files=[ "res://.import/Inst.ogg-2d6318378b868940f471d351b06d2562.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

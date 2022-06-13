@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scenes/ui/strums/StrumBase.gd" type="Script" id=1]
+[ext_resource path="res://assets/images/ui/skins/arrows/strums.res" type="SpriteFrames" id=2]
+
+[node name="StrumBase" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="spr" type="AnimatedSprite" parent="."]
+frames = ExtResource( 2 )
+animation = "A static"
+playing = true
+
+[node name="Sustains" type="ColorRect" parent="."]
+margin_left = -80.0
+margin_right = 80.0
+margin_bottom = 1080.0
+rect_clip_content = true
+color = Color( 0, 0, 0, 0 )
+
+[node name="Notes" type="Node2D" parent="."]
+
+[connection signal="animation_finished" from="spr" to="." method="_on_spr_animation_finished"]

@@ -6,8 +6,9 @@ onready var titleText = $titleText
 
 func _ready():
 	Conductor.songPosition = 0.0
-	Conductor.change_bpm(102)
+	Conductor.changeBPM(102)
 	Conductor.connect("beatHit", self, "beatHit")
+	titleText.play("idle")
 	
 func _process(delta):
 	Conductor.songPosition += (delta * 1000)

@@ -8,6 +8,16 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Node2D",
+"class": "Note",
+"language": "GDScript",
+"path": "res://scenes/ui/notes/Note.gd"
+} ]
+_global_script_class_icons={
+"Note": ""
+}
+
 [application]
 
 config/name="Infinity Engine"
@@ -29,6 +39,11 @@ AudioHandler="*res://scenes/audio/AudioHandler.tscn"
 Preferences="*res://scripts/Preferences.gd"
 VolumeControl="*res://scenes/ui/VolumeControl.tscn"
 InfoDisplay="*res://scenes/ui/InfoDisplay.tscn"
+Paths="*res://scripts/Paths.gd"
+CoolUtil="*res://scripts/CoolUtil.gd"
+PlayStateSettings="*res://scripts/PlayStateSettings.gd"
+Scenes="*res://scripts/Scenes.gd"
+MathUtil="*res://scripts/MathUtil.gd"
 
 [display]
 
@@ -153,6 +168,26 @@ charting_sustain={
 charting_sustain_down={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":81,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+gameplay_A={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":83,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+gameplay_B={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":68,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+gameplay_C={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":75,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+gameplay_D={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":76,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
 

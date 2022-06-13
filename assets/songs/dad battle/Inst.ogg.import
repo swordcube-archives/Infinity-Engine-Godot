@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Inst.ogg-46f9575580b9f7bebf47b430d1ba7a7b.oggstr"
+
+[deps]
+
+source_file="res://assets/songs/dad battle/Inst.ogg"
+dest_files=[ "res://.import/Inst.ogg-46f9575580b9f7bebf47b430d1ba7a7b.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
