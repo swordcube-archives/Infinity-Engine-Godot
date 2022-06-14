@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://assets/images/title/fnfLogo.res" type="SpriteFrames" id=1]
 [ext_resource path="res://assets/images/title/gfTitle.res" type="SpriteFrames" id=2]
 [ext_resource path="res://assets/images/title/titleEnter.res" type="SpriteFrames" id=3]
 [ext_resource path="res://scenes/TitleScreen.gd" type="Script" id=4]
+[ext_resource path="res://assets/fonts/FNF_Bold1.font" type="BitmapFont" id=5]
+[ext_resource path="res://assets/images/title/newgrounds.png" type="Texture" id=6]
 
 [node name="TitleScreen" type="Node2D"]
 script = ExtResource( 4 )
@@ -31,5 +33,30 @@ centered = false
 [node name="titleText" type="AnimatedSprite" parent="."]
 position = Vector2( 100, 576 )
 frames = ExtResource( 3 )
-animation = "pressed"
+animation = "idle"
 centered = false
+
+[node name="cover" type="ColorRect" parent="."]
+margin_right = 1280.0
+margin_bottom = 720.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="titleQuotes" type="Label" parent="."]
+margin_left = -640.0
+margin_top = 184.0
+margin_right = 1920.0
+margin_bottom = 752.0
+custom_constants/line_spacing = -25
+custom_fonts/font = ExtResource( 5 )
+align = 1
+uppercase = true
+
+[node name="ngLogo" type="Sprite" parent="."]
+visible = false
+position = Vector2( 640, 374.4 )
+scale = Vector2( 0.8, 0.8 )
+texture = ExtResource( 6 )
+offset = Vector2( 0, 175 )

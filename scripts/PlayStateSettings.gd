@@ -1,7 +1,7 @@
 extends Node
 
 var downScroll:bool = true
-var scrollSpeed:float = 3.2
+var scrollSpeed:float = 4.0
 
 var SONG = CoolUtil.getJSON(Paths.songJSON("stress", "hard"))
 

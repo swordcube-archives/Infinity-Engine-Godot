@@ -18,7 +18,17 @@ var songScore:int = 0
 var songMisses:int = 0
 var songAccuracy:float = 0.0
 
+var totalNotes:int = 0
+var totalHit:float = 0.0
+
+var combo:int = 0
+
 var noteDataArray:Array = []
+
+func sortAscending(a, b):
+	if a[0] < b[0]:
+		return true
+	return false
 
 func _init():
 	PlayStateSettings.getSkin()
@@ -62,6 +72,10 @@ func _ready():
 				var strumTime:float = float(note[0]) + (offset * PlayStateSettings.songMultiplier)
 				
 				noteDataArray.push_back([strumTime + PlayStateSettings.songMultiplier, note[1], note[2], bool(section["mustHitSection"]), int(note[3]), type, bool(section["altAnim"])])
+				
+	noteDataArray.sort_custom(self, "sortAscending")
+	
+	UI.healthBar.updateText()
 				
 	var countdownTween:Tween = Tween.new()
 	HUD.add_child(countdownTween)
@@ -161,6 +175,7 @@ func _process(delta):
 				strum = UI.playerStrums.get_child(int(note[1]) % SONG["keyCount"])
 				
 			var newNote:Node2D = load("res://scenes/ui/notes/Default.tscn").instance()
+			newNote.noteData = int(note[1]) % SONG["keyCount"]
 			newNote.strumTime = float(note[0])
 			newNote.direction = strum.direction
 			newNote.downScroll = PlayStateSettings.downScroll
@@ -171,6 +186,7 @@ func _process(delta):
 			var susLength:int = floor(note[2] / Conductor.timeBetweenSteps)
 			for susNote in susLength:
 				var sustainNote:Node2D = load("res://scenes/ui/notes/Default.tscn").instance()
+				sustainNote.noteData = newNote.noteData
 				sustainNote.strumTime = float(note[0]) + (Conductor.timeBetweenSteps * susNote) + (Conductor.timeBetweenSteps / MathUtil.roundDecimal(PlayStateSettings.scrollSpeed, 2))
 				sustainNote.direction = strum.direction
 				sustainNote.downScroll = PlayStateSettings.downScroll
@@ -196,9 +212,6 @@ func endSong():
 	AudioHandler.voices.stop()
 			
 func beatHit():
-	if countdownActive:
-		return
-		
 	if Conductor.curBeat % 4 == 0:
 		HUD.scale += Vector2(0.05, 0.05)
 		HUD.offset.x = (HUD.scale.x - 1) * -640

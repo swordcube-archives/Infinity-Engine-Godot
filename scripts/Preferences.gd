@@ -14,6 +14,12 @@ var defaultSaveData:Dictionary = {
 }
 # ^^^ MODIFY THIS!
 
+var wentThruTitle:bool = false
+
+func _ready():
+	if get_tree().current_scene.name != "TitleScreen":
+		wentThruTitle = true
+
 # USE THIS TO GET OPTIONS AND SET OPTIONS
 func getOption(option:String):
 	if saveData.has(option):

@@ -11,6 +11,8 @@ export(float) var strumTime:float = 0.0
 
 var mustPress:bool = false
 
+var noteData:int = 0
+
 var isSustainNote:bool = false
 var isEndOfSustain:bool = false
 

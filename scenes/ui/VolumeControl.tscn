@@ -9,6 +9,7 @@ use_filter = true
 font_data = ExtResource( 2 )
 
 [node name="VolumeControl" type="CanvasLayer"]
+pause_mode = 2
 layer = 128
 script = ExtResource( 1 )
 

@@ -28,13 +28,20 @@ func _ready():
 			iconP1.position.y += 75
 			
 	updateText()
+	
+func calculateAccuracy():
+	if PlayState.totalNotes > 0 and PlayState.totalHit > 0.0:
+		PlayState.songAccuracy = (PlayState.totalHit / PlayState.totalNotes)
+	else:
+		PlayState.songAccuracy = 0
 			
 func updateText():
+	calculateAccuracy()
 	scoreTxt.text = (
 		"Score: " + str(PlayState.songScore) + " // " +
 		"Misses: " + str(PlayState.songMisses) + " // " +
-		"Accuracy: " + str(PlayState.songAccuracy) + "% // " +
-		"Rank: " + "?"
+		"Accuracy: " + str(MathUtil.roundDecimal(PlayState.songAccuracy * 100, 2)) + "% // " +
+		"Rank: " + Ranking.getRank(MathUtil.roundDecimal(PlayState.songAccuracy * 100, 2))
 	)
 	
 func beatHit():

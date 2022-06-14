@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://assets/fonts/FNF_Bold1.font" type="BitmapFont" id=1]
+[ext_resource path="res://assets/fonts/FNF_Bold2.font" type="BitmapFont" id=2]
+[ext_resource path="res://scenes/ui/Alphabet.gd" type="Script" id=3]
+
+[sub_resource type="Animation" id=1]
+resource_name = "default"
+length = 0.4
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:custom_fonts/font")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ ExtResource( 1 ), ExtResource( 2 ) ]
+}
+
+[node name="Alphabet" type="Node2D"]
+position = Vector2( 90, 288 )
+script = ExtResource( 3 )
+
+[node name="Label" type="Label" parent="."]
+margin_right = 40.0
+margin_bottom = 14.0
+custom_fonts/font = ExtResource( 2 )
+text = "ugh"
+uppercase = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../Label")
+anims/default = SubResource( 1 )

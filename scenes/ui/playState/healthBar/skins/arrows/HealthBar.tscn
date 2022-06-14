@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://scenes/ui/playState/HealthBar.gd" type="Script" id=1]
 [ext_resource path="res://assets/images/ui/healthBar.png" type="Texture" id=2]
 [ext_resource path="res://assets/images/icons/bf.png" type="Texture" id=3]
 [ext_resource path="res://assets/images/icons/dad.png" type="Texture" id=4]
 [ext_resource path="res://assets/fonts/vcr.ttf" type="DynamicFontData" id=5]
+[ext_resource path="res://scripts/HealthIcon.gd" type="Script" id=6]
 
 [sub_resource type="DynamicFont" id=1]
 outline_size = 1
@@ -23,7 +24,7 @@ margin_left = -296.0
 margin_top = -5.0
 margin_right = 296.0
 margin_bottom = 5.0
-color = Color( 0.470588, 0.470588, 0.470588, 1 )
+color = Color( 0.658824, 0.384314, 0.776471, 1 )
 
 [node name="bar2" type="ColorRect" parent="."]
 margin_left = -296.0
@@ -32,12 +33,14 @@ margin_right = 296.0
 margin_bottom = 5.0
 rect_scale = Vector2( 0.5, 1 )
 rect_pivot_offset = Vector2( 592, 0 )
+color = Color( 0.192157, 0.690196, 0.819608, 1 )
 
 [node name="iconP2" type="Sprite" parent="."]
 position = Vector2( -48, -75 )
 texture = ExtResource( 4 )
 offset = Vector2( 0, 75 )
 hframes = 3
+script = ExtResource( 6 )
 
 [node name="iconP1" type="Sprite" parent="."]
 position = Vector2( 48, -75 )
@@ -45,6 +48,7 @@ texture = ExtResource( 3 )
 offset = Vector2( 0, 75 )
 flip_h = true
 hframes = 3
+script = ExtResource( 6 )
 
 [node name="scoreTxt" type="Label" parent="."]
 margin_left = -389.0

@@ -44,7 +44,7 @@ func _process(delta):
 			
 	if sustains:
 		for note in sustains.get_children():
-			note.position.x = (sustains.rect_size.x / 2) - 3
+			note.position.x = (sustains.rect_size.x / 2)
 			
 			if note.downScroll:
 				note.position.y = 0.45 * (Conductor.songPosition - note.strumTime) * scrollSpeed
@@ -71,7 +71,7 @@ func _process(delta):
 			if note.mustPress:
 				sustains.rect_clip_content = Input.is_action_pressed("gameplay_" + direction)
 					
-				if Input.is_action_pressed("gameplay_" + direction) and Conductor.songPosition >= note.strumTime + (Conductor.safeZoneOffset / 4):
+				if Input.is_action_pressed("gameplay_" + direction) and Conductor.songPosition >= note.strumTime + (Conductor.safeZoneOffset / 8):
 					PlayState.health += 0.023
 					AudioHandler.voices.volume_db = 0
 					PlayState.updateHealth()
@@ -81,6 +81,7 @@ func _process(delta):
 					
 				if Conductor.songPosition >= note.strumTime + Conductor.safeZoneOffset:
 					PlayState.health += -0.0475
+					PlayState.combo = 0
 					AudioHandler.voices.volume_db = -9999
 					PlayState.updateHealth()
 					PlayState.UI.healthBar.updateText()
@@ -89,6 +90,7 @@ func _process(delta):
 			else:
 				if Conductor.songPosition >= note.strumTime + (Conductor.safeZoneOffset / 4):
 					playAnim("confirm")
+					AudioHandler.voices.volume_db = 0
 					sustains.remove_child(note)
 					note.queue_free()
 		
@@ -105,19 +107,64 @@ func _process(delta):
 					if Input.is_action_just_pressed("gameplay_" + direction):
 						if Conductor.songPosition >= note.strumTime - (Conductor.safeZoneOffset * 1):
 							PlayState.health += 0.023
+							PlayState.combo += 1
+							PlayState.totalNotes += 1
+							
+							var newRating:Node2D = PlayState.UI.ratingTemplate.duplicate()
+							newRating.position = Vector2(685, 230)
+							newRating.combo = CoolUtil.numToComboStr(PlayState.combo)
+							PlayState.UI.add_child(newRating)
+							
+							var rating:String = Ranking.judgeNote(note.strumTime)
+							var texture:StreamTexture
+							match rating:
+								"marvelous":
+									texture = PlayStateSettings.currentUiSkin.marvelous_tex
+								"sick":
+									texture = PlayStateSettings.currentUiSkin.sick_tex
+								"good":
+									texture = PlayStateSettings.currentUiSkin.good_tex
+								"bad":
+									texture = PlayStateSettings.currentUiSkin.bad_tex
+								"shit":
+									texture = PlayStateSettings.currentUiSkin.shit_tex
+									
+							var rankingShit = Ranking.judgements[rating]
+							PlayState.songScore += rankingShit["score"]
+							PlayState.totalHit += rankingShit["mod"]
+							if rankingShit.has("health"):
+								PlayState.health += rankingShit["health"]
+								
+							if rankingShit.has("noteSplash"):
+								var strum = PlayState.UI.playerStrums.get_child(note.noteData)
+								var noteSplash:Node2D = load("res://scenes/ui/playState/NoteSplash.tscn").instance()
+								noteSplash.direction = strum.direction
+								noteSplash.position = strum.global_position
+								PlayState.UI.add_child(noteSplash)
+							
+							newRating.rating.texture = texture
+							
 							AudioHandler.voices.volume_db = 0
 							PlayState.updateHealth()
 							PlayState.UI.healthBar.updateText()
 							playAnim("confirm")
 							notes.remove_child(note)
 							note.queue_free()
+							
+							for coolNote in notes.get_children():
+								if ((coolNote.strumTime - note.strumTime) < 2) and coolNote.noteData == note.noteData:
+									print('found a stacked/really close note ' + str(coolNote.strumTime - note.strumTime))
+									# just fuckin remove it since it's a stacked note and shouldn't be there
+									notes.remove_child(coolNote)
+									note.queue_free()
 						
 						dontHit = true
 						
 				if Conductor.songPosition >= note.strumTime + (Conductor.safeZoneOffset * 1):
-					print("MISS!")
 					PlayState.health += -0.0475
 					PlayState.songMisses += 1
+					PlayState.combo = 0
+					PlayState.totalNotes += 1
 					AudioHandler.voices.volume_db = -9999
 					PlayState.updateHealth()
 					PlayState.UI.healthBar.updateText()
@@ -126,6 +173,7 @@ func _process(delta):
 			else:						
 				if Conductor.songPosition >= note.strumTime:
 					playAnim("confirm")
+					AudioHandler.voices.volume_db = 0
 					notes.remove_child(note)
 					note.queue_free()
 

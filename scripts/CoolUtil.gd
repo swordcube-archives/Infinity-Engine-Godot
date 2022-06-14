@@ -4,6 +4,16 @@ var nullRes = load("res://assets/images/null.res")
 
 var screenWidth = ProjectSettings.get_setting("display/window/size/width")
 var screenHeight = ProjectSettings.get_setting("display/window/size/height")
+
+func numToComboStr(num:int):
+	var numStr:String = str(num)
+	match len(numStr):
+		1:
+			numStr = "00" + numStr
+		2:
+			numStr = "0" + numStr
+			
+	return numStr
 	
 func getTXT(path):
 	var text_array = []

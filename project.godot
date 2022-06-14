@@ -10,12 +10,24 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Node2D",
+"class": "FreeplaySong",
+"language": "GDScript",
+"path": "res://scenes/ui/freeplay/SongTemplate.gd"
+}, {
+"base": "Node2D",
 "class": "Note",
 "language": "GDScript",
 "path": "res://scenes/ui/notes/Note.gd"
+}, {
+"base": "Node",
+"class": "Ranking",
+"language": "GDScript",
+"path": "res://scripts/Ranking.gd"
 } ]
 _global_script_class_icons={
-"Note": ""
+"FreeplaySong": "",
+"Note": "",
+"Ranking": ""
 }
 
 [application]
@@ -37,6 +49,7 @@ default_bus_layout=""
 Conductor="*res://scripts/Conductor.gd"
 AudioHandler="*res://scenes/audio/AudioHandler.tscn"
 Preferences="*res://scripts/Preferences.gd"
+Transition="*res://scenes/ui/Transition.tscn"
 VolumeControl="*res://scenes/ui/VolumeControl.tscn"
 InfoDisplay="*res://scenes/ui/InfoDisplay.tscn"
 Paths="*res://scripts/Paths.gd"

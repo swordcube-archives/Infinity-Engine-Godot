@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://assets/sounds/menus/scrollMenu.ogg" type="AudioStream" id=1]
 [ext_resource path="res://assets/sounds/menus/cancelMenu.ogg" type="AudioStream" id=2]
@@ -6,8 +6,12 @@
 [ext_resource path="res://scenes/audio/AudioHandler.gd" type="Script" id=4]
 [ext_resource path="res://scenes/audio/AudioPlayer.gd" type="Script" id=5]
 [ext_resource path="res://assets/sounds/flixel_beep.ogg" type="AudioStream" id=6]
+[ext_resource path="res://assets/music/freakyMenu.ogg" type="AudioStream" id=7]
+[ext_resource path="res://assets/music/breakfast.ogg" type="AudioStream" id=8]
+[ext_resource path="res://assets/music/optionsMenu.ogg" type="AudioStream" id=9]
 
 [node name="AudioHandler" type="Node"]
+pause_mode = 2
 script = ExtResource( 4 )
 
 [node name="SFX" type="Node" parent="."]
@@ -33,3 +37,14 @@ script = ExtResource( 5 )
 [node name="Inst" type="AudioStreamPlayer" parent="Song"]
 
 [node name="Voices" type="AudioStreamPlayer" parent="Song"]
+
+[node name="Music" type="Node" parent="."]
+
+[node name="freakyMenu" type="AudioStreamPlayer" parent="Music"]
+stream = ExtResource( 7 )
+
+[node name="breakfast" type="AudioStreamPlayer" parent="Music"]
+stream = ExtResource( 8 )
+
+[node name="optionsMenu" type="AudioStreamPlayer" parent="Music"]
+stream = ExtResource( 9 )
