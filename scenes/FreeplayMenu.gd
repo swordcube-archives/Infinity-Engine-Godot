@@ -1,12 +1,22 @@
 extends Node2D
 
 var songTemplate:FreeplaySong = load("res://scenes/ui/freeplay/SongTemplate.tscn").instance()
+
+onready var bg = $BG
 onready var songUtil = $SongUtil
+onready var songs = $Songs
+
+onready var scoreText = $ScoreText
+onready var scoreBG = $ScoreBG
+onready var diffText = $DiffText
 
 var songMakerDifficultyList:Array = []
 
 var songColors:Array = []
 var songDifficulties:Array = []
+
+var curSelected:int = 0
+var curDifficulty:int = 0
 
 func _ready():
 	AudioHandler.playMusic("freakyMenu")
@@ -14,38 +24,104 @@ func _ready():
 	if not OS.is_debug_build():
 		$AddNewSong.visible = false
 		
-	$SongUtil.visible = false
+	songUtil.visible = false
 	
 	var txt = CoolUtil.getTXT(Paths.txt("data/freeplaySongs"))
 	var i:int = 0
 	for item in txt:
 		var split = item.split(":")
 		if len(item) > 0:
-			print(split)
+			if OS.is_debug_build() or not (range(split.size()).has(4) and split[4] == "DEBUG_ONLY"):
+				songColors.append(split[2])
+				songDifficulties.append(split[3].split(","))
+				
+				var newSong:FreeplaySong = songTemplate.duplicate()
+				newSong.position.x = (10 * i) + 30
+				newSong.position.y = (70 * i) + 30
+				songs.add_child(newSong)
+				
+				newSong.label.text = split[0]
+				newSong.label.updateText()
+				
+				newSong.isMenuItem = true
+				newSong.targetY = i
+				
+				newSong.icon.texture = load(Paths.healthIcon(split[1]))
+				newSong.icon.position.x = newSong.label.label.rect_size.x + 70
+				
+				i += 1
 			
-			var newSong:FreeplaySong = songTemplate.duplicate()
-			newSong.position.x = (10 * i) + 30
-			newSong.position.y = (70 * i) + 30
-			add_child(newSong)
-			
-			newSong.label.text = split[0]
-			newSong.label.updateText()
-			
-			newSong.isMenuItem = true
-			newSong.targetY = i
-			
-			newSong.icon.texture = load(Paths.healthIcon(split[1]))
-			newSong.icon.position.x = newSong.label.label.rect_size.x + 70
-			
-			i += 1
+	changeSelection()
+	changeDifficulty()
+	positionHighscore()
 
 func _process(delta):
-	if not songUtil.visible and Input.is_action_just_pressed("ui_back"):
-		Scenes.switchScene("MainMenu")
-		AudioHandler.playSFX("cancelMenu")
+	bg.modulate = lerp(bg.modulate, Color(songColors[curSelected]), MathUtil.getLerpValue(0.045, delta))
+	
+	positionHighscore()
+	
+	if not songUtil.visible:
+		if Input.is_action_just_pressed("ui_back"):
+			Scenes.switchScene("MainMenu")
+			AudioHandler.playSFX("cancelMenu")
+			
+		if Input.is_action_just_pressed("ui_up"):
+			changeSelection(-1)
+			
+		if Input.is_action_just_pressed("ui_down"):
+			changeSelection(1)
+			
+		if Input.is_action_just_pressed("ui_left"):
+			changeDifficulty(-1)
+			
+		if Input.is_action_just_pressed("ui_right"):
+			changeDifficulty(1)
+			
+		if Input.is_action_just_pressed("ui_accept"):
+			AudioHandler.stopMusic()
+			PlayStateSettings.SONG = CoolUtil.getJSON(Paths.songJSON(songs.get_child(curSelected).label.text, songDifficulties[curSelected][curDifficulty]))
+			Scenes.switchScene("PlayState")
+		
+func changeSelection(change:int = 0):
+	curSelected += change
+	if curSelected < 0:
+		curSelected = songs.get_child_count() - 1
+	if curSelected > songs.get_child_count() - 1:
+		curSelected = 0
+		
+	for i in songs.get_child_count():
+		songs.get_child(i).targetY = i - curSelected
+		if curSelected == i:
+			songs.get_child(i).modulate.a = 1
+		else:
+			songs.get_child(i).modulate.a = 0.6
+			
+	AudioHandler.playSFX("scrollMenu")
+	changeDifficulty()
+			
+func changeDifficulty(change:int = 0):
+	curDifficulty += change
+	if curDifficulty < 0:
+		curDifficulty = songDifficulties[curSelected].size() - 1
+	if curDifficulty > songDifficulties[curSelected].size() - 1:
+		curDifficulty = 0
+		
+	diffText.text = "< "+songDifficulties[curSelected][curDifficulty].to_upper()+" >"	
+	yield(get_tree().create_timer(0.01), "timeout")
+	positionHighscore()
+	
+func positionHighscore():
+	scoreText.rect_size.x = 0
+	diffText.rect_size.x = 0
+	
+	scoreText.rect_position.x = CoolUtil.screenWidth - scoreText.rect_size.x - 6
+	scoreBG.rect_scale.x = CoolUtil.screenWidth - scoreText.rect_position.x + 6
+	scoreBG.rect_position.x = CoolUtil.screenWidth - scoreBG.rect_scale.x / 300
+	diffText.rect_position.x = scoreBG.rect_position.x - (scoreBG.rect_scale.x / 2)
+	diffText.rect_position.x -= diffText.rect_size.x / 2
 
 func _on_AddNewSong_pressed():
-	$SongUtil.visible = !$SongUtil.visible
+	songUtil.visible = !songUtil.visible
 
 func _on_AddDiff_pressed():
 	var d = $SongUtil/DifficultyName.text

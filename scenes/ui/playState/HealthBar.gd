@@ -51,10 +51,21 @@ func beatHit():
 func _process(delta):
 	percent = MathUtil.boundTo(health / 2, minHealth, maxHealth) * 100.0
 	bar2.rect_scale.x = percent / 100.0
+
+	if percent <= 20:
+		iconP2.switchTo("winning")
+		iconP1.switchTo("losing")
+	else:
+		iconP2.switchTo("normal")
+		iconP1.switchTo("normal")
+		
+	if percent >= 80:
+		iconP2.switchTo("losing")
+		iconP1.switchTo("winning")
 	
 	iconP2.scale = lerp(Vector2.ONE, iconP2.scale, MathUtil.getLerpValue(0.8, delta))
 	iconP1.scale = iconP2.scale
 	
 	var iconOffset:int = 26
-	iconP1.position.x = -(bar1.rect_size.x / 2.75) + (bar1.rect_size.x * (MathUtil.remapToRange(percent, 0, 100, 100, 0) * 0.01)) + (150 * iconP1.scale.x - 150) / 2 - iconOffset
-	iconP2.position.x = -(bar1.rect_size.x / 2.75) + (bar1.rect_size.x * (MathUtil.remapToRange(percent, 0, 100, 100, 0) * 0.01)) - (150 * iconP2.scale.x) / 2 - iconOffset * 2
+	iconP1.position.x = -(bar1.rect_size.x / 2.7) + (bar1.rect_size.x * (MathUtil.remapToRange(percent, 0, 100, 100, 0) * 0.01)) + (150 * iconP1.scale.x - 150) / 2 - iconOffset
+	iconP2.position.x = -(bar1.rect_size.x / 2.7) + (bar1.rect_size.x * (MathUtil.remapToRange(percent, 0, 100, 100, 0) * 0.01)) - (150 * iconP2.scale.x) / 2 - iconOffset * 2

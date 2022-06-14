@@ -1,5 +1,7 @@
 extends Node2D
 
+onready var magenta = $ParallaxBackground/layer1/Magenta
+
 onready var camera = $Camera2D
 onready var tween = $Tween
 
@@ -35,6 +37,8 @@ func _input(event):
 		if Input.is_action_just_pressed("ui_accept"):
 			selectedSomethin = true
 			
+			magenta.flashing = true
+			
 			AudioHandler.playSFX("confirmMenu")
 			
 			for i in items.size():
@@ -47,6 +51,7 @@ func _input(event):
 			
 			yield(get_tree().create_timer(1.2), "timeout")
 			items[curSelected].visible = false
+			magenta.visible = false
 			yield(get_tree().create_timer(0.2), "timeout")
 			match items[curSelected].name:
 				"story-mode":

@@ -1,2 +1,8 @@
-Test:bf-pixel:#68b1e8:easy,normal,hard
-Among Us Fortnite:mom:#696969:normal
+Test:bf-pixel:#68b1e8:normal:DEBUG_ONLY
+Tutorial:gf:#9271fd:easy,normal,hard
+Bopeebo:dad:#9271fd:easy,normal,hard
+Fresh:dad:#9271fd:easy,normal,hard
+Dad Battle:dad:#9271fd:easy,normal,hard
+Spookeez:spooky:#223344:easy,normal,hard
+South:spooky:#223344:easy,normal,hard
+Monster:monster:#223344:easy,normal,hard

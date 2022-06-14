@@ -6,7 +6,7 @@
 
 [sub_resource type="Animation" id=1]
 resource_name = "default"
-length = 0.4
+length = 0.2
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:custom_fonts/font")
@@ -15,7 +15,7 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2 ),
+"times": PoolRealArray( 0, 0.1 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
 "values": [ ExtResource( 1 ), ExtResource( 2 ) ]

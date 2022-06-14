@@ -8,8 +8,6 @@ var endingSong:bool = false
 onready var HUD = $HUD
 onready var UI = $HUD/UI
 
-onready var CountdownTimer = $HUD/CountdownTimer
-
 onready var SONG = PlayStateSettings.SONG.song
 
 var health:float = 1.0
@@ -75,6 +73,11 @@ func _ready():
 				
 	noteDataArray.sort_custom(self, "sortAscending")
 	
+	PlayStateSettings.scrollSpeed = SONG["speed"]
+	if Preferences.getOption("custom-scroll-speed"):
+		PlayStateSettings.scrollSpeed = float(Preferences.getOption("scroll-speed"))
+	
+	UI.healthBar._process(0)
 	UI.healthBar.updateText()
 				
 	var countdownTween:Tween = Tween.new()
@@ -84,7 +87,7 @@ func _ready():
 	
 	var countdownTime = (Conductor.timeBetweenBeats / 1000.0) / PlayStateSettings.songMultiplier
 	for i in 5:
-		yield(get_tree().create_timer(countdownTime), "timeout")
+		yield(get_tree().create_timer(countdownTime, false), "timeout")
 		match countdownTick:
 			4:
 				Conductor.songPosition = Conductor.timeBetweenBeats * -4
@@ -153,6 +156,10 @@ func updateHealth():
 		health = UI.healthBar.maxHealth
 	
 func _process(delta):		
+	if Input.is_action_just_pressed("ui_back"):
+		Scenes.switchScene("FreeplayMenu")
+		AudioHandler.playMusic("freakyMenu")
+		
 	Conductor.songPosition += (delta * 1000) * PlayStateSettings.songMultiplier
 	
 	updateHealth()

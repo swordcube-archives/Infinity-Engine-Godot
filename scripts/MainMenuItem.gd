@@ -3,9 +3,9 @@ extends Node2D
 var flashValues:Array = [1, 0]
 
 var flashing:bool = false
-var flashTimer:float = 0.0
+export(float) var flashTimer:float = 0.0
 
-var flashSpeed:float = 0.06
+export(float) var flashSpeed:float = 0.06
 
 func _process(delta):
 	if flashing:

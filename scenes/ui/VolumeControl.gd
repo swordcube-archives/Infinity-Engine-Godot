@@ -35,7 +35,8 @@ func _input(event):
 		volume += 1
 		if volume > 9:
 			volume = 9
-			set_muted()
+			
+		set_muted()
 			
 		Preferences.setOption("volume", volume)
 		set_vol()

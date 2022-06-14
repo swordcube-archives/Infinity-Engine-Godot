@@ -31,12 +31,15 @@ func _ready():
 	
 	titleText.play("idle")
 	
+	$AnimationPlayer.play("default")
 	add_child(tween)
 	
 	if Preferences.wentThruTitle:
 		Conductor.songPosition = 1000
 		cover.visible = false
 		titleQuotes.visible = false
+		
+var confirmed:bool = false
 	
 func _process(delta):
 	if freakyMenu.playing:
@@ -48,16 +51,18 @@ func _process(delta):
 		if not Preferences.wentThruTitle:
 			skipIntro()
 		else:
-			titleText.play("pressed")
-			AudioHandler.playSFX("confirmMenu")
-			if not tween.is_active():
-				cover.color = Color(1,1,1,1)
-				tween.interpolate_property(cover, "color:a", 1, 0, 2)
-				tween.start()
-				
-			yield(get_tree().create_timer(1), "timeout")
-			Scenes.switchScene("MainMenu")
-			get_tree().paused = false
+			if not confirmed:
+				confirmed = true
+				titleText.play("pressed")
+				AudioHandler.playSFX("confirmMenu")
+				if not tween.is_active():
+					cover.color = Color(1,1,1,1)
+					tween.interpolate_property(cover, "color:a", 1, 0, 2)
+					tween.start()
+					
+				yield(get_tree().create_timer(1), "timeout")
+				Scenes.switchScene("MainMenu")
+				get_tree().paused = false
 	
 var danced:bool = false
 func beatHit():

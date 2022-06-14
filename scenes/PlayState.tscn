@@ -17,9 +17,6 @@ texture = ExtResource( 3 )
 
 [node name="UI" parent="HUD" instance=ExtResource( 1 )]
 
-[node name="CountdownTimer" type="Timer" parent="HUD"]
-one_shot = true
-
 [node name="3" type="AudioStreamPlayer" parent="HUD"]
 
 [node name="2" type="AudioStreamPlayer" parent="HUD"]

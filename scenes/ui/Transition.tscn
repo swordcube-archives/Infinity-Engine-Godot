@@ -73,10 +73,10 @@ script = ExtResource( 1 )
 
 [node name="gradient" type="TextureRect" parent="."]
 margin_left = -85.0
-margin_top = -1396.36
+margin_top = -2999.0
 margin_right = 1365.0
-margin_bottom = -116.364
-rect_rotation = 90.0
+margin_bottom = -1719.0
+rect_rotation = -90.0
 rect_pivot_offset = Vector2( 725, 640 )
 texture = SubResource( 2 )
 expand = true

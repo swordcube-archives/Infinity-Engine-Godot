@@ -15,4 +15,5 @@ hframes = 3
 script = ExtResource( 1 )
 
 [node name="Label" parent="." instance=ExtResource( 3 )]
+position = Vector2( 0, 0 )
 text = "severly"

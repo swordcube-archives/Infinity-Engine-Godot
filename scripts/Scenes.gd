@@ -10,6 +10,7 @@ func switchScene(scene:String, transition:bool = true):
 		var inTimer:SceneTreeTimer = get_tree().create_timer(Transition.anim.get_animation("in").length + 0.05)
 		yield(inTimer, "timeout")
 		get_tree().change_scene("res://scenes/" + scene + ".tscn")
+		yield(get_tree().create_timer(0.01), "timeout")
 		Transition.transOut()
 		var outTimer:SceneTreeTimer = get_tree().create_timer(Transition.anim.get_animation("out").length + 0.05)
 		yield(outTimer, "timeout")

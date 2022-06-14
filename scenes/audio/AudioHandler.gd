@@ -23,6 +23,13 @@ func playMusic(music:String, force:bool = false):
 	if node:
 		if not node.playing or force:
 			node.play()
+			
+func stopMusic():
+	inst.stop()
+	voices.stop()
+	
+	for coolNode in $Music.get_children():
+		coolNode.stop()
 		
 func playInst(song:String):
 	for node in $Music.get_children():
