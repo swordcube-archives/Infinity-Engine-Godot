@@ -1,7 +1,6 @@
 extends Node2D
 
-onready var bar1:ColorRect = $bar1
-onready var bar2:ColorRect = $bar2
+onready var bar:ProgressBar = $ProgressBar
 
 onready var iconP2:Sprite = $iconP2
 onready var iconP1:Sprite = $iconP1
@@ -49,8 +48,10 @@ func beatHit():
 	iconP1.scale = Vector2(1.2, 1.2)
 
 func _process(delta):
-	percent = MathUtil.boundTo(health / 2, minHealth, maxHealth) * 100.0
-	bar2.rect_scale.x = percent / 100.0
+	bar.min_value = minHealth
+	bar.max_value = maxHealth
+	bar.value = health
+	percent = (bar.value / 2) * 100.0
 
 	if percent <= 20:
 		iconP2.switchTo("winning")
@@ -67,5 +68,5 @@ func _process(delta):
 	iconP1.scale = iconP2.scale
 	
 	var iconOffset:int = 26
-	iconP1.position.x = -(bar1.rect_size.x / 2.7) + (bar1.rect_size.x * (MathUtil.remapToRange(percent, 0, 100, 100, 0) * 0.01)) + (150 * iconP1.scale.x - 150) / 2 - iconOffset
-	iconP2.position.x = -(bar1.rect_size.x / 2.7) + (bar1.rect_size.x * (MathUtil.remapToRange(percent, 0, 100, 100, 0) * 0.01)) - (150 * iconP2.scale.x) / 2 - iconOffset * 2
+	iconP1.position.x = -(bar.rect_size.x / 2.7) + (bar.rect_size.x * (MathUtil.remapToRange(percent, 0, 100, 100, 0) * 0.01)) + (150 * iconP1.scale.x - 150) / 2 - iconOffset
+	iconP2.position.x = -(bar.rect_size.x / 2.7) + (bar.rect_size.x * (MathUtil.remapToRange(percent, 0, 100, 100, 0) * 0.01)) - (150 * iconP2.scale.x) / 2 - iconOffset * 2
