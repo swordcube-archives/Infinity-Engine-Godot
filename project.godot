@@ -46,6 +46,7 @@ default_bus_layout=""
 
 [autoload]
 
+ModManager="*res://scripts/ModManager.gd"
 Conductor="*res://scripts/Conductor.gd"
 AudioHandler="*res://scenes/audio/AudioHandler.tscn"
 Preferences="*res://scripts/Preferences.gd"
@@ -62,6 +63,7 @@ MathUtil="*res://scripts/MathUtil.gd"
 
 window/size/width=1280
 window/size/height=720
+window/vsync/use_vsync=false
 window/stretch/mode="2d"
 window/stretch/aspect="keep"
 

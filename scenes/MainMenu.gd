@@ -16,6 +16,7 @@ func _ready():
 	for item in $ParallaxBackground/layer2.get_children():
 		items.append(item)
 		
+	magenta.flashValues.invert()
 	changeSelection()
 	
 var selectedSomethin:bool = false

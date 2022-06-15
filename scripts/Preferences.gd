@@ -2,6 +2,7 @@ extends Node
 
 # MODIFY THIS! DON'T TOUCH ANYTHING ELSE!!
 var defaultSaveData:Dictionary = {
+	"mods": {},
 	"volume": 9,
 	"muted": false,
 	"downscroll": false,
