@@ -18,6 +18,8 @@ var animFinished:bool = false
 
 func _ready():
 	spr.frames = PlayStateSettings.currentUiSkin.strum_tex
+	var ss = PlayStateSettings.currentUiSkin.strum_scale
+	spr.scale = Vector2(ss, ss)
 	playAnim("static")
 	
 func _process(delta):
@@ -40,7 +42,7 @@ func _process(delta):
 		if animFinished:
 			playAnim("static")
 			
-	var scrollSpeed = (PlayStateSettings.scrollSpeed / PlayStateSettings.songMultiplier)
+	var scrollSpeed = (PlayStateSettings.scrollSpeed / PlayStateSettings.songMultiplier) * 1.4
 			
 	if sustains:
 		for note in sustains.get_children():
@@ -56,11 +58,11 @@ func _process(delta):
 			var yourMom = 1 * ((Conductor.timeBetweenSteps / 100 * 1.05) * scrollSpeed)
 				
 			if not note.isEndOfSustain:
-				note.scale.y = yourMom
+				note.scale.y = yourMom * PlayStateSettings.currentUiSkin.sustain_scale
 			else:
 				note.spr.centered = false
-				note.spr.position.x = -(note.spr.frames.get_frame(note.spr.animation, note.spr.frame).get_width() / 2)
-				var among = (scrollSpeed * (Conductor.timeBetweenSteps / 1000.0)) * 230
+				note.spr.position.x = -((note.spr.frames.get_frame(note.spr.animation, note.spr.frame).get_width() * PlayStateSettings.currentUiSkin.note_scale) / 2)
+				var among = (scrollSpeed * (Conductor.timeBetweenSteps / 1000.0)) * (230 * PlayStateSettings.currentUiSkin.sustain_scale)
 				if note.downScroll:
 					note.position.y += among - 65
 				else:
@@ -82,6 +84,7 @@ func _process(delta):
 				if Conductor.songPosition >= note.strumTime + Conductor.safeZoneOffset:
 					PlayState.health += -0.0475
 					PlayState.combo = 0
+					PlayState.totalNotes += 1
 					AudioHandler.voices.volume_db = -9999
 					PlayState.updateHealth()
 					PlayState.UI.healthBar.updateText()

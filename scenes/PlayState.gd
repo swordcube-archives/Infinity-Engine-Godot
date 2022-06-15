@@ -32,6 +32,8 @@ func _init():
 	PlayStateSettings.getSkin()
 
 func _ready():
+	get_tree().paused = false
+	
 	Conductor.changeBPM(SONG["bpm"])
 	Conductor.songPosition = Conductor.timeBetweenBeats * -5
 	Conductor.connect("beatHit", self, "beatHit")
@@ -73,7 +75,7 @@ func _ready():
 				
 	noteDataArray.sort_custom(self, "sortAscending")
 	
-	PlayStateSettings.scrollSpeed = SONG["speed"]
+	PlayStateSettings.scrollSpeed = float(SONG["speed"])
 	if Preferences.getOption("custom-scroll-speed"):
 		PlayStateSettings.scrollSpeed = float(Preferences.getOption("scroll-speed"))
 	
@@ -84,6 +86,8 @@ func _ready():
 	HUD.add_child(countdownTween)
 	
 	var countdownGraphic:Sprite = $HUD/CountdownGraphic
+	var cs = PlayStateSettings.currentUiSkin.countdown_scale
+	countdownGraphic.scale = Vector2(cs, cs)
 	
 	var countdownTime = (Conductor.timeBetweenBeats / 1000.0) / PlayStateSettings.songMultiplier
 	for i in 5:
@@ -91,11 +95,11 @@ func _ready():
 		match countdownTick:
 			4:
 				Conductor.songPosition = Conductor.timeBetweenBeats * -4
-				countdownAudios["3"].stream = load(Paths.sound("ui/skins/countdown/arrows/intro3"))
+				countdownAudios["3"].stream = PlayStateSettings.currentUiSkin.countdown_3
 				countdownAudios["3"].play()
 			3:
 				Conductor.songPosition = Conductor.timeBetweenBeats * -3
-				countdownAudios["2"].stream = load(Paths.sound("ui/skins/countdown/arrows/intro2"))
+				countdownAudios["2"].stream = PlayStateSettings.currentUiSkin.countdown_2
 				countdownAudios["2"].play()
 				
 				countdownGraphic.texture = PlayStateSettings.currentUiSkin.ready_tex
@@ -105,7 +109,7 @@ func _ready():
 				countdownTween.start()
 			2:
 				Conductor.songPosition = Conductor.timeBetweenBeats * -2
-				countdownAudios["1"].stream = load(Paths.sound("ui/skins/countdown/arrows/intro1"))
+				countdownAudios["1"].stream = PlayStateSettings.currentUiSkin.countdown_1
 				countdownAudios["1"].play()
 				
 				countdownGraphic.texture = PlayStateSettings.currentUiSkin.set_tex
@@ -118,7 +122,7 @@ func _ready():
 				
 				countdownGraphic.texture = PlayStateSettings.currentUiSkin.go_tex
 				
-				countdownAudios["go"].stream = load(Paths.sound("ui/skins/countdown/arrows/introGo"))
+				countdownAudios["go"].stream = PlayStateSettings.currentUiSkin.countdown_go
 				countdownAudios["go"].play()
 				
 				countdownTween.stop_all()
@@ -159,12 +163,12 @@ func _process(delta):
 	if Input.is_action_just_pressed("ui_back"):
 		Scenes.switchScene("FreeplayMenu")
 		AudioHandler.playMusic("freakyMenu")
-		
+	
 	Conductor.songPosition += (delta * 1000) * PlayStateSettings.songMultiplier
 	
 	updateHealth()
 	
-	HUD.scale = lerp(Vector2.ONE, HUD.scale, MathUtil.getLerpValue(0.95, delta))
+	HUD.scale = lerp(HUD.scale, Vector2.ONE, MathUtil.getLerpValue(0.05, delta))
 	HUD.offset.x = (HUD.scale.x - 1) * -640
 	HUD.offset.y = (HUD.scale.y - 1) * -360
 	

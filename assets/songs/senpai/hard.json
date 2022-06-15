@@ -1,5 +1,6 @@
 {
     "song": {
+    	"pixelStage": true,   
         "song": "Senpai",
         "bpm": 144.0,
         "needsVoices": true,

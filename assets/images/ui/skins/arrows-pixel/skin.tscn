@@ -1,0 +1,60 @@
+[gd_scene load_steps=26 format=2]
+
+[ext_resource path="res://scenes/ui/playState/SkinTemplate.gd" type="Script" id=1]
+[ext_resource path="res://assets/images/ui/skins/arrows-pixel/notes.res" type="SpriteFrames" id=2]
+[ext_resource path="res://assets/images/ui/skins/arrows-pixel/strums.res" type="SpriteFrames" id=3]
+[ext_resource path="res://assets/images/ui/skins/arrows-pixel/countdown/date.png" type="Texture" id=4]
+[ext_resource path="res://assets/images/ui/skins/arrows-pixel/countdown/set.png" type="Texture" id=5]
+[ext_resource path="res://assets/images/ui/skins/arrows-pixel/countdown/ready.png" type="Texture" id=6]
+[ext_resource path="res://assets/sounds/ui/skins/countdown/arrows-pixel/introGo.ogg" type="AudioStream" id=7]
+[ext_resource path="res://assets/sounds/ui/skins/countdown/arrows-pixel/intro2.ogg" type="AudioStream" id=8]
+[ext_resource path="res://assets/sounds/ui/skins/countdown/arrows-pixel/intro1.ogg" type="AudioStream" id=9]
+[ext_resource path="res://assets/sounds/ui/skins/countdown/arrows-pixel/intro3.ogg" type="AudioStream" id=10]
+[ext_resource path="res://assets/images/ui/skins/arrows-pixel/ratings/good-pixel.png" type="Texture" id=11]
+[ext_resource path="res://assets/images/ui/skins/arrows-pixel/ratings/shit-pixel.png" type="Texture" id=12]
+[ext_resource path="res://assets/images/ui/skins/arrows-pixel/ratings/sick-pixel.png" type="Texture" id=13]
+[ext_resource path="res://assets/images/ui/skins/arrows-pixel/ratings/marvelous-pixel.png" type="Texture" id=14]
+[ext_resource path="res://assets/images/ui/skins/arrows-pixel/ratings/bad-pixel.png" type="Texture" id=15]
+[ext_resource path="res://assets/images/ui/skins/arrows-pixel/combo/num4-pixel.png" type="Texture" id=16]
+[ext_resource path="res://assets/images/ui/skins/arrows-pixel/combo/num2-pixel.png" type="Texture" id=17]
+[ext_resource path="res://assets/images/ui/skins/arrows-pixel/combo/num3-pixel.png" type="Texture" id=18]
+[ext_resource path="res://assets/images/ui/skins/arrows-pixel/combo/num0-pixel.png" type="Texture" id=19]
+[ext_resource path="res://assets/images/ui/skins/arrows-pixel/combo/num5-pixel.png" type="Texture" id=20]
+[ext_resource path="res://assets/images/ui/skins/arrows-pixel/combo/num6-pixel.png" type="Texture" id=21]
+[ext_resource path="res://assets/images/ui/skins/arrows-pixel/combo/num7-pixel.png" type="Texture" id=22]
+[ext_resource path="res://assets/images/ui/skins/arrows-pixel/combo/num8-pixel.png" type="Texture" id=23]
+[ext_resource path="res://assets/images/ui/skins/arrows-pixel/combo/num9-pixel.png" type="Texture" id=24]
+[ext_resource path="res://assets/images/ui/skins/arrows-pixel/combo/num1-pixel.png" type="Texture" id=25]
+
+[node name="Skin" type="Node"]
+script = ExtResource( 1 )
+ready_tex = ExtResource( 6 )
+set_tex = ExtResource( 5 )
+go_tex = ExtResource( 4 )
+marvelous_tex = ExtResource( 14 )
+sick_tex = ExtResource( 13 )
+good_tex = ExtResource( 11 )
+bad_tex = ExtResource( 15 )
+shit_tex = ExtResource( 12 )
+combo_0 = ExtResource( 19 )
+combo_1 = ExtResource( 25 )
+combo_2 = ExtResource( 17 )
+combo_3 = ExtResource( 18 )
+combo_4 = ExtResource( 16 )
+combo_5 = ExtResource( 20 )
+combo_6 = ExtResource( 21 )
+combo_7 = ExtResource( 22 )
+combo_8 = ExtResource( 23 )
+combo_9 = ExtResource( 24 )
+countdown_3 = ExtResource( 10 )
+countdown_2 = ExtResource( 8 )
+countdown_1 = ExtResource( 9 )
+countdown_go = ExtResource( 7 )
+strum_tex = ExtResource( 3 )
+note_tex = ExtResource( 2 )
+rating_scale = 4.5
+combo_scale = 5.5
+countdown_scale = 6.5
+strum_scale = 8.5
+note_scale = 8.5
+sustain_scale = 0.65

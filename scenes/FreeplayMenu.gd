@@ -158,7 +158,7 @@ func _on_ActuallyAddSong_pressed():
 			diffs += d + comma
 			i += 1
 			
-		var finalData:String = sn + ':' + ci + ':' + bc + ':' + diffs
+		var finalData:String = sn + ':' + ci + ':' + bc + ':' + diffs + "\n"
 		print("SAVING FINAL DATA TO res://assets/data/freeplaySongs.txt!!")
 		
 		var f = File.new()

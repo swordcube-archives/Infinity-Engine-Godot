@@ -10,6 +10,8 @@ var ratingTemplate:Node2D = load("res://scenes/ui/playState/Rating.tscn").instan
 
 func _ready():
 	var xMult:float = 315
+	
+	
 			
 	opponentStrums = load("res://scenes/ui/strums/4K.tscn").instance()
 	opponentStrums.position.x = xMult

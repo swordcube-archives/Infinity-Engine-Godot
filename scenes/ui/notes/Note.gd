@@ -20,6 +20,9 @@ func _ready():
 	if spr.frames == CoolUtil.nullRes:
 		spr.frames = PlayStateSettings.currentUiSkin.note_tex
 		
+	var ss = PlayStateSettings.currentUiSkin.strum_scale
+	spr.scale = Vector2(ss, ss)
+		
 	refreshAnim()
 
 func refreshAnim():

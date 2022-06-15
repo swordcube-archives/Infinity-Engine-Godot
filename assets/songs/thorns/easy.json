@@ -1,5 +1,6 @@
 {
     "song": {
+    	"pixelStage": true,
         "song": "Thorns",
         "bpm": 190.0,
         "needsVoices": true,

@@ -9,15 +9,22 @@ var combo:String = "000"
 
 func _ready():
 	randomize()
+	
+	var rs = PlayStateSettings.currentUiSkin.rating_scale
+	rating.scale = Vector2(rs, rs)
+	
 	for i in len(combo):
 		var comboNum:Sprite = comboTemplate.duplicate()
-		comboNum.texture = load("res://assets/images/ui/skins/arrows/combo/num" + combo[i] + ".png")
+		comboNum.texture = PlayStateSettings.currentUiSkin.get("combo_" + combo[i])
 		comboNum.startVelocity = rand_range(-3, -4)
 		comboNum.gravity = rand_range(0.1, 0.15)
 		comboNum.position.x += i * 45
 		comboNum.moving = true
 		comboNum.visible = true
 		comboNode.add_child(comboNum)
+		
+		var cs = PlayStateSettings.currentUiSkin.combo_scale
+		comboNum.scale = Vector2(cs, cs)
 		
 	tweenRating()
 	tweenCombo()
