@@ -19,6 +19,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/ui/notes/Note.gd"
 }, {
+"base": "Node2D",
+"class": "PauseOption",
+"language": "GDScript",
+"path": "res://scenes/ui/pauseMenu/PauseOption.gd"
+}, {
 "base": "Node",
 "class": "Ranking",
 "language": "GDScript",
@@ -27,6 +32,7 @@ _global_script_classes=[ {
 _global_script_class_icons={
 "FreeplaySong": "",
 "Note": "",
+"PauseOption": "",
 "Ranking": ""
 }
 

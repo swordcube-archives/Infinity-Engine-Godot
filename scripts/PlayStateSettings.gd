@@ -1,9 +1,22 @@
 extends Node
 
+var availableDifficulties:Array = [
+	"easy",
+	"normal",
+	"hard"
+]
+
+var storyMode:bool = false
+var usedPractice:bool = false
+var practiceMode:bool = false
+
+var difficulty:String = "normal"
+var deaths:int = 0
+
 var downScroll:bool = true
 var scrollSpeed:float = 4.0
 
-var SONG = CoolUtil.getJSON(Paths.songJSON("test", "normal"))
+var SONG = CoolUtil.getJSON(Paths.songJSON("test", difficulty))
 
 var songMultiplier:float = 1.0
 

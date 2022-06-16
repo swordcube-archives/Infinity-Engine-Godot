@@ -64,7 +64,7 @@ func _process(delta):
 		iconP2.switchTo("losing")
 		iconP1.switchTo("winning")
 	
-	iconP2.scale = lerp(iconP2.scale, Vector2.ONE, MathUtil.getLerpValue(0.2, delta))
+	iconP2.scale = lerp(iconP2.scale, Vector2.ONE, MathUtil.getLerpValue(0.35, delta))
 	iconP1.scale = iconP2.scale
 	
 	var iconOffset:int = 26

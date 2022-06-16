@@ -22,6 +22,7 @@ font_data = ExtResource( 5 )
 script = ExtResource( 1 )
 
 [node name="barBG" type="Sprite" parent="."]
+modulate = Color( 0, 0, 0, 1 )
 texture = ExtResource( 2 )
 
 [node name="ProgressBar" type="ProgressBar" parent="."]
@@ -29,7 +30,7 @@ margin_left = -296.0
 margin_top = -5.0
 margin_right = 296.0
 margin_bottom = 9.0
-rect_scale = Vector2( -1, 0.7 )
+rect_scale = Vector2( -1, 0.75 )
 rect_pivot_offset = Vector2( 296, 0 )
 custom_styles/fg = SubResource( 2 )
 custom_styles/bg = SubResource( 3 )

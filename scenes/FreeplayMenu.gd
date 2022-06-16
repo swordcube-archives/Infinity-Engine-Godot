@@ -79,7 +79,12 @@ func _process(delta):
 			
 		if Input.is_action_just_pressed("ui_accept"):
 			AudioHandler.stopMusic()
-			PlayStateSettings.SONG = CoolUtil.getJSON(Paths.songJSON(songs.get_child(curSelected).label.text, songDifficulties[curSelected][curDifficulty]))
+			PlayStateSettings.deaths = 0
+			PlayStateSettings.practiceMode = false
+			PlayStateSettings.usedPractice = false
+			PlayStateSettings.availableDifficulties = songDifficulties[curSelected]
+			PlayStateSettings.difficulty = songDifficulties[curSelected][curDifficulty]
+			PlayStateSettings.SONG = CoolUtil.getJSON(Paths.songJSON(songs.get_child(curSelected).label.text, PlayStateSettings.difficulty))
 			Scenes.switchScene("PlayState")
 		
 func changeSelection(change:int = 0):

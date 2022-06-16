@@ -5,7 +5,12 @@ extends Node2D
 var countdownActive:bool = true
 var endingSong:bool = false
 
+var stage:Node2D
+
+onready var camera = $Camera2D
+
 onready var HUD = $HUD
+onready var OTHER = $Other
 onready var UI = $HUD/UI
 
 onready var SONG = PlayStateSettings.SONG.song
@@ -41,6 +46,9 @@ func _ready():
 	
 	if not "keyCount" in SONG:
 		SONG["keyCount"] = 4
+		
+	stage = load("res://scenes/stages/stage.tscn").instance()
+	add_child(stage)
 	
 	for section in SONG["notes"]:
 		for note in section["sectionNotes"]:
@@ -83,6 +91,7 @@ func _ready():
 	UI.healthBar.updateText()
 				
 	var countdownTween:Tween = Tween.new()
+	countdownTween.pause_mode = Node.PAUSE_MODE_PROCESS
 	HUD.add_child(countdownTween)
 	
 	var countdownGraphic:Sprite = $HUD/CountdownGraphic
@@ -163,11 +172,17 @@ func _process(delta):
 	if Input.is_action_just_pressed("ui_back"):
 		Scenes.switchScene("FreeplayMenu")
 		AudioHandler.playMusic("freakyMenu")
+		
+	if not Scenes.transitioning and Input.is_action_just_pressed("ui_accept"):
+		get_tree().paused = true
+		var pauseMenu = load("res://scenes/ui/playState/PauseMenu.tscn").instance()
+		OTHER.add_child(pauseMenu)
 	
 	Conductor.songPosition += (delta * 1000) * PlayStateSettings.songMultiplier
 	
 	updateHealth()
 	
+	camera.zoom = lerp(camera.zoom, Vector2.ONE, MathUtil.getLerpValue(0.05, delta))
 	HUD.scale = lerp(HUD.scale, Vector2.ONE, MathUtil.getLerpValue(0.05, delta))
 	HUD.offset.x = (HUD.scale.x - 1) * -640
 	HUD.offset.y = (HUD.scale.y - 1) * -360
@@ -218,12 +233,18 @@ func _process(delta):
 			
 func endSong():
 	endingSong = true
-	Scenes.switchScene("TitleScreen")
+	if PlayStateSettings.storyMode:
+		Scenes.switchScene("StoryMenu")
+	else:
+		Scenes.switchScene("FreeplayMenu")
+		
+	AudioHandler.playMusic("freakyMenu")
 	AudioHandler.inst.stop()
 	AudioHandler.voices.stop()
 			
 func beatHit():
 	if Conductor.curBeat % 4 == 0:
+		camera.zoom -= Vector2(0.015, 0.015)
 		HUD.scale += Vector2(0.05, 0.05)
 		HUD.offset.x = (HUD.scale.x - 1) * -640
 		HUD.offset.y = (HUD.scale.y - 1) * -360

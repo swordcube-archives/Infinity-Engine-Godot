@@ -17,34 +17,43 @@ script = ExtResource( 4 )
 [node name="SFX" type="Node" parent="."]
 
 [node name="flixelBeep" type="AudioStreamPlayer" parent="SFX"]
+pause_mode = 2
 stream = ExtResource( 6 )
 script = ExtResource( 5 )
 
 [node name="scrollMenu" type="AudioStreamPlayer" parent="SFX"]
+pause_mode = 2
 stream = ExtResource( 1 )
 script = ExtResource( 5 )
 
 [node name="cancelMenu" type="AudioStreamPlayer" parent="SFX"]
+pause_mode = 2
 stream = ExtResource( 2 )
 script = ExtResource( 5 )
 
 [node name="confirmMenu" type="AudioStreamPlayer" parent="SFX"]
+pause_mode = 2
 stream = ExtResource( 3 )
 script = ExtResource( 5 )
 
 [node name="Song" type="Node" parent="."]
 
 [node name="Inst" type="AudioStreamPlayer" parent="Song"]
+pause_mode = 2
 
 [node name="Voices" type="AudioStreamPlayer" parent="Song"]
+pause_mode = 2
 
 [node name="Music" type="Node" parent="."]
 
 [node name="freakyMenu" type="AudioStreamPlayer" parent="Music"]
+pause_mode = 2
 stream = ExtResource( 7 )
 
 [node name="breakfast" type="AudioStreamPlayer" parent="Music"]
+pause_mode = 2
 stream = ExtResource( 8 )
 
 [node name="optionsMenu" type="AudioStreamPlayer" parent="Music"]
+pause_mode = 2
 stream = ExtResource( 9 )
