@@ -11,6 +11,9 @@ func _init():
 	add_child(tween)
 	set_vol()
 	
+func _ready():
+	set_muted()
+	
 func set_muted():
 	AudioServer.set_bus_mute(AudioServer.get_bus_index("Master"), muted)
 	
@@ -36,6 +39,8 @@ func _input(event):
 		if volume > 9:
 			volume = 9
 			
+		muted = false
+		Preferences.setOption("muted", muted)
 		set_muted()
 			
 		Preferences.setOption("volume", volume)
@@ -44,6 +49,11 @@ func _input(event):
 			
 	if Input.is_action_just_pressed("volume_down"):
 		volume -= 1
+		
+		muted = false
+		Preferences.setOption("muted", muted)
+		set_muted()
+		
 		if volume < -1:
 			volume = -1
 			AudioServer.set_bus_mute(AudioServer.get_bus_index("Master"), true)

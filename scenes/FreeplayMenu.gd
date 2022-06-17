@@ -12,6 +12,7 @@ onready var diffText = $DiffText
 
 var songMakerDifficultyList:Array = []
 
+var songNames:Array = []
 var songColors:Array = []
 var songDifficulties:Array = []
 
@@ -32,6 +33,7 @@ func _ready():
 		var split = item.split(":")
 		if len(item) > 0:
 			if OS.is_debug_build() or not (range(split.size()).has(4) and split[4] == "DEBUG_ONLY"):
+				songNames.append(split[0])
 				songColors.append(split[2])
 				songDifficulties.append(split[3].split(","))
 				
@@ -58,6 +60,7 @@ func _ready():
 func _process(delta):
 	bg.modulate = lerp(bg.modulate, Color(songColors[curSelected]), MathUtil.getLerpValue(0.045, delta))
 	
+	scoreText.text = "PERSONAL BEST: " + str(Highscore.getScore(songNames[curSelected], songDifficulties[curSelected][curDifficulty]))
 	positionHighscore()
 	
 	if not songUtil.visible:
@@ -84,7 +87,7 @@ func _process(delta):
 			PlayStateSettings.usedPractice = false
 			PlayStateSettings.availableDifficulties = songDifficulties[curSelected]
 			PlayStateSettings.difficulty = songDifficulties[curSelected][curDifficulty]
-			PlayStateSettings.SONG = CoolUtil.getJSON(Paths.songJSON(songs.get_child(curSelected).label.text, PlayStateSettings.difficulty))
+			PlayStateSettings.SONG = CoolUtil.getJSON(Paths.songJSON(songNames[curSelected], PlayStateSettings.difficulty))
 			Scenes.switchScene("PlayState")
 		
 func changeSelection(change:int = 0):

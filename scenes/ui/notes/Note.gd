@@ -16,6 +16,9 @@ var noteData:int = 0
 var isSustainNote:bool = false
 var isEndOfSustain:bool = false
 
+var timeBetweenBeats:float = Conductor.timeBetweenBeats
+var timeBetweenSteps:float = Conductor.timeBetweenSteps
+
 func _ready():
 	if spr.frames == CoolUtil.nullRes:
 		spr.frames = PlayStateSettings.currentUiSkin.note_tex

@@ -6,12 +6,12 @@ var opponentStrums:Node2D
 var playerStrums:Node2D
 var healthBar:Node2D
 
+var timeBar:Node2D
+
 var ratingTemplate:Node2D = load("res://scenes/ui/playState/Rating.tscn").instance()
 
 func _ready():
 	var xMult:float = 315
-	
-	
 			
 	opponentStrums = load("res://scenes/ui/strums/4K.tscn").instance()
 	opponentStrums.position.x = xMult

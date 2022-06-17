@@ -10,9 +10,19 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Node2D",
+"class": "Character",
+"language": "GDScript",
+"path": "res://scripts/Character.gd"
+}, {
+"base": "Node2D",
 "class": "FreeplaySong",
 "language": "GDScript",
 "path": "res://scenes/ui/freeplay/SongTemplate.gd"
+}, {
+"base": "Node2D",
+"class": "HealthBar",
+"language": "GDScript",
+"path": "res://scenes/ui/playState/HealthBar.gd"
 }, {
 "base": "Node2D",
 "class": "Note",
@@ -28,12 +38,26 @@ _global_script_classes=[ {
 "class": "Ranking",
 "language": "GDScript",
 "path": "res://scripts/Ranking.gd"
+}, {
+"base": "Node2D",
+"class": "Stage",
+"language": "GDScript",
+"path": "res://scenes/stages/stage.gd"
+}, {
+"base": "Node2D",
+"class": "TimeBar",
+"language": "GDScript",
+"path": "res://scenes/ui/playState/TimeBar.gd"
 } ]
 _global_script_class_icons={
+"Character": "",
 "FreeplaySong": "",
+"HealthBar": "",
 "Note": "",
 "PauseOption": "",
-"Ranking": ""
+"Ranking": "",
+"Stage": "",
+"TimeBar": ""
 }
 
 [application]
@@ -56,6 +80,7 @@ ModManager="*res://scripts/ModManager.gd"
 Conductor="*res://scripts/Conductor.gd"
 AudioHandler="*res://scenes/audio/AudioHandler.tscn"
 Preferences="*res://scripts/Preferences.gd"
+Highscore="*res://scripts/Highscore.gd"
 Transition="*res://scenes/ui/Transition.tscn"
 VolumeControl="*res://scenes/ui/VolumeControl.tscn"
 InfoDisplay="*res://scenes/ui/InfoDisplay.tscn"

@@ -86,6 +86,7 @@ func _process(delta):
 					PlayStateSettings.practiceMode = !PlayStateSettings.practiceMode
 					$PracticeModeText.visible = PlayStateSettings.practiceMode
 				"Exit to Menu":
+					queue_free()
 					AudioHandler.playMusic("freakyMenu")
 					if PlayStateSettings.storyMode:
 						Scenes.switchScene("StoryMenu")

@@ -34,9 +34,11 @@ func _process(delta):
 		
 	if not isOpponent:
 		if Input.is_action_just_pressed("gameplay_" + direction):
+			PlayState.pressed[0] = true
 			playAnim("press")
 			
 		if Input.is_action_just_released("gameplay_" + direction):
+			PlayState.pressed[0] = false
 			playAnim("static")
 	else:
 		if animFinished:
@@ -55,14 +57,14 @@ func _process(delta):
 				
 			note.position.y -= sustains.rect_position.y
 				
-			var yourMom = 1 * ((Conductor.timeBetweenSteps / 100 * 1.05) * scrollSpeed)
+			var yourMom = 1 * ((note.timeBetweenSteps / 100 * 1.05) * scrollSpeed)
 				
 			if not note.isEndOfSustain:
 				note.scale.y = yourMom * PlayStateSettings.currentUiSkin.sustain_scale
 			else:
 				note.spr.centered = false
 				note.spr.position.x = -((note.spr.frames.get_frame(note.spr.animation, note.spr.frame).get_width() * PlayStateSettings.currentUiSkin.note_scale) / 2)
-				var among = (scrollSpeed * (Conductor.timeBetweenSteps / 1000.0)) * (230 * PlayStateSettings.currentUiSkin.sustain_scale)
+				var among = (scrollSpeed * (note.timeBetweenSteps / 1000.0)) * (230 * PlayStateSettings.currentUiSkin.sustain_scale)
 				if note.downScroll:
 					note.position.y += among - 65
 				else:
@@ -74,6 +76,8 @@ func _process(delta):
 				sustains.rect_clip_content = Input.is_action_pressed("gameplay_" + direction)
 					
 				if Input.is_action_pressed("gameplay_" + direction) and Conductor.songPosition >= note.strumTime + (Conductor.safeZoneOffset / 8):
+					PlayState.bf.holdTimer = 0
+					PlayState.bf.playAnim(CoolUtil.singAnims[PlayState.SONG["keyCount"]][note.noteData])
 					PlayState.health += 0.023
 					AudioHandler.voices.volume_db = 0
 					PlayState.updateHealth()
@@ -82,6 +86,8 @@ func _process(delta):
 					note.queue_free()
 					
 				if Conductor.songPosition >= note.strumTime + Conductor.safeZoneOffset:
+					PlayState.bf.holdTimer = 0
+					PlayState.bf.playAnim(CoolUtil.singAnims[PlayState.SONG["keyCount"]][note.noteData] + "miss")
 					PlayState.health += -0.0475
 					PlayState.combo = 0
 					PlayState.totalNotes += 1
@@ -92,6 +98,8 @@ func _process(delta):
 					note.queue_free()
 			else:
 				if Conductor.songPosition >= note.strumTime + (Conductor.safeZoneOffset / 4):
+					PlayState.dad.holdTimer = 0
+					PlayState.dad.playAnim(CoolUtil.singAnims[PlayState.SONG["keyCount"]][note.noteData])
 					playAnim("confirm")
 					AudioHandler.voices.volume_db = 0
 					sustains.remove_child(note)
@@ -109,6 +117,9 @@ func _process(delta):
 				if not dontHit:
 					if Input.is_action_just_pressed("gameplay_" + direction):
 						if Conductor.songPosition >= note.strumTime - (Conductor.safeZoneOffset * 1):
+							PlayState.bf.holdTimer = 0
+							PlayState.bf.playAnim(CoolUtil.singAnims[PlayState.SONG["keyCount"]][note.noteData])
+					
 							PlayState.health += 0.023
 							PlayState.combo += 1
 							PlayState.totalNotes += 1
@@ -164,6 +175,9 @@ func _process(delta):
 						dontHit = true
 						
 				if Conductor.songPosition >= note.strumTime + (Conductor.safeZoneOffset * 1):
+					PlayState.bf.holdTimer = 0
+					PlayState.bf.playAnim(CoolUtil.singAnims[PlayState.SONG["keyCount"]][note.noteData] + "miss")
+					
 					PlayState.health += -0.0475
 					PlayState.songMisses += 1
 					PlayState.combo = 0
@@ -175,6 +189,9 @@ func _process(delta):
 					note.queue_free()
 			else:						
 				if Conductor.songPosition >= note.strumTime:
+					PlayState.dad.holdTimer = 0
+					PlayState.dad.playAnim(CoolUtil.singAnims[PlayState.SONG["keyCount"]][note.noteData])
+					
 					playAnim("confirm")
 					AudioHandler.voices.volume_db = 0
 					notes.remove_child(note)

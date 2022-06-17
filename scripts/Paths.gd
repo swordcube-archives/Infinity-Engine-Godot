@@ -17,3 +17,21 @@ func sound(sound:String):
 	
 func txt(txt:String):
 	return "res://assets/" + txt + ".txt"
+	
+func character(character:String):
+	return "res://scenes/chars/" + character + ".tscn"
+	
+func getCharScene(characterToGet:String):
+	if ResourceLoader.exists(character(characterToGet)):
+		return load(character(characterToGet)).instance()
+		
+	return load(character("bf")).instance()
+	
+func stage(stage:String):
+	return "res://scenes/stages/" + stage + ".tscn"
+	
+func getStageScene(stageToGet:String):
+	if ResourceLoader.exists(stage(stageToGet)):
+		return load(stage(stageToGet)).instance()
+		
+	return load(stage("stage")).instance()

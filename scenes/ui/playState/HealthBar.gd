@@ -1,5 +1,7 @@
 extends Node2D
 
+class_name HealthBar
+
 onready var bar:ProgressBar = $ProgressBar
 
 onready var iconP2:Sprite = $iconP2
@@ -46,12 +48,28 @@ func updateText():
 func beatHit():
 	iconP2.scale = Vector2(1.2, 1.2)
 	iconP1.scale = Vector2(1.2, 1.2)
+	
+const greenHealth:StyleBoxFlat = preload("res://scenes/ui/playState/healthBar/greenHealth.tres")
+const redHealth:StyleBoxFlat = preload("res://scenes/ui/playState/healthBar/redHealth.tres")
 
 func _process(delta):
 	bar.min_value = minHealth
 	bar.max_value = maxHealth
 	bar.value = health
 	percent = (bar.value / 2) * 100.0
+	
+	if PlayState.dad:
+		if Preferences.getOption("classic-health-bar"):
+			greenHealth.bg_color = Color.green
+		else:
+			greenHealth.bg_color = PlayState.bf.healthColor
+		iconP2.texture = PlayState.dad.healthIcon
+	if PlayState.bf:
+		if Preferences.getOption("classic-health-bar"):
+			redHealth.bg_color = Color.red
+		else:
+			redHealth.bg_color = PlayState.dad.healthColor
+		iconP1.texture = PlayState.bf.healthIcon
 
 	if percent <= 20:
 		iconP2.switchTo("winning")

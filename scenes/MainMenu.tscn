@@ -80,16 +80,9 @@ smoothing_enabled = true
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Label" type="Label" parent="CanvasLayer"]
-margin_left = 15.0
-margin_top = 692.0
-margin_right = 2503.0
-margin_bottom = 709.0
+margin_left = 10.0
+margin_top = 696.0
+margin_right = 2498.0
+margin_bottom = 713.0
 custom_fonts/font = SubResource( 1 )
-text = "Infinity Engine v1.0.0a
-The FitnessGram PACER Test is a multistage aerobic capacity test that progressively gets more difficult as it continues.
-
-The test is used to measure a student's aerobic capacity as part of the FitnessGram assessment. Students run back and forth as many times as they can, each lap signaled by a beep sound. The test get progressively faster as it continues until the student reaches their max lap score.
-
-The PACER Test score is combined in the FitnessGram software with scores for muscular strength, endurance, flexibility and body composition to determine whether a student is in the Healthy Fitness Zone™ or the Needs Improvement Zone™."
-autowrap = true
-clip_text = true
+text = "Infinity Engine v1.0a"

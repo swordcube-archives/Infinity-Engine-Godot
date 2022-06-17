@@ -19,6 +19,8 @@ func _ready():
 	magenta.flashValues.invert()
 	changeSelection()
 	
+	$CanvasLayer/Label.text += " (" + CoolUtil.getTXT(Paths.txt("data/gameVersionDate"))[0] + ")"
+	
 var selectedSomethin:bool = false
 	
 func _input(event):

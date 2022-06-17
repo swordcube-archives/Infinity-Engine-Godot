@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://assets/images/stages/spooky/halloween_bg.res" type="SpriteFrames" id=1]
+[ext_resource path="res://scenes/stages/spooky.gd" type="Script" id=2]
+[ext_resource path="res://assets/sounds/thunder_1.ogg" type="AudioStream" id=3]
+[ext_resource path="res://assets/sounds/thunder_2.ogg" type="AudioStream" id=4]
+
+[node name="spooky" type="Node2D"]
+script = ExtResource( 2 )
+defaultCamZoom = 1.05
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_left = -288.0
+margin_top = -84.0
+margin_right = 1956.0
+margin_bottom = 1080.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( -200, -100 )
+frames = ExtResource( 1 )
+animation = "idle"
+playing = true
+centered = false
+
+[node name="dadPos" type="Node2D" parent="."]
+position = Vector2( 100, 100 )
+
+[node name="gfPos" type="Node2D" parent="."]
+position = Vector2( 400, 130 )
+
+[node name="bfPos" type="Node2D" parent="."]
+position = Vector2( 770, 100 )
+
+[node name="strike1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+
+[node name="strike2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )

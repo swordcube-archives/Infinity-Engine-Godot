@@ -6,6 +6,9 @@ var countdownActive:bool = true
 var endingSong:bool = false
 
 var stage:Node2D
+var dad:Node2D
+var gf:Node2D
+var bf:Node2D
 
 onready var camera = $Camera2D
 
@@ -26,6 +29,8 @@ var totalHit:float = 0.0
 
 var combo:int = 0
 
+var pressed:Array = [false]
+
 var noteDataArray:Array = []
 
 func sortAscending(a, b):
@@ -37,9 +42,10 @@ func _init():
 	PlayStateSettings.getSkin()
 
 func _ready():
+	$HUD/Version.text += " (" + CoolUtil.getTXT(Paths.txt("data/gameVersionDate"))[0] + ")"
 	get_tree().paused = false
 	
-	Conductor.changeBPM(SONG["bpm"])
+	Conductor.changeBPM(SONG["bpm"], Conductor.mapBPMChanges(SONG))
 	Conductor.songPosition = Conductor.timeBetweenBeats * -5
 	Conductor.connect("beatHit", self, "beatHit")
 	Conductor.connect("stepHit", self, "stepHit")
@@ -47,8 +53,40 @@ func _ready():
 	if not "keyCount" in SONG:
 		SONG["keyCount"] = 4
 		
-	stage = load("res://scenes/stages/stage.tscn").instance()
+	var stageToLoad = "stage"
+	if "stage" in SONG:
+		stageToLoad = SONG["stage"]
+		
+	stage = Paths.getStageScene(stageToLoad)
 	add_child(stage)
+	
+	var gfVersion = "gf"
+	
+	if "player3" in SONG:
+		gfVersion = SONG["player3"]
+		
+	if "gfVersion" in SONG:
+		gfVersion = SONG["gfVersion"]
+		
+	if "gf" in SONG:
+		gfVersion = SONG["gf"]
+	
+	gf = Paths.getCharScene(gfVersion)
+	add_child(gf)
+	
+	dad = Paths.getCharScene(SONG.player2)
+	if dad.isPlayer:
+		dad.scale.x *= -1
+	add_child(dad)
+	
+	bf = Paths.getCharScene(SONG.player1)
+	add_child(bf)
+	
+	dad.global_position += stage.get_node("dadPos").position + Vector2(300, 0)
+	gf.global_position += stage.get_node("gfPos").position + Vector2(300, 0)
+	bf.global_position += stage.get_node("bfPos").position + Vector2(300, 0)
+	
+	moveCameraSection(!SONG.notes[0].mustHitSection)
 	
 	for section in SONG["notes"]:
 		for note in section["sectionNotes"]:
@@ -103,10 +141,22 @@ func _ready():
 		yield(get_tree().create_timer(countdownTime, false), "timeout")
 		match countdownTick:
 			4:
+				if dad and dad.isDancing():
+					dad.dance()
+				if gf and gf.isDancing():
+					gf.dance()
+				if bf and bf.isDancing():
+					bf.dance()
 				Conductor.songPosition = Conductor.timeBetweenBeats * -4
 				countdownAudios["3"].stream = PlayStateSettings.currentUiSkin.countdown_3
 				countdownAudios["3"].play()
 			3:
+				if dad and dad.isDancing():
+					dad.dance()
+				if gf and gf.isDancing():
+					gf.dance()
+				if bf and bf.isDancing():
+					bf.dance()
 				Conductor.songPosition = Conductor.timeBetweenBeats * -3
 				countdownAudios["2"].stream = PlayStateSettings.currentUiSkin.countdown_2
 				countdownAudios["2"].play()
@@ -117,6 +167,12 @@ func _ready():
 				countdownTween.interpolate_property(countdownGraphic, "modulate:a", 1, 0, countdownTime, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
 				countdownTween.start()
 			2:
+				if dad and dad.isDancing():
+					dad.dance()
+				if gf and gf.isDancing():
+					gf.dance()
+				if bf and bf.isDancing():
+					bf.dance()
 				Conductor.songPosition = Conductor.timeBetweenBeats * -2
 				countdownAudios["1"].stream = PlayStateSettings.currentUiSkin.countdown_1
 				countdownAudios["1"].play()
@@ -127,6 +183,12 @@ func _ready():
 				countdownTween.interpolate_property(countdownGraphic, "modulate:a", 1, 0, countdownTime, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
 				countdownTween.start()
 			1:
+				if dad and dad.isDancing():
+					dad.dance()
+				if gf and gf.isDancing():
+					gf.dance()
+				if bf and bf.isDancing():
+					bf.dance()
 				Conductor.songPosition = Conductor.timeBetweenBeats * -1
 				
 				countdownGraphic.texture = PlayStateSettings.currentUiSkin.go_tex
@@ -138,6 +200,12 @@ func _ready():
 				countdownTween.interpolate_property(countdownGraphic, "modulate:a", 1, 0, countdownTime, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
 				countdownTween.start()
 			0:
+				if dad and dad.isDancing():
+					dad.dance()
+				if gf and gf.isDancing():
+					gf.dance()
+				if bf and bf.isDancing():
+					bf.dance()
 				AudioHandler.playInst(SONG.song)
 				AudioHandler.playVoices(SONG.song)
 				
@@ -148,6 +216,18 @@ func _ready():
 				AudioHandler.voices.pitch_scale = PlayStateSettings.songMultiplier
 				
 				Conductor.songPosition = 0
+				
+				UI.timeBar = load(PlayStateSettings.currentUiSkin.time_bar_path).instance()
+				var timeBarY:float = 20
+				if PlayStateSettings.downScroll:
+					timeBarY = CoolUtil.screenHeight - 20
+				UI.timeBar.position = Vector2(640, timeBarY)
+				UI.timeBar.modulate.a = 0
+				UI.add_child(UI.timeBar)
+				
+				countdownTween.stop_all()
+				countdownTween.interpolate_property(UI.timeBar, "modulate:a", 0, 1, 0.5, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
+				countdownTween.start()
 				
 				countdownActive = false
 				
@@ -170,6 +250,9 @@ func updateHealth():
 	
 func _process(delta):		
 	if Input.is_action_just_pressed("ui_back"):
+		if UI.timeBar:
+			UI.remove_child(UI.timeBar)
+			UI.timeBar.queue_free()
 		Scenes.switchScene("FreeplayMenu")
 		AudioHandler.playMusic("freakyMenu")
 		
@@ -232,6 +315,9 @@ func _process(delta):
 			endSong()
 			
 func endSong():
+	UI.remove_child(UI.timeBar)
+	UI.timeBar.queue_free()
+	
 	endingSong = true
 	if PlayStateSettings.storyMode:
 		Scenes.switchScene("StoryMenu")
@@ -243,6 +329,18 @@ func endSong():
 	AudioHandler.voices.stop()
 			
 func beatHit():
+	if bf:
+		if bf.isDancing() or bf.lastAnim.ends_with("miss") or bf.lastAnim == "hey" or bf.lastAnim == "scared":
+			bf.dance()
+			
+	if dad:
+		if dad.isDancing() or (dad.name == gf.name and dad.lastAnim == "cheer" or dad.lastAnim == "scared"):
+			dad.dance()
+			
+	if gf:
+		if (gf.isDancing() or gf.lastAnim == "cheer" or gf.lastAnim == "scared" or (gf.lastAnim == "hairFall" and gf.animPlayer.current_animation == "")) and dad != gf:
+			gf.dance()
+			
 	if Conductor.curBeat % 4 == 0:
 		camera.zoom -= Vector2(0.015, 0.015)
 		HUD.scale += Vector2(0.05, 0.05)
@@ -250,6 +348,14 @@ func beatHit():
 		HUD.offset.y = (HUD.scale.y - 1) * -360
 			
 func stepHit():
+	var curSection:int = int(Conductor.curStep / 16)
+	if curSection < 0:
+		curSection = 0
+	if curSection > SONG.notes.size() - 1:
+		curSection = SONG.notes.size() - 1
+		
+	moveCameraSection(!SONG.notes[curSection].mustHitSection)
+		
 	if not countdownActive:
 		var gaming = 30
 		
@@ -262,6 +368,14 @@ func stepHit():
 		if not Conductor.songPosition / 1000.0 >= AudioHandler.inst.stream.get_length():
 			if not endingSong and inst_pos > Conductor.songPosition - (AudioServer.get_output_latency() * 1000) + gaming or inst_pos < Conductor.songPosition - (AudioServer.get_output_latency() * 1000) - gaming:
 				resyncVocals()
+			
+func moveCameraSection(isDad:bool = false):
+	if isDad:
+		camera.position.x = (dad.getMidpoint().x + 0) + dad.camera_pos.x
+		camera.position.y = (dad.getMidpoint().y - 100) + dad.camera_pos.y
+	else:
+		camera.position.x = (bf.getMidpoint().x - 400) - bf.camera_pos.x
+		camera.position.y = (bf.getMidpoint().y - 100) + bf.camera_pos.y
 			
 func resyncVocals():
 	if not countdownActive:

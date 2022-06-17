@@ -5,6 +5,18 @@ var nullRes = load("res://assets/images/null.res")
 var screenWidth = ProjectSettings.get_setting("display/window/size/width")
 var screenHeight = ProjectSettings.get_setting("display/window/size/height")
 
+const singAnims:Dictionary = {
+	1: ["singUP"],
+	2: ["singLEFT", "singRIGHT"],
+	3: ["singLEFT", "singUP", "singRIGHT"],
+	4: ["singLEFT", "singDOWN", "singUP", "singRIGHT"],
+	5: ["singLEFT", "singDOWN", "singUP", "singUP", "singRIGHT"],
+	6: ["singLEFT", "singDOWN", "singRIGHT", "singLEFT", "singUP", "singRIGHT"],
+	7: ["singLEFT", "singDOWN", "singRIGHT", "singUP", "singLEFT", "singUP", "singRIGHT"],
+	8: ["singLEFT", "singDOWN", "singUP", "singRIGHT", "singLEFT", "singDOWN", "singUP", "singRIGHT"],
+	9: ["singLEFT", "singDOWN", "singUP", "singRIGHT", "singUP", "singLEFT", "singDOWN", "singUP", "singRIGHT"],
+}
+
 func numToComboStr(num:int):
 	var numStr:String = str(num)
 	match len(numStr):

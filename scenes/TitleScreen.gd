@@ -46,6 +46,22 @@ func _process(delta):
 		Conductor.songPosition = freakyMenu.get_playback_position() * 1000
 	else:
 		Conductor.songPosition += (delta * 1000)
+		
+	if OS.is_debug_build() and Input.is_action_just_pressed("ui_focus_next"):
+		var day = str(OS.get_datetime()["day"])
+		var month = str(OS.get_datetime()["month"])
+		var year = str(OS.get_datetime()["year"])
+		year.erase(0, 2)
+		
+		var combined = day + month + year
+		var f = File.new()
+		var error = f.open(Paths.txt("data/gameVersionDate"), File.WRITE)
+		if error == OK:
+			f.store_string(combined)
+			f.close()
+			print("FILE SAVED!")
+		else:
+			print("ERROR OCCURED WHILE SAVING GAME VERSION DATE!")
 	
 	if Input.is_action_just_pressed("ui_accept"):
 		if not Preferences.wentThruTitle:
@@ -56,6 +72,7 @@ func _process(delta):
 				titleText.play("pressed")
 				AudioHandler.playSFX("confirmMenu")
 				if not tween.is_active():
+					cover.visible = true
 					cover.color = Color(1,1,1,1)
 					tween.interpolate_property(cover, "color:a", 1, 0, 2)
 					tween.start()

@@ -11,10 +11,12 @@ var defaultSaveData:Dictionary = {
 	"scroll-speed": 0,
 	"note-offset": 0,
 	"ui-skin": "Arrows",
-	"icon-bounce-style": "Default"
+	"icon-bounce-style": "Default",
+	"classic-health-bar": false,
 }
 # ^^^ MODIFY THIS!
 
+var gameVersion:String = "16622"
 var wentThruTitle:bool = false
 
 func _ready():
@@ -25,6 +27,9 @@ func _ready():
 func getOption(option:String):
 	if saveData.has(option):
 		return saveData[option]
+	else:
+		saveData[option] = defaultSaveData[option]
+		flushData()
 
 	return null
 	
