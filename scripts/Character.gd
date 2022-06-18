@@ -41,10 +41,10 @@ func _ready():
 	initFrame = frames.frames.get_frame(frames.animation, frames.frame)
 
 func playAnim(anim, force = false):
-	if "-alt" in anim and animPlayer.get_animation(anim) == null:
+	if "-alt" in anim and animPlayer.has_animation(anim):
 		anim = anim.split("-alt")[0]
 		
-	if (name != "_" or force) and animPlayer.get_animation(anim) != null:
+	if name != "_" and animPlayer.has_animation(anim):
 		animFinished = false
 		specialAnim = false
 		lastAnim = anim
@@ -52,7 +52,6 @@ func playAnim(anim, force = false):
 		animPlayer.stop()
 		
 		if frames:
-			if force: frames.frame = 0
 			frames.stop()
 		
 		animPlayer.play(anim)

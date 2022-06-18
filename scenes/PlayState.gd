@@ -32,6 +32,7 @@ var defaultCamZoom:float = 1.0
 var pressed:Array = [false]
 
 var noteDataArray:Array = []
+var loadedModcharts:Array = []
 
 func sortAscending(a, b):
 	if a[0] < b[0]:
@@ -138,6 +139,18 @@ func _ready():
 	
 	UI.healthBar._process(0)
 	UI.healthBar.updateText()
+	
+	# loading modcharts!
+	var songFolder:Array = CoolUtil.listFilesInDirectory(Paths.song(SONG.song))
+	print("SHIT IN SONG FOLDER: " + str(songFolder))
+	for file in songFolder:
+		if not file.begins_with(".") and file.ends_with(".tscn"):
+			print("FOUND MODCHART: " + file)
+			print("LOADING " + file)
+			var modchartFile = load(Paths.song(SONG.song) + "/" + file).instance()
+			modchartFile.PlayState = self
+			loadedModcharts.append(modchartFile)
+			add_child(modchartFile)
 				
 	var countdownTween:Tween = Tween.new()
 	countdownTween.pause_mode = Node.PAUSE_MODE_PROCESS
@@ -148,6 +161,7 @@ func _ready():
 	countdownGraphic.scale = Vector2(cs, cs)
 	
 	var countdownTime = (Conductor.timeBetweenBeats / 1000.0) / PlayStateSettings.songMultiplier
+	callOnModcharts("onStartCountdown")
 	for i in 5:
 		yield(get_tree().create_timer(countdownTime, false), "timeout")
 		match countdownTick:
@@ -161,6 +175,8 @@ func _ready():
 				Conductor.songPosition = Conductor.timeBetweenBeats * -4
 				countdownAudios["3"].stream = PlayStateSettings.currentUiSkin.countdown_3
 				countdownAudios["3"].play()
+				
+				callOnModcharts("onCountdownTick", [countdownTick])
 			3:
 				if dad and dad.isDancing():
 					dad.dance()
@@ -177,6 +193,8 @@ func _ready():
 				countdownTween.stop_all()
 				countdownTween.interpolate_property(countdownGraphic, "modulate:a", 1, 0, countdownTime, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
 				countdownTween.start()
+				
+				callOnModcharts("onCountdownTick", [countdownTick])
 			2:
 				if dad and dad.isDancing():
 					dad.dance()
@@ -193,6 +211,8 @@ func _ready():
 				countdownTween.stop_all()
 				countdownTween.interpolate_property(countdownGraphic, "modulate:a", 1, 0, countdownTime, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
 				countdownTween.start()
+				
+				callOnModcharts("onCountdownTick", [countdownTick])
 			1:
 				if dad and dad.isDancing():
 					dad.dance()
@@ -210,6 +230,8 @@ func _ready():
 				countdownTween.stop_all()
 				countdownTween.interpolate_property(countdownGraphic, "modulate:a", 1, 0, countdownTime, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
 				countdownTween.start()
+				
+				callOnModcharts("onCountdownTick", [countdownTick])
 			0:
 				if dad and dad.isDancing():
 					dad.dance()
@@ -241,6 +263,9 @@ func _ready():
 				countdownTween.start()
 				
 				countdownActive = false
+				
+				callOnModcharts("onCountdownTick", [countdownTick])
+				callOnModcharts("onSongStart")
 				
 		countdownTick -= 1
 				
@@ -387,6 +412,12 @@ func moveCameraSection(isDad:bool = false):
 	else:
 		camera.position.x = (bf.getMidpoint().x - 430) - bf.camera_pos.x
 		camera.position.y = (bf.getMidpoint().y - 100) + bf.camera_pos.y
+		
+func callOnModcharts(funct:String, args:Array = []):
+	if loadedModcharts.size() > 0:
+		for m in loadedModcharts:
+			var modchart:Modchart = m
+			modchart.callv(funct, args)
 			
 func resyncVocals():
 	if not countdownActive:

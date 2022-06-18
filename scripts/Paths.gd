@@ -1,5 +1,8 @@
 extends Node
 
+func song(song:String):
+	return "res://assets/songs/" + song.to_lower()
+
 func songJSON(song:String, diff:String = "normal"):
 	return "res://assets/songs/" + song.to_lower() + "/" + diff + ".json"
 	

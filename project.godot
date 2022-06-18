@@ -24,6 +24,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/ui/playState/HealthBar.gd"
 }, {
+"base": "Node",
+"class": "Modchart",
+"language": "GDScript",
+"path": "res://scripts/Modchart.gd"
+}, {
 "base": "Node2D",
 "class": "Note",
 "language": "GDScript",
@@ -53,6 +58,7 @@ _global_script_class_icons={
 "Character": "",
 "FreeplaySong": "",
 "HealthBar": "",
+"Modchart": "",
 "Note": "",
 "PauseOption": "",
 "Ranking": "",
