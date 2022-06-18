@@ -68,7 +68,10 @@ func _process(delta):
 				if note.downScroll:
 					note.position.y += among - 65
 				else:
-					note.position.y -= among
+					var fard:float = 0
+					if (PlayStateSettings.currentUiSkin.sustain_scale - 1) != 0:
+						fard = ((-65 / (PlayStateSettings.currentUiSkin.sustain_scale - 1)) + (32 * PlayStateSettings.scrollSpeed)) * 0.5
+					note.position.y -= among + fard
 					
 			note.modulate.a = 0.6
 				
