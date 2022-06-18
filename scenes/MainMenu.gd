@@ -58,7 +58,7 @@ func _input(event):
 			yield(get_tree().create_timer(0.2), "timeout")
 			match items[curSelected].name:
 				"story-mode":
-					pass
+					Scenes.switchScene("StoryMenu")
 				"freeplay":
 					Scenes.switchScene("FreeplayMenu")
 				"mods":
