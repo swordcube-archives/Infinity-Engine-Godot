@@ -18,7 +18,7 @@ position = Vector2( -900, -1096 )
 scale = Vector2( 6, 6 )
 frames = ExtResource( 1 )
 animation = "background 2 instance 1"
-frame = 13
+frame = 16
 playing = true
 centered = false
 

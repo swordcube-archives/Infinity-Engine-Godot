@@ -30,7 +30,7 @@ func sortAscending(a, b):
 
 func _physics_process(delta):
 	if animationNotes.size() > 0 and Conductor.songPosition > animationNotes[0][0]:
-		print("played shoot anim" + str(animationNotes[0][1]))
+		#print("played shoot anim" + str(animationNotes[0][1]))
 		var shotDirection:int = 1
 		if animationNotes[0][1] >= 2:
 			shotDirection = 3

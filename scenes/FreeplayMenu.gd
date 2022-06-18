@@ -80,7 +80,10 @@ func _process(delta):
 		if Input.is_action_just_pressed("ui_right"):
 			changeDifficulty(1)
 			
-		if Input.is_action_just_pressed("ui_accept"):
+		if not AudioHandler.inst.playing and Input.is_action_just_pressed("ui_space"):
+			AudioHandler.playInst(songNames[curSelected])
+			AudioHandler.playVoices(songNames[curSelected])
+		elif Input.is_action_just_pressed("ui_accept"):
 			AudioHandler.stopMusic()
 			PlayStateSettings.deaths = 0
 			PlayStateSettings.practiceMode = false

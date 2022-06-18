@@ -79,7 +79,7 @@ motion_offset = Vector2( -384, -216 )
 position = Vector2( -200, -100 )
 frames = ExtResource( 7 )
 animation = "SmokeBlurLeft instance 1"
-frame = 10
+frame = 12
 playing = true
 centered = false
 
@@ -87,7 +87,7 @@ centered = false
 position = Vector2( 1100, -100 )
 frames = ExtResource( 8 )
 animation = "SmokeRight instance 1"
-frame = 10
+frame = 12
 playing = true
 centered = false
 
@@ -107,7 +107,6 @@ centered = false
 position = Vector2( 300, 300 )
 frames = ExtResource( 10 )
 animation = "BG tank w lighting instance 1"
-frame = 1
 playing = true
 centered = false
 
@@ -178,7 +177,7 @@ centered = false
 position = Vector2( 20, 100 )
 
 [node name="gfPos" type="Node2D" parent="."]
-position = Vector2( 200, 65 )
+position = Vector2( 320, 105 )
 
 [node name="bfPos" type="Node2D" parent="."]
 position = Vector2( 810, 100 )
