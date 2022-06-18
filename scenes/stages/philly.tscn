@@ -1,0 +1,69 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://assets/images/stages/philly/sky.png" type="Texture" id=1]
+[ext_resource path="res://assets/images/stages/philly/city.png" type="Texture" id=2]
+[ext_resource path="res://assets/images/stages/philly/winWhite.png" type="Texture" id=3]
+[ext_resource path="res://scenes/stages/philly.gd" type="Script" id=4]
+[ext_resource path="res://assets/images/stages/philly/behindTrain.png" type="Texture" id=5]
+[ext_resource path="res://assets/images/stages/philly/train.png" type="Texture" id=6]
+[ext_resource path="res://assets/images/stages/philly/street.png" type="Texture" id=7]
+[ext_resource path="res://assets/sounds/train_passes.ogg" type="AudioStream" id=8]
+
+[node name="philly" type="Node2D"]
+script = ExtResource( 4 )
+defaultCamZoom = 1.05
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="layer1" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 0.1, 0.1 )
+motion_offset = Vector2( -576, -324 )
+
+[node name="Sky" type="Sprite" parent="ParallaxBackground/layer1"]
+position = Vector2( -100, 0 )
+texture = ExtResource( 1 )
+centered = false
+
+[node name="layer2" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 0.3, 0.3 )
+motion_offset = Vector2( -448, -252 )
+
+[node name="City" type="Sprite" parent="ParallaxBackground/layer2"]
+position = Vector2( -10, 0 )
+scale = Vector2( 0.85, 0.85 )
+texture = ExtResource( 2 )
+centered = false
+
+[node name="WinWhite" type="Sprite" parent="ParallaxBackground/layer2"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( -10, 0 )
+scale = Vector2( 0.85, 0.85 )
+texture = ExtResource( 3 )
+centered = false
+
+[node name="BehindTrain" type="Sprite" parent="."]
+position = Vector2( -40, 50 )
+texture = ExtResource( 5 )
+centered = false
+
+[node name="Street" type="Sprite" parent="."]
+position = Vector2( -40, 50 )
+texture = ExtResource( 7 )
+centered = false
+
+[node name="TrainSpr" type="Sprite" parent="."]
+position = Vector2( 2000, 360 )
+texture = ExtResource( 6 )
+centered = false
+
+[node name="dadPos" type="Node2D" parent="."]
+position = Vector2( 100, 100 )
+
+[node name="gfPos" type="Node2D" parent="."]
+position = Vector2( 400, 130 )
+
+[node name="bfPos" type="Node2D" parent="."]
+position = Vector2( 770, 100 )
+
+[node name="Train" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )

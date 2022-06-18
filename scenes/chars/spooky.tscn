@@ -2,7 +2,7 @@
 
 [ext_resource path="res://assets/images/chars/spooky/spooky_kids_assets.res" type="SpriteFrames" id=1]
 [ext_resource path="res://scripts/Character.gd" type="Script" id=2]
-[ext_resource path="res://assets/images/icons/dad.png" type="Texture" id=3]
+[ext_resource path="res://assets/images/icons/spooky.png" type="Texture" id=3]
 
 [sub_resource type="Animation" id=1]
 resource_name = "danceLeft"
@@ -317,7 +317,7 @@ tracks/3/keys = {
 [node name="spooky" type="Node2D"]
 position = Vector2( 0, 200 )
 script = ExtResource( 2 )
-healthColor = Color( 0.658824, 0.384314, 0.776471, 1 )
+healthColor = Color( 0.835294, 0.494118, 0, 1 )
 healthIcon = ExtResource( 3 )
 dancesLeftRight = true
 singDuration = 5.0
@@ -325,11 +325,10 @@ singDuration = 5.0
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( -248, 0 )
 frames = ExtResource( 1 )
-animation = "note sing left"
-frame = 14
+animation = "spooky dance idle"
+frame = 15
 playing = true
 centered = false
-offset = Vector2( -130, 10 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../AnimatedSprite")

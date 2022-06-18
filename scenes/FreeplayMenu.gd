@@ -115,7 +115,6 @@ func changeDifficulty(change:int = 0):
 		curDifficulty = 0
 		
 	diffText.text = "< "+songDifficulties[curSelected][curDifficulty].to_upper()+" >"	
-	yield(get_tree().create_timer(0.01), "timeout")
 	positionHighscore()
 	
 func positionHighscore():

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://assets/images/title/fnfLogo.res" type="SpriteFrames" id=1]
 [ext_resource path="res://assets/images/title/gfTitle.res" type="SpriteFrames" id=2]
@@ -7,6 +7,19 @@
 [ext_resource path="res://assets/fonts/FNF_Bold1.font" type="BitmapFont" id=5]
 [ext_resource path="res://assets/images/title/newgrounds.png" type="Texture" id=6]
 [ext_resource path="res://assets/fonts/FNF_Bold2.font" type="BitmapFont" id=7]
+[ext_resource path="res://shaders/HueShader.tres" type="Shader" id=8]
+
+[sub_resource type="ShaderMaterial" id=3]
+shader = ExtResource( 8 )
+shader_param/hue = 0.0
+shader_param/saturation = 1.0
+shader_param/value = 1.0
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = ExtResource( 8 )
+shader_param/hue = 0.0
+shader_param/saturation = 1.0
+shader_param/value = 1.0
 
 [sub_resource type="Animation" id=1]
 resource_name = "default"
@@ -37,12 +50,14 @@ __meta__ = {
 }
 
 [node name="logo" type="AnimatedSprite" parent="."]
+material = SubResource( 3 )
 position = Vector2( -150, -100 )
 frames = ExtResource( 1 )
 animation = "bump"
 centered = false
 
 [node name="gfDance" type="AnimatedSprite" parent="."]
+material = SubResource( 2 )
 position = Vector2( 512, 50.4 )
 frames = ExtResource( 2 )
 animation = "danceLeft"

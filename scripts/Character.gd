@@ -22,7 +22,7 @@ export(AudioStream) var deathSound = preload("res://assets/sounds/fnf_loss_sfx.o
 export(AudioStream) var deathMusic = preload("res://assets/music/gameOver.ogg")
 export(AudioStream) var retrySound = preload("res://assets/sounds/gameOverEnd.ogg")
 
-var initFrame 
+var initFrame
 
 var specialAnim = false
 
@@ -41,6 +41,9 @@ func _ready():
 	initFrame = frames.frames.get_frame(frames.animation, frames.frame)
 
 func playAnim(anim, force = false):
+	if "-alt" in anim and animPlayer.get_animation(anim) == null:
+		anim = anim.split("-alt")[0]
+		
 	if (name != "_" or force) and animPlayer.get_animation(anim) != null:
 		animFinished = false
 		specialAnim = false
@@ -49,6 +52,7 @@ func playAnim(anim, force = false):
 		animPlayer.stop()
 		
 		if frames:
+			if force: frames.frame = 0
 			frames.stop()
 		
 		animPlayer.play(anim)
@@ -76,7 +80,7 @@ func dance(force = null):
 	if force == null:
 		force = dancesLeftRight
 	
-	if force or animPlayer.current_animation == "":
+	if force or "-loop" in lastAnim or animPlayer.current_animation == "":
 		if dancesLeftRight:
 			danced = not danced
 			

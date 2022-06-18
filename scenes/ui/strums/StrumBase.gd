@@ -76,8 +76,15 @@ func _process(delta):
 				sustains.rect_clip_content = Input.is_action_pressed("gameplay_" + direction)
 					
 				if Input.is_action_pressed("gameplay_" + direction) and Conductor.songPosition >= note.strumTime + (Conductor.safeZoneOffset / 8):
-					PlayState.bf.holdTimer = 0
-					PlayState.bf.playAnim(CoolUtil.singAnims[PlayState.SONG["keyCount"]][note.noteData])
+					if not PlayState.bf.specialAnim:
+						var altAnim = ""
+						var curSection = MathUtil.boundTo(int(Conductor.curStep / 16), 0, PlayState.SONG.notes.size() - 1)
+						if PlayState.SONG.notes[curSection].altAnim:
+							altAnim = "-alt"
+							
+						PlayState.bf.holdTimer = 0
+						PlayState.bf.playAnim(CoolUtil.singAnims[PlayState.SONG["keyCount"]][note.noteData] + altAnim)
+						
 					PlayState.health += 0.023
 					AudioHandler.voices.volume_db = 0
 					PlayState.updateHealth()
@@ -86,8 +93,15 @@ func _process(delta):
 					note.queue_free()
 					
 				if Conductor.songPosition >= note.strumTime + Conductor.safeZoneOffset:
-					PlayState.bf.holdTimer = 0
-					PlayState.bf.playAnim(CoolUtil.singAnims[PlayState.SONG["keyCount"]][note.noteData] + "miss")
+					if not PlayState.bf.specialAnim:
+						var altAnim = ""
+						var curSection = MathUtil.boundTo(int(Conductor.curStep / 16), 0, PlayState.SONG.notes.size() - 1)
+						if PlayState.SONG.notes[curSection].altAnim:
+							altAnim = "-alt"
+							
+						PlayState.bf.holdTimer = 0
+						PlayState.bf.playAnim(CoolUtil.singAnims[PlayState.SONG["keyCount"]][note.noteData] + "miss" + altAnim)
+						
 					PlayState.health += -0.0475
 					PlayState.combo = 0
 					PlayState.totalNotes += 1
@@ -98,8 +112,14 @@ func _process(delta):
 					note.queue_free()
 			else:
 				if Conductor.songPosition >= note.strumTime + (Conductor.safeZoneOffset / 4):
-					PlayState.dad.holdTimer = 0
-					PlayState.dad.playAnim(CoolUtil.singAnims[PlayState.SONG["keyCount"]][note.noteData])
+					if not PlayState.dad.specialAnim:
+						var altAnim = ""
+						var curSection = MathUtil.boundTo(int(Conductor.curStep / 16), 0, PlayState.SONG.notes.size() - 1)
+						if PlayState.SONG.notes[curSection].altAnim:
+							altAnim = "-alt"
+							
+						PlayState.dad.holdTimer = 0
+						PlayState.dad.playAnim(CoolUtil.singAnims[PlayState.SONG["keyCount"]][note.noteData] + altAnim)
 					playAnim("confirm")
 					AudioHandler.voices.volume_db = 0
 					sustains.remove_child(note)
@@ -117,8 +137,13 @@ func _process(delta):
 				if not dontHit:
 					if Input.is_action_just_pressed("gameplay_" + direction):
 						if Conductor.songPosition >= note.strumTime - (Conductor.safeZoneOffset * 1):
-							PlayState.bf.holdTimer = 0
-							PlayState.bf.playAnim(CoolUtil.singAnims[PlayState.SONG["keyCount"]][note.noteData])
+							if not PlayState.bf.specialAnim:
+								var altAnim = ""
+								var curSection = MathUtil.boundTo(int(Conductor.curStep / 16), 0, PlayState.SONG.notes.size() - 1)
+								if PlayState.SONG.notes[curSection].altAnim:
+									altAnim = "-alt"
+								PlayState.bf.holdTimer = 0
+								PlayState.bf.playAnim(CoolUtil.singAnims[PlayState.SONG["keyCount"]][note.noteData] + altAnim)
 					
 							PlayState.health += 0.023
 							PlayState.combo += 1
@@ -175,8 +200,14 @@ func _process(delta):
 						dontHit = true
 						
 				if Conductor.songPosition >= note.strumTime + (Conductor.safeZoneOffset * 1):
-					PlayState.bf.holdTimer = 0
-					PlayState.bf.playAnim(CoolUtil.singAnims[PlayState.SONG["keyCount"]][note.noteData] + "miss")
+					if not PlayState.bf.specialAnim:
+						var altAnim = ""
+						var curSection = MathUtil.boundTo(int(Conductor.curStep / 16), 0, PlayState.SONG.notes.size() - 1)
+						if PlayState.SONG.notes[curSection].altAnim:
+							altAnim = "-alt"
+							
+						PlayState.bf.holdTimer = 0
+						PlayState.bf.playAnim(CoolUtil.singAnims[PlayState.SONG["keyCount"]][note.noteData] + "miss" + altAnim)
 					
 					PlayState.health += -0.0475
 					PlayState.songMisses += 1
@@ -189,8 +220,14 @@ func _process(delta):
 					note.queue_free()
 			else:						
 				if Conductor.songPosition >= note.strumTime:
-					PlayState.dad.holdTimer = 0
-					PlayState.dad.playAnim(CoolUtil.singAnims[PlayState.SONG["keyCount"]][note.noteData])
+					if not PlayState.dad.specialAnim:
+						var altAnim = ""
+						var curSection = MathUtil.boundTo(int(Conductor.curStep / 16), 0, PlayState.SONG.notes.size() - 1)
+						if PlayState.SONG.notes[curSection].altAnim:
+							altAnim = "-alt"
+							
+						PlayState.dad.holdTimer = 0
+						PlayState.dad.playAnim(CoolUtil.singAnims[PlayState.SONG["keyCount"]][note.noteData] + altAnim)
 					
 					playAnim("confirm")
 					AudioHandler.voices.volume_db = 0

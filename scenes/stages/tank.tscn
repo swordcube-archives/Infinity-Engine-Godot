@@ -1,0 +1,184 @@
+[gd_scene load_steps=18 format=2]
+
+[ext_resource path="res://scenes/stages/tank.gd" type="Script" id=1]
+[ext_resource path="res://assets/images/stages/tank/tankSky.png" type="Texture" id=2]
+[ext_resource path="res://assets/images/stages/tank/tankClouds.png" type="Texture" id=3]
+[ext_resource path="res://assets/images/stages/tank/tankMountains.png" type="Texture" id=4]
+[ext_resource path="res://assets/images/stages/tank/tankBuildings.png" type="Texture" id=5]
+[ext_resource path="res://assets/images/stages/tank/tankRuins.png" type="Texture" id=6]
+[ext_resource path="res://assets/images/stages/tank/smokeLeft.res" type="SpriteFrames" id=7]
+[ext_resource path="res://assets/images/stages/tank/smokeRight.res" type="SpriteFrames" id=8]
+[ext_resource path="res://assets/images/stages/tank/tankWatchtower.res" type="SpriteFrames" id=9]
+[ext_resource path="res://assets/images/stages/tank/tankRolling.res" type="SpriteFrames" id=10]
+[ext_resource path="res://assets/images/stages/tank/tankGround.png" type="Texture" id=11]
+[ext_resource path="res://assets/images/stages/tank/tank0.res" type="SpriteFrames" id=12]
+[ext_resource path="res://assets/images/stages/tank/tank1.res" type="SpriteFrames" id=13]
+[ext_resource path="res://assets/images/stages/tank/tank2.res" type="SpriteFrames" id=14]
+[ext_resource path="res://assets/images/stages/tank/tank4.res" type="SpriteFrames" id=15]
+[ext_resource path="res://assets/images/stages/tank/tank5.res" type="SpriteFrames" id=16]
+[ext_resource path="res://assets/images/stages/tank/tank3.res" type="SpriteFrames" id=17]
+
+[node name="tank" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="layer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 0, 0 )
+motion_offset = Vector2( -640, -360 )
+
+[node name="TankSky" type="Sprite" parent="ParallaxBackground/layer"]
+position = Vector2( -400, -400 )
+texture = ExtResource( 2 )
+centered = false
+
+[node name="layer2" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 0.1, 0.1 )
+motion_offset = Vector2( -576, -324 )
+
+[node name="TankClouds" type="Sprite" parent="ParallaxBackground/layer2"]
+position = Vector2( 700, -20 )
+texture = ExtResource( 3 )
+centered = false
+
+[node name="layer3" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 0.2, 0.2 )
+motion_offset = Vector2( -512, -288 )
+
+[node name="TankMountains" type="Sprite" parent="ParallaxBackground/layer3"]
+position = Vector2( -300, -30 )
+scale = Vector2( 1.2, 1.2 )
+texture = ExtResource( 4 )
+centered = false
+
+[node name="layer4" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 0.3, 0.3 )
+motion_offset = Vector2( -448, -252 )
+
+[node name="TankBuildings" type="Sprite" parent="ParallaxBackground/layer4"]
+position = Vector2( -200, 0 )
+scale = Vector2( 1.1, 1.1 )
+texture = ExtResource( 5 )
+centered = false
+
+[node name="layer5" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 0.35, 0.35 )
+motion_offset = Vector2( -416, -234 )
+
+[node name="TankRuins" type="Sprite" parent="ParallaxBackground/layer5"]
+position = Vector2( -200, 0 )
+scale = Vector2( 1.1, 1.1 )
+texture = ExtResource( 6 )
+centered = false
+
+[node name="layer6" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 0.4, 0.4 )
+motion_offset = Vector2( -384, -216 )
+
+[node name="SmokeLeft" type="AnimatedSprite" parent="ParallaxBackground/layer6"]
+position = Vector2( -200, -100 )
+frames = ExtResource( 7 )
+animation = "SmokeBlurLeft instance 1"
+frame = 10
+playing = true
+centered = false
+
+[node name="SmokeRight" type="AnimatedSprite" parent="ParallaxBackground/layer6"]
+position = Vector2( 1100, -100 )
+frames = ExtResource( 8 )
+animation = "SmokeRight instance 1"
+frame = 10
+playing = true
+centered = false
+
+[node name="layer7" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 0.5, 0.5 )
+motion_offset = Vector2( -320, -180 )
+
+[node name="SmokeLeft" type="AnimatedSprite" parent="ParallaxBackground/layer7"]
+position = Vector2( 100, 50 )
+frames = ExtResource( 9 )
+animation = "watchtower gradient color instance 1"
+frame = 13
+playing = true
+centered = false
+
+[node name="TankRolling" type="AnimatedSprite" parent="ParallaxBackground/layer7"]
+position = Vector2( 300, 300 )
+frames = ExtResource( 10 )
+animation = "BG tank w lighting instance 1"
+frame = 1
+playing = true
+centered = false
+
+[node name="TankmenRun" type="Node2D" parent="."]
+
+[node name="Ground" type="Sprite" parent="."]
+position = Vector2( -420, -150 )
+scale = Vector2( 1.15, 1.15 )
+texture = ExtResource( 11 )
+centered = false
+
+[node name="FGGuys" type="ParallaxBackground" parent="."]
+layer = 1
+
+[node name="layer1" type="ParallaxLayer" parent="FGGuys"]
+motion_scale = Vector2( 1.7, 1.5 )
+motion_offset = Vector2( 448, 180 )
+
+[node name="tank" type="AnimatedSprite" parent="FGGuys/layer1"]
+position = Vector2( -500, 650 )
+frames = ExtResource( 12 )
+animation = "fg tankhead far right instance 1"
+centered = false
+
+[node name="layer2" type="ParallaxLayer" parent="FGGuys"]
+motion_scale = Vector2( 2, 0.2 )
+motion_offset = Vector2( 640, -288 )
+
+[node name="tank" type="AnimatedSprite" parent="FGGuys/layer2"]
+position = Vector2( -300, 750 )
+frames = ExtResource( 13 )
+animation = "fg tankhead 5 instance 1"
+centered = false
+
+[node name="layer3" type="ParallaxLayer" parent="FGGuys"]
+motion_scale = Vector2( 1.5, 1.5 )
+motion_offset = Vector2( 320, 180 )
+
+[node name="tank" type="AnimatedSprite" parent="FGGuys/layer3"]
+position = Vector2( 450, 940 )
+frames = ExtResource( 14 )
+animation = "foreground man 3 instance 1"
+centered = false
+
+[node name="tank2" type="AnimatedSprite" parent="FGGuys/layer3"]
+position = Vector2( 1300, 900 )
+frames = ExtResource( 15 )
+animation = "fg tankman bobbin 3 instance 1"
+centered = false
+
+[node name="tank3" type="AnimatedSprite" parent="FGGuys/layer3"]
+position = Vector2( 1620, 700 )
+frames = ExtResource( 16 )
+animation = "fg tankhead far right instance 1"
+centered = false
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="FGGuys"]
+motion_scale = Vector2( 3.5, 2.5 )
+motion_offset = Vector2( 1600, 540 )
+
+[node name="tank4" type="AnimatedSprite" parent="FGGuys/ParallaxLayer"]
+position = Vector2( 1300, 1200 )
+frames = ExtResource( 17 )
+animation = "fg tankhead 4 instance 1"
+centered = false
+
+[node name="dadPos" type="Node2D" parent="."]
+position = Vector2( 20, 100 )
+
+[node name="gfPos" type="Node2D" parent="."]
+position = Vector2( 200, 65 )
+
+[node name="bfPos" type="Node2D" parent="."]
+position = Vector2( 810, 100 )

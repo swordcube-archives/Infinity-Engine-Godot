@@ -8,6 +8,7 @@
         "player2": "senpai-angry",
         "gf": "gf-pixel",
         "speed": 1.2,
+        "stage": "school",
         "notes": [
             {
                 "lengthInSteps": 16,

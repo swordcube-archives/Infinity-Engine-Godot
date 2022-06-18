@@ -1,0 +1,65 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scenes/stages/limo.gd" type="Script" id=1]
+[ext_resource path="res://assets/images/stages/limo/limoSunset.png" type="Texture" id=2]
+[ext_resource path="res://assets/images/stages/limo/bgLimo.res" type="SpriteFrames" id=3]
+[ext_resource path="res://scenes/stages/limo/limoDancer.tscn" type="PackedScene" id=4]
+[ext_resource path="res://assets/images/stages/limo/limoDrive.res" type="SpriteFrames" id=5]
+
+[node name="limo" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="layer1" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 0.1, 0.1 )
+motion_offset = Vector2( -576, -324 )
+
+[node name="LimoSunset" type="Sprite" parent="ParallaxBackground/layer1"]
+position = Vector2( -120, -50 )
+texture = ExtResource( 2 )
+centered = false
+
+[node name="layer2" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 0.4, 0.4 )
+motion_offset = Vector2( -384, -216 )
+
+[node name="BgLimo" type="AnimatedSprite" parent="ParallaxBackground/layer2"]
+position = Vector2( -150, 480 )
+frames = ExtResource( 3 )
+animation = "background limo pink"
+frame = 1
+playing = true
+centered = false
+
+[node name="limoDancer" parent="ParallaxBackground/layer2" instance=ExtResource( 4 )]
+position = Vector2( 130, 80 )
+
+[node name="limoDancer2" parent="ParallaxBackground/layer2" instance=ExtResource( 4 )]
+position = Vector2( 500, 80 )
+
+[node name="limoDancer3" parent="ParallaxBackground/layer2" instance=ExtResource( 4 )]
+position = Vector2( 870, 80 )
+
+[node name="limoDancer4" parent="ParallaxBackground/layer2" instance=ExtResource( 4 )]
+position = Vector2( 1240, 80 )
+
+[node name="limoDancer5" parent="ParallaxBackground/layer2" instance=ExtResource( 4 )]
+position = Vector2( 1610, 80 )
+
+[node name="dadPos" type="Node2D" parent="."]
+position = Vector2( 100, 100 )
+
+[node name="gfPos" type="Node2D" parent="."]
+position = Vector2( 400, 154 )
+
+[node name="bfPos" type="Node2D" parent="."]
+position = Vector2( 1030, -120 )
+
+[node name="limo" type="AnimatedSprite" parent="."]
+position = Vector2( -120, 550 )
+frames = ExtResource( 5 )
+animation = "Limo stage"
+frame = 3
+playing = true
+centered = false

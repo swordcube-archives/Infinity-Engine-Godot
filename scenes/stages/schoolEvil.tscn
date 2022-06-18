@@ -1,0 +1,32 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://assets/images/stages/school/animatedEvilSchool.res" type="SpriteFrames" id=1]
+[ext_resource path="res://scenes/stages/stage.gd" type="Script" id=2]
+
+[node name="schoolEvil" type="Node2D"]
+script = ExtResource( 2 )
+defaultCamZoom = 1.05
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="layer1" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 0.8, 0.9 )
+motion_offset = Vector2( -128, -36 )
+
+[node name="bg" type="AnimatedSprite" parent="ParallaxBackground/layer1"]
+position = Vector2( -900, -1096 )
+scale = Vector2( 6, 6 )
+frames = ExtResource( 1 )
+animation = "background 2 instance 1"
+frame = 13
+playing = true
+centered = false
+
+[node name="dadPos" type="Node2D" parent="."]
+position = Vector2( 100, 100 )
+
+[node name="gfPos" type="Node2D" parent="."]
+position = Vector2( 400, 170 )
+
+[node name="bfPos" type="Node2D" parent="."]
+position = Vector2( 770, 100 )

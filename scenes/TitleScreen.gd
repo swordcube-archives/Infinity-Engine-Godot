@@ -62,6 +62,16 @@ func _process(delta):
 			print("FILE SAVED!")
 		else:
 			print("ERROR OCCURED WHILE SAVING GAME VERSION DATE!")
+			
+	if Preferences.wentThruTitle:
+		var multThingie:float = (delta * 0.5)
+		if Input.is_action_pressed("ui_left"):
+			logo.material.set("shader_param/hue", logo.material.get("shader_param/hue") - multThingie)
+			gfDance.material.set("shader_param/hue", gfDance.material.get("shader_param/hue") - multThingie)
+			
+		if Input.is_action_pressed("ui_right"):
+			logo.material.set("shader_param/hue", logo.material.get("shader_param/hue") + multThingie)
+			gfDance.material.set("shader_param/hue", gfDance.material.get("shader_param/hue") + multThingie)
 	
 	if Input.is_action_just_pressed("ui_accept"):
 		if not Preferences.wentThruTitle:

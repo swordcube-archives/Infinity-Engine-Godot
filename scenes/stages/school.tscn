@@ -1,0 +1,95 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://scenes/stages/school.gd" type="Script" id=1]
+[ext_resource path="res://assets/images/stages/school/weebSky.png" type="Texture" id=2]
+[ext_resource path="res://assets/images/stages/school/weebSchool.png" type="Texture" id=3]
+[ext_resource path="res://assets/images/stages/school/weebStreet.png" type="Texture" id=4]
+[ext_resource path="res://assets/images/stages/school/weebTreesBack.png" type="Texture" id=5]
+[ext_resource path="res://assets/images/stages/school/weebTrees.res" type="SpriteFrames" id=6]
+[ext_resource path="res://assets/images/stages/school/petals.res" type="SpriteFrames" id=7]
+[ext_resource path="res://assets/images/stages/school/bgFreaks.res" type="SpriteFrames" id=8]
+
+[node name="school" type="Node2D"]
+script = ExtResource( 1 )
+defaultCamZoom = 1.05
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="layer1" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 0.1, 0.1 )
+motion_offset = Vector2( -576, -324 )
+
+[node name="WeebSky" type="Sprite" parent="ParallaxBackground/layer1"]
+scale = Vector2( 6, 6 )
+texture = ExtResource( 2 )
+centered = false
+
+[node name="layer2" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 0.6, 0.9 )
+motion_offset = Vector2( -256, -36 )
+
+[node name="WeebSchool" type="Sprite" parent="ParallaxBackground/layer2"]
+position = Vector2( -200, 0 )
+scale = Vector2( 6, 6 )
+texture = ExtResource( 3 )
+centered = false
+
+[node name="layer3" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 0.95, 0.95 )
+motion_offset = Vector2( -32, -18 )
+
+[node name="WeebStreet" type="Sprite" parent="ParallaxBackground/layer3"]
+position = Vector2( -200, 0 )
+scale = Vector2( 6, 6 )
+texture = ExtResource( 4 )
+centered = false
+
+[node name="layer5" type="ParallaxLayer" parent="ParallaxBackground"]
+
+[node name="Petals" type="AnimatedSprite" parent="ParallaxBackground/layer5"]
+position = Vector2( -88, 8 )
+scale = Vector2( 4.8, 4.8 )
+frames = ExtResource( 7 )
+animation = "PETALS ALL"
+frame = 14
+playing = true
+centered = false
+
+[node name="WeebTrees" type="AnimatedSprite" parent="ParallaxBackground/layer5"]
+position = Vector2( -580, -800 )
+scale = Vector2( 4.8, 4.8 )
+frames = ExtResource( 6 )
+animation = "trees"
+frame = 3
+playing = true
+centered = false
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="layer4" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 0.9, 0.9 )
+motion_offset = Vector2( -64, -36 )
+
+[node name="WeebTreesBack" type="Sprite" parent="ParallaxBackground/layer4"]
+position = Vector2( -195, 5 )
+scale = Vector2( 6, 6 )
+texture = ExtResource( 5 )
+centered = false
+
+[node name="bgGirls" type="AnimatedSprite" parent="ParallaxBackground/layer4"]
+position = Vector2( -100, 190 )
+scale = Vector2( 6, 6 )
+frames = ExtResource( 8 )
+animation = "BG girls group"
+playing = true
+centered = false
+
+[node name="dadPos" type="Node2D" parent="."]
+position = Vector2( 100, 100 )
+
+[node name="gfPos" type="Node2D" parent="."]
+position = Vector2( 400, 170 )
+
+[node name="bfPos" type="Node2D" parent="."]
+position = Vector2( 770, 100 )

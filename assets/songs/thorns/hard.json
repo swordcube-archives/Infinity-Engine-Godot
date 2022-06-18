@@ -8,6 +8,7 @@
         "player2": "spirit",
         "gf": "gf-pixel",
         "speed": 1.5,
+        "stage": "schoolEvil",
         "notes": [
             {
                 "lengthInSteps": 16,

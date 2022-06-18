@@ -1,5 +1,3 @@
-# warning-ignore:narrowing_conversion
-
 extends Node2D
 
 var countdownActive:bool = true
@@ -28,6 +26,8 @@ var totalNotes:int = 0
 var totalHit:float = 0.0
 
 var combo:int = 0
+
+var defaultCamZoom:float = 1.0
 
 var pressed:Array = [false]
 
@@ -60,6 +60,15 @@ func _ready():
 	stage = Paths.getStageScene(stageToLoad)
 	add_child(stage)
 	
+	var zoomThing = 1
+	if stage:
+		zoomThing = 1 - stage.defaultCamZoom
+		
+	var goodZoom = 1 + zoomThing
+	
+	camera.zoom = Vector2(goodZoom, goodZoom)
+	defaultCamZoom = goodZoom
+	
 	var gfVersion = "gf"
 	
 	if "player3" in SONG:
@@ -81,6 +90,8 @@ func _ready():
 	
 	bf = Paths.getCharScene(SONG.player1)
 	add_child(bf)
+	
+	stage.createPost()
 	
 	dad.global_position += stage.get_node("dadPos").position + Vector2(300, 0)
 	gf.global_position += stage.get_node("gfPos").position + Vector2(300, 0)
@@ -265,7 +276,7 @@ func _process(delta):
 	
 	updateHealth()
 	
-	camera.zoom = lerp(camera.zoom, Vector2.ONE, MathUtil.getLerpValue(0.05, delta))
+	camera.zoom = lerp(camera.zoom, Vector2(defaultCamZoom, defaultCamZoom), MathUtil.getLerpValue(0.05, delta))
 	HUD.scale = lerp(HUD.scale, Vector2.ONE, MathUtil.getLerpValue(0.05, delta))
 	HUD.offset.x = (HUD.scale.x - 1) * -640
 	HUD.offset.y = (HUD.scale.y - 1) * -360
@@ -338,7 +349,7 @@ func beatHit():
 			dad.dance()
 			
 	if gf:
-		if (gf.isDancing() or gf.lastAnim == "cheer" or gf.lastAnim == "scared" or (gf.lastAnim == "hairFall" and gf.animPlayer.current_animation == "")) and dad != gf:
+		if (gf.isDancing() or gf.lastAnim == "cheer" or gf.lastAnim == "scared" or (gf.lastAnim == "hairFall" and gf.animPlayer.get_current_animation_position() >= 0.26)) and dad != gf:
 			gf.dance()
 			
 	if Conductor.curBeat % 4 == 0:
@@ -374,7 +385,7 @@ func moveCameraSection(isDad:bool = false):
 		camera.position.x = (dad.getMidpoint().x + 0) + dad.camera_pos.x
 		camera.position.y = (dad.getMidpoint().y - 100) + dad.camera_pos.y
 	else:
-		camera.position.x = (bf.getMidpoint().x - 400) - bf.camera_pos.x
+		camera.position.x = (bf.getMidpoint().x - 430) - bf.camera_pos.x
 		camera.position.y = (bf.getMidpoint().y - 100) + bf.camera_pos.y
 			
 func resyncVocals():
