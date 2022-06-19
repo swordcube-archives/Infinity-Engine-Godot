@@ -70,7 +70,7 @@ func _process(delta):
 				else:
 					var fard:float = 0
 					if (PlayStateSettings.currentUiSkin.sustain_scale - 1) != 0:
-						fard = ((-65 / (PlayStateSettings.currentUiSkin.sustain_scale - 1)) + (32 * PlayStateSettings.scrollSpeed)) * 0.5
+						fard = ((-45 / (PlayStateSettings.currentUiSkin.sustain_scale - 1)) + (32 * PlayStateSettings.scrollSpeed)) * 0.5
 					note.position.y -= among + fard
 					
 			note.modulate.a = 0.6
@@ -106,6 +106,8 @@ func _process(delta):
 						PlayState.bf.playAnim(CoolUtil.singAnims[PlayState.SONG["keyCount"]][note.noteData] + "miss" + altAnim)
 						
 					PlayState.health += -0.0475
+					if PlayState.combo >= 10:
+						PlayState.gf.playAnim('sad')
 					PlayState.combo = 0
 					PlayState.totalNotes += 1
 					AudioHandler.voices.volume_db = -9999
@@ -177,7 +179,7 @@ func _process(delta):
 							if rankingShit.has("health"):
 								PlayState.health += rankingShit["health"]
 								
-							if rankingShit.has("noteSplash"):
+							if Preferences.getOption("note-splashes") and rankingShit.has("noteSplash"):
 								var strum = PlayState.UI.playerStrums.get_child(note.noteData)
 								var noteSplash:Node2D = load("res://scenes/ui/playState/NoteSplash.tscn").instance()
 								noteSplash.direction = strum.direction
@@ -214,6 +216,8 @@ func _process(delta):
 					
 					PlayState.health += -0.0475
 					PlayState.songMisses += 1
+					if PlayState.combo >= 10:
+						PlayState.gf.playAnim('sad')
 					PlayState.combo = 0
 					PlayState.totalNotes += 1
 					AudioHandler.voices.volume_db = -9999

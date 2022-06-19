@@ -64,7 +64,7 @@ func _input(event):
 				"mods":
 					pass
 				"options":
-					pass
+					Scenes.switchScene("OptionsMenu")
 		
 func changeSelection(change:int = 0):
 	curSelected += change

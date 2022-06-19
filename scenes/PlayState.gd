@@ -41,6 +41,7 @@ func sortAscending(a, b):
 
 func _init():
 	PlayStateSettings.getSkin()
+	PlayStateSettings.downScroll = Preferences.getOption("downscroll")
 
 func _ready():
 	$HUD/Version.text += " (" + CoolUtil.getTXT(Paths.txt("data/gameVersionDate"))[0] + ")"
@@ -303,11 +304,11 @@ func _process(delta):
 	
 	camera.zoom = lerp(camera.zoom, Vector2(defaultCamZoom, defaultCamZoom), MathUtil.getLerpValue(0.05, delta))
 	HUD.scale = lerp(HUD.scale, Vector2.ONE, MathUtil.getLerpValue(0.05, delta))
-	HUD.offset.x = (HUD.scale.x - 1) * -640
-	HUD.offset.y = (HUD.scale.y - 1) * -360
+	HUD.offset.x = (HUD.scale.x - 1) * -CoolUtil.screenWidth/2
+	HUD.offset.y = (HUD.scale.y - 1) * -CoolUtil.screenHeight/2
 	
 	for note in noteDataArray:
-		if float(note[0]) - Conductor.songPosition < 2500:
+		if float(note[0]) - Conductor.songPosition < (2500 / PlayStateSettings.scrollSpeed):
 			var mustPress = true
 			
 			if note[3] and int(note[1]) % (SONG["keyCount"] * 2) >= SONG["keyCount"]:
@@ -354,6 +355,9 @@ func endSong():
 	UI.remove_child(UI.timeBar)
 	UI.timeBar.queue_free()
 	
+	if songScore > Highscore.getScore(SONG.song, PlayStateSettings.difficulty):
+		Highscore.setScore(SONG.song, PlayStateSettings.difficulty, songScore)
+	
 	endingSong = true
 	if PlayStateSettings.storyMode:
 		Scenes.switchScene("StoryMenu")
@@ -374,14 +378,14 @@ func beatHit():
 			dad.dance()
 			
 	if gf:
-		if (gf.isDancing() or gf.lastAnim == "cheer" or gf.lastAnim == "scared" or (gf.lastAnim == "hairFall" and gf.animPlayer.get_current_animation_position() >= 0.26)) and dad != gf:
+		if (gf.isDancing() or gf.lastAnim == "sad" or gf.lastAnim == "cheer" or gf.lastAnim == "scared" or (gf.lastAnim == "hairFall" and gf.animPlayer.get_current_animation_position() >= 0.26)) and dad != gf:
 			gf.dance()
 			
 	if Conductor.curBeat % 4 == 0:
 		camera.zoom -= Vector2(0.015, 0.015)
 		HUD.scale += Vector2(0.05, 0.05)
-		HUD.offset.x = (HUD.scale.x - 1) * -640
-		HUD.offset.y = (HUD.scale.y - 1) * -360
+		HUD.offset.x = (HUD.scale.x - 1) * -CoolUtil.screenWidth/2
+		HUD.offset.y = (HUD.scale.y - 1) * -CoolUtil.screenHeight/2
 			
 func stepHit():
 	var curSection:int = int(Conductor.curStep / 16)

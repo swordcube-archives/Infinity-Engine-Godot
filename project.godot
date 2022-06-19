@@ -9,6 +9,16 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "MenuOption",
+"class": "ArrayOption",
+"language": "GDScript",
+"path": "res://scenes/ui/optionsMenu/ArrayOption.gd"
+}, {
+"base": "MenuOption",
+"class": "BoolOption",
+"language": "GDScript",
+"path": "res://scenes/ui/optionsMenu/BoolOption.gd"
+}, {
 "base": "Node2D",
 "class": "Character",
 "language": "GDScript",
@@ -24,6 +34,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/ui/playState/HealthBar.gd"
 }, {
+"base": "Node2D",
+"class": "MenuOption",
+"language": "GDScript",
+"path": "res://scenes/ui/optionsMenu/MenuOption.gd"
+}, {
 "base": "Node",
 "class": "Modchart",
 "language": "GDScript",
@@ -33,6 +48,11 @@ _global_script_classes=[ {
 "class": "Note",
 "language": "GDScript",
 "path": "res://scenes/ui/notes/Note.gd"
+}, {
+"base": "MenuOption",
+"class": "NumberOption",
+"language": "GDScript",
+"path": "res://scenes/ui/optionsMenu/NumberOption.gd"
 }, {
 "base": "Node2D",
 "class": "PauseOption",
@@ -55,11 +75,15 @@ _global_script_classes=[ {
 "path": "res://scenes/ui/playState/TimeBar.gd"
 } ]
 _global_script_class_icons={
+"ArrayOption": "",
+"BoolOption": "",
 "Character": "",
 "FreeplaySong": "",
 "HealthBar": "",
+"MenuOption": "",
 "Modchart": "",
 "Note": "",
+"NumberOption": "",
 "PauseOption": "",
 "Ranking": "",
 "Stage": "",
@@ -95,6 +119,11 @@ CoolUtil="*res://scripts/CoolUtil.gd"
 PlayStateSettings="*res://scripts/PlayStateSettings.gd"
 Scenes="*res://scripts/Scenes.gd"
 MathUtil="*res://scripts/MathUtil.gd"
+
+[debug]
+
+gdscript/warnings/return_value_discarded=false
+gdscript/warnings/integer_division=false
 
 [display]
 

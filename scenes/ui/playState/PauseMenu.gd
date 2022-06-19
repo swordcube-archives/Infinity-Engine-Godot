@@ -24,6 +24,11 @@ func _ready():
 	AudioHandler.inst.stop()
 	AudioHandler.voices.stop()
 	
+	var breakfast:AudioStreamPlayer = AudioHandler.get_node("Music/breakfast")
+	
+	breakfast.volume_db = -50
+	breakfast.play()
+	
 	$SongName.text = PlayStateSettings.SONG.song.song
 	$DiffText.text = PlayStateSettings.difficulty.to_upper()
 	$DeathsText.text = "Blueballed: " + str(PlayStateSettings.deaths)
@@ -35,6 +40,7 @@ func _ready():
 	tweenTextThingie($DiffText, 0.5)
 	tweenTextThingie($DeathsText, 0.7)
 	tweenTextThingie($PracticeModeText, 0.9)
+	tween.interpolate_property(breakfast, "volume:db", breakfast.volume_db, 0, breakfast.stream.get_length() / 2)
 	tween.start()
 	
 	spawnOptions()

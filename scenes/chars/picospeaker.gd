@@ -44,4 +44,5 @@ func _physics_process(delta):
 		
 	if animFinished:
 		playAnim(lastAnim)
-		frames.frame = frames.animation.length() - 3
+		animPlayer.seek(animPlayer.current_animation_length - ((1.0/24.0) * 3), true)
+		frames.frame = frames.frames.get_frame_count(frames.animation) - 3

@@ -1,0 +1,178 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://assets/images/menus/menuBGDesat.png" type="Texture" id=1]
+[ext_resource path="res://scenes/ui/optionsMenu/menuItem/MenuThingie.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/OptionsMenu.gd" type="Script" id=3]
+[ext_resource path="res://scenes/ui/optionsMenu/BoolOption.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/ui/optionsMenu/ArrayOption.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/ui/optionsMenu/NumberOption.tscn" type="PackedScene" id=6]
+[ext_resource path="res://assets/fonts/FNF_Bold1.font" type="BitmapFont" id=7]
+
+[node name="OptionsMenu" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="BG" type="Sprite" parent="."]
+modulate = Color( 0.917647, 0.443137, 0.992157, 1 )
+position = Vector2( 640, 360 )
+texture = ExtResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Pages" type="Node2D" parent="."]
+
+[node name="Preferences" type="Node" parent="Pages"]
+
+[node name="Downscroll" parent="Pages/Preferences" instance=ExtResource( 4 )]
+visible = false
+saveDataOption = "downscroll"
+optionDescription = "Makes all notes scroll downwards instead of upwards."
+
+[node name="Centered Notes" parent="Pages/Preferences" instance=ExtResource( 4 )]
+visible = false
+saveDataOption = "centered-notes"
+optionDescription = "Centers your notes and hides the opponent's notes."
+
+[node name="Ghost Tapping" parent="Pages/Preferences" instance=ExtResource( 4 )]
+visible = false
+saveDataOption = "ghost-tapping"
+optionDescription = "Allows you to press notes that don't exist."
+
+[node name="Botplay" parent="Pages/Preferences" instance=ExtResource( 4 )]
+visible = false
+saveDataOption = "botplay"
+optionDescription = "The game plays itself for you when enabled."
+
+[node name="Hitsound" parent="Pages/Preferences" instance=ExtResource( 5 )]
+visible = false
+saveDataOption = "hitsound"
+optionDescription = "Change what sound plays when a note is hit."
+options = PoolStringArray( "None", "osu!", "Generic", "Dave & Bambi", "Vine Boom" )
+
+[node name="Custom Scroll Speed" parent="Pages/Preferences" instance=ExtResource( 4 )]
+visible = false
+saveDataOption = "custom-scroll-speed"
+optionDescription = "Allows you to override the song's scroll speed with one that applies to every song.
+"
+
+[node name="Scroll Speed" parent="Pages/Preferences" instance=ExtResource( 6 )]
+visible = false
+saveDataOption = "scroll-speed"
+optionDescription = "Use LEFT or RIGHT to change the speed of your notes.
+(Enable Custom Scroll Speed first)"
+optionNeeded = "custom-scroll-speed"
+neededValue = [ true ]
+min_value = 0.1
+max_value = 10.0
+
+[node name="Note Offset" parent="Pages/Preferences" instance=ExtResource( 6 )]
+visible = false
+saveDataOption = "note-offset"
+optionDescription = "Use LEFT or RIGHT to change how early or late your notes spawn. Useful if you have audio delay."
+min_value = -1000.0
+max_value = 1000.0
+multiplier = 0.05
+decimalCount = 2
+
+[node name="Sick Timing" parent="Pages/Preferences" instance=ExtResource( 6 )]
+visible = false
+saveDataOption = "sick-timing"
+optionDescription = "Use LEFT or RIGHT to change how often you'll get a \"Sick!\" in milliseconds."
+min_value = -150.0
+max_value = 150.0
+
+[node name="Good Timing" parent="Pages/Preferences" instance=ExtResource( 6 )]
+visible = false
+saveDataOption = "good-timing"
+optionDescription = "Use LEFT or RIGHT to change how often you'll get a \"Good!\" in milliseconds."
+min_value = -150.0
+max_value = 150.0
+
+[node name="Bad Timing" parent="Pages/Preferences" instance=ExtResource( 6 )]
+visible = false
+saveDataOption = "bad-timing"
+optionDescription = "Use LEFT or RIGHT to change how often you'll get a \"Bad\" in milliseconds."
+min_value = -150.0
+max_value = 150.0
+
+[node name="Shit Timing" parent="Pages/Preferences" instance=ExtResource( 6 )]
+visible = false
+saveDataOption = "shit-timing"
+optionDescription = "Use LEFT or RIGHT to change how often you'll get a \"Shit\" in milliseconds."
+min_value = -150.0
+max_value = 150.0
+
+[node name="Appearance" type="Node" parent="Pages"]
+
+[node name="Classic Health Bar" parent="Pages/Appearance" instance=ExtResource( 4 )]
+visible = false
+saveDataOption = "classic-health-bar"
+optionDescription = "Changes the health bar colors to be constantly green and red."
+
+[node name="Ultra Performance" parent="Pages/Appearance" instance=ExtResource( 4 )]
+visible = false
+saveDataOption = "ultra-performance"
+optionDescription = "Removes all backgrounds and characters."
+
+[node name="Note Splashes" parent="Pages/Appearance" instance=ExtResource( 4 )]
+visible = false
+saveDataOption = "note-splashes"
+optionDescription = "A firework like effect will appear when you get a \"Sick!\" when enabled."
+
+[node name="FPS Counter" parent="Pages/Appearance" instance=ExtResource( 4 )]
+visible = false
+saveDataOption = "fps-counter"
+optionDescription = "Shows your FPS & Memory Usage."
+
+[node name="Keybind Reminders" parent="Pages/Appearance" instance=ExtResource( 4 )]
+visible = false
+saveDataOption = "keybind-reminders"
+optionDescription = "Tells you your keybinds at the start of each song."
+
+[node name="VSync" parent="Pages/Appearance" instance=ExtResource( 4 )]
+visible = false
+saveDataOption = "vsync"
+optionDescription = "Forces the game's framerate to match your monitor's refresh rate."
+
+[node name="Clip Style" parent="Pages/Appearance" instance=ExtResource( 5 )]
+visible = false
+saveDataOption = "clip-style"
+optionDescription = "Choose a style for sustain note clippings.
+StepMania: Holds under Receptors - FNF: Holds over Receptors"
+options = PoolStringArray( "FNF", "StepMania" )
+
+[node name="UI Skin" parent="Pages/Appearance" instance=ExtResource( 5 )]
+visible = false
+saveDataOption = "ui-skin"
+optionDescription = "Choose a skin to adjust how the game looks and sounds."
+options = PoolStringArray( "Arrows", "Circles" )
+
+[node name="Miscellaneous" type="Node" parent="Pages"]
+
+[node name="Options" type="Node2D" parent="."]
+
+[node name="Strip" type="ColorRect" parent="."]
+margin_top = 620.0
+margin_right = 1280.0
+margin_bottom = 720.0
+color = Color( 0, 0, 0, 0.25 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="PageTemplate" parent="." instance=ExtResource( 2 )]
+visible = false
+position = Vector2( 0, 636 )
+
+[node name="PageOptions" type="Node2D" parent="."]
+modulate = Color( 1, 1, 1, 0.3 )
+
+[node name="Label" type="Label" parent="."]
+modulate = Color( 1, 1, 1, 0.15 )
+margin_top = 632.0
+margin_right = 1280.0
+margin_bottom = 702.0
+custom_fonts/font = ExtResource( 7 )
+text = "<                  >"
+align = 1
+uppercase = true

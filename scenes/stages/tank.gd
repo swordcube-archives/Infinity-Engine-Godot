@@ -1,5 +1,15 @@
 extends Stage
 
+onready var boppinGuys:Array = [
+	$ParallaxBackground/layer7/WatchTower,
+	$FGGuys/layer1/tank,
+	$FGGuys/layer2/tank,
+	$FGGuys/layer3/tank,
+	$FGGuys/layer3/tank2,
+	$FGGuys/layer3/tank3,
+	$FGGuys/ParallaxLayer/tank4,
+]
+
 onready var tankRolling:AnimatedSprite = $ParallaxBackground/layer7/TankRolling
 
 var tankAngle:float = rand_range(-90, 45)
@@ -10,19 +20,24 @@ func createPost():
 	randomize()
 	
 	if PlayState.SONG.song.to_lower() == "stress":
-		var tankmen = preload("res://scenes/stages/tank/TankFucker.tscn").instance()
+		var tankmen = load("res://scenes/stages/tank/TankFucker.tscn").instance()
 		tankmen.strumTime = 10
 		tankmen.resetShit(20, 300, true)
 		$TankmenRun.add_child(tankmen)
 		for i in PlayState.gf.animationNotes.size() - 1:
 			if rand_range(0, 85) < 16:
-				var man = preload("res://scenes/stages/tank/TankFucker.tscn").instance()
+				var man = load("res://scenes/stages/tank/TankFucker.tscn").instance()
 				man.strumTime = PlayState.gf.animationNotes[i][0]
 				man.resetShit(500, 200 + int(rand_range(50, 100)), PlayState.gf.animationNotes[i][1] < 2)
 				$TankmenRun.add_child(man)
 
 func _process(delta):
 	moveTank(delta)
+	
+func beatHit():
+	for guy in boppinGuys:
+		guy.frame = 0
+		guy.play("bop")
 	
 func moveTank(delta):
 	tankAngle += tankSpeed * delta

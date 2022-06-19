@@ -1,0 +1,42 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://assets/fonts/FNF_Bold1.font" type="BitmapFont" id=1]
+[ext_resource path="res://scenes/ui/Checkbox.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/ui/optionsMenu/BoolOption.gd" type="Script" id=3]
+[ext_resource path="res://assets/fonts/FNF_Bold2.font" type="BitmapFont" id=4]
+
+[sub_resource type="Animation" id=1]
+resource_name = "default"
+length = 0.2
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:custom_fonts/font")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ ExtResource( 1 ), ExtResource( 4 ) ]
+}
+
+[node name="BoolOption" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="Label" type="Label" parent="."]
+margin_left = 96.0
+margin_right = 561.0
+margin_bottom = 70.0
+custom_fonts/font = ExtResource( 4 )
+text = "BoolOption"
+uppercase = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../Label")
+anims/default = SubResource( 1 )
+
+[node name="Checkbox" parent="." instance=ExtResource( 2 )]
+position = Vector2( 40.0001, 36 )
+scale = Vector2( 0.7, 0.7 )

@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scenes/ui/playState/UI.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/PlayState.gd" type="Script" id=2]
 [ext_resource path="res://assets/images/ui/skins/arrows/countdown/ready.png" type="Texture" id=3]
 [ext_resource path="res://assets/fonts/vcr.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://scenes/ui/playState/HUD.gd" type="Script" id=5]
 
 [sub_resource type="DynamicFont" id=1]
 outline_size = 1
@@ -21,6 +22,11 @@ smoothing_speed = 2.4
 
 [node name="HUD" type="CanvasLayer" parent="."]
 layer = 100
+script = ExtResource( 5 )
+
+[node name="Modulate" type="CanvasModulate" parent="HUD"]
+position = Vector2( 640, 360 )
+rotation = 1.5708
 
 [node name="UI" parent="HUD" instance=ExtResource( 1 )]
 
@@ -38,13 +44,13 @@ texture = ExtResource( 3 )
 [node name="Go" type="AudioStreamPlayer" parent="HUD"]
 
 [node name="Version" type="Label" parent="HUD"]
-margin_left = -1215.0
-margin_top = 696.0
-margin_right = 1273.0
-margin_bottom = 713.0
+margin_left = -1218.0
+margin_top = 694.0
+margin_right = 1270.0
+margin_bottom = 711.0
 custom_fonts/font = SubResource( 1 )
 text = "Infinity Engine v1.0a"
 align = 2
 
 [node name="Other" type="CanvasLayer" parent="."]
-layer = 101
+layer = 128

@@ -50,7 +50,7 @@ static func judgeNote(strumTime:float):
 	
 	for key in judgements.keys():
 		var judge:Dictionary = judgements[key]
-		if noteDiff >= judge["time"]:
+		if noteDiff >= Preferences.getOption(key + "-timing"):
 			lastJudge = key
 			
 	return lastJudge

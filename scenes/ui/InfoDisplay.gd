@@ -11,6 +11,7 @@ onready var vramPeak:int = 0
 onready var label = $Label
 
 func _process(delta):
+	label.visible = Preferences.getOption("fps-counter")
 	currentFPS = Performance.get_monitor(Performance.TIME_FPS)
 	
 	if OS.is_debug_build():

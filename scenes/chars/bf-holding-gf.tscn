@@ -468,6 +468,7 @@ position = Vector2( 50, 350 )
 script = ExtResource( 2 )
 healthColor = Color( 0.192157, 0.690196, 0.819608, 1 )
 healthIcon = ExtResource( 3 )
+deathCharacter = "bf-holding-gf-dead"
 isPlayer = true
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]

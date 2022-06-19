@@ -6,10 +6,24 @@ var defaultSaveData:Dictionary = {
 	"volume": 9,
 	"muted": false,
 	"downscroll": false,
-	"middlescroll": false,
+	"centered-notes": false,
+	"ghost-tapping": true,
+	"botplay": false,
+	"hitsound": "None",
+	"note-splashes": true,
+	"fps-counter": true,
+	"keybind-reminders": true,
+	"vsync": false,
+	"clip-style": "FNF",
+	"ultra-performance": false,
 	"custom-scroll-speed": false,
-	"scroll-speed": 0,
+	"scroll-speed": 1,
 	"note-offset": 0,
+	"marvelous-timing": 40.75,
+	"sick-timing": 43.5,
+	"good-timing": 75.5,
+	"bad-timing": 125,
+	"shit-timing": 150,
 	"ui-skin": "Arrows",
 	"icon-bounce-style": "Default",
 	"classic-health-bar": false,
@@ -22,6 +36,8 @@ var wentThruTitle:bool = false
 func _ready():
 	if get_tree().current_scene.name != "TitleScreen":
 		wentThruTitle = true
+		
+	OS.vsync_enabled = getOption("vsync")
 
 # USE THIS TO GET OPTIONS AND SET OPTIONS
 func getOption(option:String):

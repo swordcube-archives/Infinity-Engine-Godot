@@ -1,0 +1,58 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://assets/fonts/FNF_Bold2.font" type="BitmapFont" id=1]
+[ext_resource path="res://assets/fonts/FNF_Normal1.font" type="BitmapFont" id=2]
+[ext_resource path="res://scenes/ui/optionsMenu/ArrayOption.gd" type="Script" id=3]
+[ext_resource path="res://assets/fonts/FNF_Bold1.font" type="BitmapFont" id=4]
+[ext_resource path="res://assets/fonts/FNF_Normal2.font" type="BitmapFont" id=5]
+
+[sub_resource type="Animation" id=1]
+resource_name = "default"
+length = 0.2
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Option:custom_fonts/font")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ ExtResource( 4 ), ExtResource( 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Value:custom_fonts/font")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ ExtResource( 2 ), ExtResource( 5 ) ]
+}
+
+[node name="ArrayOption" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="Option" type="Label" parent="."]
+margin_left = 50.0
+margin_right = 584.0
+margin_bottom = 70.0
+custom_fonts/font = ExtResource( 4 )
+text = "ArrayOption"
+uppercase = true
+
+[node name="Value" type="Label" parent="."]
+margin_left = 770.9
+margin_top = 6.0
+margin_right = 1048.9
+margin_bottom = 59.0
+custom_fonts/font = ExtResource( 2 )
+text = "null"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/default = SubResource( 1 )

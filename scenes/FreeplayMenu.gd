@@ -56,11 +56,14 @@ func _ready():
 	changeSelection()
 	changeDifficulty()
 	positionHighscore()
+	
+var lerpScore:float = 0.0
 
 func _process(delta):
 	bg.modulate = lerp(bg.modulate, Color(songColors[curSelected]), MathUtil.getLerpValue(0.045, delta))
 	
-	scoreText.text = "PERSONAL BEST: " + str(Highscore.getScore(songNames[curSelected], songDifficulties[curSelected][curDifficulty]))
+	lerpScore = lerp(lerpScore, Highscore.getScore(songNames[curSelected], songDifficulties[curSelected][curDifficulty]), MathUtil.getLerpValue(0.35, delta))
+	scoreText.text = "PERSONAL BEST: " + str(round(abs(lerpScore)))
 	positionHighscore()
 	
 	if not songUtil.visible:

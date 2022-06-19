@@ -79,7 +79,7 @@ motion_offset = Vector2( -384, -216 )
 position = Vector2( -200, -100 )
 frames = ExtResource( 7 )
 animation = "SmokeBlurLeft instance 1"
-frame = 12
+frame = 28
 playing = true
 centered = false
 
@@ -87,7 +87,7 @@ centered = false
 position = Vector2( 1100, -100 )
 frames = ExtResource( 8 )
 animation = "SmokeRight instance 1"
-frame = 12
+frame = 28
 playing = true
 centered = false
 
@@ -95,10 +95,10 @@ centered = false
 motion_scale = Vector2( 0.5, 0.5 )
 motion_offset = Vector2( -320, -180 )
 
-[node name="SmokeLeft" type="AnimatedSprite" parent="ParallaxBackground/layer7"]
+[node name="WatchTower" type="AnimatedSprite" parent="ParallaxBackground/layer7"]
 position = Vector2( 100, 50 )
 frames = ExtResource( 9 )
-animation = "watchtower gradient color instance 1"
+animation = "bop"
 frame = 13
 playing = true
 centered = false
@@ -107,6 +107,7 @@ centered = false
 position = Vector2( 300, 300 )
 frames = ExtResource( 10 )
 animation = "BG tank w lighting instance 1"
+frame = 1
 playing = true
 centered = false
 
@@ -128,7 +129,7 @@ motion_offset = Vector2( 448, 180 )
 [node name="tank" type="AnimatedSprite" parent="FGGuys/layer1"]
 position = Vector2( -500, 650 )
 frames = ExtResource( 12 )
-animation = "fg tankhead far right instance 1"
+animation = "bop"
 centered = false
 
 [node name="layer2" type="ParallaxLayer" parent="FGGuys"]
@@ -138,7 +139,7 @@ motion_offset = Vector2( 640, -288 )
 [node name="tank" type="AnimatedSprite" parent="FGGuys/layer2"]
 position = Vector2( -300, 750 )
 frames = ExtResource( 13 )
-animation = "fg tankhead 5 instance 1"
+animation = "bop"
 centered = false
 
 [node name="layer3" type="ParallaxLayer" parent="FGGuys"]
@@ -148,19 +149,19 @@ motion_offset = Vector2( 320, 180 )
 [node name="tank" type="AnimatedSprite" parent="FGGuys/layer3"]
 position = Vector2( 450, 940 )
 frames = ExtResource( 14 )
-animation = "foreground man 3 instance 1"
+animation = "bop"
 centered = false
 
 [node name="tank2" type="AnimatedSprite" parent="FGGuys/layer3"]
 position = Vector2( 1300, 900 )
 frames = ExtResource( 15 )
-animation = "fg tankman bobbin 3 instance 1"
+animation = "bop"
 centered = false
 
 [node name="tank3" type="AnimatedSprite" parent="FGGuys/layer3"]
 position = Vector2( 1620, 700 )
 frames = ExtResource( 16 )
-animation = "fg tankhead far right instance 1"
+animation = "bop"
 centered = false
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="FGGuys"]
@@ -170,7 +171,7 @@ motion_offset = Vector2( 1600, 540 )
 [node name="tank4" type="AnimatedSprite" parent="FGGuys/ParallaxLayer"]
 position = Vector2( 1300, 1200 )
 frames = ExtResource( 17 )
-animation = "fg tankhead 4 instance 1"
+animation = "bop"
 centered = false
 
 [node name="dadPos" type="Node2D" parent="."]
