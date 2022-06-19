@@ -48,6 +48,7 @@ func updateText():
 func beatHit():
 	iconP2.scale = Vector2(1.2, 1.2)
 	iconP1.scale = Vector2(1.2, 1.2)
+	positionIcons()
 	
 const greenHealth:StyleBoxFlat = preload("res://scenes/ui/playState/healthBar/greenHealth.tres")
 const redHealth:StyleBoxFlat = preload("res://scenes/ui/playState/healthBar/redHealth.tres")
@@ -82,9 +83,12 @@ func _process(delta):
 		iconP2.switchTo("losing")
 		iconP1.switchTo("winning")
 	
-	iconP2.scale = lerp(iconP2.scale, Vector2.ONE, MathUtil.getLerpValue(0.35, delta))
+	iconP2.scale = lerp(iconP2.scale, Vector2.ONE, MathUtil.getLerpValue(0.2, delta))
 	iconP1.scale = iconP2.scale
 	
+	positionIcons()
+	
+func positionIcons():
 	var iconOffset:int = 26
 	iconP1.position.x = -(bar.rect_size.x / 2.7) + (bar.rect_size.x * (MathUtil.remapToRange(percent, 0, 100, 100, 0) * 0.01)) + (150 * iconP1.scale.x - 150) / 2 - iconOffset
 	iconP2.position.x = -(bar.rect_size.x / 2.7) + (bar.rect_size.x * (MathUtil.remapToRange(percent, 0, 100, 100, 0) * 0.01)) - (150 * iconP2.scale.x) / 2 - iconOffset * 2

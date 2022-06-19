@@ -83,7 +83,8 @@ func _process(delta):
 		if Input.is_action_just_pressed("ui_right"):
 			changeDifficulty(1)
 			
-		if not AudioHandler.inst.playing and Input.is_action_just_pressed("ui_space"):
+		if curPlaying != songNames[curSelected] and Input.is_action_just_pressed("ui_space"):
+			curPlaying = songNames[curSelected]
 			AudioHandler.playInst(songNames[curSelected])
 			AudioHandler.playVoices(songNames[curSelected])
 		elif Input.is_action_just_pressed("ui_accept"):
@@ -95,6 +96,8 @@ func _process(delta):
 			PlayStateSettings.difficulty = songDifficulties[curSelected][curDifficulty]
 			PlayStateSettings.SONG = CoolUtil.getJSON(Paths.songJSON(songNames[curSelected], PlayStateSettings.difficulty))
 			Scenes.switchScene("PlayState")
+			
+var curPlaying:String = ""
 		
 func changeSelection(change:int = 0):
 	curSelected += change

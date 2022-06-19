@@ -58,3 +58,4 @@ countdown_scale = 6.5
 strum_scale = 8.5
 note_scale = 8.5
 sustain_scale = 0.65
+sustain_end_offset = 65.0

@@ -40,5 +40,6 @@ export(float) var countdown_scale = 1
 export(float) var strum_scale = 1
 export(float) var note_scale = 1
 export(float) var sustain_scale = 1
+export(float) var sustain_end_offset = 0
 
 export(float) var note_splash_scale = 0.6

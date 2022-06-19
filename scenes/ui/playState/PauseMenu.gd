@@ -20,12 +20,9 @@ var pauseOptions:Array = defaultPauseOptions
 
 var tween:Tween = Tween.new()
 
+onready var breakfast:AudioStreamPlayer = AudioHandler.get_node("Music/breakfast")
+
 func _ready():
-	AudioHandler.inst.stop()
-	AudioHandler.voices.stop()
-	
-	var breakfast:AudioStreamPlayer = AudioHandler.get_node("Music/breakfast")
-	
 	breakfast.volume_db = -50
 	breakfast.play()
 	
@@ -40,13 +37,16 @@ func _ready():
 	tweenTextThingie($DiffText, 0.5)
 	tweenTextThingie($DeathsText, 0.7)
 	tweenTextThingie($PracticeModeText, 0.9)
-	tween.interpolate_property(breakfast, "volume:db", breakfast.volume_db, 0, breakfast.stream.get_length() / 2)
+	tween.interpolate_property(breakfast, "volume_db", breakfast.volume_db, 0, breakfast.stream.get_length() / 2)
 	tween.start()
 	
 	spawnOptions()
 	changeSelection()
 	
 func _process(delta):
+	AudioHandler.inst.stop()
+	AudioHandler.voices.stop()
+	
 	if Input.is_action_just_pressed("ui_up"):
 		changeSelection(-1)
 		
@@ -71,6 +71,9 @@ func _process(delta):
 		else:
 			match pauseOptions[curSelected]:
 				"Resume":
+					tween.stop_all()
+					breakfast.volume_db = -50
+					breakfast.stop()
 					get_tree().paused = false
 					queue_free()
 					

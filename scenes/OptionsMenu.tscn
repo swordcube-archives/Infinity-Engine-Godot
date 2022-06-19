@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://assets/images/menus/menuBGDesat.png" type="Texture" id=1]
 [ext_resource path="res://scenes/ui/optionsMenu/menuItem/MenuThingie.tscn" type="PackedScene" id=2]
@@ -7,14 +7,22 @@
 [ext_resource path="res://scenes/ui/optionsMenu/ArrayOption.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/ui/optionsMenu/NumberOption.tscn" type="PackedScene" id=6]
 [ext_resource path="res://assets/fonts/FNF_Bold1.font" type="BitmapFont" id=7]
+[ext_resource path="res://assets/fonts/vcr.ttf" type="DynamicFontData" id=8]
+
+[sub_resource type="DynamicFont" id=1]
+size = 32
+outline_size = 3
+outline_color = Color( 0, 0, 0, 1 )
+use_filter = true
+font_data = ExtResource( 8 )
 
 [node name="OptionsMenu" type="Node2D"]
 script = ExtResource( 3 )
 
 [node name="BG" type="Sprite" parent="."]
 modulate = Color( 0.917647, 0.443137, 0.992157, 1 )
-position = Vector2( 640, 360 )
 texture = ExtResource( 1 )
+centered = false
 __meta__ = {
 "_edit_lock_": true
 }
@@ -52,8 +60,7 @@ options = PoolStringArray( "None", "osu!", "Generic", "Dave & Bambi", "Vine Boom
 [node name="Custom Scroll Speed" parent="Pages/Preferences" instance=ExtResource( 4 )]
 visible = false
 saveDataOption = "custom-scroll-speed"
-optionDescription = "Allows you to override the song's scroll speed with one that applies to every song.
-"
+optionDescription = "Allows you to override the song's scroll speed with one that applies to every song."
 
 [node name="Scroll Speed" parent="Pages/Preferences" instance=ExtResource( 6 )]
 visible = false
@@ -167,7 +174,25 @@ position = Vector2( 0, 636 )
 [node name="PageOptions" type="Node2D" parent="."]
 modulate = Color( 1, 1, 1, 0.3 )
 
+[node name="DescriptionBox" type="ColorRect" parent="."]
+margin_left = 10.0
+margin_top = 508.0
+margin_right = 1270.0
+margin_bottom = 608.0
+color = Color( 0, 0, 0, 0.6 )
+
+[node name="Description" type="Label" parent="."]
+margin_left = 20.0
+margin_top = 520.0
+margin_right = 1260.0
+margin_bottom = 549.0
+custom_fonts/font = SubResource( 1 )
+text = "testicles"
+align = 1
+autowrap = true
+
 [node name="Label" type="Label" parent="."]
+visible = false
 modulate = Color( 1, 1, 1, 0.15 )
 margin_top = 632.0
 margin_right = 1280.0

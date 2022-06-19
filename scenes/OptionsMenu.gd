@@ -27,6 +27,13 @@ func _ready():
 		pageOptions.add_child(newPage)
 		
 	changePage()
+	
+func _process(delta):
+	$Description.text = options.get_child(curSelected).optionDescription
+	$Description.rect_size.y = 0
+	$DescriptionBox.rect_size.y = $Description.rect_size.y + 30
+	$DescriptionBox.rect_position.y = CoolUtil.screenHeight - (($Strip.rect_size.y + $DescriptionBox.rect_size.y) + 10)
+	$Description.rect_position.y = $DescriptionBox.rect_position.y + 10
 		
 func _input(event):
 	if Input.is_action_just_pressed("ui_back"):
