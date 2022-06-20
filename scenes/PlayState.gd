@@ -162,7 +162,7 @@ func _ready():
 	
 	# loading modcharts!
 	var songFolder:Array = CoolUtil.listFilesInDirectory(Paths.song(SONG.song))
-	print("SHIT IN SONG FOLDER: " + str(songFolder))
+	#print("SHIT IN SONG FOLDER: " + str(songFolder))
 	for file in songFolder:
 		if not file.begins_with(".") and file.ends_with(".tscn"):
 			print("FOUND MODCHART: " + file)
