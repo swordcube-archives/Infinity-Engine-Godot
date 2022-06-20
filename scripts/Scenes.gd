@@ -16,3 +16,5 @@ func switchScene(scene:String, transition:bool = true):
 		yield(outTimer, "timeout")
 		transitioning = false
 		get_tree().paused = false
+	else:
+		get_tree().change_scene("res://scenes/" + scene + ".tscn")

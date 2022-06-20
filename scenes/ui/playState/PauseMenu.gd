@@ -94,6 +94,11 @@ func _process(delta):
 						PlayStateSettings.usedPractice = true
 					PlayStateSettings.practiceMode = !PlayStateSettings.practiceMode
 					$PracticeModeText.visible = PlayStateSettings.practiceMode
+				"Options":
+					PlayStateSettings.goBackToOptionsFromPause = true
+					queue_free()
+					Scenes.switchScene("OptionsMenu")
+					AudioHandler.playMusic("optionsMenu")
 				"Exit to Menu":
 					queue_free()
 					AudioHandler.playMusic("freakyMenu")

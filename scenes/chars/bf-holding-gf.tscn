@@ -474,11 +474,10 @@ isPlayer = true
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( -280, 0 )
 frames = ExtResource( 1 )
-animation = "singUPmiss"
-frame = 23
+animation = "idle"
+frame = 13
 playing = true
 centered = false
-offset = Vector2( -35, -10 )
 flip_h = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

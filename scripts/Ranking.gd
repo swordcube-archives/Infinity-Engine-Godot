@@ -45,7 +45,7 @@ const ranks:Dictionary = {
 };
 
 static func judgeNote(strumTime:float):
-	var noteDiff:float = abs(Conductor.songPosition - strumTime)
+	var noteDiff:float = abs(Conductor.songPosition - strumTime) / PlayStateSettings.songMultiplier
 	var lastJudge:String = judgements.keys()[0]
 	
 	for key in judgements.keys():

@@ -10,6 +10,8 @@ onready var scoreText = $ScoreText
 onready var scoreBG = $ScoreBG
 onready var diffText = $DiffText
 
+onready var speedText = $SpeedText
+
 var songMakerDifficultyList:Array = []
 
 var songNames:Array = []
@@ -18,6 +20,8 @@ var songDifficulties:Array = []
 
 var curSelected:int = 0
 var curDifficulty:int = 0
+
+var curSpeed:float = 1.0
 
 func _ready():
 	AudioHandler.playMusic("freakyMenu")
@@ -57,13 +61,18 @@ func _ready():
 	changeDifficulty()
 	positionHighscore()
 	
+	AudioHandler.setMusicPitch(curSpeed)
+	
 var lerpScore:float = 0.0
+
+var holdTimer:float = 0.0
 
 func _process(delta):
 	bg.modulate = lerp(bg.modulate, Color(songColors[curSelected]), MathUtil.getLerpValue(0.045, delta))
 	
 	lerpScore = lerp(lerpScore, Highscore.getScore(songNames[curSelected], songDifficulties[curSelected][curDifficulty]), MathUtil.getLerpValue(0.35, delta))
 	scoreText.text = "PERSONAL BEST: " + str(round(abs(lerpScore)))
+	speedText.text = "Speed: " + str(MathUtil.roundDecimal(curSpeed, 2))
 	positionHighscore()
 	
 	if not songUtil.visible:
@@ -77,16 +86,32 @@ func _process(delta):
 		if Input.is_action_just_pressed("ui_down"):
 			changeSelection(1)
 			
-		if Input.is_action_just_pressed("ui_left"):
-			changeDifficulty(-1)
-			
-		if Input.is_action_just_pressed("ui_right"):
-			changeDifficulty(1)
+		if Input.is_action_pressed("ui_shift"):
+			var vector = Input.get_vector("ui_left", "ui_right", "ui_down", "ui_up")
+			if vector.x != 0:
+				holdTimer += delta
+				if (Input.is_action_just_pressed("ui_left") or Input.is_action_just_pressed("ui_right")) or holdTimer > 0.5:
+					curSpeed += vector.x * 0.05
+					if curSpeed < 0.05:
+						curSpeed = 0.05
+					AudioHandler.setMusicPitch(MathUtil.roundDecimal(curSpeed, 2))
+			else:
+				holdTimer = 0.0
+		else:
+			holdTimer = 0.0
+			if Input.is_action_just_pressed("ui_left"):
+				changeDifficulty(-1)
+				
+			if Input.is_action_just_pressed("ui_right"):
+				changeDifficulty(1)
 			
 		if curPlaying != songNames[curSelected] and Input.is_action_just_pressed("ui_space"):
 			curPlaying = songNames[curSelected]
 			AudioHandler.playInst(songNames[curSelected])
 			AudioHandler.playVoices(songNames[curSelected])
+			
+			AudioHandler.inst.seek(0)
+			AudioHandler.voices.seek(0)
 		elif Input.is_action_just_pressed("ui_accept"):
 			AudioHandler.stopMusic()
 			PlayStateSettings.deaths = 0
@@ -95,6 +120,7 @@ func _process(delta):
 			PlayStateSettings.availableDifficulties = songDifficulties[curSelected]
 			PlayStateSettings.difficulty = songDifficulties[curSelected][curDifficulty]
 			PlayStateSettings.SONG = CoolUtil.getJSON(Paths.songJSON(songNames[curSelected], PlayStateSettings.difficulty))
+			PlayStateSettings.songMultiplier = MathUtil.roundDecimal(curSpeed, 2)
 			Scenes.switchScene("PlayState")
 			
 var curPlaying:String = ""
@@ -129,12 +155,16 @@ func changeDifficulty(change:int = 0):
 func positionHighscore():
 	scoreText.rect_size.x = 0
 	diffText.rect_size.x = 0
+	speedText.rect_size.x = 0
 	
 	scoreText.rect_position.x = CoolUtil.screenWidth - scoreText.rect_size.x - 6
 	scoreBG.rect_scale.x = CoolUtil.screenWidth - scoreText.rect_position.x + 6
 	scoreBG.rect_position.x = CoolUtil.screenWidth - scoreBG.rect_scale.x / 300
 	diffText.rect_position.x = scoreBG.rect_position.x - (scoreBG.rect_scale.x / 2)
 	diffText.rect_position.x -= diffText.rect_size.x / 2
+	
+	speedText.rect_position.x = scoreBG.rect_position.x - (scoreBG.rect_scale.x / 2)
+	speedText.rect_position.x -= speedText.rect_size.x / 2
 
 func _on_AddNewSong_pressed():
 	songUtil.visible = !songUtil.visible

@@ -9,6 +9,8 @@ onready var spr = $spr
 export(String) var direction:String = "A"
 export(float) var strumTime:float = 0.0
 
+var altNote:bool = false
+
 var mustPress:bool = false
 
 var noteData:int = 0

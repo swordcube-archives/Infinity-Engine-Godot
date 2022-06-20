@@ -14,7 +14,7 @@ onready var HUD = $HUD
 onready var OTHER = $Other
 onready var UI = $HUD/UI
 
-onready var SONG = PlayStateSettings.SONG.song
+var SONG:Song = Song.new()
 
 var health:float = 1.0
 
@@ -47,62 +47,73 @@ func _ready():
 	$HUD/Version.text += " (" + CoolUtil.getTXT(Paths.txt("data/gameVersionDate"))[0] + ")"
 	get_tree().paused = false
 	
-	Conductor.changeBPM(SONG["bpm"], Conductor.mapBPMChanges(SONG))
+	for property in PlayStateSettings.SONG.song:
+		if property in SONG:
+			SONG.set(property, PlayStateSettings.SONG.song.get(property))
+	
+	Conductor.changeBPM(SONG.bpm, Conductor.mapBPMChanges(SONG))
 	Conductor.songPosition = Conductor.timeBetweenBeats * -5
 	Conductor.connect("beatHit", self, "beatHit")
 	Conductor.connect("stepHit", self, "stepHit")
 	
 	if not "keyCount" in SONG:
-		SONG["keyCount"] = 4
+		SONG.keyCount = 4
 		
 	var stageToLoad = "stage"
 	if "stage" in SONG:
-		stageToLoad = SONG["stage"]
+		stageToLoad = SONG.stage
 		
-	stage = Paths.getStageScene(stageToLoad)
-	add_child(stage)
-	
-	var zoomThing = 1
-	if stage:
-		zoomThing = 1 - stage.defaultCamZoom
+	if not Preferences.getOption("ultra-performance"):
+		stage = Paths.getStageScene(stageToLoad)
+		add_child(stage)
 		
-	var goodZoom = 1 + zoomThing
-	
-	camera.zoom = Vector2(goodZoom, goodZoom)
-	defaultCamZoom = goodZoom
-	
-	var gfVersion = "gf"
-	
-	if "player3" in SONG:
-		gfVersion = SONG["player3"]
+		var zoomThing = 1
+		if stage:
+			zoomThing = 1 - stage.defaultCamZoom
+			
+		var goodZoom = 1 + zoomThing
 		
-	if "gfVersion" in SONG:
-		gfVersion = SONG["gfVersion"]
+		camera.zoom = Vector2(goodZoom, goodZoom)
+		defaultCamZoom = goodZoom
 		
-	if "gf" in SONG:
-		gfVersion = SONG["gf"]
-	
-	gf = Paths.getCharScene(gfVersion)
-	add_child(gf)
-	
-	dad = Paths.getCharScene(SONG.player2)
-	if dad.isPlayer:
-		dad.scale.x *= -1
-	add_child(dad)
-	
-	bf = Paths.getCharScene(SONG.player1)
-	add_child(bf)
-	
-	stage.createPost()
-	
-	dad.global_position += stage.get_node("dadPos").position + Vector2(300, 0)
-	gf.global_position += stage.get_node("gfPos").position + Vector2(300, 0)
-	bf.global_position += stage.get_node("bfPos").position + Vector2(300, 0)
+		var gfVersion = "gf"
+		
+		if "player3" in SONG:
+			gfVersion = SONG.player3
+			
+		if "gfVersion" in SONG:
+			gfVersion = SONG.gfVersion
+			
+		if "gf" in SONG:
+			gfVersion = SONG.gf
+		
+		gf = Paths.getCharScene(gfVersion)
+		add_child(gf)
+		
+		dad = Paths.getCharScene(SONG.player2)
+		if dad.isPlayer:
+			dad.scale.x *= -1
+		add_child(dad)
+		
+		bf = Paths.getCharScene(SONG.player1)
+		add_child(bf)
+		
+		stage.createPost()
+		
+		dad.global_position += stage.get_node("dadPos").position + Vector2(300, 0)
+		gf.global_position += stage.get_node("gfPos").position + Vector2(300, 0)
+		bf.global_position += stage.get_node("bfPos").position + Vector2(300, 0)
 	
 	moveCameraSection(!SONG.notes[0].mustHitSection)
 	
-	for section in SONG["notes"]:
-		for note in section["sectionNotes"]:
+	for balls_section in SONG.notes:
+		var section:Section = Section.new()
+		
+		for property in balls_section:
+			if property in section:
+				section.set(property, balls_section.get(property))
+				
+		for note in section.sectionNotes:
 			if note[1] != -1:
 				if len(note) == 3:
 					note.push_back(0)
@@ -125,16 +136,24 @@ func _ready():
 						type = note[4]
 				
 				if not "altAnim" in section:
-					section["altAnim"] = false
+					section.altAnim = false
 					
 				var offset:float = Preferences.getOption("note-offset") + (AudioServer.get_output_latency() * 1000)
 				var strumTime:float = float(note[0]) + (offset * PlayStateSettings.songMultiplier)
 				
-				noteDataArray.push_back([strumTime + PlayStateSettings.songMultiplier, note[1], note[2], bool(section["mustHitSection"]), int(note[3]), type, bool(section["altAnim"])])
+				noteDataArray.push_back([
+					strumTime + PlayStateSettings.songMultiplier, # 0
+					note[1], # 1
+					note[2], # 2
+					bool(section["mustHitSection"]), # 3
+					int(note[3]), # 4
+					type, # 5
+					bool(section.altAnim) # 6
+				])
 				
 	noteDataArray.sort_custom(self, "sortAscending")
 	
-	PlayStateSettings.scrollSpeed = float(SONG["speed"])
+	PlayStateSettings.scrollSpeed = float(SONG.speed)
 	if Preferences.getOption("custom-scroll-speed"):
 		PlayStateSettings.scrollSpeed = float(Preferences.getOption("scroll-speed"))
 	
@@ -282,6 +301,20 @@ onready var countdownAudios:Dictionary = {
 func updateHealth():
 	if health < UI.healthBar.minHealth:
 		health = UI.healthBar.minHealth
+		endingSong = true
+		Scenes.switchScene("GameOver", false)
+		
+		if bf:
+			PlayStateSettings.deathCharacter = bf.deathCharacter
+			PlayStateSettings.deathPosition = bf.global_position
+			PlayStateSettings.deathCamPosition = camera.position
+			PlayStateSettings.deathCamZoom = camera.zoom
+		else:
+			PlayStateSettings.deathCharacter = "bf-dead"
+			PlayStateSettings.deathPosition = Vector2(1000, 500)
+			PlayStateSettings.deathCamPosition = camera.position
+			PlayStateSettings.deathCamZoom = camera.zoom
+		
 	if health > UI.healthBar.maxHealth:
 		health = UI.healthBar.maxHealth
 	
@@ -300,6 +333,9 @@ func _process(delta):
 	
 	Conductor.songPosition += (delta * 1000) * PlayStateSettings.songMultiplier
 	
+	if Input.is_key_pressed(KEY_R):
+		health -= 999999
+	
 	updateHealth()
 	
 	camera.zoom = lerp(camera.zoom, Vector2(defaultCamZoom, defaultCamZoom), MathUtil.getLerpValue(0.05, delta))
@@ -308,23 +344,25 @@ func _process(delta):
 	HUD.offset.y = (HUD.scale.y - 1) * -CoolUtil.screenHeight/2
 	
 	for note in noteDataArray:
-		if float(note[0]) - Conductor.songPosition < (2500 / PlayStateSettings.scrollSpeed):
+		if float(note[0]) - Conductor.songPosition < (2500 / PlayStateSettings.scrollSpeed) * PlayStateSettings.songMultiplier:
 			var mustPress = true
 			
-			if note[3] and int(note[1]) % (SONG["keyCount"] * 2) >= SONG["keyCount"]:
+			if note[3] and int(note[1]) % (SONG.keyCount * 2) >= SONG.keyCount:
 				mustPress = false
-			elif !note[3] and int(note[1]) % (SONG["keyCount"] * 2) <= SONG["keyCount"] - 1:
+			elif !note[3] and int(note[1]) % (SONG.keyCount * 2) <= SONG.keyCount - 1:
 				mustPress = false
 				
-			var strum:Node2D = UI.opponentStrums.get_child(int(note[1]) % SONG["keyCount"])
+			var strum:Node2D = UI.opponentStrums.get_child(int(note[1]) % SONG.keyCount)
 			if mustPress:
-				strum = UI.playerStrums.get_child(int(note[1]) % SONG["keyCount"])
+				strum = UI.playerStrums.get_child(int(note[1]) % SONG.keyCount)
 				
 			var newNote:Node2D = load("res://scenes/ui/notes/Default.tscn").instance()
-			newNote.noteData = int(note[1]) % SONG["keyCount"]
+			newNote.noteData = int(note[1]) % SONG.keyCount
 			newNote.strumTime = float(note[0])
 			newNote.direction = strum.direction
 			newNote.downScroll = PlayStateSettings.downScroll
+			newNote.altNote = note[6]
+			newNote.position.y = -5000
 			strum.notes.add_child(newNote)
 		
 			newNote.mustPress = mustPress
@@ -338,6 +376,8 @@ func _process(delta):
 				sustainNote.downScroll = PlayStateSettings.downScroll
 				sustainNote.isSustainNote = true
 				sustainNote.mustPress = mustPress
+				sustainNote.position.y = -5000
+				sustainNote.altNote = newNote.altNote
 				
 				sustainNote.isEndOfSustain = susNote == susLength - 1
 				
@@ -355,9 +395,10 @@ func endSong():
 	UI.remove_child(UI.timeBar)
 	UI.timeBar.queue_free()
 	
-	if songScore > Highscore.getScore(SONG.song, PlayStateSettings.difficulty):
-		Highscore.setScore(SONG.song, PlayStateSettings.difficulty, songScore)
-	
+	if PlayStateSettings.songMultiplier >= 1:
+		if songScore > Highscore.getScore(SONG.song, PlayStateSettings.difficulty):
+			Highscore.setScore(SONG.song, PlayStateSettings.difficulty, songScore)
+		
 	endingSong = true
 	if PlayStateSettings.storyMode:
 		Scenes.switchScene("StoryMenu")
@@ -411,11 +452,13 @@ func stepHit():
 			
 func moveCameraSection(isDad:bool = false):
 	if isDad:
-		camera.position.x = (dad.getMidpoint().x + 0) + dad.camera_pos.x
-		camera.position.y = (dad.getMidpoint().y - 100) + dad.camera_pos.y
+		if dad:
+			camera.position.x = (dad.getMidpoint().x + 0) + dad.camera_pos.x
+			camera.position.y = (dad.getMidpoint().y - 100) + dad.camera_pos.y
 	else:
-		camera.position.x = (bf.getMidpoint().x - 430) - bf.camera_pos.x
-		camera.position.y = (bf.getMidpoint().y - 100) + bf.camera_pos.y
+		if bf:
+			camera.position.x = (bf.getMidpoint().x - 430) - bf.camera_pos.x
+			camera.position.y = (bf.getMidpoint().y - 100) + bf.camera_pos.y
 		
 func callOnModcharts(funct:String, args:Array = []):
 	if loadedModcharts.size() > 0:

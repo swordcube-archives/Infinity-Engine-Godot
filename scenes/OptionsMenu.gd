@@ -37,8 +37,13 @@ func _process(delta):
 		
 func _input(event):
 	if Input.is_action_just_pressed("ui_back"):
-		Scenes.switchScene("MainMenu")
-		AudioHandler.playMusic("freakyMenu")
+		if PlayStateSettings.goBackToOptionsFromPause:
+			PlayStateSettings.goBackToOptionsFromPause = false
+			Scenes.switchScene("PlayState")
+			AudioHandler.stopMusic()
+		else:
+			Scenes.switchScene("MainMenu")
+			AudioHandler.playMusic("freakyMenu")
 		
 	if Input.is_action_just_pressed("ui_focus_next"):
 		selectingPage = not selectingPage

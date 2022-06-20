@@ -50,6 +50,10 @@ func _process(delta):
 		for note in sustains.get_children():
 			note.position.x = (sustains.rect_size.x / 2)
 			
+			match Preferences.getOption("clip-style"):
+				"StepMania":
+					note.z_index = -1
+			
 			if note.downScroll:
 				note.position.y = 0.45 * (Conductor.songPosition - note.strumTime) * scrollSpeed
 			else:
@@ -79,10 +83,9 @@ func _process(delta):
 				sustains.rect_clip_content = Input.is_action_pressed("gameplay_" + direction)
 					
 				if Input.is_action_pressed("gameplay_" + direction) and Conductor.songPosition >= note.strumTime + (Conductor.safeZoneOffset / 8):
-					if not PlayState.bf.specialAnim:
+					if PlayState.bf and not PlayState.bf.specialAnim:
 						var altAnim = ""
-						var curSection = MathUtil.boundTo(int(Conductor.curStep / 16), 0, PlayState.SONG.notes.size() - 1)
-						if PlayState.SONG.notes[curSection].altAnim:
+						if note.altNote:
 							altAnim = "-alt"
 							
 						PlayState.bf.holdTimer = 0
@@ -96,10 +99,9 @@ func _process(delta):
 					note.queue_free()
 					
 				if Conductor.songPosition >= note.strumTime + Conductor.safeZoneOffset:
-					if not PlayState.bf.specialAnim:
+					if PlayState.bf and not PlayState.bf.specialAnim:
 						var altAnim = ""
-						var curSection = MathUtil.boundTo(int(Conductor.curStep / 16), 0, PlayState.SONG.notes.size() - 1)
-						if PlayState.SONG.notes[curSection].altAnim:
+						if note.altNote:
 							altAnim = "-alt"
 							
 						PlayState.bf.holdTimer = 0
@@ -107,7 +109,8 @@ func _process(delta):
 						
 					PlayState.health += -0.0475
 					if PlayState.combo >= 10:
-						PlayState.gf.playAnim('sad')
+						if PlayState.gf:
+							PlayState.gf.playAnim('sad')
 					PlayState.combo = 0
 					PlayState.totalNotes += 1
 					AudioHandler.voices.volume_db = -9999
@@ -117,10 +120,10 @@ func _process(delta):
 					note.queue_free()
 			else:
 				if Conductor.songPosition >= note.strumTime + (Conductor.safeZoneOffset / 4):
-					if not PlayState.dad.specialAnim:
+					if PlayState.dad and not PlayState.dad.specialAnim:
 						var altAnim = ""
 						var curSection = MathUtil.boundTo(int(Conductor.curStep / 16), 0, PlayState.SONG.notes.size() - 1)
-						if PlayState.SONG.notes[curSection].altAnim:
+						if note.altNote:
 							altAnim = "-alt"
 							
 						PlayState.dad.holdTimer = 0
@@ -142,10 +145,9 @@ func _process(delta):
 				if not dontHit:
 					if Input.is_action_just_pressed("gameplay_" + direction):
 						if Conductor.songPosition >= note.strumTime - (Conductor.safeZoneOffset * 1):
-							if not PlayState.bf.specialAnim:
+							if PlayState.bf and not PlayState.bf.specialAnim:
 								var altAnim = ""
-								var curSection = MathUtil.boundTo(int(Conductor.curStep / 16), 0, PlayState.SONG.notes.size() - 1)
-								if PlayState.SONG.notes[curSection].altAnim:
+								if note.altNote:
 									altAnim = "-alt"
 								PlayState.bf.holdTimer = 0
 								PlayState.bf.playAnim(CoolUtil.singAnims[PlayState.SONG["keyCount"]][note.noteData] + altAnim)
@@ -205,10 +207,9 @@ func _process(delta):
 						dontHit = true
 						
 				if Conductor.songPosition >= note.strumTime + (Conductor.safeZoneOffset * 1):
-					if not PlayState.bf.specialAnim:
+					if PlayState.bf and not PlayState.bf.specialAnim:
 						var altAnim = ""
-						var curSection = MathUtil.boundTo(int(Conductor.curStep / 16), 0, PlayState.SONG.notes.size() - 1)
-						if PlayState.SONG.notes[curSection].altAnim:
+						if note.altNote:
 							altAnim = "-alt"
 							
 						PlayState.bf.holdTimer = 0
@@ -217,7 +218,8 @@ func _process(delta):
 					PlayState.health += -0.0475
 					PlayState.songMisses += 1
 					if PlayState.combo >= 10:
-						PlayState.gf.playAnim('sad')
+						if PlayState.gf:
+							PlayState.gf.playAnim('sad')
 					PlayState.combo = 0
 					PlayState.totalNotes += 1
 					AudioHandler.voices.volume_db = -9999
@@ -227,10 +229,9 @@ func _process(delta):
 					note.queue_free()
 			else:						
 				if Conductor.songPosition >= note.strumTime:
-					if not PlayState.dad.specialAnim:
+					if PlayState.dad and not PlayState.dad.specialAnim:
 						var altAnim = ""
-						var curSection = MathUtil.boundTo(int(Conductor.curStep / 16), 0, PlayState.SONG.notes.size() - 1)
-						if PlayState.SONG.notes[curSection].altAnim:
+						if note.altNote:
 							altAnim = "-alt"
 							
 						PlayState.dad.holdTimer = 0

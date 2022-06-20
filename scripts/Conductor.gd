@@ -49,7 +49,7 @@ func _process(_delta):
 func recalculateValues():
 	timeBetweenBeats = ((60 / bpm) * 1000)
 	timeBetweenSteps = timeBetweenBeats / 4
-	safeZoneOffset = (safeFrames / 60.0) * 1000.0
+	safeZoneOffset = ((safeFrames / 60.0) * 1000.0) * PlayStateSettings.songMultiplier
 
 func changeBPM(newBPM, changes = []):
 	if len(changes) == 0:

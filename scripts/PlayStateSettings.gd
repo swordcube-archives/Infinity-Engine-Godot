@@ -16,11 +16,18 @@ var deaths:int = 0
 var downScroll:bool = true
 var scrollSpeed:float = 4.0
 
+var goBackToOptionsFromPause:bool = false
+
 var SONG = CoolUtil.getJSON(Paths.songJSON("test", difficulty))
 
 var songMultiplier:float = 1.0
 
 var currentUiSkin:Node
+
+var deathCharacter:String = "bf-dead"
+var deathPosition:Vector2 = Vector2.ZERO
+var deathCamPosition:Vector2 = Vector2.ZERO
+var deathCamZoom:Vector2 = Vector2.ZERO
 
 func getSkin():
 	if "uiSkin" in SONG.song:

@@ -124,7 +124,7 @@ align = 1
 [node name="ScoreBG" type="ColorRect" parent="."]
 margin_left = 1281.0
 margin_right = 1282.0
-margin_bottom = 66.0
+margin_bottom = 98.0
 rect_scale = Vector2( 315, 1 )
 rect_pivot_offset = Vector2( 1, 0 )
 color = Color( 0, 0, 0, 0.6 )
@@ -145,6 +145,15 @@ margin_right = 1277.0
 margin_bottom = 70.0
 custom_fonts/font = SubResource( 2 )
 text = "< HARD >"
+align = 1
+
+[node name="SpeedText" type="Label" parent="."]
+margin_left = 973.0
+margin_top = 68.0
+margin_right = 1277.0
+margin_bottom = 97.0
+custom_fonts/font = SubResource( 2 )
+text = "Speed: 1"
 align = 1
 
 [connection signal="pressed" from="AddNewSong" to="." method="_on_AddNewSong_pressed"]

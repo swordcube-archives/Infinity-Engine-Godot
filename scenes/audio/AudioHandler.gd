@@ -11,6 +11,13 @@ func playSFX(a:String, pos:float = 0.0):
 		clone.play()
 		get_tree().current_scene.add_child(clone)
 		
+func setMusicPitch(pitch:float = 1.0):
+	for node in $Music.get_children():
+		node.pitch_scale = pitch
+		
+	inst.pitch_scale = pitch
+	voices.pitch_scale = pitch
+		
 func playMusic(music:String, force:bool = false):
 	inst.stop()
 	voices.stop()

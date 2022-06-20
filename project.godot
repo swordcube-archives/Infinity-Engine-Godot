@@ -64,6 +64,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/Ranking.gd"
 }, {
+"base": "Resource",
+"class": "Section",
+"language": "GDScript",
+"path": "res://assets/resources/Section.gd"
+}, {
+"base": "Resource",
+"class": "Song",
+"language": "GDScript",
+"path": "res://assets/resources/Song.gd"
+}, {
 "base": "Node2D",
 "class": "Stage",
 "language": "GDScript",
@@ -86,6 +96,8 @@ _global_script_class_icons={
 "NumberOption": "",
 "PauseOption": "",
 "Ranking": "",
+"Section": "",
+"Song": "",
 "Stage": "",
 "TimeBar": ""
 }
