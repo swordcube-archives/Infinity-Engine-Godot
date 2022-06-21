@@ -46,7 +46,11 @@ func playInst(song:String):
 	inst.stream = load(Paths.inst(song))
 	inst.play()
 	
+	inst.volume_db = 0
+	
 func playVoices(song:String):
 	voices.stop()
 	voices.stream = load(Paths.voices(song))
 	voices.play()
+	
+	voices.volume_db = 0

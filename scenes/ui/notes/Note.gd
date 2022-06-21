@@ -40,7 +40,4 @@ func refreshAnim():
 	
 	spr.play(a)
 	if isEndOfSustain:
-		if downScroll:
-			spr.centered = false
-			
 		spr.flip_v = downScroll

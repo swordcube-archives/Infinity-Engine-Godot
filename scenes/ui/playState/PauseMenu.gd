@@ -23,6 +23,7 @@ var tween:Tween = Tween.new()
 onready var breakfast:AudioStreamPlayer = AudioHandler.get_node("Music/breakfast")
 
 func _ready():
+	breakfast.pitch_scale = 1.0
 	breakfast.volume_db = -50
 	breakfast.play()
 	
@@ -72,6 +73,7 @@ func _process(delta):
 			match pauseOptions[curSelected]:
 				"Resume":
 					tween.stop_all()
+					tween.queue_free()
 					breakfast.volume_db = -50
 					breakfast.stop()
 					get_tree().paused = false
@@ -80,6 +82,8 @@ func _process(delta):
 					AudioHandler.inst.play(Conductor.songPosition / 1000.0)
 					AudioHandler.voices.play(Conductor.songPosition / 1000.0)
 				"Restart Song":
+					breakfast.volume_db = -50
+					breakfast.stop()
 					queue_free()
 					Scenes.switchScene("PlayState")
 				"Change Difficulty":
@@ -95,11 +99,15 @@ func _process(delta):
 					PlayStateSettings.practiceMode = !PlayStateSettings.practiceMode
 					$PracticeModeText.visible = PlayStateSettings.practiceMode
 				"Options":
+					breakfast.volume_db = -50
+					breakfast.stop()
 					PlayStateSettings.goBackToOptionsFromPause = true
 					queue_free()
 					Scenes.switchScene("OptionsMenu")
 					AudioHandler.playMusic("optionsMenu")
 				"Exit to Menu":
+					breakfast.volume_db = -50
+					breakfast.stop()
 					queue_free()
 					AudioHandler.playMusic("freakyMenu")
 					if PlayStateSettings.storyMode:
