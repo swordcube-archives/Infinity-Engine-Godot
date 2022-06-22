@@ -165,14 +165,19 @@ func _process(delta):
 							var texture:StreamTexture
 							match rating:
 								"marvelous":
+									PlayState.marv += 1
 									texture = PlayStateSettings.currentUiSkin.marvelous_tex
 								"sick":
+									PlayState.sicks += 1
 									texture = PlayStateSettings.currentUiSkin.sick_tex
 								"good":
+									PlayState.goods += 1
 									texture = PlayStateSettings.currentUiSkin.good_tex
 								"bad":
+									PlayState.bads += 1
 									texture = PlayStateSettings.currentUiSkin.bad_tex
 								"shit":
+									PlayState.shits += 1
 									texture = PlayStateSettings.currentUiSkin.shit_tex
 									
 							var rankingShit = Ranking.judgements[rating]

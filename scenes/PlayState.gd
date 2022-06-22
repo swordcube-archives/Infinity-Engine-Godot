@@ -20,6 +20,14 @@ var health:float = 1.0
 
 var songScore:int = 0
 var songMisses:int = 0
+
+var marv:int = 0
+var sicks:int = 0
+var goods:int = 0
+var bads:int = 0
+var shits:int = 0
+var misses:int = 0
+
 var songAccuracy:float = 0.0
 
 var totalNotes:int = 0
@@ -392,22 +400,38 @@ func _process(delta):
 			endSong()
 			
 func endSong():
+	endingSong = true
+	
 	UI.remove_child(UI.timeBar)
 	UI.timeBar.queue_free()
 	
+	get_tree().paused = true
+	
+	var resultsScreen = load("res://scenes/ui/playState/ResultsScreen.tscn").instance()
+	resultsScreen.score = songScore
+	resultsScreen.accuracy = MathUtil.roundDecimal(songAccuracy * 100, 2)
+	resultsScreen.marv = marv
+	resultsScreen.sicks = sicks
+	resultsScreen.goods = goods
+	resultsScreen.bads = bads
+	resultsScreen.shits = shits
+	resultsScreen.misses = songMisses
+	OTHER.add_child(resultsScreen)
+	
+	AudioHandler.inst.stop()
+	AudioHandler.voices.stop()
+	
+func actuallyEndSong():
 	if PlayStateSettings.songMultiplier >= 1:
 		if songScore > Highscore.getScore(SONG.song, PlayStateSettings.difficulty):
 			Highscore.setScore(SONG.song, PlayStateSettings.difficulty, songScore)
 		
-	endingSong = true
 	if PlayStateSettings.storyMode:
 		Scenes.switchScene("StoryMenu")
 	else:
 		Scenes.switchScene("FreeplayMenu")
 		
 	AudioHandler.playMusic("freakyMenu")
-	AudioHandler.inst.stop()
-	AudioHandler.voices.stop()
 			
 func beatHit():
 	if bf:
