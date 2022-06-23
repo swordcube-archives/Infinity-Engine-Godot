@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/osu!.ogg-dc18fcae402f4b959cf658ecdfc511dc.oggstr"
+
+[deps]
+
+source_file="res://assets/sounds/hitsounds/osu!.ogg"
+dest_files=[ "res://.import/osu!.ogg-dc18fcae402f4b959cf658ecdfc511dc.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

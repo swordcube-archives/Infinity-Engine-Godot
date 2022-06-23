@@ -50,7 +50,7 @@ func _process(delta):
 		if animFinished:
 			playAnim("static")
 			
-	var scrollSpeed = (PlayStateSettings.scrollSpeed / PlayStateSettings.songMultiplier) * 1.4
+	var scrollSpeed = PlayStateSettings.scrollSpeed
 			
 	if sustains:
 		for note in sustains.get_children():
@@ -101,7 +101,9 @@ func _process(delta):
 						characterSinging.holdTimer = 0
 						characterSinging.playAnim(CoolUtil.singAnims[PlayState.SONG["keyCount"]][note.noteData] + altAnim)
 						
-					PlayState.health += 0.023
+					var gain:float = 0.023
+					gain *= Preferences.getOption("hp-gain-multiplier")
+					PlayState.health += gain
 					AudioHandler.voices.volume_db = 0
 					PlayState.updateHealth()
 					playAnim("confirm")
@@ -121,7 +123,9 @@ func _process(delta):
 						characterSinging.holdTimer = 0
 						characterSinging.playAnim(CoolUtil.singAnims[PlayState.SONG["keyCount"]][note.noteData] + "miss" + altAnim)
 						
-					PlayState.health += -0.0475
+					var loss:float = -0.0475
+					loss *= Preferences.getOption("hp-loss-multiplier")
+					PlayState.health += loss
 					if PlayState.combo >= 10:
 						if PlayState.gf:
 							PlayState.gf.playAnim('sad')
@@ -137,6 +141,13 @@ func _process(delta):
 					var characterSinging = PlayState.dad
 					if Preferences.getOption("play-as-opponent"):
 						characterSinging = PlayState.bf
+					
+					var health:float = PlayState.health
+					health -= 1 * Preferences.getOption("health-drain")
+					if health < 0.023:
+						health = 0.023
+						
+					PlayState.health = health
 						
 					if characterSinging and not characterSinging.specialAnim:
 						var altAnim = ""
@@ -182,7 +193,9 @@ func _process(delta):
 								characterSinging.holdTimer = 0
 								characterSinging.playAnim(CoolUtil.singAnims[PlayState.SONG["keyCount"]][note.noteData] + altAnim)
 					
-							PlayState.health += 0.023
+							var gain:float = 0.023
+							gain *= Preferences.getOption("hp-gain-multiplier")
+							PlayState.health += gain
 							PlayState.combo += 1
 							PlayState.totalNotes += 1
 							
@@ -232,6 +245,12 @@ func _process(delta):
 							
 							newRating.rating.texture = texture
 							
+							if Preferences.getOption("hitsound") != "None":
+								var newHitsound = PlayState.hitsound.duplicate()
+								newHitsound.isClone = true
+								newHitsound.play()
+								PlayState.add_child(newHitsound)
+							
 							AudioHandler.voices.volume_db = 0
 							PlayState.updateHealth()
 							PlayState.UI.healthBar.updateText()
@@ -261,7 +280,9 @@ func _process(delta):
 						characterSinging.holdTimer = 0
 						characterSinging.playAnim(CoolUtil.singAnims[PlayState.SONG["keyCount"]][note.noteData] + "miss" + altAnim)
 					
-					PlayState.health += -0.0475
+					var loss:float = -0.0475
+					loss *= Preferences.getOption("hp-loss-multiplier")
+					PlayState.health += loss
 					PlayState.songMisses += 1
 					if PlayState.combo >= 10:
 						if PlayState.gf:
@@ -278,6 +299,13 @@ func _process(delta):
 					var characterSinging = PlayState.dad
 					if Preferences.getOption("play-as-opponent"):
 						characterSinging = PlayState.bf
+						
+					var health:float = PlayState.health
+					health -= 1 * Preferences.getOption("health-drain")
+					if health < 0.023:
+						health = 0.023
+						
+					PlayState.health = health
 						
 					if characterSinging and not characterSinging.specialAnim:
 						var altAnim = ""

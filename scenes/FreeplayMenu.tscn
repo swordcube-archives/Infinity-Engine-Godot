@@ -29,10 +29,10 @@ __meta__ = {
 [node name="Songs" type="Node2D" parent="."]
 
 [node name="AddNewSong" type="Button" parent="."]
-margin_left = 9.0
-margin_top = 10.0
-margin_right = 127.0
-margin_bottom = 39.0
+margin_left = 1157.0
+margin_top = 653.0
+margin_right = 1275.0
+margin_bottom = 682.0
 focus_mode = 0
 text = "Add a new song"
 

@@ -52,7 +52,13 @@ func _init():
 	PlayStateSettings.downScroll = Preferences.getOption("downscroll")
 	PlayStateSettings.botPlay = Preferences.getOption("botplay")
 
+onready var hitsound = $Hitsound
+
 func _ready():
+	if Preferences.getOption("hitsound") != "None":
+		hitsound.stream = load(Paths.sound("hitsounds/" + Preferences.getOption("hitsound")))
+		hitsound.volume_db = -5
+		
 	$HUD/Version.text += " (" + CoolUtil.getTXT(Paths.txt("data/gameVersionDate"))[0] + ")"
 	get_tree().paused = false
 	
@@ -157,7 +163,7 @@ func _ready():
 				var strumTime:float = float(note[0]) + (offset * PlayStateSettings.songMultiplier)
 				
 				noteDataArray.push_back([
-					strumTime + PlayStateSettings.songMultiplier, # 0
+					strumTime, # 0
 					note[1], # 1
 					note[2], # 2
 					bool(section["mustHitSection"]), # 3
@@ -168,11 +174,15 @@ func _ready():
 				
 	noteDataArray.sort_custom(self, "sortAscending")
 	
+	PlayStateSettings.scrollSpeed = float(SONG.speed)
 	match Preferences.getOption("scroll-speed-type"):
 		"Multiplicative":
-			PlayStateSettings.scrollSpeed = float(SONG.speed) * float(Preferences.getOption("scroll-speed"))
+			PlayStateSettings.scrollSpeed *= float(Preferences.getOption("scroll-speed"))
 		"Constant":
 			PlayStateSettings.scrollSpeed = float(Preferences.getOption("scroll-speed"))
+	
+	PlayStateSettings.scrollSpeed *= 1.5
+	PlayStateSettings.scrollSpeed /= PlayStateSettings.songMultiplier
 	
 	UI.healthBar._process(0)
 	UI.healthBar.updateText()
@@ -361,7 +371,11 @@ func _process(delta):
 	HUD.offset.y = (HUD.scale.y - 1) * -CoolUtil.screenHeight/2
 	
 	for note in noteDataArray:
-		if float(note[0]) - Conductor.songPosition < (2500 / PlayStateSettings.scrollSpeed) * PlayStateSettings.songMultiplier:
+		var hell:float = 1
+		if PlayStateSettings.scrollSpeed < 1:
+			hell = PlayStateSettings.scrollSpeed
+			
+		if float(note[0]) - Conductor.songPosition < ((2500 / hell) * PlayStateSettings.songMultiplier):
 			var mustPress = true
 			
 			if note[3] and int(note[1]) % (SONG.keyCount * 2) >= SONG.keyCount:
@@ -391,9 +405,7 @@ func _process(delta):
 			for susNote in susLength:
 				var sustainNote:Node2D = load("res://scenes/ui/notes/Default.tscn").instance()
 				sustainNote.noteData = newNote.noteData
-				sustainNote.strumTime = float(note[0]) + (Conductor.timeBetweenSteps * susNote) + (Conductor.timeBetweenSteps / MathUtil.roundDecimal(PlayStateSettings.scrollSpeed * 1.3, 2))
-				if PlayStateSettings.scrollSpeed < 1:
-					sustainNote.strumTime = float(note[0]) + (Conductor.timeBetweenSteps * susNote)
+				sustainNote.strumTime = float(note[0]) + (Conductor.timeBetweenSteps * susNote) + (Conductor.timeBetweenSteps / PlayStateSettings.scrollSpeed)
 				sustainNote.direction = strum.direction
 				sustainNote.downScroll = PlayStateSettings.downScroll
 				sustainNote.isSustainNote = true

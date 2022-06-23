@@ -5,6 +5,9 @@ var defaultSaveData:Dictionary = {
 	# Gameplay Modifiers
 	"botplay": false,
 	"play-as-opponent": false,
+	"health-drain": 0.0,
+	"hp-gain-multiplier": 1,
+	"hp-loss-multiplier": 1,
 	"scroll-speed-type": "Multiplicative",
 	"scroll-speed": 0.0,
 	

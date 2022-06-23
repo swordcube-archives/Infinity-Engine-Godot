@@ -25,6 +25,24 @@ saveDataOption = "botplay"
 [node name="Play as Opponent" parent="Options" instance=ExtResource( 1 )]
 saveDataOption = "play-as-opponent"
 
+[node name="Health Drain" parent="Options" instance=ExtResource( 4 )]
+saveDataOption = "health-drain"
+max_value = 0.1
+multiplier = 0.01
+decimalCount = 2
+
+[node name="HP Gain Mult" parent="Options" instance=ExtResource( 4 )]
+saveDataOption = "hp-gain-multiplier"
+max_value = 2.0
+multiplier = 0.01
+decimalCount = 2
+
+[node name="HP Loss Mult" parent="Options" instance=ExtResource( 4 )]
+saveDataOption = "hp-loss-multiplier"
+max_value = 2.0
+multiplier = 0.01
+decimalCount = 2
+
 [node name="Scroll Type" parent="Options" instance=ExtResource( 3 )]
 saveDataOption = "scroll-speed-type"
 options = PoolStringArray( "Multiplicative", "Constant" )
