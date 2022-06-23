@@ -46,31 +46,11 @@ visible = false
 saveDataOption = "ghost-tapping"
 optionDescription = "Allows you to press notes that don't exist."
 
-[node name="Botplay" parent="Pages/Preferences" instance=ExtResource( 4 )]
-visible = false
-saveDataOption = "botplay"
-optionDescription = "The game plays itself for you when enabled."
-
 [node name="Hitsound" parent="Pages/Preferences" instance=ExtResource( 5 )]
 visible = false
 saveDataOption = "hitsound"
 optionDescription = "Change what sound plays when a note is hit."
 options = PoolStringArray( "None", "osu!", "Generic", "Dave & Bambi", "Vine Boom" )
-
-[node name="Custom Scroll Speed" parent="Pages/Preferences" instance=ExtResource( 4 )]
-visible = false
-saveDataOption = "custom-scroll-speed"
-optionDescription = "Allows you to override the song's scroll speed with one that applies to every song."
-
-[node name="Scroll Speed" parent="Pages/Preferences" instance=ExtResource( 6 )]
-visible = false
-saveDataOption = "scroll-speed"
-optionDescription = "Use LEFT or RIGHT to change the speed of your notes.
-(Enable Custom Scroll Speed first)"
-optionNeeded = "custom-scroll-speed"
-neededValue = [ true ]
-min_value = 0.1
-max_value = 10.0
 
 [node name="Note Offset" parent="Pages/Preferences" instance=ExtResource( 6 )]
 visible = false

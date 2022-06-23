@@ -18,12 +18,26 @@ func _ready():
 	opponentStrums.position.y = 100
 	for strum in opponentStrums.get_children():
 		strum.isOpponent = true
+		if Preferences.getOption("play-as-opponent"):
+			strum.isOpponent = not strum.isOpponent
 	add_child(opponentStrums)
 	
 	playerStrums = load("res://scenes/ui/strums/4K.tscn").instance()
 	playerStrums.position.x = xMult + (CoolUtil.screenWidth / 2)
 	playerStrums.position.y = 100
+	for strum in playerStrums.get_children():
+		if Preferences.getOption("play-as-opponent"):
+			strum.isOpponent = not strum.isOpponent
 	add_child(playerStrums)
+	
+	# centered notes
+	if Preferences.getOption("centered-notes"):
+		if Preferences.getOption("play-as-opponent"):
+			opponentStrums.position.x = 640
+			playerStrums.visible = false
+		else:
+			playerStrums.position.x = 640
+			opponentStrums.visible = false
 	
 	healthBar = load(PlayStateSettings.currentUiSkin.health_bar_path).instance()
 	healthBar.position.x = CoolUtil.screenWidth / 2

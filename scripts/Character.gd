@@ -69,9 +69,10 @@ func _process(delta):
 			if lastAnim.begins_with('sing'):
 				holdTimer += delta * PlayStateSettings.songMultiplier
 				
-				if holdTimer > Conductor.timeBetweenSteps * singDuration * 0.001 and not PlayState.pressed.has(true):
-					if lastAnim.begins_with('sing') and not lastAnim.ends_with('miss'):
-						dance()
+				if holdTimer >= Conductor.timeBetweenSteps * singDuration * 0.001 and not PlayState.pressed.has(true):
+					if not lastAnim.ends_with('miss'):
+						dance(true)
+						holdTimer = 0.0
 			else:
 				holdTimer = 0
 	

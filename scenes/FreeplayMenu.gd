@@ -70,7 +70,11 @@ var holdTimer:float = 0.0
 func _process(delta):
 	bg.modulate = lerp(bg.modulate, Color(songColors[curSelected]), MathUtil.getLerpValue(0.045, delta))
 	
-	lerpScore = lerp(lerpScore, Highscore.getScore(songNames[curSelected], songDifficulties[curSelected][curDifficulty]), MathUtil.getLerpValue(0.35, delta))
+	var piss:String = ""
+	if Preferences.getOption("play-as-opponent"):
+		piss = "-opponent-play"
+	
+	lerpScore = lerp(lerpScore, Highscore.getScore(songNames[curSelected] + piss, songDifficulties[curSelected][curDifficulty]), MathUtil.getLerpValue(0.35, delta))
 	scoreText.text = "PERSONAL BEST: " + str(round(abs(lerpScore)))
 	speedText.text = "Speed: " + str(MathUtil.roundDecimal(curSpeed, 2))
 	positionHighscore()
@@ -85,6 +89,11 @@ func _process(delta):
 			
 		if Input.is_action_just_pressed("ui_down"):
 			changeSelection(1)
+			
+		if Input.is_action_just_pressed("ctrl"):
+			get_tree().paused = true
+			var gameplayModifiers = load("res://scenes/ui/freeplay/GameplayModifiers.tscn").instance()
+			add_child(gameplayModifiers)
 			
 		if Input.is_action_pressed("ui_shift"):
 			var vector = Input.get_vector("ui_left", "ui_right", "ui_down", "ui_up")

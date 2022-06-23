@@ -14,6 +14,8 @@ var difficulty:String = "normal"
 var deaths:int = 0
 
 var downScroll:bool = true
+var botPlay:bool = false
+
 var scrollSpeed:float = 4.0
 
 var goBackToOptionsFromPause:bool = false

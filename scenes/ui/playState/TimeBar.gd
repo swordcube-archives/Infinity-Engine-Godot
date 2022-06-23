@@ -26,5 +26,7 @@ func _process(delta):
 	else:
 		whiteBar.bg_color = HealthBar.redHealth.bg_color
 		
-	text.text = CoolUtil.formatTime(AudioHandler.inst.get_playback_position()) + " / " + CoolUtil.formatTime(AudioHandler.inst.stream.get_length())
+	text.text = CoolUtil.formatTime(AudioHandler.inst.get_playback_position() / PlayStateSettings.songMultiplier) + " / " + CoolUtil.formatTime(AudioHandler.inst.stream.get_length() / PlayStateSettings.songMultiplier)
+	if PlayStateSettings.botPlay:
+		text.text += " [BOTPLAY]"
 	bar.value = AudioHandler.inst.get_playback_position()

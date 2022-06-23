@@ -2,13 +2,19 @@ extends Node
 
 # MODIFY THIS! DON'T TOUCH ANYTHING ELSE!!
 var defaultSaveData:Dictionary = {
+	# Gameplay Modifiers
+	"botplay": false,
+	"play-as-opponent": false,
+	"scroll-speed-type": "Multiplicative",
+	"scroll-speed": 0.0,
+	
+	# Everything else
 	"mods": {},
 	"volume": 9,
 	"muted": false,
 	"downscroll": false,
 	"centered-notes": false,
 	"ghost-tapping": true,
-	"botplay": false,
 	"hitsound": "None",
 	"note-splashes": true,
 	"fps-counter": true,
@@ -16,9 +22,7 @@ var defaultSaveData:Dictionary = {
 	"vsync": false,
 	"clip-style": "FNF",
 	"ultra-performance": false,
-	"custom-scroll-speed": false,
-	"scroll-speed": 1,
-	"note-offset": 0,
+	"note-offset": 0.0,
 	"marvelous-timing": 40.75,
 	"sick-timing": 43.5,
 	"good-timing": 75.5,

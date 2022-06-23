@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://assets/images/menus/menuBGDesat.png" type="Texture" id=1]
 [ext_resource path="res://scenes/FreeplayMenu.gd" type="Script" id=2]
@@ -10,6 +10,10 @@ font_data = ExtResource( 3 )
 
 [sub_resource type="DynamicFont" id=2]
 size = 24
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 18
 font_data = ExtResource( 3 )
 
 [node name="FreeplayMenu" type="Node2D"]
@@ -26,9 +30,9 @@ __meta__ = {
 
 [node name="AddNewSong" type="Button" parent="."]
 margin_left = 9.0
-margin_top = 682.0
+margin_top = 10.0
 margin_right = 127.0
-margin_bottom = 711.0
+margin_bottom = 39.0
 focus_mode = 0
 text = "Add a new song"
 
@@ -155,6 +159,21 @@ margin_bottom = 97.0
 custom_fonts/font = SubResource( 2 )
 text = "Speed: 1"
 align = 1
+
+[node name="GameplayModifiersStrip" type="ColorRect" parent="."]
+margin_top = 690.0
+margin_right = 1280.0
+margin_bottom = 720.0
+color = Color( 0, 0, 0, 0.6 )
+
+[node name="Label" type="Label" parent="GameplayModifiersStrip"]
+margin_left = -64.0
+margin_top = 5.0
+margin_right = 1274.0
+margin_bottom = 27.0
+custom_fonts/font = SubResource( 3 )
+text = "Press CTRL to change some gameplay modifiers."
+align = 2
 
 [connection signal="pressed" from="AddNewSong" to="." method="_on_AddNewSong_pressed"]
 [connection signal="pressed" from="SongUtil/DifficultyName/AddDiff" to="." method="_on_AddDiff_pressed"]

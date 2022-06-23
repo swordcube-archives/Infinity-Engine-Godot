@@ -38,11 +38,17 @@ func calculateAccuracy():
 			
 func updateText():
 	calculateAccuracy()
+	
+	var botplayWarning:String = ""
+	if PlayStateSettings.botPlay:
+		botplayWarning = " // BOTPLAY"
+	
 	scoreTxt.text = (
 		"Score: " + str(PlayState.songScore) + " // " +
 		"Misses: " + str(PlayState.songMisses) + " // " +
 		"Accuracy: " + str(MathUtil.roundDecimal(PlayState.songAccuracy * 100, 2)) + "% // " +
-		"Rank: " + Ranking.getRank(MathUtil.roundDecimal(PlayState.songAccuracy * 100, 2))
+		"Rank: " + Ranking.getRank(MathUtil.roundDecimal(PlayState.songAccuracy * 100, 2)) +
+		botplayWarning
 	)
 	
 func beatHit():
@@ -59,18 +65,34 @@ func _process(delta):
 	bar.value = health
 	percent = (bar.value / 2) * 100.0
 	
-	if PlayState.dad:
-		if Preferences.getOption("classic-health-bar"):
-			greenHealth.bg_color = Color.green
-		else:
-			greenHealth.bg_color = PlayState.bf.healthColor
-		iconP2.texture = PlayState.dad.healthIcon
-	if PlayState.bf:
-		if Preferences.getOption("classic-health-bar"):
-			redHealth.bg_color = Color.red
-		else:
-			redHealth.bg_color = PlayState.dad.healthColor
-		iconP1.texture = PlayState.bf.healthIcon
+	if not Preferences.getOption("play-as-opponent"):
+		if PlayState.dad:
+			if Preferences.getOption("classic-health-bar"):
+				greenHealth.bg_color = Color.green
+			else:
+				greenHealth.bg_color = PlayState.bf.healthColor
+			iconP2.texture = PlayState.dad.healthIcon
+			
+		if PlayState.bf:
+			if Preferences.getOption("classic-health-bar"):
+				redHealth.bg_color = Color.red
+			else:
+				redHealth.bg_color = PlayState.dad.healthColor
+			iconP1.texture = PlayState.bf.healthIcon
+	else:
+		if PlayState.bf:
+			if Preferences.getOption("classic-health-bar"):
+				greenHealth.bg_color = Color.red
+			else:
+				greenHealth.bg_color = PlayState.dad.healthColor
+			iconP2.texture = PlayState.bf.healthIcon
+			
+		if PlayState.dad:
+			if Preferences.getOption("classic-health-bar"):
+				redHealth.bg_color = Color.green
+			else:
+				redHealth.bg_color = PlayState.bf.healthColor
+			iconP1.texture = PlayState.dad.healthIcon
 
 	if percent <= 20:
 		iconP2.switchTo("winning")

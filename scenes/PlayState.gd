@@ -50,6 +50,7 @@ func sortAscending(a, b):
 func _init():
 	PlayStateSettings.getSkin()
 	PlayStateSettings.downScroll = Preferences.getOption("downscroll")
+	PlayStateSettings.botPlay = Preferences.getOption("botplay")
 
 func _ready():
 	$HUD/Version.text += " (" + CoolUtil.getTXT(Paths.txt("data/gameVersionDate"))[0] + ")"
@@ -98,13 +99,19 @@ func _ready():
 		gf = Paths.getCharScene(gfVersion)
 		add_child(gf)
 		
-		dad = Paths.getCharScene(SONG.player2)
+		dad = Paths.getCharScene(SONG.player2)			
 		if dad.isPlayer:
 			dad.scale.x *= -1
 		add_child(dad)
 		
+		if Preferences.getOption("play-as-opponent"):
+			dad.isPlayer = not dad.isPlayer
+		
 		bf = Paths.getCharScene(SONG.player1)
 		add_child(bf)
+		
+		if Preferences.getOption("play-as-opponent"):
+			bf.isPlayer = not bf.isPlayer
 		
 		stage.createPost()
 		
@@ -161,9 +168,11 @@ func _ready():
 				
 	noteDataArray.sort_custom(self, "sortAscending")
 	
-	PlayStateSettings.scrollSpeed = float(SONG.speed)
-	if Preferences.getOption("custom-scroll-speed"):
-		PlayStateSettings.scrollSpeed = float(Preferences.getOption("scroll-speed"))
+	match Preferences.getOption("scroll-speed-type"):
+		"Multiplicative":
+			PlayStateSettings.scrollSpeed = float(SONG.speed) * float(Preferences.getOption("scroll-speed"))
+		"Constant":
+			PlayStateSettings.scrollSpeed = float(Preferences.getOption("scroll-speed"))
 	
 	UI.healthBar._process(0)
 	UI.healthBar.updateText()
@@ -364,6 +373,9 @@ func _process(delta):
 			if mustPress:
 				strum = UI.playerStrums.get_child(int(note[1]) % SONG.keyCount)
 				
+			if Preferences.getOption("play-as-opponent"):
+				mustPress = not mustPress
+				
 			var newNote:Node2D = load("res://scenes/ui/notes/Default.tscn").instance()
 			newNote.noteData = int(note[1]) % SONG.keyCount
 			newNote.strumTime = float(note[0])
@@ -379,7 +391,9 @@ func _process(delta):
 			for susNote in susLength:
 				var sustainNote:Node2D = load("res://scenes/ui/notes/Default.tscn").instance()
 				sustainNote.noteData = newNote.noteData
-				sustainNote.strumTime = float(note[0]) + (Conductor.timeBetweenSteps * susNote) + (Conductor.timeBetweenSteps / MathUtil.roundDecimal(PlayStateSettings.scrollSpeed, 2))
+				sustainNote.strumTime = float(note[0]) + (Conductor.timeBetweenSteps * susNote) + (Conductor.timeBetweenSteps / MathUtil.roundDecimal(PlayStateSettings.scrollSpeed * 1.3, 2))
+				if PlayStateSettings.scrollSpeed < 1:
+					sustainNote.strumTime = float(note[0]) + (Conductor.timeBetweenSteps * susNote)
 				sustainNote.direction = strum.direction
 				sustainNote.downScroll = PlayStateSettings.downScroll
 				sustainNote.isSustainNote = true
@@ -422,9 +436,13 @@ func endSong():
 	AudioHandler.voices.stop()
 	
 func actuallyEndSong():
+	var piss:String = ""
+	if Preferences.getOption("play-as-opponent"):
+		piss = "-opponent-play"
+		
 	if PlayStateSettings.songMultiplier >= 1:
-		if songScore > Highscore.getScore(SONG.song, PlayStateSettings.difficulty):
-			Highscore.setScore(SONG.song, PlayStateSettings.difficulty, songScore)
+		if songScore > Highscore.getScore(SONG.song + piss, PlayStateSettings.difficulty):
+			Highscore.setScore(SONG.song + piss, PlayStateSettings.difficulty, songScore)
 		
 	if PlayStateSettings.storyMode:
 		Scenes.switchScene("StoryMenu")

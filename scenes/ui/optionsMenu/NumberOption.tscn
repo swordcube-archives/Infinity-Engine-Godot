@@ -42,16 +42,17 @@ script = ExtResource( 3 )
 margin_left = 50.0
 margin_right = 609.0
 margin_bottom = 70.0
-custom_fonts/font = ExtResource( 4 )
+custom_fonts/font = ExtResource( 1 )
 text = "NumberOption"
 uppercase = true
 
 [node name="Value" type="Label" parent="."]
+modulate = Color( 128.498, 128.498, 128.498, 1 )
 margin_left = 804.65
 margin_top = 6.0
 margin_right = 1082.65
 margin_bottom = 59.0
-custom_fonts/font = ExtResource( 2 )
+custom_fonts/font = ExtResource( 5 )
 text = "null"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

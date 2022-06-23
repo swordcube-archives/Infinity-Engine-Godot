@@ -111,8 +111,10 @@ script = ExtResource( 2 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = ExtResource( 1 )
-animation = "unselected"
+animation = "selected"
+frame = 10
 playing = true
+offset = Vector2( -6, -39 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/false = SubResource( 1 )
