@@ -362,10 +362,7 @@ func _process(delta):
 		OTHER.add_child(pauseMenu)
 	
 	Conductor.songPosition += (delta * 1000) * PlayStateSettings.songMultiplier
-	
-	if Input.is_key_pressed(KEY_R):
-		health -= 999999
-	
+
 	updateHealth()
 	
 	camera.zoom = lerp(camera.zoom, Vector2(defaultCamZoom, defaultCamZoom), MathUtil.getLerpValue(0.05, delta))

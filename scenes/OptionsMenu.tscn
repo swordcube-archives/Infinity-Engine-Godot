@@ -151,30 +151,39 @@ options = PoolStringArray( "Arrows", "Circles" )
 
 [node name="1k Keybind" parent="Pages/Controls" instance=ExtResource( 9 )]
 visible = false
+optionDescription = "Change your singular bind for 1 key."
 
 [node name="2k Keybinds" parent="Pages/Controls" instance=ExtResource( 9 )]
 visible = false
+optionDescription = "Change your binds for 2 keys."
 
 [node name="3k Keybinds" parent="Pages/Controls" instance=ExtResource( 9 )]
 visible = false
+optionDescription = "Change your binds for 3 keys."
 
 [node name="4k Keybinds" parent="Pages/Controls" instance=ExtResource( 9 )]
 visible = false
+optionDescription = "Change your binds for 4 keys."
 
 [node name="5k Keybinds" parent="Pages/Controls" instance=ExtResource( 9 )]
 visible = false
+optionDescription = "Change your binds for 5 keys."
 
 [node name="6k Keybinds" parent="Pages/Controls" instance=ExtResource( 9 )]
 visible = false
+optionDescription = "Change your binds for 6 keys."
 
 [node name="7k Keybinds" parent="Pages/Controls" instance=ExtResource( 9 )]
 visible = false
+optionDescription = "Change your binds for 7 keys."
 
 [node name="8k Keybinds" parent="Pages/Controls" instance=ExtResource( 9 )]
 visible = false
+optionDescription = "Change your binds for 8 keys."
 
 [node name="9k Keybinds" parent="Pages/Controls" instance=ExtResource( 9 )]
 visible = false
+optionDescription = "Change your binds for 9 keys."
 
 [node name="Options" type="Node2D" parent="."]
 
