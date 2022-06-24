@@ -10,7 +10,16 @@ onready var vramPeak:int = 0
 
 onready var label = $Label
 
-func _process(delta):
+var dumb_timer = Timer.new()
+
+func _ready() -> void:
+	add_child(dumb_timer)
+	
+	dumb_timer.one_shot = false
+	dumb_timer.start(0.25)
+	dumb_timer.connect("timeout", self, "update_cum_balls_in_yo_mama")
+
+func update_cum_balls_in_yo_mama():
 	label.visible = Preferences.getOption("fps-counter")
 	currentFPS = Performance.get_monitor(Performance.TIME_FPS)
 	

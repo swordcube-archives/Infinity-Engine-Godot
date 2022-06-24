@@ -13,12 +13,20 @@ func _ready():
 	var rs = PlayStateSettings.currentUiSkin.rating_scale
 	rating.scale = Vector2(rs, rs)
 	
+	rating.acceleration.y = 550
+	rating.velocity.y -= floor(rand_range(140, 175))
+	rating.velocity.x -= floor(rand_range(0, 10))
+	
 	for i in len(combo):
 		var comboNum:Sprite = comboTemplate.duplicate()
 		comboNum.texture = PlayStateSettings.currentUiSkin.get("combo_" + combo[i])
-		comboNum.startVelocity = rand_range(-3, -4)
-		comboNum.gravity = rand_range(0.1, 0.15)
+		
 		comboNum.position.x += i * 45
+		
+		comboNum.acceleration.y = floor(rand_range(200, 300))
+		comboNum.velocity.y -= floor(rand_range(140, 160))
+		comboNum.velocity.x = rand_range(-5, 5)
+		
 		comboNum.moving = true
 		comboNum.visible = true
 		comboNode.add_child(comboNum)
@@ -34,11 +42,9 @@ func _process(delta):
 		queue_free()
 	
 func tweenRating():
-	yield(get_tree().create_timer(Conductor.timeBetweenBeats * 0.001), "timeout")
-	tween.interpolate_property(rating, "modulate:a", 1, 0, 0.2)
+	tween.interpolate_property(rating, "modulate:a", 1, 0, 0.2, 0, 2, Conductor.timeBetweenBeats * 0.001)
 	tween.start()
 	
 func tweenCombo():
-	yield(get_tree().create_timer(Conductor.timeBetweenBeats * 0.002), "timeout")
-	tween.interpolate_property(comboNode, "modulate:a", 1, 0, 0.2)
+	tween.interpolate_property(comboNode, "modulate:a", 1, 0, 0.2, 0, 2, Conductor.timeBetweenBeats * 0.002)
 	tween.start()

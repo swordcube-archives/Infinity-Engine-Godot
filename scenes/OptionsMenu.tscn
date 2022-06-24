@@ -62,33 +62,40 @@ max_value = 1000.0
 multiplier = 0.05
 decimalCount = 2
 
+[node name="Marv Timing" parent="Pages/Preferences" instance=ExtResource( 6 )]
+visible = false
+saveDataOption = "marvelous-timing"
+optionDescription = "Use LEFT or RIGHT to change how often you'll get a \"Marvelous\" in milliseconds."
+min_value = 0.1
+max_value = 166.0
+
 [node name="Sick Timing" parent="Pages/Preferences" instance=ExtResource( 6 )]
 visible = false
 saveDataOption = "sick-timing"
 optionDescription = "Use LEFT or RIGHT to change how often you'll get a \"Sick!\" in milliseconds."
-min_value = -150.0
-max_value = 150.0
+min_value = 0.1
+max_value = 166.0
 
 [node name="Good Timing" parent="Pages/Preferences" instance=ExtResource( 6 )]
 visible = false
 saveDataOption = "good-timing"
 optionDescription = "Use LEFT or RIGHT to change how often you'll get a \"Good!\" in milliseconds."
-min_value = -150.0
-max_value = 150.0
+min_value = 0.1
+max_value = 166.0
 
 [node name="Bad Timing" parent="Pages/Preferences" instance=ExtResource( 6 )]
 visible = false
 saveDataOption = "bad-timing"
 optionDescription = "Use LEFT or RIGHT to change how often you'll get a \"Bad\" in milliseconds."
-min_value = -150.0
-max_value = 150.0
+min_value = 0.1
+max_value = 166.0
 
 [node name="Shit Timing" parent="Pages/Preferences" instance=ExtResource( 6 )]
 visible = false
 saveDataOption = "shit-timing"
 optionDescription = "Use LEFT or RIGHT to change how often you'll get a \"Shit\" in milliseconds."
-min_value = -150.0
-max_value = 150.0
+min_value = 0.1
+max_value = 166.0
 
 [node name="Appearance" type="Node" parent="Pages"]
 

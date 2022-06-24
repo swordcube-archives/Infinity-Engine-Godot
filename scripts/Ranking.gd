@@ -13,7 +13,7 @@ const judgements:Dictionary = {
 		"time": 43.5,
 		"score": 300,
 		"noteSplash": true,
-		"mod": 1
+		"mod": 0.95
 	},
 	"good": {
 		"time": 73.5,
@@ -46,13 +46,15 @@ const ranks:Dictionary = {
 
 static func judgeNote(strumTime:float):
 	var noteDiff:float = abs(Conductor.songPosition - strumTime) / PlayStateSettings.songMultiplier
-	var lastJudge:String = judgements.keys()[0]
+	var lastJudge:String = "no"
 	
 	for key in judgements.keys():
-		var judge:Dictionary = judgements[key]
-		if noteDiff >= Preferences.getOption(key + "-timing"):
+		if noteDiff <= Preferences.getOption(key + "-timing") and lastJudge == "no":
 			lastJudge = key
-			
+	
+	if lastJudge == "no":
+		lastJudge = judgements.keys()[len(judgements) - 1]
+	
 	return lastJudge
 	
 static func getRank(accuracy:float):
@@ -60,13 +62,13 @@ static func getRank(accuracy:float):
 		# biggest Haccuracy
 		var bigHacc:int = 0;
 		var leRank:String = ""
-
+		
 		for rank in ranks.keys():
 			var minAccuracy = rank
 			if minAccuracy <= accuracy and minAccuracy >= bigHacc:
 				bigHacc = minAccuracy
 				leRank = ranks[rank]
-
+		
 		return leRank
-
+	
 	return "?"

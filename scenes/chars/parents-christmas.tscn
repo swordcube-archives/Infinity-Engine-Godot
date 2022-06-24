@@ -466,7 +466,7 @@ tracks/3/keys = {
 [node name="parents-christmas" type="Node2D"]
 position = Vector2( -333.333, 0 )
 script = ExtResource( 2 )
-healthColor = Color( 0.847059, 0.333333, 0.556863, 1 )
+healthColor = Color( 0.686275, 0.396078, 0.807843, 1 )
 healthIcon = ExtResource( 3 )
 camera_pos = Vector2( -250, 0 )
 

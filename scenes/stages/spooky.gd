@@ -14,6 +14,7 @@ func lightningStrikeShit(curBeat):
 	get_node("strike" + str(rand)).play()
 
 	bg.play("strike")
+	bg.frame = 0
 
 	lightningStrikeBeat = curBeat
 	lightningOffset = int(rand_range(8, 24))

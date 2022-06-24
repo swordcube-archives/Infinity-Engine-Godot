@@ -13,8 +13,6 @@ scale = Vector2( 0.7, 0.7 )
 texture = ExtResource( 1 )
 centered = false
 script = ExtResource( 3 )
-startVelocity = -3.0
-gravity = 0.25
 
 [node name="Combo" type="Node2D" parent="."]
 
@@ -26,7 +24,5 @@ texture = ExtResource( 2 )
 centered = false
 script = ExtResource( 3 )
 moving = false
-startVelocity = -6.0
-gravity = 0.4
 
 [node name="Tween" type="Tween" parent="."]

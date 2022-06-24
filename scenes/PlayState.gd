@@ -125,6 +125,7 @@ func _ready():
 		gf.global_position += stage.get_node("gfPos").position + Vector2(300, 0)
 		bf.global_position += stage.get_node("bfPos").position + Vector2(300, 0)
 	
+	camera.smoothing_enabled = false
 	moveCameraSection(!SONG.notes[0].mustHitSection)
 	
 	for balls_section in SONG.notes:
@@ -311,6 +312,8 @@ func _ready():
 				
 				countdownActive = false
 				
+				camera.smoothing_enabled = true
+				
 				callOnModcharts("onCountdownTick", [countdownTick])
 				callOnModcharts("onSongStart")
 				
@@ -422,7 +425,7 @@ func _process(delta):
 			break
 			
 	if not countdownActive:
-		if Conductor.songPosition / 1000.0 >= AudioHandler.inst.stream.get_length():
+		if Conductor.songPosition / 1000.0 >= AudioHandler.inst.stream.get_length() - 0.25:
 			endSong()
 			
 func endSong():
