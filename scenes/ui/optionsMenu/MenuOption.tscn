@@ -30,7 +30,7 @@ margin_left = 50.0
 margin_right = 609.0
 margin_bottom = 70.0
 custom_fonts/font = ExtResource( 4 )
-text = "NumberOption"
+text = "MenuOption"
 uppercase = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
