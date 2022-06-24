@@ -6,9 +6,10 @@ func stepHit():
 	match(Conductor.curStep):
 		60, 444, 524, 540, 541, 829:
 			if dad:
-				dad.holdTimer = 0
 				dad.playAnim("ugh")
-				dad.specialAnim = true
-				yield(get_tree().create_timer((Conductor.timeBetweenBeats/1000.0)),"timeout")
-				dad.specialAnim = false
-				dad.dance(true)
+				dad.holdTimer = 0
+				
+				# because normally you would hit a note for every "ugh"
+				# but i removed said note because your mom
+				if Preferences.getOption("play-as-opponent"):
+					PlayState.songScore += 350

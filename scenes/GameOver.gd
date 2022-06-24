@@ -27,7 +27,7 @@ var accepted:bool = false
 	
 func _process(delta):			
 	if not accepted:
-		if bf.lastAnim == "firstDeath" and bf.animPlayer.current_animation_position >= bf.animPlayer.current_animation_length - ((1/24.0) * 15):
+		if bf.lastAnim == "firstDeath" and bf.animPlayer.current_animation_position >= bf.animPlayer.current_animation_length - ((1/24.0) * 30):
 			$Camera2D.position = bf.global_position 
 			$Camera2D.position.y += ((bf.frames.frames.get_frame(bf.frames.animation, bf.frames.frame).get_height() * bf.frames.scale.y) / 2)
 			

@@ -366,7 +366,6 @@ position = Vector2( 0, 200 )
 script = ExtResource( 2 )
 healthColor = Color( 0.199219, 0.199219, 0.199219, 1 )
 healthIcon = ExtResource( 3 )
-singDuration = 6.1
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( -216, 0 )

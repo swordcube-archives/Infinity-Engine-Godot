@@ -6,6 +6,7 @@
 
 [sub_resource type="Animation" id=1]
 resource_name = "idle"
+length = 0.5
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:animation")
 tracks/0/interp = 1
@@ -316,7 +317,6 @@ tracks/3/keys = {
 script = ExtResource( 2 )
 healthColor = Color( 0.847059, 0.333333, 0.556863, 1 )
 healthIcon = ExtResource( 3 )
-singDuration = 6.1
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( -216, 0 )

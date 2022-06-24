@@ -49,7 +49,7 @@ func _process(delta):
 	else:
 		if animFinished:
 			playAnim("static")
-			
+
 	var scrollSpeed = PlayStateSettings.scrollSpeed
 			
 	if sustains:
@@ -72,17 +72,16 @@ func _process(delta):
 			if not note.isEndOfSustain:
 				note.scale.y = yourMom * PlayStateSettings.currentUiSkin.sustain_scale
 			else:
-				note.spr.centered = false
-				note.spr.position.x = -((note.spr.frames.get_frame(note.spr.animation, note.spr.frame).get_width() * PlayStateSettings.currentUiSkin.note_scale) / 2)
-				var among = (scrollSpeed * (note.timeBetweenSteps / 1000.0)) * (230 * PlayStateSettings.currentUiSkin.sustain_scale)
+				var noteWidth = note.spr.frames.get_frame(note.spr.animation, note.spr.frame).get_width()
+				var noteHeight = note.spr.frames.get_frame(note.spr.animation, note.spr.frame).get_height()
+				
 				if note.downScroll:
-					note.position.y += among - 65
+					note.spr.offset.y = ((scrollSpeed * (note.timeBetweenSteps / 1000.0)) * (230))
+					note.spr.offset.y -= ((noteHeight*PlayStateSettings.currentUiSkin.note_scale)*0.5)
 				else:
-					var fard:float = 0
-					if (PlayStateSettings.currentUiSkin.sustain_scale - 1) != 0:
-						fard = ((-45 / (PlayStateSettings.currentUiSkin.sustain_scale - 1)) + (32 * PlayStateSettings.scrollSpeed)) * 0.5
-					note.position.y -= among + fard
-					
+					note.spr.offset.y = -((scrollSpeed * (note.timeBetweenSteps / 1000.0)) * (230))
+					note.spr.offset.y += ((noteHeight*PlayStateSettings.currentUiSkin.note_scale)*0.5)
+
 			note.modulate.a = 0.6
 				
 			if note.mustPress:
@@ -199,14 +198,14 @@ func _process(delta):
 							PlayState.combo += 1
 							PlayState.totalNotes += 1
 							
+							var rating:String = Ranking.judgeNote(note.strumTime)
+							if PlayStateSettings.botPlay:
+								rating = "marvelous"
+							
 							var newRating:Node2D = PlayState.UI.ratingTemplate.duplicate()
 							newRating.position = Vector2(685, 230)
 							newRating.combo = CoolUtil.numToComboStr(PlayState.combo)
 							PlayState.UI.add_child(newRating)
-							
-							var rating:String = Ranking.judgeNote(note.strumTime)
-							if PlayStateSettings.botPlay:
-								rating = "marvelous"
 								
 							var texture:StreamTexture
 							match rating:
@@ -233,6 +232,8 @@ func _process(delta):
 							if rankingShit.has("health"):
 								PlayState.health += rankingShit["health"]
 								
+							newRating.rating.texture = texture
+								
 							if Preferences.getOption("note-splashes") and rankingShit.has("noteSplash"):
 								var strum = PlayState.UI.playerStrums.get_child(note.noteData)
 								if Preferences.getOption("play-as-opponent"):
@@ -242,8 +243,6 @@ func _process(delta):
 								noteSplash.direction = strum.direction
 								noteSplash.position = strum.global_position
 								PlayState.UI.add_child(noteSplash)
-							
-							newRating.rating.texture = texture
 							
 							if Preferences.getOption("hitsound") != "None":
 								var newHitsound = PlayState.hitsound.duplicate()

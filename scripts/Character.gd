@@ -58,44 +58,52 @@ func playAnim(anim, force = false):
 	
 func _process(delta):
 	if dances:
-		if not isPlayer:
-			if lastAnim.begins_with('sing'):
-				holdTimer += delta * PlayStateSettings.songMultiplier
-				
-				if holdTimer >= Conductor.timeBetweenSteps * singDuration * 0.001:
+		if lastAnim != "idle" and !lastAnim.begins_with("dance"):
+			holdTimer += delta * PlayStateSettings.songMultiplier
+			
+			var multiplier:float = 4
+			
+			if name.to_lower() == "dad":
+				multiplier = 6.1
+			
+			if holdTimer >= Conductor.timeBetweenSteps * singDuration * 0.001:
+				if animPlayer.current_animation == "" or animPlayer.current_animation.begins_with("sing") or animPlayer.get_animation(animPlayer.current_animation).loop:
 					dance(true)
 					holdTimer = 0.0
-		else:
-			if lastAnim.begins_with('sing'):
-				holdTimer += delta * PlayStateSettings.songMultiplier
-				
-				if holdTimer >= Conductor.timeBetweenSteps * singDuration * 0.001 and not PlayState.pressed.has(true):
-					if not lastAnim.ends_with('miss'):
-						dance(true)
-						holdTimer = 0.0
-			else:
-				holdTimer = 0
 	
-func dance(force = null):
-	if force == null:
-		force = dancesLeftRight
+func dance(force = null, alt = null):
+	var can = false
 	
-	if force or "-loop" in lastAnim or animPlayer.current_animation == "":
+	if lastAnim.ends_with("-alt") and alt == null:
+		alt = true
+	
+	if dancesLeftRight and lastAnim.begins_with("dance"):
+		force = true
+	
+	if force == null and dancesLeftRight:
+		can = animPlayer.current_animation == "" or animPlayer.current_animation.begins_with("dance")
+	else:
+		can = force or animPlayer.current_animation == ""
+	
+	if can:
 		if dancesLeftRight:
-			danced = not danced
-			
-			if lastAnim.begins_with("singLEFT"):
-				danced = true
-				
-			if lastAnim.begins_with("singRIGHT"):
-				danced = false
+			danced = !danced
 				
 			if danced:
 				playAnim("danceLeft", force)
+				
+				if alt:
+					playAnim("danceLeft-alt", force)
 			else:
 				playAnim("danceRight", force)
+				
+				if alt:
+					playAnim("danceRight-alt", force)
 		else:
 			playAnim("idle", force)
+			
+			if alt:
+				playAnim("idle-alt", force)
 			
 func isDancing():
 	var dancing = true

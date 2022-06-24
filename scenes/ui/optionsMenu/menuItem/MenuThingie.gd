@@ -1,4 +1,4 @@
-extends MenuOption
+extends GenericOption
 
 var oldText:String = "???"
 export(String) var text:String = ""

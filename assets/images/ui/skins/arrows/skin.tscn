@@ -4,4 +4,3 @@
 
 [node name="Skin" type="Node"]
 script = ExtResource( 1 )
-rating_scale = 0.7

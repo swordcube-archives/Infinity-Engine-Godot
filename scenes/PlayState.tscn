@@ -25,6 +25,17 @@ smoothing_speed = 2.4
 layer = 100
 script = ExtResource( 5 )
 
+[node name="StageCoverup" type="Node2D" parent="HUD"]
+z_index = -1
+
+[node name="bg" type="ColorRect" parent="HUD/StageCoverup"]
+margin_right = 1280.0
+margin_bottom = 720.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
 [node name="Modulate" type="CanvasModulate" parent="HUD"]
 position = Vector2( 640, 360 )
 rotation = 1.5708

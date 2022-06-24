@@ -9,12 +9,12 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "MenuOption",
+"base": "GenericOption",
 "class": "ArrayOption",
 "language": "GDScript",
 "path": "res://scenes/ui/optionsMenu/ArrayOption.gd"
 }, {
-"base": "MenuOption",
+"base": "GenericOption",
 "class": "BoolOption",
 "language": "GDScript",
 "path": "res://scenes/ui/optionsMenu/BoolOption.gd"
@@ -30,11 +30,16 @@ _global_script_classes=[ {
 "path": "res://scenes/ui/freeplay/SongTemplate.gd"
 }, {
 "base": "Node2D",
+"class": "GenericOption",
+"language": "GDScript",
+"path": "res://scenes/ui/optionsMenu/GenericOption.gd"
+}, {
+"base": "Node2D",
 "class": "HealthBar",
 "language": "GDScript",
 "path": "res://scenes/ui/playState/HealthBar.gd"
 }, {
-"base": "Node2D",
+"base": "GenericOption",
 "class": "MenuOption",
 "language": "GDScript",
 "path": "res://scenes/ui/optionsMenu/MenuOption.gd"
@@ -49,7 +54,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/ui/notes/Note.gd"
 }, {
-"base": "MenuOption",
+"base": "GenericOption",
 "class": "NumberOption",
 "language": "GDScript",
 "path": "res://scenes/ui/optionsMenu/NumberOption.gd"
@@ -89,6 +94,7 @@ _global_script_class_icons={
 "BoolOption": "",
 "Character": "",
 "FreeplaySong": "",
+"GenericOption": "",
 "HealthBar": "",
 "MenuOption": "",
 "Modchart": "",

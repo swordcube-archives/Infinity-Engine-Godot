@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://assets/fonts/FNF_Bold2.font" type="BitmapFont" id=1]
+[ext_resource path="res://scenes/ui/optionsMenu/MenuOption.gd" type="Script" id=3]
+[ext_resource path="res://assets/fonts/FNF_Bold1.font" type="BitmapFont" id=4]
+
+[sub_resource type="Animation" id=1]
+resource_name = "default"
+length = 0.2
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Option:custom_fonts/font")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ ExtResource( 4 ), ExtResource( 1 ) ]
+}
+
+[node name="MenuOption" type="Node2D"]
+script = ExtResource( 3 )
+saveDataOption = "This isn't used"
+
+[node name="Option" type="Label" parent="."]
+margin_left = 50.0
+margin_right = 609.0
+margin_bottom = 70.0
+custom_fonts/font = ExtResource( 4 )
+text = "NumberOption"
+uppercase = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/default = SubResource( 1 )

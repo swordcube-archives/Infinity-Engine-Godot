@@ -7,11 +7,15 @@ func stepHit():
 		match Conductor.curStep:
 			736:
 				dad.dances = false
+				dad.frames.speed_scale = PlayStateSettings.songMultiplier
+				dad.playAnim("prettyGood", true)
 				dad.holdTimer = 0
-				dad.playAnim("prettyGood")
-				dad.specialAnim = true
-				yield(get_tree().create_timer((Conductor.timeBetweenBeats/1000.0)*2.5),"timeout")
-				dad.specialAnim = false
+				
+				# because normally you would hit a note for the
+				# "hey! pretty good!" shit to activate
+				if Preferences.getOption("play-as-opponent"):
+					PlayState.songScore += 350
 			768:
 				dad.dances = true
+				dad.frames.speed_scale = 1.0
 				dad.holdTimer = 0

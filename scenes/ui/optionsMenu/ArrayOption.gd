@@ -1,5 +1,5 @@
 tool
-extends MenuOption
+extends GenericOption
 
 class_name ArrayOption
 

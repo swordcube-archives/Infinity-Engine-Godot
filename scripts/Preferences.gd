@@ -21,6 +21,7 @@ var defaultSaveData:Dictionary = {
 	"hitsound": "None",
 	"note-splashes": true,
 	"fps-counter": true,
+	"stage-opacity": 1,
 	"keybind-reminders": true,
 	"vsync": false,
 	"clip-style": "FNF",
@@ -44,6 +45,7 @@ func _ready():
 	if get_tree().current_scene.name != "TitleScreen":
 		wentThruTitle = true
 		
+	yield(get_tree().create_timer(0.1),"timeout")
 	OS.vsync_enabled = getOption("vsync")
 
 # USE THIS TO GET OPTIONS AND SET OPTIONS

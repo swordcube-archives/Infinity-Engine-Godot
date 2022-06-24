@@ -14,6 +14,7 @@ onready var HUD = $HUD
 onready var OTHER = $Other
 onready var UI = $HUD/UI
 
+var rawSONG = PlayStateSettings.SONG.song
 var SONG:Song = Song.new()
 
 var health:float = 1.0
@@ -59,6 +60,10 @@ func _ready():
 		hitsound.stream = load(Paths.sound("hitsounds/" + Preferences.getOption("hitsound")))
 		hitsound.volume_db = -5
 		
+	var dumbFuck:float = 1.0-float(Preferences.getOption("stage-opacity"))
+	var real:float = dumbFuck
+	$HUD/StageCoverup/bg.modulate.a = real
+		
 	$HUD/Version.text += " (" + CoolUtil.getTXT(Paths.txt("data/gameVersionDate"))[0] + ")"
 	get_tree().paused = false
 	
@@ -70,13 +75,8 @@ func _ready():
 	Conductor.songPosition = Conductor.timeBetweenBeats * -5
 	Conductor.connect("beatHit", self, "beatHit")
 	Conductor.connect("stepHit", self, "stepHit")
-	
-	if not "keyCount" in SONG:
-		SONG.keyCount = 4
 		
-	var stageToLoad = "stage"
-	if "stage" in SONG:
-		stageToLoad = SONG.stage
+	var stageToLoad = SONG.stage
 		
 	if not Preferences.getOption("ultra-performance"):
 		stage = Paths.getStageScene(stageToLoad)
@@ -93,13 +93,13 @@ func _ready():
 		
 		var gfVersion = "gf"
 		
-		if "player3" in SONG:
+		if "player3" in rawSONG:
 			gfVersion = SONG.player3
 			
-		if "gfVersion" in SONG:
+		if "gfVersion" in rawSONG:
 			gfVersion = SONG.gfVersion
 			
-		if "gf" in SONG:
+		if "gf" in rawSONG:
 			gfVersion = SONG.gf
 		
 		gf = Paths.getCharScene(gfVersion)
@@ -163,13 +163,13 @@ func _ready():
 				var strumTime:float = float(note[0]) + (offset * PlayStateSettings.songMultiplier)
 				
 				noteDataArray.push_back([
-					strumTime, # 0
-					note[1], # 1
-					note[2], # 2
-					bool(section["mustHitSection"]), # 3
-					int(note[3]), # 4
-					type, # 5
-					bool(section.altAnim) # 6
+					strumTime, # strum time
+					note[1], # note data
+					note[2], # sussy length
+					bool(section["mustHitSection"]), # must hit
+					int(note[3]), # i forg
+					type, # note type
+					bool(section.altAnim) # alt note
 				])
 				
 	noteDataArray.sort_custom(self, "sortAscending")
@@ -371,11 +371,11 @@ func _process(delta):
 	HUD.offset.y = (HUD.scale.y - 1) * -CoolUtil.screenHeight/2
 	
 	for note in noteDataArray:
-		var hell:float = 1
-		if PlayStateSettings.scrollSpeed < 1:
-			hell = PlayStateSettings.scrollSpeed
+		var coc:float = PlayStateSettings.songMultiplier
+		if coc < 1:
+			coc = 1
 			
-		if float(note[0]) - Conductor.songPosition < ((2500 / hell) * PlayStateSettings.songMultiplier):
+		if float(note[0]) < Conductor.songPosition + ((2500 / PlayStateSettings.scrollSpeed) * coc):
 			var mustPress = true
 			
 			if note[3] and int(note[1]) % (SONG.keyCount * 2) >= SONG.keyCount:
@@ -428,8 +428,9 @@ func _process(delta):
 func endSong():
 	endingSong = true
 	
-	UI.remove_child(UI.timeBar)
-	UI.timeBar.queue_free()
+	if UI.timeBar:
+		UI.remove_child(UI.timeBar)
+		UI.timeBar.queue_free()
 	
 	get_tree().paused = true
 	
@@ -465,15 +466,15 @@ func actuallyEndSong():
 			
 func beatHit():
 	if bf:
-		if bf.isDancing() or bf.lastAnim.ends_with("miss") or bf.lastAnim == "hey" or bf.lastAnim == "scared":
+		if bf.isDancing():# or bf.lastAnim.ends_with("miss") or bf.lastAnim == "hey" or bf.lastAnim == "scared":
 			bf.dance()
 			
 	if dad:
-		if dad.isDancing() or (dad.name == gf.name and dad.lastAnim == "cheer" or dad.lastAnim == "scared"):
+		if dad.isDancing():# or (dad.name == gf.name and dad.lastAnim == "cheer" or dad.lastAnim == "scared"):
 			dad.dance()
 			
 	if gf:
-		if (gf.isDancing() or gf.lastAnim == "sad" or gf.lastAnim == "cheer" or gf.lastAnim == "scared" or (gf.lastAnim == "hairFall" and gf.animPlayer.get_current_animation_position() >= 0.26)) and dad != gf:
+		if gf.isDancing():#(gf.isDancing() or gf.lastAnim == "sad" or gf.lastAnim == "cheer" or gf.lastAnim == "scared" or (gf.lastAnim == "hairFall" and gf.animPlayer.get_current_animation_position() >= 0.26)) and dad != gf:
 			gf.dance()
 			
 	if Conductor.curBeat % 4 == 0:
