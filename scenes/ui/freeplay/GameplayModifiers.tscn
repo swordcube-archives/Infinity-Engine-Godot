@@ -49,4 +49,5 @@ options = PoolStringArray( "Multiplicative", "Constant" )
 
 [node name="Scroll Speed" parent="Options" instance=ExtResource( 4 )]
 saveDataOption = "scroll-speed"
+min_value = 0.1
 max_value = 10.0
