@@ -16,6 +16,8 @@ var dontHit:bool = false
 
 var animFinished:bool = false
 
+var characterAnimTimer:float = 0.0
+
 func _ready():
 	spr.frames = PlayStateSettings.currentUiSkin.strum_tex
 	var ss = PlayStateSettings.currentUiSkin.strum_scale
@@ -62,14 +64,23 @@ func _process(delta):
 		possibleNotes.sort_custom(self, "sortNotes")
 				
 		for note in notes.get_children():
-			if note.beingPressed and Input.is_action_pressed("gameplay_" + direction):
+			if (not note.mustPress and Conductor.songPosition >= note.strumTime) or (note.beingPressed and Input.is_action_pressed("gameplay_" + direction)) or (PlayStateSettings.botPlay and Conductor.songPosition >= note.strumTime):
 				note.spr.visible = false
 				note.position.y = 0
 				
-				if Conductor.songPosition >= note.strumTime and (Input.is_action_pressed("gameplay_" + direction) or PlayStateSettings.botPlay):
-					note.sustainLength -= (delta * 1000.0) / PlayStateSettings.songMultiplier
-					if note.sustainLength <= -50:
-						note.end.queue_free()
+				if not note.mustPress:
+					characterAnimTimer += delta
+					if characterAnimTimer >= Conductor.timeBetweenSteps/1000.0:
+						opponentSing(note)
+				else:
+					characterAnimTimer += delta
+					if characterAnimTimer >= Conductor.timeBetweenSteps/1000.0:
+						playerSing(note)
+				
+				if (not note.mustPress and Conductor.songPosition >= note.strumTime) or (note.mustPress and Conductor.songPosition >= note.strumTime and (Input.is_action_pressed("gameplay_" + direction))) or PlayStateSettings.botPlay:
+					note.sustainLength -= (delta * 1000.0) * PlayStateSettings.songMultiplier
+						
+					if note.sustainLength <= -20:
 						notes.remove_child(note)
 						note.queue_free()
 			else:
@@ -82,23 +93,11 @@ func _process(delta):
 			if note.mustPress:
 				if not dontHit:
 					if Input.is_action_just_pressed("gameplay_" + direction) or PlayStateSettings.botPlay:
-						if (PlayStateSettings.botPlay and Conductor.songPosition >= note.strumTime) or not PlayStateSettings.botPlay:
+						if not note.beingPressed and ((PlayStateSettings.botPlay and Conductor.songPosition >= note.strumTime) or not PlayStateSettings.botPlay):
 							note.beingPressed = true
 							
-							var characterSinging = PlayState.bf
-							if Preferences.getOption("play-as-opponent"):
-								characterSinging = PlayState.dad
-								
-							if characterSinging and not characterSinging.specialAnim:
-								var altAnim = ""
-								if note.altNote:
-									altAnim = "-alt"
-								characterSinging.holdTimer = 0
-								characterSinging.playAnim(CoolUtil.singAnims[PlayState.SONG["keyCount"]][note.noteData] + altAnim)
-					
-							var gain:float = 0.023
-							gain *= Preferences.getOption("hp-gain-multiplier")
-							PlayState.health += gain
+							playerSing(note)
+							
 							PlayState.combo += 1
 							PlayState.totalNotes += 1
 							
@@ -157,7 +156,6 @@ func _process(delta):
 							AudioHandler.voices.volume_db = 0
 							PlayState.updateHealth()
 							PlayState.UI.healthBar.updateText()
-							playAnim("confirm")
 							if note.ogSustainLength <= 0:
 								notes.remove_child(note)
 								note.queue_free()
@@ -183,11 +181,12 @@ func _process(delta):
 				var your = (note.mustPress and note.ogSustainLength <= 0 and not PlayStateSettings.botPlay)
 				var your2 = (note.mustPress and note.ogSustainLength >= 0 and not Input.is_action_pressed("gameplay_" + direction) and not PlayStateSettings.botPlay)
 						
-				if not Input.is_action_pressed("gameplay_" + direction) and note.beingPressed and note.sustainLength <= sustainMissRange:
+				if (not Input.is_action_pressed("gameplay_" + direction) and note.beingPressed and note.sustainLength <= sustainMissRange) and not PlayStateSettings.botPlay:
 					note.sustainLength -= (delta * 1000) * PlayStateSettings.songMultiplier
+					note.spr.visible = false
 					note.position.y = 0
 					
-					if note.sustainLength <= -50:
+					if note.sustainLength <= -20:
 						note.queue_free()
 				elif your or your2 or (note.mustPress and not note.beingPressed and Input.is_action_pressed("gameplay_" + direction)):
 					if Conductor.songPosition >= note.strumTime + Conductor.safeZoneOffset:
@@ -215,35 +214,59 @@ func _process(delta):
 						AudioHandler.voices.volume_db = -9999
 						PlayState.updateHealth()
 						PlayState.UI.healthBar.updateText()
-						note.end.queue_free()
 						notes.remove_child(note)
 						note.queue_free()
 			else:						
-				if Conductor.songPosition >= note.strumTime:
-					var characterSinging = PlayState.dad
-					if Preferences.getOption("play-as-opponent"):
-						characterSinging = PlayState.bf
-						
-					var health:float = PlayState.health
-					health -= 1 * Preferences.getOption("health-drain")
-					if health < 0.023:
-						health = 0.023
-						
-					PlayState.health = health
-						
-					if characterSinging and not characterSinging.specialAnim:
-						var altAnim = ""
-						if note.altNote:
-							altAnim = "-alt"
-							
-						characterSinging.holdTimer = 0
-						characterSinging.playAnim(CoolUtil.singAnims[PlayState.SONG["keyCount"]][note.noteData] + altAnim)
+				if not note.beingPressed and Conductor.songPosition >= note.strumTime:
+					note.beingPressed = true
 					
-					playAnim("confirm")
-					AudioHandler.voices.volume_db = 0
-					note.end.queue_free()
-					notes.remove_child(note)
-					note.queue_free()
+					opponentSing(note)
+					
+func opponentSing(note):
+	var characterSinging = PlayState.dad
+	if Preferences.getOption("play-as-opponent"):
+		characterSinging = PlayState.bf
+		
+	var health:float = PlayState.health
+	health -= 1 * Preferences.getOption("health-drain")
+	if health < 0.023:
+		health = 0.023
+		
+	PlayState.health = health
+		
+	if characterSinging and not characterSinging.specialAnim:
+		var altAnim = ""
+		if note.altNote:
+			altAnim = "-alt"
+			
+		characterSinging.holdTimer = 0
+		characterSinging.playAnim(CoolUtil.singAnims[PlayState.SONG["keyCount"]][note.noteData] + altAnim)
+	
+	characterAnimTimer = 0.0
+	playAnim("confirm")
+	AudioHandler.voices.volume_db = 0
+	if note.ogSustainLength <= 0:
+		notes.remove_child(note)
+		note.queue_free()
+		
+func playerSing(note):
+	var characterSinging = PlayState.bf
+	if Preferences.getOption("play-as-opponent"):
+		characterSinging = PlayState.dad
+		
+	if characterSinging and not characterSinging.specialAnim:
+		var altAnim = ""
+		if note.altNote:
+			altAnim = "-alt"
+		characterSinging.holdTimer = 0
+		characterSinging.playAnim(CoolUtil.singAnims[PlayState.SONG["keyCount"]][note.noteData] + altAnim)
+
+		characterAnimTimer = 0.0
+		playAnim("confirm")
+		
+		var gain:float = 0.023
+		gain *= Preferences.getOption("hp-gain-multiplier")
+		PlayState.health += gain
 
 func playAnim(anim:String = "static"):
 	match anim:

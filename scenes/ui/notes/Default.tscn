@@ -8,7 +8,7 @@ script = ExtResource( 1 )
 
 [node name="Line2D" type="Line2D" parent="."]
 modulate = Color( 1, 1, 1, 0.6 )
-points = PoolVector2Array( 0, 0, 0, -500 )
+points = PoolVector2Array( 0, 0, 0, 0 )
 width = 16.0
 default_color = Color( 1, 1, 1, 1 )
 texture_mode = 1
