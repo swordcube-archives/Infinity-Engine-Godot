@@ -394,28 +394,15 @@ func _process(delta):
 			newNote.noteData = int(note[1]) % SONG.keyCount
 			newNote.strumTime = float(note[0])
 			newNote.direction = strum.direction
+			newNote.ogSustainLength = float(note[2])
+			newNote.sustainLength = float(note[2])/1.5
 			newNote.downScroll = PlayStateSettings.downScroll
 			newNote.altNote = note[6]
+			newNote.get_node("Line2D").position.y = -5000
 			newNote.position.y = -5000
 			strum.notes.add_child(newNote)
 		
 			newNote.mustPress = mustPress
-			
-			var susLength:int = floor(note[2] / Conductor.timeBetweenSteps)
-			for susNote in susLength:
-				var sustainNote:Node2D = load("res://scenes/ui/notes/Default.tscn").instance()
-				sustainNote.noteData = newNote.noteData
-				sustainNote.strumTime = float(note[0]) + (Conductor.timeBetweenSteps * susNote) + (Conductor.timeBetweenSteps / PlayStateSettings.scrollSpeed)
-				sustainNote.direction = strum.direction
-				sustainNote.downScroll = PlayStateSettings.downScroll
-				sustainNote.isSustainNote = true
-				sustainNote.mustPress = mustPress
-				sustainNote.position.y = -5000
-				sustainNote.altNote = newNote.altNote
-				
-				sustainNote.isEndOfSustain = susNote == susLength - 1
-				
-				strum.sustains.add_child(sustainNote)
 			
 			noteDataArray.erase(note)
 		else:

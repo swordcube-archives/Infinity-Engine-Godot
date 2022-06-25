@@ -16,7 +16,7 @@ margin_left = -80.0
 margin_right = 80.0
 margin_bottom = 1080.0
 rect_clip_content = true
-color = Color( 0, 0, 0, 0 )
+color = Color( 1, 1, 1, 0 )
 
 [node name="Notes" type="Node2D" parent="."]
 

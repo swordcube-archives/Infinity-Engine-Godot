@@ -16,6 +16,8 @@ var tankAngle:float = rand_range(-90, 45)
 var tankSpeed:float = rand_range(5, 7)
 var tankX:float = 400
 
+var tankFucks:Array = []
+
 func createPost():
 	randomize()
 	
@@ -24,15 +26,21 @@ func createPost():
 		tankmen.strumTime = 10
 		tankmen.resetShit(20, 300, true)
 		$TankmenRun.add_child(tankmen)
-		for i in PlayState.gf.animationNotes.size() - 1:
-			if rand_range(0, 85) < 16:
-				var man = load("res://scenes/stages/tank/TankFucker.tscn").instance()
-				man.strumTime = PlayState.gf.animationNotes[i][0]
-				man.resetShit(500, 200 + int(rand_range(50, 100)), PlayState.gf.animationNotes[i][1] < 2)
-				$TankmenRun.add_child(man)
+		
+	tankFucks = PlayState.gf.animationNotes.duplicate()
 
 func _process(delta):
 	moveTank(delta)
+	
+	for cum in tankFucks:
+		if cum[0] < Conductor.songPosition + 2500:
+			if rand_range(0, 85) < 16:
+				var man = load("res://scenes/stages/tank/TankFucker.tscn").instance()
+				man.strumTime = cum[0]
+				man.resetShit(500, 200 + int(rand_range(50, 100)), cum[1] < 2)
+				$TankmenRun.add_child(man)
+			
+			tankFucks.erase(cum)
 	
 func beatHit():
 	for guy in boppinGuys:
