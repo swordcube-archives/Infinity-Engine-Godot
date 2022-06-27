@@ -206,6 +206,7 @@ func _process(delta):
 						loss *= Preferences.getOption("hp-loss-multiplier")
 						PlayState.health += loss
 						PlayState.songMisses += 1
+						PlayState.songScore -= 10
 						if PlayState.combo >= 10:
 							if PlayState.gf:
 								PlayState.gf.playAnim('sad')

@@ -30,6 +30,7 @@ export(SpriteFrames) var strum_tex = preload("res://assets/images/ui/skins/arrow
 export(SpriteFrames) var note_tex = preload("res://assets/images/ui/skins/arrows/notes.res")
 export(SpriteFrames) var note_splash_tex = preload("res://assets/images/ui/skins/arrows/noteSplashes.res")
 
+export(String) var sustain_tex_path = "res://assets/images/ui/skins/arrows/sustains"
 export(String) var health_bar_path = "res://scenes/ui/playState/healthBar/skins/default/HealthBar.tscn"
 export(String) var time_bar_path = "res://scenes/ui/playState/timeBar/skins/default/TimeBar.tscn"
 

@@ -13,8 +13,7 @@ width = 16.0
 default_color = Color( 1, 1, 1, 1 )
 texture_mode = 1
 
-[node name="end" type="AnimatedSprite" parent="."]
-frames = ExtResource( 2 )
+[node name="end" type="Sprite" parent="."]
 
 [node name="spr" type="AnimatedSprite" parent="."]
 frames = ExtResource( 2 )

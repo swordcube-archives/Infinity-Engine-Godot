@@ -1,7 +1,7 @@
 extends Modchart
 
 onready var camera = $"../".camera
-onready var hud = $"../".hud
+onready var hud = $"../".HUD
 
 func beat_hit():
 	if Conductor.curBeat >= 168 and Conductor.curBeat < 200:

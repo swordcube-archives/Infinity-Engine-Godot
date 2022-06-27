@@ -52,6 +52,7 @@ countdown_1 = ExtResource( 9 )
 countdown_go = ExtResource( 7 )
 strum_tex = ExtResource( 3 )
 note_tex = ExtResource( 2 )
+sustain_tex_path = "res://assets/images/ui/skins/arrows-pixel/sustains"
 rating_scale = 4.5
 combo_scale = 5.5
 countdown_scale = 6.5
