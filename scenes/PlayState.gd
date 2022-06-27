@@ -392,8 +392,8 @@ func _process(delta):
 			newNote.noteData = int(note[1]) % SONG.keyCount
 			newNote.strumTime = float(note[0])
 			newNote.direction = strum.direction
-			newNote.ogSustainLength = float(note[2])
-			newNote.sustainLength = floor(float(note[2]))/1.5
+			newNote.sustainLength = float(note[2])
+			newNote.ogSustainLength = note.sustainLength
 			newNote.downScroll = PlayStateSettings.downScroll
 			newNote.altNote = note[6]
 			newNote.get_node("Line2D").position.y = -5000

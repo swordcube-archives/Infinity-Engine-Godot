@@ -56,7 +56,7 @@ func _ready():
 	line2d.position.y = 0
 	
 func _process(delta):
-	var yPos:float = ((sustainLength / 1.5) * PlayStateSettings.scrollSpeed) #/ spr.scale.y#*PlayStateSettings.currentUiSkin.note_scale
+	var yPos:float = (((sustainLength / 1.5) / 1.5) * PlayStateSettings.scrollSpeed) #/ spr.scale.y#*PlayStateSettings.currentUiSkin.note_scale
 	var endHeight:float = end.texture.get_height()
 	var fortnite:float = (endHeight*PlayStateSettings.currentUiSkin.note_scale)
 	if downScroll:
