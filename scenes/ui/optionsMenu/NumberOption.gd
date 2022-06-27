@@ -46,6 +46,7 @@ func _process(delta):
 				Preferences.setOption(saveDataOption, floatValue)
 				value = str(floatValue)
 				onChangeValue(floatValue)
+				yield(get_tree().create_timer(0.05), "timeout")
 		else:
 			holdTimer = 0.0
 		

@@ -193,8 +193,6 @@ func _ready():
 	#print("SHIT IN SONG FOLDER: " + str(songFolder))
 	for file in songFolder:
 		if not file.begins_with(".") and file.ends_with(".tscn"):
-			print("FOUND MODCHART: " + file)
-			print("LOADING " + file)
 			var modchartFile = load(Paths.song(SONG.song) + "/" + file).instance()
 			modchartFile.PlayState = self
 			loadedModcharts.append(modchartFile)
