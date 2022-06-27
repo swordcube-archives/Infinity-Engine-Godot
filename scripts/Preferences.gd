@@ -9,7 +9,7 @@ var defaultSaveData:Dictionary = {
 	"hp-gain-multiplier": 1,
 	"hp-loss-multiplier": 1,
 	"scroll-speed-type": "Multiplicative",
-	"scroll-speed": 0.1,
+	"scroll-speed": 1,
 	
 	# Everything else
 	"mods": {},

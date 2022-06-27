@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/jeffGameover-17.ogg-57f6cfe4d6086f9144fc3a99a8fbf2bc.oggstr"
+
+[deps]
+
+source_file="res://assets/sounds/week7/gameOver/jeffGameover-17.ogg"
+dest_files=[ "res://.import/jeffGameover-17.ogg-57f6cfe4d6086f9144fc3a99a8fbf2bc.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

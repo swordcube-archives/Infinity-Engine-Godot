@@ -24,6 +24,12 @@ func _ready():
 	$death.play()
 	
 var accepted:bool = false
+
+var initDeathMusicVolume:float = 0.0
+
+var fadingMusic:bool = false
+
+var jeffGameOver:AudioStreamPlayer
 	
 func _process(delta):			
 	if not accepted:
@@ -32,9 +38,32 @@ func _process(delta):
 			$Camera2D.position.y += ((bf.frames.frames.get_frame(bf.frames.animation, bf.frames.frame).get_height() * bf.frames.scale.y) / 2)
 			
 		if bf.lastAnim == "firstDeath" and bf.animFinished:
+			var jeffSongs:Array = ["ugh", "guns", "stress"]
+			for song in jeffSongs:
+				if PlayStateSettings.SONG.song.song.to_lower() == song:
+					jeffGameOver = AudioStreamPlayer.new()
+					add_child(jeffGameOver)
+					
+					initDeathMusicVolume = -8
+					
+					jeffGameOver.stream = load(Paths.sound("week7/gameOver/jeffGameover-"+str(randi()%25+1)))
+					jeffGameOver.play()
+					break
+					
 			bf.playAnim("deathLoop", true)
 			$music.stream = bf.deathMusic
+			$music.volume_db = initDeathMusicVolume
 			$music.play()
+			
+	if jeffGameOver:
+		if not fadingMusic and jeffGameOver.get_playback_position() >= jeffGameOver.stream.get_length() - 0.25:
+			fadingMusic = true
+			print("FADING MUSIC IN!")
+			var musicTween = Tween.new()
+			musicTween.name = "MusicTween"
+			add_child(musicTween)
+			musicTween.interpolate_property($music, "volume_db", initDeathMusicVolume, 1, 4)
+			musicTween.start()
 		
 	if not accepted and Input.is_action_just_pressed("ui_accept"):
 		$music.stream = null
