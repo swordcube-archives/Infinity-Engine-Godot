@@ -69,6 +69,13 @@ func _process(delta):
 		$music.stream = null
 		$music.stop()
 		
+		# make jeff slowly stop speaking
+		var jeffTween = Tween.new()
+		jeffTween.name = "JeffTween"
+		add_child(jeffTween)
+		jeffTween.interpolate_property(jeffGameOver, "volume_db", 0, -50, 4)
+		jeffTween.start()
+		
 		$retry.stream = bf.retrySound
 		$retry.play()
 		

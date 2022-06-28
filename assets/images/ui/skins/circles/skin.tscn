@@ -1,6 +1,10 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://scenes/ui/playState/SkinTemplate.gd" type="Script" id=1]
+[ext_resource path="res://assets/images/ui/skins/circles/strums.res" type="SpriteFrames" id=2]
+[ext_resource path="res://assets/images/ui/skins/circles/notes.res" type="SpriteFrames" id=3]
 
 [node name="Skin" type="Node"]
 script = ExtResource( 1 )
+strum_tex = ExtResource( 2 )
+note_tex = ExtResource( 3 )

@@ -1,8 +1,8 @@
 [gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://scenes/ui/playState/SkinTemplate.gd" type="Script" id=1]
-[ext_resource path="res://assets/images/ui/skins/arrows-pixel/notes.res" type="SpriteFrames" id=2]
-[ext_resource path="res://assets/images/ui/skins/arrows-pixel/strums.res" type="SpriteFrames" id=3]
+[ext_resource path="res://assets/images/ui/skins/circles-pixel/strums.res" type="SpriteFrames" id=2]
+[ext_resource path="res://assets/images/ui/skins/circles-pixel/notes.res" type="SpriteFrames" id=3]
 [ext_resource path="res://assets/images/ui/skins/arrows-pixel/countdown/date.png" type="Texture" id=4]
 [ext_resource path="res://assets/images/ui/skins/arrows-pixel/countdown/set.png" type="Texture" id=5]
 [ext_resource path="res://assets/images/ui/skins/arrows-pixel/countdown/ready.png" type="Texture" id=6]
@@ -51,8 +51,8 @@ countdown_3 = ExtResource( 10 )
 countdown_2 = ExtResource( 8 )
 countdown_1 = ExtResource( 9 )
 countdown_go = ExtResource( 7 )
-strum_tex = ExtResource( 3 )
-note_tex = ExtResource( 2 )
+strum_tex = ExtResource( 2 )
+note_tex = ExtResource( 3 )
 note_splash_tex = ExtResource( 26 )
 sustain_tex_path = "res://assets/images/ui/skins/arrows-pixel/sustains"
 rating_scale = 4.5

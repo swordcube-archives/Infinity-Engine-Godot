@@ -16,18 +16,24 @@ func _ready():
 	opponentStrums = load("res://scenes/ui/strums/4K.tscn").instance()
 	opponentStrums.position.x = xMult
 	opponentStrums.position.y = 100
+	var i:int = 0
 	for strum in opponentStrums.get_children():
 		strum.isOpponent = true
+		strum.noteData = i
 		if Preferences.getOption("play-as-opponent"):
 			strum.isOpponent = not strum.isOpponent
+		i += 1
 	add_child(opponentStrums)
 	
 	playerStrums = load("res://scenes/ui/strums/4K.tscn").instance()
 	playerStrums.position.x = xMult + (CoolUtil.screenWidth / 2)
 	playerStrums.position.y = 100
+	i = 0
 	for strum in playerStrums.get_children():
+		strum.noteData = i
 		if Preferences.getOption("play-as-opponent"):
 			strum.isOpponent = not strum.isOpponent
+		i += 1
 	add_child(playerStrums)
 	
 	# centered notes
