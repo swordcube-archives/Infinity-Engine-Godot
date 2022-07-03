@@ -42,6 +42,8 @@ var gameVersion:String = "16622"
 var wentThruTitle:bool = false
 
 func _ready():
+	Discord.init()
+	
 	if get_tree().current_scene.name != "TitleScreen":
 		wentThruTitle = true
 		

@@ -24,6 +24,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/Character.gd"
 }, {
+"base": "Node",
+"class": "DiscordRPC",
+"language": "GDScript",
+"path": "res://addons/Discord RPC/DiscordRPC.gd"
+}, {
+"base": "Reference",
+"class": "DiscordRPCUtil",
+"language": "GDScript",
+"path": "res://addons/Discord RPC/RPC.gd"
+}, {
 "base": "Node2D",
 "class": "FreeplaySong",
 "language": "GDScript",
@@ -38,6 +48,31 @@ _global_script_classes=[ {
 "class": "HealthBar",
 "language": "GDScript",
 "path": "res://scenes/ui/playState/HealthBar.gd"
+}, {
+"base": "Reference",
+"class": "IPC",
+"language": "GDScript",
+"path": "res://addons/Discord RPC/ipc/IPC.gd"
+}, {
+"base": "Reference",
+"class": "IPCModule",
+"language": "GDScript",
+"path": "res://addons/Discord RPC/ipc/module/IPCModule.gd"
+}, {
+"base": "Reference",
+"class": "IPCPayload",
+"language": "GDScript",
+"path": "res://addons/Discord RPC/ipc/IPCPayload.gd"
+}, {
+"base": "Reference",
+"class": "IPCPipe",
+"language": "GDScript",
+"path": "res://addons/Discord RPC/ipc/pipe/IPCPipe.gd"
+}, {
+"base": "Reference",
+"class": "IPCUtil",
+"language": "GDScript",
+"path": "res://addons/Discord RPC/util/IPCUtil.gd"
 }, {
 "base": "GenericOption",
 "class": "MenuOption",
@@ -69,6 +104,21 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/Ranking.gd"
 }, {
+"base": "Reference",
+"class": "RichPresence",
+"language": "GDScript",
+"path": "res://addons/Discord RPC/ipc/module/rich presence/RichPresence.gd"
+}, {
+"base": "Reference",
+"class": "RichPresenceButton",
+"language": "GDScript",
+"path": "res://addons/Discord RPC/ipc/module/rich presence/RichPresenceButton.gd"
+}, {
+"base": "IPCModule",
+"class": "RichPresenceModule",
+"language": "GDScript",
+"path": "res://addons/Discord RPC/ipc/module/rich presence/RichPreseneModule.gd"
+}, {
 "base": "Resource",
 "class": "Section",
 "language": "GDScript",
@@ -84,28 +134,74 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/stages/stage.gd"
 }, {
+"base": "",
+"class": "StreamPeerUnix",
+"language": "NativeScript",
+"path": "res://addons/godot-unix-socket/unix-socket.gdns"
+}, {
 "base": "Node2D",
 "class": "TimeBar",
 "language": "GDScript",
 "path": "res://scenes/ui/playState/TimeBar.gd"
+}, {
+"base": "Reference",
+"class": "URLUtil",
+"language": "GDScript",
+"path": "res://addons/Discord RPC/util/URLUtil.gd"
+}, {
+"base": "Reference",
+"class": "UUID",
+"language": "GDScript",
+"path": "res://addons/Discord RPC/util/UUID.gd"
+}, {
+"base": "IPCPipe",
+"class": "UnixPipe",
+"language": "GDScript",
+"path": "res://addons/Discord RPC/ipc/pipe/UnixPipe.gd"
+}, {
+"base": "IPCPayload",
+"class": "UpdateRichPresencePayload",
+"language": "GDScript",
+"path": "res://addons/Discord RPC/ipc/module/rich presence/UpdateRichPresencePayload.gd"
+}, {
+"base": "IPCPipe",
+"class": "WindowsPipe",
+"language": "GDScript",
+"path": "res://addons/Discord RPC/ipc/pipe/WindowsPipe.gd"
 } ]
 _global_script_class_icons={
 "ArrayOption": "",
 "BoolOption": "",
 "Character": "",
+"DiscordRPC": "",
+"DiscordRPCUtil": "",
 "FreeplaySong": "",
 "GenericOption": "",
 "HealthBar": "",
+"IPC": "",
+"IPCModule": "",
+"IPCPayload": "",
+"IPCPipe": "",
+"IPCUtil": "",
 "MenuOption": "",
 "Modchart": "",
 "Note": "",
 "NumberOption": "",
 "PauseOption": "",
 "Ranking": "",
+"RichPresence": "",
+"RichPresenceButton": "",
+"RichPresenceModule": "",
 "Section": "",
 "Song": "",
 "Stage": "",
-"TimeBar": ""
+"StreamPeerUnix": "",
+"TimeBar": "",
+"URLUtil": "",
+"UUID": "",
+"UnixPipe": "",
+"UpdateRichPresencePayload": "",
+"WindowsPipe": ""
 }
 
 [application]
@@ -122,6 +218,7 @@ default_bus_layout=""
 
 [autoload]
 
+Discord="*res://scripts/Discord.gd"
 ModManager="*res://scripts/ModManager.gd"
 Conductor="*res://scripts/Conductor.gd"
 AudioHandler="*res://scenes/audio/AudioHandler.tscn"

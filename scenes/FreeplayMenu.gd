@@ -31,31 +31,44 @@ func _ready():
 		
 	songUtil.visible = false
 	
-	var txt = CoolUtil.getTXT(Paths.txt("data/freeplaySongs"))
 	var i:int = 0
-	for item in txt:
-		var split = item.split(":")
-		if len(item) > 0:
-			if OS.is_debug_build() or not (range(split.size()).has(4) and split[4] == "DEBUG_ONLY"):
-				songNames.append(split[0])
-				songColors.append(split[2])
-				songDifficulties.append(split[3].split(","))
-				
-				var newSong:FreeplaySong = songTemplate.duplicate()
-				newSong.position.x = (10 * i) + 30
-				newSong.position.y = (70 * i) + 30
-				songs.add_child(newSong)
-				
-				newSong.label.text = split[0]
-				newSong.label.updateText()
-				
-				newSong.isMenuItem = true
-				newSong.targetY = i
-				
-				newSong.icon.texture = load(Paths.healthIcon(split[1]))
-				newSong.icon.position.x = newSong.label.label.rect_size.x + 70
-				
-				i += 1
+	
+	var modsList:Array = []
+	modsList.append("Infinity Engine")
+	for mod in Preferences.getOption("mods").keys():
+		if Preferences.getOption("mods")[mod] == true:
+			modsList.append(mod)
+			
+	for mod in modsList:
+		if mod == "Infinity Engine":
+			ProjectSettings.load_resource_pack("Infinity Engine.pck", true)
+		else:
+			ModManager.loadSpecificMod(mod)
+			
+		var txt = CoolUtil.getTXT(Paths.txt("data/freeplaySongs"))
+		for item in txt:
+			var split = item.split(":")
+			if len(item) > 0:
+				if OS.is_debug_build() or not (range(split.size()).has(4) and split[4] == "DEBUG_ONLY"):
+					songNames.append(split[0])
+					songColors.append(split[2])
+					songDifficulties.append(split[3].split(","))
+					
+					var newSong:FreeplaySong = songTemplate.duplicate()
+					newSong.position.x = 30
+					newSong.position.y = (70 * i) + 30
+					songs.add_child(newSong)
+					
+					newSong.label.text = split[0]
+					newSong.label.updateText()
+					
+					newSong.isMenuItem = true
+					newSong.targetY = i
+					
+					newSong.icon.texture = load(Paths.healthIcon(split[1]))
+					newSong.icon.position.x = newSong.label.label.rect_size.x + 70
+					
+					i += 1
 			
 	changeSelection()
 	changeDifficulty()

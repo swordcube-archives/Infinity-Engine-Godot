@@ -21,6 +21,8 @@ func _ready():
 	
 	$CanvasLayer/Label.text += " (" + CoolUtil.getTXT(Paths.txt("data/gameVersionDate"))[0] + ")"
 	
+	Discord.update_presence("In the Main Menu")
+	
 var selectedSomethin:bool = false
 	
 func _input(event):
@@ -57,13 +59,13 @@ func _input(event):
 			magenta.visible = false
 			yield(get_tree().create_timer(0.2), "timeout")
 			match items[curSelected].name:
-				"story-mode":
+				"Story Mode":
 					Scenes.switchScene("StoryMenu")
-				"freeplay":
+				"Freeplay":
 					Scenes.switchScene("FreeplayMenu")
-				"mods":
+				"Mods":
 					pass
-				"options":
+				"Options":
 					Scenes.switchScene("OptionsMenu")
 		
 func changeSelection(change:int = 0):
@@ -81,3 +83,5 @@ func changeSelection(change:int = 0):
 			
 	camera.position.y = items[curSelected].position.y - 150
 	AudioHandler.playSFX("scrollMenu")
+	
+	Discord.update_presence("In the Main Menu", "Selecting "+items[curSelected].name)

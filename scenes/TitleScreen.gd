@@ -39,6 +39,9 @@ func _ready():
 		cover.visible = false
 		titleQuotes.visible = false
 		
+	yield(get_tree().create_timer(1), "timeout")
+	Discord.update_presence("In the Title Screen")
+		
 var confirmed:bool = false
 	
 func _process(delta):

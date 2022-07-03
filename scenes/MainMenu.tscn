@@ -42,28 +42,28 @@ flashSpeed = 0.15
 motion_scale = Vector2( 1, 0 )
 motion_offset = Vector2( 0, -360 )
 
-[node name="story-mode" type="AnimatedSprite" parent="ParallaxBackground/layer2"]
+[node name="Story Mode" type="AnimatedSprite" parent="ParallaxBackground/layer2"]
 position = Vector2( 641, 132 )
 scale = Vector2( 0.95, 0.95 )
 frames = ExtResource( 2 )
 animation = "basic"
 script = ExtResource( 8 )
 
-[node name="freeplay" type="AnimatedSprite" parent="ParallaxBackground/layer2"]
+[node name="Freeplay" type="AnimatedSprite" parent="ParallaxBackground/layer2"]
 position = Vector2( 641, 284 )
 scale = Vector2( 0.95, 0.95 )
 frames = ExtResource( 3 )
 animation = "basic"
 script = ExtResource( 8 )
 
-[node name="mods" type="AnimatedSprite" parent="ParallaxBackground/layer2"]
+[node name="Mods" type="AnimatedSprite" parent="ParallaxBackground/layer2"]
 position = Vector2( 641, 444 )
 scale = Vector2( 0.95, 0.95 )
 frames = ExtResource( 4 )
 animation = "basic"
 script = ExtResource( 8 )
 
-[node name="options" type="AnimatedSprite" parent="ParallaxBackground/layer2"]
+[node name="Options" type="AnimatedSprite" parent="ParallaxBackground/layer2"]
 position = Vector2( 641, 596 )
 scale = Vector2( 0.95, 0.95 )
 frames = ExtResource( 5 )

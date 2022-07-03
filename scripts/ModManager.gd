@@ -28,8 +28,9 @@ func loadMods():
 		d.make_dir("user://mods")
 		loadMods()
 		
-func loadSpecificMod(mod):
-	ProjectSettings.load_resource_pack("Infinity Engine.pck", true)
+func loadSpecificMod(mod, loadBase:bool = true):
+	if loadBase:
+		ProjectSettings.load_resource_pack("Infinity Engine.pck", true)
 	
 	if Preferences.getOption("mods").has(mod) and Preferences.getOption("mods")[mod] == true:
 		ProjectSettings.load_resource_pack("user://mods/" + mod)
