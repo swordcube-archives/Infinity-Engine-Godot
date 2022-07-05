@@ -19,4 +19,7 @@ func _process(delta):
 		$Checkbox.enabled = Preferences.getOption(saveDataOption)
 		$Checkbox.refresh()
 		
-		OS.vsync_enabled = Preferences.getOption(saveDataOption)
+		# what the fuck was i on when i originally made this
+		match saveDataOption:
+			"vsync":
+				OS.vsync_enabled = Preferences.getOption(saveDataOption)
