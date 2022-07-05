@@ -103,6 +103,9 @@ func _process(delta):
 						if not note.beingPressed and ((PlayStateSettings.botPlay and Conductor.songPosition >= note.strumTime) or not PlayStateSettings.botPlay):
 							note.beingPressed = true
 							
+							if note.ogSustainLength >= 0:
+								note.sustainLength -= Conductor.songPosition - note.strumTime
+							
 							playerSing(note)
 							
 							PlayState.combo += 1

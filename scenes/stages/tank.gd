@@ -10,6 +10,8 @@ onready var boppinGuys:Array = [
 	$FGGuys/ParallaxLayer/tank4,
 ]
 
+onready var watchTower:AnimatedSprite = $ParallaxBackground/layer7/WatchTower
+
 onready var tankRolling:AnimatedSprite = $ParallaxBackground/layer7/TankRolling
 
 var tankAngle:float = rand_range(-90, 45)
@@ -45,14 +47,24 @@ func _process(delta):
 					$TankmenRun.add_child(man)
 				
 				tankFucks.erase(cum)
+				
+var canBop:bool = true
 	
 func beatHit():
-	for guy in boppinGuys:
-		guy.frame = 0
-		guy.play("bop")
+	if canBop:
+		canBop = false
+		for guy in boppinGuys:
+			guy.frame = 0
+			guy.play("bop")
+			
+			watchTower.frame = 0
+			watchTower.play("bop")
 	
 func moveTank(delta):
 	tankAngle += tankSpeed * delta
 	tankRolling.rotation_degrees = (tankAngle - 90 + 15)
 	tankRolling.position.x = 400 + 1500 * cos(PI / 180 * (1 * tankAngle + 180))
 	tankRolling.position.y = 1300 + 1100 * sin(PI / 180 * (1 * tankAngle + 180))
+
+func onTankDone():
+	canBop = true

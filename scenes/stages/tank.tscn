@@ -79,7 +79,7 @@ motion_offset = Vector2( -384, -216 )
 position = Vector2( -200, -100 )
 frames = ExtResource( 7 )
 animation = "SmokeBlurLeft instance 1"
-frame = 28
+frame = 30
 playing = true
 centered = false
 
@@ -87,7 +87,7 @@ centered = false
 position = Vector2( 1100, -100 )
 frames = ExtResource( 8 )
 animation = "SmokeRight instance 1"
-frame = 28
+frame = 30
 playing = true
 centered = false
 
@@ -107,7 +107,6 @@ centered = false
 position = Vector2( 300, 300 )
 frames = ExtResource( 10 )
 animation = "BG tank w lighting instance 1"
-frame = 1
 playing = true
 centered = false
 
@@ -175,6 +174,7 @@ animation = "bop"
 centered = false
 
 [node name="dadPos" type="Node2D" parent="."]
+visible = false
 position = Vector2( 20, 100 )
 
 [node name="gfPos" type="Node2D" parent="."]
@@ -182,3 +182,5 @@ position = Vector2( 320, 105 )
 
 [node name="bfPos" type="Node2D" parent="."]
 position = Vector2( 810, 100 )
+
+[connection signal="animation_finished" from="FGGuys/layer1/tank" to="." method="onTankDone"]
