@@ -27,6 +27,7 @@ func _ready():
 		pageOptions.add_child(newPage)
 		
 	changePage()
+	Discord.update_presence("In the Options Menu")
 	
 func _process(delta):
 	$Description.text = options.get_child(curSelected).optionDescription

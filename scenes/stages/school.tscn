@@ -48,19 +48,19 @@ centered = false
 
 [node name="Petals" type="AnimatedSprite" parent="ParallaxBackground/layer5"]
 position = Vector2( -88, 8 )
-scale = Vector2( 4.8, 4.8 )
+scale = Vector2( 5, 5 )
 frames = ExtResource( 7 )
 animation = "PETALS ALL"
-frame = 14
+frame = 31
 playing = true
 centered = false
 
 [node name="WeebTrees" type="AnimatedSprite" parent="ParallaxBackground/layer5"]
-position = Vector2( -580, -800 )
-scale = Vector2( 4.8, 4.8 )
+position = Vector2( -580, -850 )
+scale = Vector2( 5, 5 )
 frames = ExtResource( 6 )
 animation = "trees"
-frame = 3
+frame = 16
 playing = true
 centered = false
 __meta__ = {
@@ -82,6 +82,7 @@ position = Vector2( -100, 190 )
 scale = Vector2( 6, 6 )
 frames = ExtResource( 8 )
 animation = "BG girls group"
+frame = 13
 playing = true
 centered = false
 

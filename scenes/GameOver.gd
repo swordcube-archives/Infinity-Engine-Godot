@@ -23,6 +23,8 @@ func _ready():
 	$death.stream = bf.deathSound
 	$death.play()
 	
+	Discord.update_presence("Died on "+PlayStateSettings.SONG.song.song+" ("+PlayStateSettings.difficulty+")", "Time Left: "+CoolUtil.formatTime((AudioHandler.inst.stream.get_length()/PlayStateSettings.songMultiplier) - (Conductor.songPosition / 1000.0)/PlayStateSettings.songMultiplier))
+	
 var accepted:bool = false
 
 var initDeathMusicVolume:float = 0.0

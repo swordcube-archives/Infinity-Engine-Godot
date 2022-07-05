@@ -316,6 +316,14 @@ func _ready():
 				callOnModcharts("onSongStart")
 				
 		countdownTick -= 1
+		
+	updatePresence()
+	var timer = Timer.new()
+	timer.one_shot = false
+	add_child(timer)
+	
+	timer.start(1)
+	timer.connect("timeout", self, "updatePresence")
 				
 var countdownTick:int = 4
 
@@ -510,3 +518,9 @@ func resyncVocals():
 	if not countdownActive:
 		Conductor.songPosition = (AudioHandler.inst.get_playback_position() * 1000)
 		AudioHandler.voices.seek(Conductor.songPosition / 1000)
+		
+func updatePresence():
+	if AudioHandler.inst.stream:
+		Discord.update_presence("Playing "+SONG.song+" ("+PlayStateSettings.difficulty+")", "Time Left: "+CoolUtil.formatTime((AudioHandler.inst.stream.get_length()/PlayStateSettings.songMultiplier) - (Conductor.songPosition / 1000.0)/PlayStateSettings.songMultiplier))
+	else:
+		Discord.update_presence("Starting "+SONG.song+" ("+PlayStateSettings.difficulty+")")
