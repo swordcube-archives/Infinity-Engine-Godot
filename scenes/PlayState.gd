@@ -335,7 +335,7 @@ onready var countdownAudios:Dictionary = {
 }
 
 func updateHealth():
-	if health < UI.healthBar.minHealth:
+	if health < UI.healthBar.minHealth and not PlayStateSettings.practiceMode:
 		health = UI.healthBar.minHealth
 		endingSong = true
 		Scenes.switchScene("GameOver", false)
