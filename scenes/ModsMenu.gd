@@ -7,11 +7,29 @@ var modsArray:PoolStringArray = []
 
 var curSelected:int = 0
 
+func _getDroppedFilesPath(files:PoolStringArray, screen:int) -> void:
+	var mod_index = 0
+	
+	for file in files:
+		var cool_file = File.new()
+		cool_file.open(file, File.READ)
+		
+		var funny_array = cool_file.get_path_absolute().split("/", true)
+		
+		var new_dir = Directory.new()
+		new_dir.copy(file, "user://mods/" + funny_array[len(funny_array) - 1])
+	
+	Scenes.switchScene("ModsMenu", true)
+
 func _ready():
+	get_tree().connect("files_dropped", self, "_getDroppedFilesPath")
+	
 	AudioHandler.playMusic("freakyMenu")
 	
 	ModManager.modScenes.clear()
 	modsArray = ModManager.mods
+	
+	$noMods.visible = modsArray.size() < 1
 	
 	for i in modsArray.size():
 		var mod = modsArray[i]

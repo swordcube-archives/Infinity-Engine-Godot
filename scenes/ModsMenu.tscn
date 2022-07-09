@@ -1,7 +1,15 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://assets/images/menus/menuBGDesat.png" type="Texture" id=1]
 [ext_resource path="res://scenes/ModsMenu.gd" type="Script" id=2]
+[ext_resource path="res://assets/fonts/vcr.ttf" type="DynamicFontData" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+size = 32
+outline_size = 3
+outline_color = Color( 0, 0, 0, 1 )
+use_filter = true
+font_data = ExtResource( 3 )
 
 [node name="ModsMenu" type="Node2D"]
 script = ExtResource( 2 )
@@ -15,3 +23,13 @@ __meta__ = {
 }
 
 [node name="Mods" type="Node2D" parent="."]
+
+[node name="noMods" type="Label" parent="."]
+margin_left = 128.0
+margin_top = 344.0
+margin_right = 1156.0
+margin_bottom = 405.0
+custom_fonts/font = SubResource( 1 )
+text = "You have no mods! Drag and drop some
+onto the window to install some."
+align = 1
