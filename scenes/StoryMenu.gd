@@ -37,6 +37,12 @@ var curDifficulty:int = 1
 var intendedScore:int = 0
 var lerpScore:float = 0.0
 
+func sortWeeks(a, b):
+	if a.weekNum < b.weekNum:
+		return true
+		
+	return false
+
 func _ready():
 	get_tree().paused = false
 	AudioHandler.playMusic("freakyMenu")
@@ -46,35 +52,45 @@ func _ready():
 	
 	ModManager.loadMods()
 	var weeksFolder:PoolStringArray = CoolUtil.listFilesInDirectory("res://assets/weeks")
+	var funnyWeeks:Array = []
 	print(weeksFolder)
 	var i:int = 0
 	for item in weeksFolder:
 		if item.ends_with(".json"):
 			# load json
 			var json = CoolUtil.getJSON("res://assets/weeks/"+item)
-			# add characters and songs into dictonaries
-			weekDifficulties[str(i)] = json.difficulties
-			weekCharacters[str(i)] = json.characters
-			weekSongs[str(i)] = json.songs
-			weekTitles[str(i)] = json.weekTitle
-			weekNames.append(item.split(".json")[0])
-			# load difficulty images
-			for diff in json.difficulties:
-				if not diffTextures.has(diff):
-					var diffTexPath:String = "res://assets/images/storydifficulties/"+diff+".png"
-					if ResourceLoader.exists(diffTexPath):
-						diffTextures[diff] = load(diffTexPath)
-					else:
-						diffTextures[diff] = CoolUtil.nullImage
-			# adding the weeks
-			var newWeek = weekTemplate.duplicate()
-			newWeek.texture = Paths.loadTex(Paths.image("weeks/"+json.texture))
-			newWeek.visible = true
-			newWeek.position.x = 640
-			newWeek.position.y = 500 + (109 * i)
-			newWeek.targetY = i
-			weeks.add_child(newWeek)
+			json.rawName = item
+			funnyWeeks.append(json)
 			
+		i += 1
+		
+	funnyWeeks.sort_custom(self, "sortWeeks")
+		
+	i = 0
+	for json in funnyWeeks:
+		# add characters and songs into dictonaries
+		weekDifficulties[str(i)] = json.difficulties
+		weekCharacters[str(i)] = json.characters
+		weekSongs[str(i)] = json.songs
+		weekTitles[str(i)] = json.weekTitle
+		weekNames.append(json.rawName.split(".json")[0])
+		# load difficulty images
+		for diff in json.difficulties:
+			if not diffTextures.has(diff):
+				var diffTexPath:String = "res://assets/images/storydifficulties/"+diff+".png"
+				if ResourceLoader.exists(diffTexPath):
+					diffTextures[diff] = load(diffTexPath)
+				else:
+					diffTextures[diff] = CoolUtil.nullImage
+		# adding the weeks
+		var newWeek = weekTemplate.duplicate()
+		newWeek.texture = Paths.loadTex(Paths.image("weeks/"+json.texture))
+		newWeek.visible = true
+		newWeek.position.x = 640
+		newWeek.position.y = 500 + (109 * i)
+		newWeek.targetY = i
+		weeks.add_child(newWeek)
+		
 		i += 1
 	
 	Discord.update_presence("In the Story Menu")
