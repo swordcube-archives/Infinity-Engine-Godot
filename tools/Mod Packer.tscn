@@ -91,13 +91,20 @@ margin_bottom = 362.0
 text = "Pack Up"
 
 [node name="FileDialog" type="FileDialog" parent="."]
-visible = true
 margin_left = 222.0
 margin_top = 70.0
 margin_right = 1059.0
 margin_bottom = 650.0
-window_title = "Choose files to pack"
+window_title = "Open File(s)"
 mode = 1
+
+[node name="Label" type="Label" parent="."]
+margin_left = 408.0
+margin_top = 122.0
+margin_right = 878.0
+margin_bottom = 136.0
+text = "Tip: Check the console to see the current list of files after choosing them!"
+align = 1
 
 [connection signal="pressed" from="Files/ChooseFiles" to="." method="_on_ChooseFiles_pressed"]
 [connection signal="pressed" from="Files/PackUp" to="." method="_on_PackUp_pressed"]

@@ -3,6 +3,7 @@
 [ext_resource path="res://assets/images/stages/limo/limoDancer.res" type="SpriteFrames" id=1]
 [ext_resource path="res://scenes/stages/limo/limoDancer.gd" type="Script" id=2]
 
+
 [sub_resource type="Animation" id=1]
 resource_name = "danceLeft"
 length = 0.6

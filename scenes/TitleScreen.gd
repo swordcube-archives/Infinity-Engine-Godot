@@ -56,6 +56,12 @@ func _process(delta):
 		var year = str(OS.get_datetime()["year"])
 		year.erase(0, 2)
 		
+		if len(day) < 2:
+			day = "0"+day
+			
+		if len(month) < 2:
+			month = "0"+month
+		
 		var combined = day + month + year
 		var f = File.new()
 		var error = f.open(Paths.txt("data/gameVersionDate"), File.WRITE)

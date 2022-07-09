@@ -18,6 +18,7 @@
 [ext_resource path="res://assets/images/stages/tank/tank5.res" type="SpriteFrames" id=16]
 [ext_resource path="res://assets/images/stages/tank/tank3.res" type="SpriteFrames" id=17]
 
+
 [node name="tank" type="Node2D"]
 script = ExtResource( 1 )
 

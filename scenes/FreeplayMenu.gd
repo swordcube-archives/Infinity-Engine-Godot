@@ -31,32 +31,12 @@ func _ready():
 		
 	songUtil.visible = false
 	
-	var i:int = 0
-	
-	var txt = CoolUtil.getTXT(Paths.txt("data/freeplaySongs"))
-	for item in txt:
-		var split = item.split(":")
-		if len(item) > 0:
-			if OS.is_debug_build() or not (range(split.size()).has(4) and split[4] == "DEBUG_ONLY"):
-				songNames.append(split[0])
-				songColors.append(split[2])
-				songDifficulties.append(split[3].split(","))
-				
-				var newSong:FreeplaySong = songTemplate.duplicate()
-				newSong.position.x = 30
-				newSong.position.y = (70 * i) + 30
-				songs.add_child(newSong)
-				
-				newSong.label.text = split[0]
-				newSong.label.updateText()
-				
-				newSong.isMenuItem = true
-				newSong.targetY = i
-				
-				newSong.icon.texture = load(Paths.healthIcon(split[1]))
-				newSong.icon.position.x = newSong.label.label.rect_size.x + 70
-				
-				i += 1
+	ProjectSettings.load_resource_pack("Infinity Engine.pck", true)
+	addSongs()
+	for mod in Preferences.getOption("mods").keys():
+		if Preferences.getOption("mods")[mod] == true and File.new().file_exists("res://assets/data/freeplaySongs.txt"):
+			ModManager.loadSpecificMod(mod, false, true)
+			addSongs()
 			
 	changeSelection()
 	changeDifficulty()
@@ -69,6 +49,33 @@ func _ready():
 var lerpScore:float = 0.0
 
 var holdTimer:float = 0.0
+
+var song_i:int = 0
+func addSongs():
+	var txt = CoolUtil.getTXT(Paths.txt("data/freeplaySongs"))
+	for item in txt:
+		var split = item.split(":")
+		if len(item) > 0:
+			if OS.is_debug_build() or not (range(split.size()).has(4) and split[4] == "DEBUG_ONLY"):
+				songNames.append(split[0])
+				songColors.append(split[2])
+				songDifficulties.append(split[3].split(","))
+				
+				var newSong:FreeplaySong = songTemplate.duplicate()
+				newSong.position.x = 30
+				newSong.position.y = (70 * song_i) + 30
+				songs.add_child(newSong)
+				
+				newSong.label.text = split[0]
+				newSong.label.updateText()
+				
+				newSong.isMenuItem = true
+				newSong.targetY = song_i
+				
+				newSong.icon.texture = load(Paths.healthIcon(split[1]))
+				newSong.icon.position.x = newSong.label.label.rect_size.x + 70
+				
+				song_i += 1
 
 func _process(delta):
 	bg.modulate = lerp(bg.modulate, Color(songColors[curSelected]), MathUtil.getLerpValue(0.045, delta))
@@ -119,6 +126,10 @@ func _process(delta):
 			
 		if curPlaying != songNames[curSelected] and Input.is_action_just_pressed("ui_space"):
 			curPlaying = songNames[curSelected]
+			
+			print("TRYNA LOAD "+"res://assets/songs/"+songNames[curSelected].to_lower()+"/Inst.ogg")
+			print(File.new().file_exists("res://assets/songs/"+songNames[curSelected].to_lower()+"/Inst.ogg"))
+			
 			AudioHandler.playInst(songNames[curSelected])
 			AudioHandler.playVoices(songNames[curSelected])
 			
@@ -145,11 +156,12 @@ func changeSelection(change:int = 0):
 		curSelected = 0
 		
 	for i in songs.get_child_count():
-		songs.get_child(i).targetY = i - curSelected
+		var s = songs.get_child(i)
+		s.targetY = i - curSelected
 		if curSelected == i:
-			songs.get_child(i).modulate.a = 1
+			s.modulate.a = 1
 		else:
-			songs.get_child(i).modulate.a = 0.6
+			s.modulate.a = 0.6
 			
 	AudioHandler.playSFX("scrollMenu")
 	changeDifficulty()

@@ -64,7 +64,7 @@ func _input(event):
 				"Freeplay":
 					Scenes.switchScene("FreeplayMenu")
 				"Mods":
-					pass
+					Scenes.switchScene("ModsMenu")
 				"Options":
 					Scenes.switchScene("OptionsMenu")
 		

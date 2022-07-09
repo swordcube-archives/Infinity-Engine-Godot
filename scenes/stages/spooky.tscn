@@ -5,6 +5,7 @@
 [ext_resource path="res://assets/sounds/thunder_1.ogg" type="AudioStream" id=3]
 [ext_resource path="res://assets/sounds/thunder_2.ogg" type="AudioStream" id=4]
 
+
 [node name="spooky" type="Node2D"]
 script = ExtResource( 2 )
 defaultCamZoom = 1.05

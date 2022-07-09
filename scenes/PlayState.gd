@@ -56,6 +56,8 @@ func _init():
 onready var hitsound = $Hitsound
 
 func _ready():
+	get_tree().paused = false
+	
 	if Preferences.getOption("hitsound") != "None":
 		hitsound.stream = load(Paths.sound("hitsounds/" + Preferences.getOption("hitsound")))
 		hitsound.volume_db = -5
@@ -65,7 +67,6 @@ func _ready():
 	$HUD/StageCoverup/bg.modulate.a = real
 		
 	$HUD/Version.text += " (" + CoolUtil.getTXT(Paths.txt("data/gameVersionDate"))[0] + ")"
-	get_tree().paused = false
 	
 	for property in PlayStateSettings.SONG.song:
 		if property in SONG:
