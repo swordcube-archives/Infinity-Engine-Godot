@@ -82,6 +82,8 @@ func _process(delta):
 					AudioHandler.inst.play(Conductor.songPosition / 1000.0)
 					AudioHandler.voices.play(Conductor.songPosition / 1000.0)
 				"Restart Song":
+					if not PlayStateSettings.practiceMode:
+						PlayStateSettings.usedPractice = false
 					breakfast.volume_db = -50
 					breakfast.stop()
 					queue_free()

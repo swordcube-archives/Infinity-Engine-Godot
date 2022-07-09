@@ -1,0 +1,18 @@
+{
+    "weekNum": 0,
+    "texture": "tutorial",
+    "weekTitle": "HOW TO FUNK",
+    "songs": [
+        "Tutorial"
+    ],
+    "difficulties": [
+        "easy",
+        "normal",
+        "hard"
+    ],
+    "characters": [
+        "",
+        "bf",
+        "gf"
+    ]
+}

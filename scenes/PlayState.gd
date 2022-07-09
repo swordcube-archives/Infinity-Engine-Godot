@@ -55,6 +55,8 @@ func _init():
 
 onready var hitsound = $Hitsound
 
+var gfVersion:String = "gf"
+
 func _ready():
 	get_tree().paused = false
 	
@@ -92,7 +94,7 @@ func _ready():
 		camera.zoom = Vector2(goodZoom, goodZoom)
 		defaultCamZoom = goodZoom
 		
-		var gfVersion = "gf"
+		gfVersion = "gf"
 		
 		if "player3" in rawSONG:
 			gfVersion = SONG.player3
@@ -108,7 +110,7 @@ func _ready():
 		
 		dad = Paths.getCharScene(SONG.player2)			
 		if dad.isPlayer:
-			dad.scale.x *= -1
+			dad.scale.x *= -1	
 		add_child(dad)
 		
 		if Preferences.getOption("play-as-opponent"):
@@ -125,6 +127,12 @@ func _ready():
 		dad.global_position += stage.get_node("dadPos").position + Vector2(300, 0)
 		gf.global_position += stage.get_node("gfPos").position + Vector2(300, 0)
 		bf.global_position += stage.get_node("bfPos").position + Vector2(300, 0)
+	
+		if SONG.player2 == gfVersion:
+			dad.global_position = gf.global_position
+			remove_child(gf)
+			gf.queue_free()
+			gf = null
 	
 	camera.smoothing_enabled = false
 	moveCameraSection(!SONG.notes[0].mustHitSection)
@@ -191,7 +199,7 @@ func _ready():
 	
 	# loading modcharts!
 	var songFolder:Array = CoolUtil.listFilesInDirectory(Paths.song(SONG.song))
-	#print("SHIT IN SONG FOLDER: " + str(songFolder))
+	print("SHIT IN SONG FOLDER: " + str(songFolder))
 	for file in songFolder:
 		if not file.begins_with(".") and file.ends_with(".tscn"):
 			var modchartFile = load(Paths.song(SONG.song) + "/" + file).instance()
@@ -401,7 +409,7 @@ func _process(delta):
 			newNote.noteData = int(note[1]) % SONG.keyCount
 			newNote.strumTime = float(note[0])
 			newNote.direction = strum.direction
-			newNote.sustainLength = float(note[2])/1.5
+			newNote.sustainLength = float(note[2]) # why did i divide this by 1.5?
 			newNote.ogSustainLength = newNote.sustainLength
 			newNote.downScroll = PlayStateSettings.downScroll
 			newNote.altNote = note[6]
@@ -452,11 +460,20 @@ func actuallyEndSong():
 			Highscore.setScore(SONG.song + piss, PlayStateSettings.difficulty, songScore)
 		
 	if PlayStateSettings.storyMode:
-		Scenes.switchScene("StoryMenu")
+		PlayStateSettings.storyScore += songScore
+		PlayStateSettings.storyPlaylist.pop_front()
+		print(PlayStateSettings.storyPlaylist)
+		
+		if PlayStateSettings.storyPlaylist.size() <= 0:
+			Scenes.switchScene("StoryMenu")
+			AudioHandler.playMusic("freakyMenu")
+			Highscore.setScore(PlayStateSettings.storyWeekName, PlayStateSettings.difficulty, PlayStateSettings.storyScore)
+		else:
+			PlayStateSettings.SONG = CoolUtil.getJSON(Paths.songJSON(PlayStateSettings.storyPlaylist[0], PlayStateSettings.difficulty))
+			Scenes.switchScene("PlayState", true)
 	else:
 		Scenes.switchScene("FreeplayMenu")
-		
-	AudioHandler.playMusic("freakyMenu")
+		AudioHandler.playMusic("freakyMenu")
 			
 func beatHit():
 	if bf:

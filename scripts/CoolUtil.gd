@@ -1,6 +1,7 @@
 extends Node
 
-var nullRes = load("res://assets/images/null.res")
+var nullImage = preload("res://assets/images/null.png")
+var nullRes = preload("res://assets/images/null.res")
 
 var screenWidth = ProjectSettings.get_setting("display/window/size/width")
 var screenHeight = ProjectSettings.get_setting("display/window/size/height")

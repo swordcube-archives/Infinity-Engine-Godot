@@ -1,11 +1,50 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://scenes/StoryMenu.gd" type="Script" id=1]
 [ext_resource path="res://assets/fonts/vcr.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://scenes/storymode/chars/dad.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/storymode/chars/gf.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/storymode/chars/bf.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/WeekTemplate.gd" type="Script" id=6]
+[ext_resource path="res://assets/images/Menu_Tracks.png" type="Texture" id=7]
+[ext_resource path="res://assets/images/storydifficulties/normal.png" type="Texture" id=8]
+[ext_resource path="res://assets/images/StoryMode_UI_Assets.res" type="SpriteFrames" id=9]
 
 [sub_resource type="DynamicFont" id=1]
 size = 32
 font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 32
+font_data = ExtResource( 2 )
+
+[sub_resource type="Animation" id=3]
+resource_name = "ding"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("DifficultySprite/Difficulty:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, -10 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("DifficultySprite/Difficulty:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.01, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
 
 [node name="StoryMenu" type="Node2D"]
 script = ExtResource( 1 )
@@ -18,11 +57,24 @@ __meta__ = {
 "_edit_lock_": true
 }
 
+[node name="Weeks" type="Node2D" parent="."]
+
+[node name="YellowBG" type="ColorRect" parent="."]
+margin_top = 56.0
+margin_right = 1280.0
+margin_bottom = 456.0
+color = Color( 0.976471, 0.811765, 0.317647, 1 )
+
+[node name="WeekCover" type="ColorRect" parent="."]
+margin_right = 1280.0
+margin_bottom = 58.0
+color = Color( 0, 0, 0, 1 )
+
 [node name="scoreTxt" type="Label" parent="."]
 margin_left = 10.0
 margin_top = 10.0
-margin_right = 50.0
-margin_bottom = 24.0
+margin_right = 257.0
+margin_bottom = 39.0
 custom_fonts/font = SubResource( 1 )
 text = "WEEK SCORE: 0"
 
@@ -33,11 +85,65 @@ margin_top = 10.0
 margin_right = 1269.0
 margin_bottom = 39.0
 custom_fonts/font = SubResource( 1 )
-text = "HE INSIDE MY BODY A AH!"
+text = "..."
 align = 2
 
-[node name="ColorRect" type="ColorRect" parent="."]
-margin_top = 56.0
-margin_right = 1280.0
-margin_bottom = 456.0
-color = Color( 0.976471, 0.811765, 0.317647, 1 )
+[node name="Characters" type="Node" parent="."]
+
+[node name="dad" parent="Characters" instance=ExtResource( 3 )]
+position = Vector2( 234, 64 )
+
+[node name="bf" parent="Characters" instance=ExtResource( 5 )]
+position = Vector2( 618, 72 )
+
+[node name="gf" parent="Characters" instance=ExtResource( 4 )]
+position = Vector2( 1032, 88 )
+
+[node name="WeekTemplate" type="Sprite" parent="."]
+visible = false
+script = ExtResource( 6 )
+
+[node name="Tracks" type="Sprite" parent="."]
+position = Vector2( 202, 512 )
+texture = ExtResource( 7 )
+
+[node name="Label" type="Label" parent="Tracks"]
+modulate = Color( 0.898039, 0.341176, 0.466667, 1 )
+margin_left = -175.0
+margin_top = 30.0
+margin_right = 183.0
+margin_bottom = 151.0
+custom_fonts/font = SubResource( 2 )
+text = "get fuck
+augh
+augh"
+align = 1
+
+[node name="DifficultyAnim" type="AnimationPlayer" parent="."]
+anims/ding = SubResource( 3 )
+
+[node name="DifficultySprite" type="Node2D" parent="."]
+position = Vector2( 1088, 520 )
+
+[node name="Difficulty" type="Sprite" parent="DifficultySprite"]
+position = Vector2( 0, -10 )
+texture = ExtResource( 8 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="LeftArrow" type="AnimatedSprite" parent="DifficultySprite"]
+position = Vector2( -184, 0 )
+frames = ExtResource( 9 )
+animation = "arrow left"
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="RightArrow" type="AnimatedSprite" parent="DifficultySprite"]
+position = Vector2( 184, 0 )
+frames = ExtResource( 9 )
+animation = "arrow right"
+__meta__ = {
+"_edit_lock_": true
+}

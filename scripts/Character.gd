@@ -88,6 +88,12 @@ func dance(force = null, alt = null):
 	if can:
 		if dancesLeftRight:
 			danced = !danced
+			
+			if lastAnim.begins_with("singLEFT"):
+				danced = true
+				
+			if lastAnim.begins_with("singRIGHT"):
+				danced = false
 				
 			if danced:
 				playAnim("danceLeft", force)

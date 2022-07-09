@@ -1,5 +1,24 @@
 extends Node
 
+func loadTex(path:String):
+	if ResourceLoader.exists(path):
+		return load(path)
+	else:
+		return CoolUtil.nullImage
+		
+func getStoryMenuChar(character:String):
+	if character == "":
+		character = "blank"
+		
+	var path:String = "res://scenes/storymode/chars/"+character+".tscn"
+	if ResourceLoader.exists(path):
+		return load(path).instance()
+	else:
+		return load("res://scenes/storymode/chars/bf.tscn").instance()
+		
+func image(image:String):
+	return "res://assets/images/" + image + ".png"
+
 func song(song:String):
 	return "res://assets/songs/" + song.to_lower()
 

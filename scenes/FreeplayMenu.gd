@@ -126,10 +126,7 @@ func _process(delta):
 			
 		if curPlaying != songNames[curSelected] and Input.is_action_just_pressed("ui_space"):
 			curPlaying = songNames[curSelected]
-			
-			print("TRYNA LOAD "+"res://assets/songs/"+songNames[curSelected].to_lower()+"/Inst.ogg")
-			print(File.new().file_exists("res://assets/songs/"+songNames[curSelected].to_lower()+"/Inst.ogg"))
-			
+
 			AudioHandler.playInst(songNames[curSelected])
 			AudioHandler.playVoices(songNames[curSelected])
 			

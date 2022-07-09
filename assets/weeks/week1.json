@@ -1,0 +1,20 @@
+{
+    "weekNum": 1,
+    "texture": "week1",
+    "weekTitle": "DADDY DEAREST",
+    "songs": [
+        "Bopeebo",
+        "Fresh",
+        "Dad Battle"
+    ],
+    "difficulties": [
+        "easy",
+        "normal",
+        "hard"
+    ],
+    "characters": [
+        "dad",
+        "bf",
+        "gf"
+    ]
+}

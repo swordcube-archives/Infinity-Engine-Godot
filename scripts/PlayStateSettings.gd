@@ -6,7 +6,11 @@ var availableDifficulties:Array = [
 	"hard"
 ]
 
+var storyScore:int = 0
 var storyMode:bool = false
+var storyWeekName:String = "tutorial"
+var storyPlaylist:Array = []
+
 var usedPractice:bool = false
 var practiceMode:bool = false
 

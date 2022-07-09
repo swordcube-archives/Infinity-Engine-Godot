@@ -23,6 +23,8 @@ func _getDroppedFilesPath(files:PoolStringArray, screen:int) -> void:
 	ModManager.loadMods()
 
 func _ready():
+	get_tree().paused = false
+	Discord.update_presence("In the Mods Menu")
 	get_tree().connect("files_dropped", self, "_getDroppedFilesPath")
 	
 	AudioHandler.playMusic("freakyMenu")
@@ -79,3 +81,4 @@ func changeSelection(change:int = 0):
 			m.modulate.a = 0.6
 		
 	AudioHandler.playSFX("scrollMenu")
+	Discord.update_presence("In the Mods Menu", "Selected: "+modsArray[curSelected])
