@@ -20,6 +20,7 @@ func _getDroppedFilesPath(files:PoolStringArray, screen:int) -> void:
 		new_dir.copy(file, "user://mods/" + funny_array[len(funny_array) - 1])
 	
 	Scenes.switchScene("ModsMenu", true)
+	ModManager.loadMods()
 
 func _ready():
 	get_tree().connect("files_dropped", self, "_getDroppedFilesPath")
