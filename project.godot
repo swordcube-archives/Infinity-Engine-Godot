@@ -134,7 +134,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/stages/stage.gd"
 }, {
-"base": "",
+"base": "StreamPeerGDNative",
 "class": "StreamPeerUnix",
 "language": "NativeScript",
 "path": "res://addons/godot-unix-socket/unix-socket.gdns"

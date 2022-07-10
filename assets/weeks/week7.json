@@ -1,0 +1,20 @@
+{
+    "weekNum": 7,
+    "texture": "week7",
+    "weekTitle": "TANKMAN",
+    "songs": [
+        "Ugh",
+        "Guns",
+        "Stress"
+    ],
+    "difficulties": [
+        "easy",
+        "normal",
+        "hard"
+    ],
+    "characters": [
+        "tankman",
+        "bf",
+        "gf"
+    ]
+}

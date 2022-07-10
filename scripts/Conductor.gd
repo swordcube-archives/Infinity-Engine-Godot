@@ -38,7 +38,7 @@ func _process(_delta):
 	if len(lastChange) < 3:
 		lastChange.append(0)
 	
-	curStep = lastChange[2] + floor((songPosition - lastChange[0]) / timeBetweenSteps)
+	curStep = lastChange[2] + floor(((songPosition-Preferences.getOption("note-offset")) - lastChange[0]) / timeBetweenSteps)
 	curBeat = floor(curStep / 4)
 	
 	if curStep > 0 and curStep != oldStep and curStep > oldStep:

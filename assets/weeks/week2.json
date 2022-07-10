@@ -1,0 +1,20 @@
+{
+    "weekNum": 2,
+    "texture": "week2",
+    "weekTitle": "SPOOKY MONTH",
+    "songs": [
+        "Spookeez",
+        "South",
+        "Monster"
+    ],
+    "difficulties": [
+        "easy",
+        "normal",
+        "hard"
+    ],
+    "characters": [
+        "spooky",
+        "bf",
+        "gf"
+    ]
+}

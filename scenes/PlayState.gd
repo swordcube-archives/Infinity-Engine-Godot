@@ -409,7 +409,7 @@ func _process(delta):
 			newNote.noteData = int(note[1]) % SONG.keyCount
 			newNote.strumTime = float(note[0])
 			newNote.direction = strum.direction
-			newNote.sustainLength = float(note[2]) # why did i divide this by 1.5?
+			newNote.sustainLength = float(note[2])/1.5 # figured out why, they ended up being too long
 			newNote.ogSustainLength = newNote.sustainLength
 			newNote.downScroll = PlayStateSettings.downScroll
 			newNote.altNote = note[6]

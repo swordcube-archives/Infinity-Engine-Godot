@@ -1,0 +1,20 @@
+{
+    "weekNum": 3,
+    "texture": "week3",
+    "weekTitle": "PICO",
+    "songs": [
+        "Pico",
+        "Philly Nice",
+        "Blammed"
+    ],
+    "difficulties": [
+        "easy",
+        "normal",
+        "hard"
+    ],
+    "characters": [
+        "pico",
+        "bf",
+        "gf"
+    ]
+}

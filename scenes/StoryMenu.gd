@@ -28,6 +28,7 @@ var weekCharacters:Dictionary = {}
 var weekSongs:Dictionary = {}
 var weekTitles:Dictionary = {}
 var diffTextures:Dictionary = {}
+var preloadedCharacters:Dictionary = {}
 
 var weekNames:PoolStringArray = []
 
@@ -44,6 +45,10 @@ func sortWeeks(a, b):
 	return false
 
 func _ready():
+	for file in CoolUtil.listFilesInDirectory("res://scenes/storymode/chars/"):
+		if file.ends_with(".tscn"):
+			preloadedCharacters[file.split(".tscn")[0]] = load("res://scenes/storymode/chars/"+file).instance()
+			
 	get_tree().paused = false
 	AudioHandler.playMusic("freakyMenu")
 	
@@ -53,7 +58,6 @@ func _ready():
 	ModManager.loadMods()
 	var weeksFolder:PoolStringArray = CoolUtil.listFilesInDirectory("res://assets/weeks")
 	var funnyWeeks:Array = []
-	print(weeksFolder)
 	var i:int = 0
 	for item in weeksFolder:
 		if item.ends_with(".json"):
@@ -183,17 +187,18 @@ func changeSelection(change:int = 0):
 	if curSelected > weeks.get_child_count()-1:
 		curSelected = 0
 	
-	var characters:PoolStringArray = weekCharacters[str(curSelected)].duplicate()
-	for item in characters:
+	var characters:Array = weekCharacters[str(curSelected)].duplicate()
+	for i in characters.size():
+		var item:String = characters[i]
 		if item == "":
-			item = "blank"
+			characters[i] = "blank"
 			
 	var charSpacing:float = 350.0
 		
 	if dad.name != characters[0]:
 		self.characters.remove_child(dad)
 		dad.queue_free()
-		dad = Paths.getStoryMenuChar(characters[0])
+		dad = preloadedCharacters[characters[0]].duplicate()
 		dad.position.y += 64
 		dad.position.x += 234
 		self.characters.add_child(dad)
@@ -201,7 +206,7 @@ func changeSelection(change:int = 0):
 	if bf.name != characters[1]:
 		self.characters.remove_child(bf)
 		bf.queue_free()
-		bf = Paths.getStoryMenuChar(characters[1])
+		bf = preloadedCharacters[characters[1]].duplicate()
 		bf.position.y += 64
 		bf.position.x += 234 + (1 * charSpacing)
 		self.characters.add_child(bf)
@@ -209,7 +214,7 @@ func changeSelection(change:int = 0):
 	if gf.name != characters[2]:
 		self.characters.remove_child(gf)
 		gf.queue_free()
-		gf = Paths.getStoryMenuChar(characters[2])
+		gf = preloadedCharacters[characters[2]].duplicate()
 		gf.position.y += 64
 		gf.position.x += 234 + (2 * charSpacing)
 		self.characters.add_child(gf)

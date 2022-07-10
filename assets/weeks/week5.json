@@ -1,0 +1,20 @@
+{
+    "weekNum": 5,
+    "texture": "week5",
+    "weekTitle": "RED SNOW",
+    "songs": [
+        "Cocoa",
+        "Eggnog",
+        "Winter Horrorland"
+    ],
+    "difficulties": [
+        "easy",
+        "normal",
+        "hard"
+    ],
+    "characters": [
+        "parents-christmas",
+        "bf",
+        "gf"
+    ]
+}

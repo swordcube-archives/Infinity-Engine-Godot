@@ -81,4 +81,5 @@ func changeSelection(change:int = 0):
 			m.modulate.a = 0.6
 		
 	AudioHandler.playSFX("scrollMenu")
-	Discord.update_presence("In the Mods Menu", "Selected: "+modsArray[curSelected])
+	if modsArray.size() > 0:
+		Discord.update_presence("In the Mods Menu", "Selected: "+modsArray[curSelected])

@@ -1,0 +1,20 @@
+{
+    "weekNum": 6,
+    "texture": "week6",
+    "weekTitle": "HATING SIMULATOR FT. MOAWLING",
+    "songs": [
+        "Senpai",
+        "Roses",
+        "Thorns"
+    ],
+    "difficulties": [
+        "easy",
+        "normal",
+        "hard"
+    ],
+    "characters": [
+        "senpai",
+        "bf",
+        "gf"
+    ]
+}
