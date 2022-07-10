@@ -32,7 +32,11 @@ func voices(song:String):
 	return "res://assets/songs/" + song.to_lower() + "/Voices.ogg"
 	
 func healthIcon(icon:String):
-	return "res://assets/images/icons/" + icon + ".png"
+	var path:String = "res://assets/images/icons/" + icon + ".png"
+	if ResourceLoader.exists(path):
+		return path
+		
+	return "res://assets/images/icons/face.png"
 	
 func sound(sound:String):
 	return "res://assets/sounds/" + sound + ".ogg"

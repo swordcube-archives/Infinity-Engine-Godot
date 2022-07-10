@@ -104,35 +104,47 @@ func _ready():
 			
 		if "gf" in rawSONG:
 			gfVersion = SONG.gf
+			
+		SONG.gf = gfVersion
 		
-		gf = Paths.getCharScene(gfVersion)
-		add_child(gf)
+		if gfVersion != "":
+			gf = Paths.getCharScene(gfVersion)
+			add_child(gf)
 		
-		dad = Paths.getCharScene(SONG.player2)			
-		if dad.isPlayer:
-			dad.scale.x *= -1	
-		add_child(dad)
+		if SONG.player2 != "":
+			dad = Paths.getCharScene(SONG.player2)			
+			if dad.isPlayer:
+				dad.scale.x *= -1	
+			add_child(dad)
+			
+			if Preferences.getOption("play-as-opponent"):
+				dad.isPlayer = not dad.isPlayer
 		
-		if Preferences.getOption("play-as-opponent"):
-			dad.isPlayer = not dad.isPlayer
-		
-		bf = Paths.getCharScene(SONG.player1)
-		add_child(bf)
-		
-		if Preferences.getOption("play-as-opponent"):
-			bf.isPlayer = not bf.isPlayer
+		if SONG.player1 != "":
+			bf = Paths.getCharScene(SONG.player1)
+			if not bf.isPlayer:
+				bf.scale.x *= -1
+			add_child(bf)
+			
+			if Preferences.getOption("play-as-opponent"):
+				bf.isPlayer = not bf.isPlayer
 		
 		stage.createPost()
 		
-		dad.global_position += stage.get_node("dadPos").position + Vector2(300, 0)
-		gf.global_position += stage.get_node("gfPos").position + Vector2(300, 0)
-		bf.global_position += stage.get_node("bfPos").position + Vector2(300, 0)
+		if dad:
+			dad.global_position += stage.get_node("dadPos").position + Vector2(300, 0)
+		if gf:
+			gf.global_position += stage.get_node("gfPos").position + Vector2(300, 0)
+		if bf:
+			bf.global_position += stage.get_node("bfPos").position + Vector2(300, 0)
 	
 		if SONG.player2 == gfVersion:
-			dad.global_position = gf.global_position
-			remove_child(gf)
-			gf.queue_free()
-			gf = null
+			if dad:
+				dad.global_position = gf.global_position
+			if gf:
+				remove_child(gf)
+				gf.queue_free()
+				gf = null
 	
 	camera.smoothing_enabled = false
 	moveCameraSection(!SONG.notes[0].mustHitSection)
@@ -370,6 +382,9 @@ func _process(delta):
 			UI.timeBar.queue_free()
 		Scenes.switchScene("FreeplayMenu")
 		AudioHandler.playMusic("freakyMenu")
+		
+	if Input.is_action_just_pressed("chart_editor"):
+		Scenes.switchScene("ChartEditor")
 		
 	if not Scenes.transitioning and Input.is_action_just_pressed("ui_accept"):
 		get_tree().paused = true

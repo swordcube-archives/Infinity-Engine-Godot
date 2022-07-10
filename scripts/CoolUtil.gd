@@ -18,6 +18,21 @@ const singAnims:Dictionary = {
 	9: ["singLEFT", "singDOWN", "singUP", "singRIGHT", "singUP", "singLEFT", "singDOWN", "singUP", "singRIGHT"],
 }
 
+enum NoteDirection {
+	A,
+	B,
+	C,
+	D,
+	E,
+	F,
+	G,
+	H,
+	I
+}
+
+func dirToStr(cool_dir):
+	return NoteDirection.keys()[cool_dir]
+
 func numToComboStr(num:int):
 	var numStr:String = str(num)
 	match len(numStr):

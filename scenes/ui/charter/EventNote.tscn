@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://assets/images/event.png" type="Texture" id=1]
+[ext_resource path="res://scenes/ui/charter/EventNote.gd" type="Script" id=2]
+
+[node name="EventNote" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="spr" type="Sprite" parent="."]
+texture = ExtResource( 1 )

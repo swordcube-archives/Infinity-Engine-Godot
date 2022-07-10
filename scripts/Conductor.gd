@@ -14,6 +14,8 @@ var curStep:int = 0
 var safeFrames:int = 15
 var safeZoneOffset:float = (safeFrames / 60.0) * 1000.0
 
+var timeScale:Array = [4, 4]
+
 # funny array of [position_in_song, bpm, step_change_is_at]
 var bpmChanges:Array = []
 

@@ -1,0 +1,285 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://scenes/ui/NumericStepper.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/ChartEditor.gd" type="Script" id=2]
+[ext_resource path="res://scenes/ui/charter/Grid.tscn" type="PackedScene" id=3]
+[ext_resource path="res://assets/images/icons/dad.png" type="Texture" id=4]
+[ext_resource path="res://scripts/HealthIcon.gd" type="Script" id=5]
+[ext_resource path="res://assets/images/icons/bf.png" type="Texture" id=6]
+[ext_resource path="res://assets/images/event.png" type="Texture" id=7]
+
+[node name="ChartEditor" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+offset = Vector2( 640, 360 )
+current = true
+
+[node name="bgGrid" parent="." instance=ExtResource( 3 )]
+modulate = Color( 1, 1, 1, 0.25 )
+position = Vector2( 415, -565 )
+
+[node name="Grid" parent="." instance=ExtResource( 3 )]
+position = Vector2( 415, 75 )
+
+[node name="fgGrid" parent="." instance=ExtResource( 3 )]
+modulate = Color( 1, 1, 1, 0.25 )
+position = Vector2( 415, 715 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="TabContainer" type="TabContainer" parent="CanvasLayer"]
+margin_left = 812.0
+margin_top = 19.0
+margin_right = 1259.0
+margin_bottom = 698.0
+
+[node name="Art" type="Tabs" parent="CanvasLayer/TabContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="Opponent" type="Label" parent="CanvasLayer/TabContainer/Art"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 55.0
+margin_bottom = 22.0
+text = "Opponent"
+
+[node name="OptionButton" type="OptionButton" parent="CanvasLayer/TabContainer/Art/Opponent"]
+margin_top = 24.0
+margin_right = 144.0
+margin_bottom = 44.0
+focus_mode = 0
+enabled_focus_mode = 0
+
+[node name="GF" type="Label" parent="CanvasLayer/TabContainer/Art"]
+margin_left = 8.0
+margin_top = 64.0
+margin_right = 68.0
+margin_bottom = 78.0
+text = "Girlfriend"
+
+[node name="OptionButton" type="OptionButton" parent="CanvasLayer/TabContainer/Art/GF"]
+margin_top = 24.0
+margin_right = 144.0
+margin_bottom = 44.0
+focus_mode = 0
+enabled_focus_mode = 0
+
+[node name="Player" type="Label" parent="CanvasLayer/TabContainer/Art"]
+margin_left = 8.0
+margin_top = 120.0
+margin_right = 68.0
+margin_bottom = 134.0
+text = "Player"
+
+[node name="OptionButton" type="OptionButton" parent="CanvasLayer/TabContainer/Art/Player"]
+margin_top = 24.0
+margin_right = 144.0
+margin_bottom = 44.0
+focus_mode = 0
+enabled_focus_mode = 0
+
+[node name="Stage" type="Label" parent="CanvasLayer/TabContainer/Art"]
+margin_left = 288.0
+margin_top = 8.0
+margin_right = 348.0
+margin_bottom = 22.0
+text = "Stage"
+
+[node name="OptionButton" type="OptionButton" parent="CanvasLayer/TabContainer/Art/Stage"]
+margin_top = 24.0
+margin_right = 144.0
+margin_bottom = 44.0
+focus_mode = 0
+enabled_focus_mode = 0
+
+[node name="UISkin" type="Label" parent="CanvasLayer/TabContainer/Art"]
+margin_left = 288.0
+margin_top = 64.0
+margin_right = 348.0
+margin_bottom = 78.0
+text = "UI Skin"
+
+[node name="OptionButton" type="OptionButton" parent="CanvasLayer/TabContainer/Art/UISkin"]
+margin_top = 24.0
+margin_right = 144.0
+margin_bottom = 44.0
+focus_mode = 0
+enabled_focus_mode = 0
+
+[node name="IsPixelStage" type="CheckBox" parent="CanvasLayer/TabContainer/Art"]
+margin_left = 3.0
+margin_top = 180.0
+margin_right = 116.0
+margin_bottom = 204.0
+focus_mode = 0
+enabled_focus_mode = 0
+text = "Force Pixel Skin"
+
+[node name="Song" type="Tabs" parent="CanvasLayer/TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="Song" type="Label" parent="CanvasLayer/TabContainer/Song"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 55.0
+margin_bottom = 22.0
+text = "Song"
+
+[node name="LineEdit" type="LineEdit" parent="CanvasLayer/TabContainer/Song/Song"]
+margin_top = 24.0
+margin_right = 137.0
+margin_bottom = 48.0
+text = "Test"
+
+[node name="BPM" type="Label" parent="CanvasLayer/TabContainer/Song"]
+margin_left = 8.0
+margin_top = 72.0
+margin_right = 55.0
+margin_bottom = 86.0
+text = "BPM"
+
+[node name="NumericStepper" parent="CanvasLayer/TabContainer/Song/BPM" instance=ExtResource( 1 )]
+position = Vector2( 0, 24 )
+step_amount = 0.1
+
+[node name="ScrollSpeed" type="Label" parent="CanvasLayer/TabContainer/Song"]
+margin_left = 168.0
+margin_top = 72.0
+margin_right = 246.0
+margin_bottom = 86.0
+text = "Scroll Speed"
+
+[node name="NumericStepper" parent="CanvasLayer/TabContainer/Song/ScrollSpeed" instance=ExtResource( 1 )]
+position = Vector2( 0, 24 )
+value = 1.0
+step_amount = 0.1
+
+[node name="Difficulty" type="Label" parent="CanvasLayer/TabContainer/Song"]
+margin_left = 152.0
+margin_top = 8.0
+margin_right = 199.0
+margin_bottom = 22.0
+text = "Difficulty"
+
+[node name="LineEdit" type="LineEdit" parent="CanvasLayer/TabContainer/Song/Difficulty"]
+margin_top = 24.0
+margin_right = 58.0
+margin_bottom = 48.0
+text = "normal"
+
+[node name="ReloadJSON" type="Button" parent="CanvasLayer/TabContainer/Song"]
+margin_left = 224.0
+margin_top = 5.0
+margin_right = 325.0
+margin_bottom = 25.0
+text = "Reload JSON"
+
+[node name="ReloadEvents" type="Button" parent="CanvasLayer/TabContainer/Song"]
+margin_left = 224.0
+margin_top = 32.0
+margin_right = 325.0
+margin_bottom = 52.0
+rect_pivot_offset = Vector2( 22, 148 )
+text = "Reload Events"
+
+[node name="SaveChart" type="Button" parent="CanvasLayer/TabContainer/Song"]
+margin_left = 332.0
+margin_top = 5.0
+margin_right = 433.0
+margin_bottom = 25.0
+rect_pivot_offset = Vector2( 22, 148 )
+text = "Save Chart"
+
+[node name="SaveEvents" type="Button" parent="CanvasLayer/TabContainer/Song"]
+margin_left = 332.0
+margin_top = 32.0
+margin_right = 433.0
+margin_bottom = 52.0
+rect_pivot_offset = Vector2( 22, 148 )
+text = "Save Events"
+
+[node name="ClearNotes" type="Button" parent="CanvasLayer/TabContainer/Song"]
+modulate = Color( 1, 0, 0, 1 )
+margin_left = 337.0
+margin_top = 591.0
+margin_right = 436.0
+margin_bottom = 611.0
+text = "Clear Notes"
+
+[node name="ClearEvents" type="Button" parent="CanvasLayer/TabContainer/Song"]
+modulate = Color( 1, 0, 0, 1 )
+margin_left = 337.0
+margin_top = 617.0
+margin_right = 436.0
+margin_bottom = 637.0
+text = "Clear Events"
+
+[node name="Section" type="Tabs" parent="CanvasLayer/TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="Events" type="Tabs" parent="CanvasLayer/TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="Charting" type="Tabs" parent="CanvasLayer/TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="iconP2" type="Sprite" parent="CanvasLayer"]
+position = Vector2( 536, 38 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 4 )
+hframes = 3
+script = ExtResource( 5 )
+
+[node name="iconP1" type="Sprite" parent="CanvasLayer"]
+position = Vector2( 696, 38 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 6 )
+hframes = 3
+script = ExtResource( 5 )
+
+[node name="event" type="Sprite" parent="CanvasLayer"]
+position = Vector2( 436, 38 )
+scale = Vector2( 0.06, 0.06 )
+texture = ExtResource( 7 )
+
+[connection signal="item_selected" from="CanvasLayer/TabContainer/Art/Opponent/OptionButton" to="." method="opponentSelect"]
+[connection signal="item_selected" from="CanvasLayer/TabContainer/Art/GF/OptionButton" to="." method="gfSelect"]
+[connection signal="item_selected" from="CanvasLayer/TabContainer/Art/Player/OptionButton" to="." method="playerSelect"]
+[connection signal="item_selected" from="CanvasLayer/TabContainer/Art/Stage/OptionButton" to="." method="stageSelect"]
+[connection signal="item_selected" from="CanvasLayer/TabContainer/Art/UISkin/OptionButton" to="." method="uiSkinSelect"]
+[connection signal="pressed" from="CanvasLayer/TabContainer/Art/IsPixelStage" to="." method="_on_IsPixelStage_pressed"]
+[connection signal="text_changed" from="CanvasLayer/TabContainer/Song/Song/LineEdit" to="." method="onSongTextBoxChanged"]
+[connection signal="changed_value" from="CanvasLayer/TabContainer/Song/BPM/NumericStepper" to="." method="changeSongBPM"]
+[connection signal="changed_value" from="CanvasLayer/TabContainer/Song/ScrollSpeed/NumericStepper" to="." method="changeSongScrollSpeed"]
+[connection signal="text_changed" from="CanvasLayer/TabContainer/Song/Difficulty/LineEdit" to="." method="onDifficultyTextBoxChange"]
+[connection signal="pressed" from="CanvasLayer/TabContainer/Song/ReloadJSON" to="." method="_on_ReloadJSON_pressed"]

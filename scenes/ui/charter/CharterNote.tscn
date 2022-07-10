@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://assets/images/ui/skins/arrows/notes.res" type="SpriteFrames" id=1]
+
+[node name="CharterNote" type="Node2D"]
+
+[node name="spr" type="AnimatedSprite" parent="."]
+frames = ExtResource( 1 )
+animation = "A"
+playing = true
+
+[node name="Sustain" type="ColorRect" parent="."]
+margin_left = -19.0
+margin_right = 21.0
+margin_bottom = 40.0

@@ -16,5 +16,8 @@ var player2:String = "dad"
 var player1:String = "bf"
 
 var stage:String = "stage"
+var uiSkin:String = ""
+
+var pixelStage:bool = false
 
 var keyCount:int = 4

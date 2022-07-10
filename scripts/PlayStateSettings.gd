@@ -35,8 +35,27 @@ var deathPosition:Vector2 = Vector2.ZERO
 var deathCamPosition:Vector2 = Vector2.ZERO
 var deathCamZoom:Vector2 = Vector2.ZERO
 
+func _ready():
+	makeSongSettingsReal()
+
+func _process(delta):
+	makeSongSettingsReal()
+		
+func makeSongSettingsReal():
+	if not "gf" in SONG.song:
+		SONG.song.gf = "gf"
+		
+	if not "stage" in SONG.song:
+		SONG.song.stage = "stage"
+		
+	if not "uiSkin" in SONG.song:
+		SONG.song.uiSkin = ""
+		
+	if not "pixelStage" in SONG.song:
+		SONG.song.pixelStage = false
+
 func getSkin():
-	if "uiSkin" in SONG.song:
+	if "uiSkin" in SONG.song and SONG.song.uiSkin != "":
 		var skinPath:String = "res://assets/images/ui/skins/" + SONG.song["uiSkin"].to_lower() + "/skin.tscn"
 		var skinPathPixel:String = "res://assets/images/ui/skins/" + SONG.song["uiSkin"].to_lower() + "-pixel/skin.tscn"
 		if "pixelStage" in SONG.song and SONG.song["pixelStage"] and ResourceLoader.exists(skinPathPixel):
