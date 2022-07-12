@@ -68,7 +68,7 @@ func _ready():
 	var real:float = dumbFuck
 	$HUD/StageCoverup/bg.modulate.a = real
 		
-	$HUD/Version.text += " (" + CoolUtil.getTXT(Paths.txt("data/gameVersionDate"))[0] + ")"
+	$HUD/Version.text += " ("+Preferences.gameVersion+")"
 	
 	for property in PlayStateSettings.SONG.song:
 		if property in SONG:
@@ -97,15 +97,16 @@ func _ready():
 		gfVersion = "gf"
 		
 		if "player3" in rawSONG:
+			SONG.gf = SONG.player3
 			gfVersion = SONG.player3
 			
 		if "gfVersion" in rawSONG:
+			SONG.gf = SONG.gfVersion
 			gfVersion = SONG.gfVersion
 			
 		if "gf" in rawSONG:
 			gfVersion = SONG.gf
-			
-		SONG.gf = gfVersion
+		
 		
 		if gfVersion != "":
 			gf = Paths.getCharScene(gfVersion)

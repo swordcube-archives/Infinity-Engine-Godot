@@ -39,7 +39,7 @@ onready var grids:Array = [
 ]
 
 func _input(event:InputEvent):
-	if Input.is_action_just_pressed("ui_accept"):
+	if Input.is_action_just_pressed("ui_space"):
 		playing = !playing
 		if playing:
 			AudioHandler.playInst(SONG.song)
@@ -51,9 +51,9 @@ func _input(event:InputEvent):
 			AudioHandler.stopMusic()
 		
 	if Input.is_action_just_pressed("ui_confirm"):
+		playing = false
 		Scenes.switchScene("PlayState")
 		AudioHandler.stopMusic()
-		playing = false
 	
 	if event is InputEventMouseButton:
 		event as InputEventMouseButton
@@ -163,7 +163,7 @@ func _physics_process(_delta):
 	var inst_pos = (AudioHandler.inst.get_playback_position() * 1000) + (AudioServer.get_time_since_last_mix() * 1000)
 	inst_pos -= AudioServer.get_output_latency() * 1000
 	
-	if inst_pos > Conductor.songPosition - (AudioServer.get_output_latency() * 1000) + 30 or inst_pos < Conductor.songPosition - (AudioServer.get_output_latency() * 1000) - 30:
+	if playing and inst_pos > Conductor.songPosition - (AudioServer.get_output_latency() * 1000) + 30 or inst_pos < Conductor.songPosition - (AudioServer.get_output_latency() * 1000) - 30:
 		AudioHandler.inst.seek(Conductor.songPosition / 1000)
 		AudioHandler.voices.seek(Conductor.songPosition / 1000)
 	
@@ -212,12 +212,6 @@ func _process(delta):
 	var a:float = int((Conductor.songPosition) - grids[1].section_start_time()) % int(Conductor.timeBetweenSteps * SONG.notes[grids[1].curSection].lengthInSteps)
 	camera.position.y = grids[1].time_to_y(a)
 		
-func getYFromStrum(strumTime:float = 0.0, baseGrid = null):
-	if baseGrid == null:
-		baseGrid = grids[1]
-
-	return MathUtil.remapToRange(strumTime, 0, ((16 / Conductor.timeScale[1]) * Conductor.timeScale[0]) * Conductor.timeBetweenSteps, baseGrid.position.y, baseGrid.position.y + (baseGrid.rows * baseGrid.grid_size))
-
 func _on_IsPixelStage_pressed():
 	SONG.pixelStage = $TabContainer/Art/IsPixelStage.pressed
 

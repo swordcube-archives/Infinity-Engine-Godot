@@ -154,14 +154,14 @@ func section_start_time(section = null):
 	
 	var coolPos:float = 0.0
 	
-	var good_bpm = Conductor.bpm
+	var good_bpm = charter.SONG["bpm"]
 	
 	for i in section:
 		if "changeBPM" in charter.SONG.notes[i]:
-			if charter.SONG.notes[i]["changeBPM"] == true:
+			if charter.SONG.notes[i]["changeBPM"] == true and charter.SONG.notes[i]["bpm"] > 0:
 				good_bpm = charter.SONG.notes[i]["bpm"]
 		
-		coolPos += 4 * (1000 * (60 / good_bpm))
+		coolPos += 4.0 * (1000.0 * (60.0 / good_bpm))
 	
 	return coolPos
 				

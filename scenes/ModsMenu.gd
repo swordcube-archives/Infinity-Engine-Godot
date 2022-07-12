@@ -54,7 +54,7 @@ func _ready():
 		
 	changeSelection()
 		
-func _process(delta):
+func _input(event):
 	if Input.is_action_just_pressed("ui_back"):
 		AudioHandler.playSFX("cancelMenu")
 		Scenes.switchScene("MainMenu")
@@ -64,6 +64,9 @@ func _process(delta):
 		
 	if Input.is_action_just_pressed("ui_down"):
 		changeSelection(1)
+		
+	if Input.is_action_just_pressed("ui_shift"):
+		OS.shell_open(str("file://" + OS.get_user_data_dir() + "/mods/"))
 		
 func changeSelection(change:int = 0):
 	curSelected += change

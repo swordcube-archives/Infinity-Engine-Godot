@@ -17,14 +17,14 @@ current = true
 
 [node name="bgGrid" parent="." instance=ExtResource( 3 )]
 modulate = Color( 1, 1, 1, 0.25 )
-position = Vector2( 415, -565 )
+position = Vector2( 415, -600 )
 
 [node name="Grid" parent="." instance=ExtResource( 3 )]
-position = Vector2( 415, 75 )
+position = Vector2( 415, 40 )
 
 [node name="fgGrid" parent="." instance=ExtResource( 3 )]
 modulate = Color( 1, 1, 1, 0.25 )
-position = Vector2( 415, 715 )
+position = Vector2( 415, 680 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

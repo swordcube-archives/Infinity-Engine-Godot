@@ -19,7 +19,7 @@ func _ready():
 	magenta.flashValues.invert()
 	changeSelection()
 	
-	$CanvasLayer/Label.text += " (" + CoolUtil.getTXT(Paths.txt("data/gameVersionDate"))[0] + ")"
+	$CanvasLayer/Label.text += " ("+Preferences.gameVersion+")"
 	
 	Discord.update_presence("In the Main Menu")
 	
