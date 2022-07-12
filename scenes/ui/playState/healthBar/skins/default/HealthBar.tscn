@@ -34,8 +34,13 @@ max_value = 2.0
 value = 1.0
 percent_visible = false
 
+[node name="Icons" type="Node2D" parent="."]
+__meta__ = {
+"_editor_description_": "This is for the animated icons lol"
+}
+
 [node name="iconP1" type="Sprite" parent="."]
-position = Vector2( 48, -75 )
+position = Vector2( 65, -75 )
 texture = ExtResource( 3 )
 offset = Vector2( 0, 75 )
 flip_h = true
@@ -43,7 +48,7 @@ hframes = 3
 script = ExtResource( 4 )
 
 [node name="iconP2" type="Sprite" parent="."]
-position = Vector2( -48, -75 )
+position = Vector2( -63, -75 )
 texture = ExtResource( 3 )
 offset = Vector2( 0, 75 )
 hframes = 3

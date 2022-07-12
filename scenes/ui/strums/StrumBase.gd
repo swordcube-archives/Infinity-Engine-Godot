@@ -223,6 +223,8 @@ func noteMiss(noteShit:int = 0, note = null):
 		characterSinging.playAnim(CoolUtil.singAnims[PlayState.SONG["keyCount"]][noteShit] + "miss" + altAnim)
 	
 	var loss:float = -0.0475
+	if note.sustainLength > 0:
+		loss = -0.2
 	loss *= Preferences.getOption("hp-loss-multiplier")
 	PlayState.health += loss
 	PlayState.songMisses += 1
@@ -248,6 +250,7 @@ func opponentSing(note):
 		
 	PlayState.health = health
 		
+	playAnim("confirm")
 	if characterSinging and not characterSinging.specialAnim:
 		var altAnim = ""
 		if note.altNote:
@@ -257,7 +260,6 @@ func opponentSing(note):
 		characterSinging.playAnim(CoolUtil.singAnims[PlayState.SONG["keyCount"]][note.noteData] + altAnim)
 	
 	characterAnimTimer = 0.0
-	playAnim("confirm")
 	AudioHandler.voices.volume_db = 0
 	if note.ogSustainLength <= 0:
 		note.queue_free()
@@ -267,6 +269,7 @@ func playerSing(note):
 	if Preferences.getOption("play-as-opponent"):
 		characterSinging = PlayState.dad
 		
+	playAnim("confirm")
 	if characterSinging and not characterSinging.specialAnim:
 		var altAnim = ""
 		if note.altNote:
@@ -274,12 +277,11 @@ func playerSing(note):
 		characterSinging.holdTimer = 0
 		characterSinging.playAnim(CoolUtil.singAnims[PlayState.SONG["keyCount"]][note.noteData] + altAnim)
 
-		characterAnimTimer = 0.0
-		playAnim("confirm")
+	characterAnimTimer = 0.0
 		
-		var gain:float = 0.023
-		gain *= Preferences.getOption("hp-gain-multiplier")
-		PlayState.health += gain
+	var gain:float = 0.023
+	gain *= Preferences.getOption("hp-gain-multiplier")
+	PlayState.health += gain
 
 func playAnim(anim:String = "static"):
 	match anim:

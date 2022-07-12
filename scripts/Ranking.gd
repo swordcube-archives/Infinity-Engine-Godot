@@ -41,7 +41,8 @@ const ranks:Dictionary = {
 	60: "C",
 	50: "D",
 	40: "E",
-	30: "F"
+	30: "F",
+	0: "boooo"
 };
 
 static func judgeNote(strumTime:float):

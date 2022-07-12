@@ -10,7 +10,7 @@ var timeBar:Node2D
 
 var ratingTemplate:Node2D = load("res://scenes/ui/playState/Rating.tscn").instance()
 
-func _ready():
+func create():
 	var xMult:float = 315
 			
 	opponentStrums = load("res://scenes/ui/strums/4K.tscn").instance()
@@ -55,6 +55,17 @@ func _ready():
 	if PlayStateSettings.downScroll:
 		opponentStrums.position.y = 620
 		playerStrums.position.y = 620
+		
+func reloadHealthBar():
+	remove_child(healthBar)
+	healthBar.queue_free()
+	
+	healthBar = load(PlayStateSettings.currentUiSkin.health_bar_path).instance()
+	healthBar.position.x = CoolUtil.screenWidth / 2
+	healthBar.position.y = CoolUtil.screenHeight * 0.9
+	if PlayStateSettings.downScroll:
+		healthBar.position.y = 70
+	add_child(healthBar)
 		
 func _process(delta):
 	healthBar.health = PlayState.health

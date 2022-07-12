@@ -4,8 +4,10 @@ class_name HealthBar
 
 onready var bar:ProgressBar = $ProgressBar
 
-onready var iconP2:Sprite = $iconP2
-onready var iconP1:Sprite = $iconP1
+onready var icons = $Icons # this is for animated icons
+
+onready var iconP2 = $iconP2
+onready var iconP1 = $iconP1
 
 onready var scoreTxt:Label = $scoreTxt
 
@@ -19,14 +21,79 @@ var percent:int = 0
 
 func _ready():
 	Conductor.connect("beatHit", self, "beatHit")
-	
+			
+	if not Preferences.getOption("play-as-opponent"):
+		if PlayState.dad:
+			var dadAnimIcon:String = "res://assets/images/icons/"+PlayState.dad.animatedHealthIconName+".tscn"
+			print(dadAnimIcon+" exists")
+			if ResourceLoader.exists(dadAnimIcon):
+				print(dadAnimIcon+" exists")
+				remove_child(iconP2)
+				iconP2.queue_free()
+				iconP2 = load(dadAnimIcon).instance()
+				iconP2.position.y = -75
+				icons.add_child(iconP2)
+			
+		if PlayState.bf:
+			var bfAnimIcon:String = "res://assets/images/icons/"+PlayState.bf.animatedHealthIconName+".tscn"
+			print(bfAnimIcon)
+			if ResourceLoader.exists(bfAnimIcon):
+				print(bfAnimIcon+" exists")
+				remove_child(iconP1)
+				iconP1.queue_free()
+				iconP1 = load(bfAnimIcon).instance()
+				iconP1.position.y = -75
+				icons.add_child(iconP1)
+				
+				iconP1.spr.flip_h = true
+	else:
+		if PlayState.bf:
+			var dadAnimIcon:String = "res://assets/images/icons/"+PlayState.bf.animatedHealthIconName+".tscn"
+			print(dadAnimIcon)
+			if ResourceLoader.exists(dadAnimIcon):
+				print(dadAnimIcon+" exists")
+				remove_child(iconP2)
+				iconP2.queue_free()
+				iconP2 = load(dadAnimIcon).instance()
+				iconP2.position.y = -75
+				icons.add_child(iconP2)
+			
+		if PlayState.dad:
+			var bfAnimIcon:String = "res://assets/images/icons/"+PlayState.dad.animatedHealthIconName+".tscn"
+			print(bfAnimIcon)
+			if ResourceLoader.exists(bfAnimIcon):
+				print(bfAnimIcon+" exists")
+				remove_child(iconP1)
+				iconP1.queue_free()
+				iconP1 = load(bfAnimIcon).instance()
+				iconP1.position.y = -75
+				icons.add_child(iconP1)
+				
+				iconP1.spr.flip_h = true
+			
 	match Preferences.getOption("icon-bounce-style"):
 		"Psych":
-			iconP2.offset.y = 0
-			iconP1.offset.y = 0
+			if iconP2 is Sprite:
+				iconP2.offset.y = 0
+				iconP2.position.y += 75
 			
-			iconP2.position.y += 75
-			iconP1.position.y += 75
+			if iconP1 is Sprite:
+				iconP1.offset.y = 0
+				iconP1.position.y += 75
+		_: # default icon type
+			if iconP2 is Sprite:
+				iconP2.offset.y = iconP2.texture.get_height()/2
+				iconP2.position.y = -iconP2.texture.get_height()/2
+			else:
+				iconP2.spr.offset.y = iconP2.spr.frames.get_frame(iconP2.spr.animation, iconP2.spr.frame).get_height()/2
+				iconP2.position.y = -iconP2.spr.frames.get_frame(iconP2.spr.animation, iconP2.spr.frame).get_height()/2
+			
+			if iconP1 is Sprite:
+				iconP1.offset.y = iconP1.texture.get_height()/2
+				iconP1.position.y = -iconP1.texture.get_height()/2
+			else:
+				iconP1.spr.offset.y = iconP1.spr.frames.get_frame(iconP1.spr.animation, iconP1.spr.frame).get_height()/2
+				iconP1.position.y = -iconP1.spr.frames.get_frame(iconP1.spr.animation, iconP1.spr.frame).get_height()/2
 			
 	updateText()
 	
@@ -71,28 +138,32 @@ func _process(delta):
 				greenHealth.bg_color = Color.green
 			else:
 				greenHealth.bg_color = PlayState.bf.healthColor
-			iconP2.texture = PlayState.dad.healthIcon
+			if iconP2 is Sprite:
+				iconP2.texture = PlayState.dad.healthIcon
 			
 		if PlayState.bf:
 			if Preferences.getOption("classic-health-bar"):
 				redHealth.bg_color = Color.red
 			else:
 				redHealth.bg_color = PlayState.dad.healthColor
-			iconP1.texture = PlayState.bf.healthIcon
+			if iconP1 is Sprite:
+				iconP1.texture = PlayState.bf.healthIcon
 	else:
 		if PlayState.bf:
 			if Preferences.getOption("classic-health-bar"):
 				greenHealth.bg_color = Color.red
 			else:
 				greenHealth.bg_color = PlayState.dad.healthColor
-			iconP2.texture = PlayState.bf.healthIcon
+			if iconP2 is Sprite:
+				iconP2.texture = PlayState.bf.healthIcon
 			
 		if PlayState.dad:
 			if Preferences.getOption("classic-health-bar"):
 				redHealth.bg_color = Color.green
 			else:
 				redHealth.bg_color = PlayState.bf.healthColor
-			iconP1.texture = PlayState.dad.healthIcon
+			if iconP1 is Sprite:
+				iconP1.texture = PlayState.dad.healthIcon
 
 	if percent <= 20:
 		iconP2.switchTo("winning")

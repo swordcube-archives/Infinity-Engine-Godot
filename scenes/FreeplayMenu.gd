@@ -77,6 +77,16 @@ func addSongs():
 				
 				song_i += 1
 
+func _input(event):
+	if event is InputEventMouseButton:
+		event as InputEventMouseButton
+		if event.pressed:
+			match event.button_index:
+				BUTTON_WHEEL_UP:
+					changeSelection(-1)
+				BUTTON_WHEEL_DOWN:
+					changeSelection(1)
+
 func _process(delta):
 	bg.modulate = lerp(bg.modulate, Color(songColors[curSelected]), MathUtil.getLerpValue(0.045, delta))
 	

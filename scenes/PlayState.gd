@@ -107,7 +107,6 @@ func _ready():
 		if "gf" in rawSONG:
 			gfVersion = SONG.gf
 		
-		
 		if gfVersion != "":
 			gf = Paths.getCharScene(gfVersion)
 			add_child(gf)
@@ -206,6 +205,8 @@ func _ready():
 	
 	PlayStateSettings.scrollSpeed *= 1.5
 	PlayStateSettings.scrollSpeed /= PlayStateSettings.songMultiplier
+	
+	UI.create()
 	
 	UI.healthBar._process(0)
 	UI.healthBar.updateText()

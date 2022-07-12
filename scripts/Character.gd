@@ -13,6 +13,7 @@ onready var PlayState = $"../"
 
 export(Color) var healthColor = Color("A1A1A1")
 export(Texture) var healthIcon = preload("res://assets/images/icons/face.png")
+export(String) var animatedHealthIconName = ""
 export(bool) var dancesLeftRight = false
 export(float) var singDuration = 4
 export(String) var deathCharacter = "bf-dead"

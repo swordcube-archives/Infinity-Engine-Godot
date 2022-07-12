@@ -55,6 +55,15 @@ func _ready():
 	changeSelection()
 		
 func _input(event):
+	if event is InputEventMouseButton:
+		event as InputEventMouseButton
+		if event.pressed:
+			match event.button_index:
+				BUTTON_WHEEL_UP:
+					changeSelection(-1)
+				BUTTON_WHEEL_DOWN:
+					changeSelection(1)
+					
 	if Input.is_action_just_pressed("ui_back"):
 		AudioHandler.playSFX("cancelMenu")
 		Scenes.switchScene("MainMenu")

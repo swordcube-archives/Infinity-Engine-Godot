@@ -45,6 +45,9 @@ func _input(event:InputEvent):
 			AudioHandler.playInst(SONG.song)
 			AudioHandler.playVoices(SONG.song)
 			
+			AudioHandler.inst.pitch_scale = 1.0
+			AudioHandler.voices.pitch_scale = 1.0
+			
 			AudioHandler.inst.seek(Conductor.songPosition / 1000.0)
 			AudioHandler.voices.seek(Conductor.songPosition / 1000.0)
 		else:
@@ -60,7 +63,6 @@ func _input(event:InputEvent):
 		if event.pressed:
 			match event.button_index:
 				BUTTON_WHEEL_UP:
-					print("UP")
 					if Input.is_action_pressed("ui_shift"):
 						Conductor.songPosition -= 100
 					else:
@@ -83,7 +85,6 @@ func _input(event:InputEvent):
 						grids[1].loadSection()
 						grids[2].loadSection()
 				BUTTON_WHEEL_DOWN:
-					print("DOWN")
 					if Input.is_action_pressed("ui_shift"):
 						Conductor.songPosition += 100
 					else:
