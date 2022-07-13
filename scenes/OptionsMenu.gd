@@ -29,6 +29,12 @@ func _ready():
 	changePage()
 	Discord.update_presence("In the Options Menu")
 	
+	var tween = Tween.new()
+	add_child(tween)
+	var pressTab:ColorRect = $PressTabDumbass
+	tween.interpolate_property(pressTab, "rect_position:y", pressTab.rect_position.y, pressTab.rect_position.y - 73, 1, Tween.TRANS_CUBIC, Tween.EASE_IN, 2)
+	tween.start()
+	
 func _process(delta):
 	$Description.text = options.get_child(curSelected).optionDescription
 	$Description.rect_size.y = 0

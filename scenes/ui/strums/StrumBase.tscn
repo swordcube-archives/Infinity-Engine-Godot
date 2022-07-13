@@ -1,7 +1,15 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scenes/ui/strums/StrumBase.gd" type="Script" id=1]
 [ext_resource path="res://assets/images/ui/skins/arrows/strums.res" type="SpriteFrames" id=2]
+[ext_resource path="res://assets/fonts/nokiafc22.ttf" type="DynamicFontData" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+size = 64
+outline_size = 6
+outline_color = Color( 0, 0, 0, 1 )
+use_filter = true
+font_data = ExtResource( 3 )
 
 [node name="StrumBase" type="Node2D"]
 script = ExtResource( 1 )
@@ -19,5 +27,16 @@ rect_clip_content = true
 color = Color( 1, 1, 1, 0 )
 
 [node name="Notes" type="Node2D" parent="."]
+
+[node name="Keybind" type="Label" parent="."]
+visible = false
+margin_left = -38.0
+margin_top = -40.0
+margin_right = 41.0
+margin_bottom = 372.0
+custom_fonts/font = SubResource( 1 )
+text = "S"
+align = 1
+autowrap = true
 
 [connection signal="animation_finished" from="spr" to="." method="_on_spr_animation_finished"]

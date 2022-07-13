@@ -53,6 +53,11 @@ func makeSongSettingsReal():
 		
 	if not "pixelStage" in SONG.song:
 		SONG.song.pixelStage = false
+		
+	if not "keyCount" in SONG.song:
+		SONG.song.keyCount = 4
+		
+var keyCount:int = 4
 
 func getSkin():
 	if "uiSkin" in SONG.song and SONG.song.uiSkin != "":

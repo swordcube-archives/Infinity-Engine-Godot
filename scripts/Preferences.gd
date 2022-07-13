@@ -11,6 +11,19 @@ var defaultSaveData:Dictionary = {
 	"scroll-speed-type": "Multiplicative",
 	"scroll-speed": 1,
 	
+	# Keybinds
+	"binds_1": ["SPACE"],
+	"binds_2": ["D", "K"],
+	"binds_3": ["D", "SPACE", "K"],
+	"binds_4": ["D", "F", "J", "K"],
+
+	"binds_5": ["D", "F", "SPACE", "J", "K"],
+
+	"binds_6": ["S", "D", "F", "J", "K", "L"],
+	"binds_7": ["S", "D", "F", "SPACE", "J", "K", "L"],
+	"binds_8": ["A", "S", "D", "F", "H", "J", "K", "L"],
+	"binds_9": ["A", "S", "D", "F", "SPACE", "H", "J", "K", "L"],
+	
 	# Everything else
 	"mods": {},
 	"volume": 9,
@@ -35,8 +48,28 @@ var defaultSaveData:Dictionary = {
 	"ui-skin": "Arrows",
 	"icon-bounce-style": "Default",
 	"classic-health-bar": false,
+	"rating-camera": "HUD",
 }
 # ^^^ MODIFY THIS!
+
+func setupBinds():
+	var binds = getOption("binds_" + str(PlayStateSettings.keyCount))
+	
+	for action_num in PlayStateSettings.keyCount:
+		var action = "gameplay_" + str(action_num)
+		
+		var keys = InputMap.get_action_list(action)
+		
+		var new_Event = InputEventKey.new()
+		# set key to the scancode of the key
+		new_Event.set_scancode(OS.find_scancode_from_string(binds[action_num].to_lower()))
+		
+		if keys.size() - 1 != -1: # error handling shit
+			InputMap.action_erase_event(action, keys[keys.size()-1])
+		else:
+			InputMap.add_action(action)
+		
+		InputMap.action_add_event(action, new_Event)
 
 var gameVersion:String = "16622"
 var wentThruTitle:bool = false
@@ -50,6 +83,7 @@ func _ready():
 		
 	yield(get_tree().create_timer(0.1),"timeout")
 	OS.vsync_enabled = getOption("vsync")
+	setupBinds()
 
 # USE THIS TO GET OPTIONS AND SET OPTIONS
 func getOption(option:String):

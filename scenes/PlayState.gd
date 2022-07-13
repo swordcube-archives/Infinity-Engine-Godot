@@ -48,6 +48,10 @@ func sortAscending(a, b):
 		return true
 	return false
 
+onready var msDisplay = $MSDisplay
+
+var msDisplayTimer:float = 0.0
+
 func _init():
 	PlayStateSettings.getSkin()
 	PlayStateSettings.downScroll = Preferences.getOption("downscroll")
@@ -58,6 +62,11 @@ onready var hitsound = $Hitsound
 var gfVersion:String = "gf"
 
 func _ready():
+	match Preferences.getOption("rating-camera"):
+		"HUD":
+			remove_child(msDisplay)
+			HUD.add_child(msDisplay)
+			
 	get_tree().paused = false
 	
 	if Preferences.getOption("hitsound") != "None":
@@ -73,6 +82,11 @@ func _ready():
 	for property in PlayStateSettings.SONG.song:
 		if property in SONG:
 			SONG.set(property, PlayStateSettings.SONG.song.get(property))
+			
+	PlayStateSettings.makeSongSettingsReal()
+			
+	PlayStateSettings.keyCount = SONG.keyCount
+	Preferences.setupBinds()
 	
 	Conductor.changeBPM(SONG.bpm, Conductor.mapBPMChanges(SONG))
 	Conductor.songPosition = Conductor.timeBetweenBeats * -5
@@ -378,6 +392,10 @@ func updateHealth():
 		health = UI.healthBar.maxHealth
 	
 func _process(delta):		
+	msDisplayTimer += delta
+	if msDisplayTimer > (Conductor.timeBetweenBeats/1000.0)*1.2:
+		msDisplay.modulate.a = lerp(msDisplay.modulate.a, 0, MathUtil.getLerpValue(0.1, delta))
+		
 	if Input.is_action_just_pressed("ui_back"):
 		if UI.timeBar:
 			UI.remove_child(UI.timeBar)

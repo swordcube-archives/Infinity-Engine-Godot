@@ -10,31 +10,47 @@ var timeBar:Node2D
 
 var ratingTemplate:Node2D = load("res://scenes/ui/playState/Rating.tscn").instance()
 
+var tween = Tween.new()
+
 func create():
+	add_child(tween)
+	
 	var xMult:float = 315
 			
-	opponentStrums = load("res://scenes/ui/strums/4K.tscn").instance()
+	opponentStrums = load("res://scenes/ui/strums/"+str(PlayStateSettings.keyCount)+"K.tscn").instance()
 	opponentStrums.position.x = xMult
 	opponentStrums.position.y = 100
+	add_child(opponentStrums)
 	var i:int = 0
 	for strum in opponentStrums.get_children():
 		strum.isOpponent = true
 		strum.noteData = i
 		if Preferences.getOption("play-as-opponent"):
 			strum.isOpponent = not strum.isOpponent
+		
+			if not PlayStateSettings.botPlay and Preferences.getOption("keybind-reminders"):
+				strum.keybind.text = Preferences.getOption("binds_"+str(PlayStateSettings.keyCount))[i]
+				strum.keybind.visible = true
+				tween.interpolate_property(strum.keybind, "modulate:a", 1, 0, 4,Tween.TRANS_CUBIC, Tween.EASE_IN_OUT, 4)
 		i += 1
-	add_child(opponentStrums)
 	
-	playerStrums = load("res://scenes/ui/strums/4K.tscn").instance()
+	playerStrums = load("res://scenes/ui/strums/"+str(PlayStateSettings.keyCount)+"K.tscn").instance()
 	playerStrums.position.x = xMult + (CoolUtil.screenWidth / 2)
 	playerStrums.position.y = 100
+	add_child(playerStrums)
 	i = 0
 	for strum in playerStrums.get_children():
 		strum.noteData = i
 		if Preferences.getOption("play-as-opponent"):
 			strum.isOpponent = not strum.isOpponent
+		else:
+			if not PlayStateSettings.botPlay and Preferences.getOption("keybind-reminders"):
+				strum.keybind.text = Preferences.getOption("binds_"+str(PlayStateSettings.keyCount))[i]
+				strum.keybind.visible = true
+				tween.interpolate_property(strum.keybind, "modulate:a", 1, 0, 4,Tween.TRANS_CUBIC, Tween.EASE_IN_OUT, 4)
 		i += 1
-	add_child(playerStrums)
+	
+	tween.start()
 	
 	# centered notes
 	if Preferences.getOption("centered-notes"):
