@@ -6,7 +6,11 @@ func stepHit():
 	match(Conductor.curStep):
 		60, 444, 524, 540, 541, 829:
 			if dad:
-				dad.playAnim("ugh")
+				if dad.animPlayer.has_animation("ugh"):
+					dad.playAnim("ugh")
+				else:
+					dad.playAnim("singUP")
+					
 				dad.holdTimer = 0
 				
 				# because normally you would hit a note for every "ugh"

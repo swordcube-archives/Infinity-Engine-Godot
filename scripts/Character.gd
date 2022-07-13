@@ -41,8 +41,10 @@ func _ready():
 		
 	initFrame = frames.frames.get_frame(frames.animation, frames.frame)
 
-func playAnim(anim, force = false):
-	if "-alt" in anim and animPlayer.has_animation(anim):
+func playAnim(animation, force = false):
+	var anim:String = animation
+	
+	if "-alt" in anim and not animPlayer.has_animation(anim):
 		anim = anim.split("-alt")[0]
 		
 	if name != "_" and animPlayer.has_animation(anim):
