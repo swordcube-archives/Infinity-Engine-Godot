@@ -6,6 +6,8 @@ onready var icon = $Icon
 
 onready var label = $Label
 
+var iconToUse:String = ""
+
 var xAdd:float = 0
 var yAdd:float = 0
 
@@ -13,6 +15,8 @@ var isMenuItem:bool = false
 var targetY:float = 0
 
 func _process(delta):
+	icon.switchTo("normal")
+	
 	if isMenuItem:
 		var scaledY = MathUtil.remapToRange(targetY, 0, 1, 0, 1.3);
 		var lerpVal:float = MathUtil.boundTo(delta * 9.6, 0, 1)

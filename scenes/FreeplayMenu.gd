@@ -64,6 +64,7 @@ func addSongs():
 				var newSong:FreeplaySong = songTemplate.duplicate()
 				newSong.position.x = 30
 				newSong.position.y = (70 * song_i) + 30
+				newSong.iconToUse = split[1]
 				songs.add_child(newSong)
 				
 				newSong.label.text = split[0]
@@ -72,7 +73,16 @@ func addSongs():
 				newSong.isMenuItem = true
 				newSong.targetY = song_i
 				
-				newSong.icon.texture = load(Paths.healthIcon(split[1]))
+				var animIconPath:String = "res://assets/images/icons/"+newSong.iconToUse+".tscn"
+				if ResourceLoader.exists(animIconPath):
+					newSong.remove_child(newSong.icon)
+					newSong.icon = load(animIconPath).instance()
+					newSong.add_child(newSong.icon)
+					
+					newSong.icon.switchTo("normal")
+				else:
+					newSong.icon.texture = load(Paths.healthIcon(newSong.iconToUse))
+					
 				newSong.icon.position.x = newSong.label.label.rect_size.x + 70
 				
 				song_i += 1
