@@ -9,10 +9,9 @@
 [ext_resource path="res://assets/images/stages/mall/santa.res" type="SpriteFrames" id=7]
 [ext_resource path="res://scenes/stages/mall.gd" type="Script" id=8]
 
-
 [node name="mall" type="Node2D"]
 script = ExtResource( 8 )
-defaultCamZoom = 0.8
+defaultCamZoom = 0.7
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
