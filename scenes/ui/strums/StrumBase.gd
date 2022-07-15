@@ -1,7 +1,6 @@
 extends Node2D
 
 onready var notes:Node2D = $Notes
-onready var sustains:ColorRect = $Sustains
 
 onready var spr:AnimatedSprite = $spr
 
@@ -43,11 +42,6 @@ func _process(delta):
 		oldDirection = direction
 		playAnim("static")
 		
-	if PlayStateSettings.downScroll:
-		sustains.rect_position.y = -sustains.rect_size.y
-	else:
-		sustains.rect_position.y = 0
-
 	if not hasInput: return
 	
 	var scrollSpeed = PlayStateSettings.scrollSpeed

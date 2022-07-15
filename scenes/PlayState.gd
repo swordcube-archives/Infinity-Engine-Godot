@@ -61,12 +61,7 @@ onready var hitsound = $Hitsound
 
 var gfVersion:String = "gf"
 
-func _ready():
-	match Preferences.getOption("rating-camera"):
-		"HUD":
-			remove_child(msDisplay)
-			HUD.add_child(msDisplay)
-			
+func _ready():			
 	get_tree().paused = false
 	
 	if Preferences.getOption("hitsound") != "None":
@@ -224,6 +219,14 @@ func _ready():
 	
 	UI.healthBar._process(0)
 	UI.healthBar.updateText()
+	
+	match Preferences.getOption("rating-camera"):
+		"HUD":
+			remove_child(msDisplay)
+			HUD.add_child(msDisplay)
+		"World":
+			remove_child(msDisplay)
+			add_child(msDisplay)			
 	
 	# loading modcharts!
 	var songFolder:Array = CoolUtil.listFilesInDirectory(Paths.song(SONG.song))
