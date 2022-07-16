@@ -99,6 +99,11 @@ max_value = 166.0
 
 [node name="Appearance" type="Node" parent="Pages"]
 
+[node name="Photosensitive" parent="Pages/Appearance" instance=ExtResource( 4 )]
+visible = false
+saveDataOption = "photosensitive"
+optionDescription = "Disables flashing lights and intense visual effects. (Might not work for some mods)"
+
 [node name="Classic Health Bar" parent="Pages/Appearance" instance=ExtResource( 4 )]
 visible = false
 saveDataOption = "classic-health-bar"

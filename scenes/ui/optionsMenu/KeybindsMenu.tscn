@@ -28,7 +28,10 @@ margin_top = 568.0
 margin_right = 1280.0
 margin_bottom = 597.0
 custom_fonts/font = SubResource( 1 )
-text = "Click on a arrow to rebind, then press any key to rebind it."
+text = "Click on a arrow to rebind, then press any key to rebind it.
+
+
+Press BACKSPACE or ESCAPE to exit."
 align = 1
 
 [node name="Waiting" type="Label" parent="."]

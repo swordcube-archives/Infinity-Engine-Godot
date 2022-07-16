@@ -42,13 +42,15 @@ func _input(event):
 		if Input.is_action_just_pressed("ui_accept"):
 			selectedSomethin = true
 			
-			magenta.flashing = true
+			if not Preferences.getOption("photosensitive"):
+				magenta.flashing = true
 			
 			AudioHandler.playSFX("confirmMenu")
 			
 			for i in items.size():
 				if curSelected == i:
-					items[i].flashing = true
+					if not Preferences.getOption("photosensitive"):
+						items[i].flashing = true
 				else:
 					tween.interpolate_property(items[i], "modulate:a", 1, 0, 1, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT, 0.2)
 					

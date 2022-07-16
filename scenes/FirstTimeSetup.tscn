@@ -1,0 +1,361 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://scenes/FirstTimeSetup.gd" type="Script" id=1]
+[ext_resource path="res://assets/fonts/vcr.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://scenes/ui/optionsMenu/KeybindsMenu.tscn" type="PackedScene" id=3]
+[ext_resource path="res://assets/sounds/soundTest.ogg" type="AudioStream" id=4]
+[ext_resource path="res://assets/images/ui/skins/arrows/strums.res" type="SpriteFrames" id=5]
+[ext_resource path="res://scenes/firsttimesetup/Strum.gd" type="Script" id=6]
+[ext_resource path="res://scenes/ui/playState/timeBar/TimeBarBlack.tres" type="StyleBox" id=7]
+[ext_resource path="res://scenes/ui/playState/timeBar/TimeBarWhite.tres" type="StyleBox" id=8]
+[ext_resource path="res://scenes/ui/strums/4K.tscn" type="PackedScene" id=9]
+
+[sub_resource type="ParticlesMaterial" id=1]
+emission_shape = 1
+emission_sphere_radius = 1.0
+flag_disable_z = true
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 20.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+
+[sub_resource type="DynamicFont" id=2]
+size = 48
+outline_size = 4
+outline_color = Color( 0, 0, 0, 1 )
+use_filter = true
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 32
+outline_size = 4
+outline_color = Color( 0, 0, 0, 1 )
+use_filter = true
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 24
+use_filter = true
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=5]
+size = 24
+font_data = ExtResource( 2 )
+
+[node name="FirstTimeSetup" type="Node2D"]
+pause_mode = 2
+script = ExtResource( 1 )
+
+[node name="BG" type="ColorRect" parent="."]
+margin_right = 1280.0
+margin_bottom = 720.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Particles2D" type="Particles2D" parent="."]
+modulate = Color( 1, 1, 1, 0.223529 )
+position = Vector2( -151, 277 )
+scale = Vector2( 40, 40 )
+speed_scale = 0.2
+randomness = 0.39
+process_material = SubResource( 1 )
+
+[node name="Particles2D2" type="Particles2D" parent="."]
+modulate = Color( 1, 1, 1, 0.0980392 )
+position = Vector2( 1355, 560 )
+rotation = -2.65115
+scale = Vector2( 40, 40 )
+speed_scale = 0.35
+randomness = 0.39
+process_material = SubResource( 1 )
+
+[node name="Initial" type="Label" parent="."]
+visible = false
+margin_top = 184.0
+margin_right = 1280.0
+margin_bottom = 227.0
+custom_fonts/font = SubResource( 2 )
+text = "Welcome to Infinity Engine!"
+align = 1
+
+[node name="Label2" type="Label" parent="Initial"]
+margin_left = 71.0
+margin_top = 64.0
+margin_right = 1208.0
+margin_bottom = 253.0
+custom_fonts/font = SubResource( 3 )
+text = "Would you like to setup some things before you start playing?
+
+You can always change them whenever by going to the Options menu."
+align = 1
+autowrap = true
+
+[node name="Yes" type="Button" parent="Initial"]
+margin_left = 441.0
+margin_top = 304.0
+margin_right = 631.0
+margin_bottom = 343.0
+custom_fonts/font = SubResource( 4 )
+text = "Yes"
+
+[node name="No" type="Button" parent="Initial"]
+margin_left = 649.0
+margin_top = 304.0
+margin_right = 839.0
+margin_bottom = 343.0
+custom_fonts/font = SubResource( 4 )
+text = "No"
+
+[node name="WannaDoYourMom" type="Label" parent="."]
+visible = false
+margin_top = 168.0
+margin_right = 1280.0
+margin_bottom = 211.0
+custom_fonts/font = SubResource( 2 )
+text = "How would you like to set your offset?"
+align = 1
+
+[node name="Label2" type="Label" parent="WannaDoYourMom"]
+margin_left = 71.0
+margin_top = 64.0
+margin_right = 1208.0
+margin_bottom = 253.0
+custom_fonts/font = SubResource( 3 )
+text = "Press \"Arrows\" to use your arrow keys to change your offset.
+
+Press \"Tap\" to get an offset from tapping your space bar to the beat of a test song.
+
+Press \"Skip\" to skip this step."
+align = 1
+autowrap = true
+
+[node name="ArrowsOffset" type="Button" parent="WannaDoYourMom"]
+margin_left = 329.0
+margin_top = 328.0
+margin_right = 519.0
+margin_bottom = 367.0
+custom_fonts/font = SubResource( 4 )
+text = "Arrows"
+
+[node name="TapOffset" type="Button" parent="WannaDoYourMom"]
+margin_left = 537.0
+margin_top = 328.0
+margin_right = 727.0
+margin_bottom = 367.0
+custom_fonts/font = SubResource( 4 )
+text = "Tap"
+
+[node name="FuckYouOffset" type="Button" parent="WannaDoYourMom"]
+margin_left = 745.0
+margin_top = 328.0
+margin_right = 935.0
+margin_bottom = 367.0
+custom_fonts/font = SubResource( 4 )
+text = "Skip"
+
+[node name="DoNoTapOffsetShit" type="Label" parent="."]
+visible = false
+margin_top = 152.0
+margin_right = 1280.0
+margin_bottom = 195.0
+custom_fonts/font = SubResource( 2 )
+text = "Adjust offset with arrow keys"
+align = 1
+
+[node name="Label2" type="Label" parent="DoNoTapOffsetShit"]
+margin_left = 71.0
+margin_top = 64.0
+margin_right = 1208.0
+margin_bottom = 189.0
+custom_fonts/font = SubResource( 3 )
+text = "Press the left or right arrow keys to adjust your offset. 
+
+Press SHIFT to adjust the offset when holding the arrow keys down. (It adjusts it when the key was just pressed normally)"
+align = 1
+autowrap = true
+
+[node name="ColorRect" type="ColorRect" parent="DoNoTapOffsetShit"]
+margin_left = 34.0
+margin_top = 306.0
+margin_right = 1246.0
+margin_bottom = 351.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="ProgressBar" type="ProgressBar" parent="DoNoTapOffsetShit"]
+margin_left = 41.0
+margin_top = 312.0
+margin_right = 1239.0
+margin_bottom = 345.0
+custom_styles/fg = ExtResource( 8 )
+custom_styles/bg = ExtResource( 7 )
+min_value = -1000.0
+max_value = 1000.0
+percent_visible = false
+
+[node name="CurrentOffset" type="Label" parent="DoNoTapOffsetShit/ProgressBar"]
+margin_right = 1198.0
+margin_bottom = 29.0
+custom_fonts/font = SubResource( 3 )
+text = "Current Offset: 0ms"
+align = 1
+autowrap = true
+
+[node name="Continue" type="Button" parent="DoNoTapOffsetShit"]
+margin_left = 537.0
+margin_top = 368.0
+margin_right = 727.0
+margin_bottom = 407.0
+custom_fonts/font = SubResource( 4 )
+text = "Continue"
+
+[node name="DoOffsetShit" type="Label" parent="."]
+visible = false
+margin_top = 168.0
+margin_right = 1280.0
+margin_bottom = 211.0
+custom_fonts/font = SubResource( 2 )
+text = "Tap to adjust your offset"
+align = 1
+
+[node name="Label2" type="Label" parent="DoOffsetShit"]
+margin_left = 71.0
+margin_top = 64.0
+margin_right = 1208.0
+margin_bottom = 189.0
+custom_fonts/font = SubResource( 3 )
+text = "Tap the space bar to the beat of this example song to determine an offset. You will proceed to the next step after 32 beats have been passed.
+
+If your offset feels off during gameplay, you can change it in options."
+align = 1
+autowrap = true
+
+[node name="CurrentOffset" type="Label" parent="DoOffsetShit"]
+margin_left = 71.0
+margin_top = 312.0
+margin_right = 1208.0
+margin_bottom = 341.0
+custom_fonts/font = SubResource( 3 )
+text = "Current Offset: 0ms"
+align = 1
+autowrap = true
+
+[node name="Strum" type="AnimatedSprite" parent="DoOffsetShit"]
+position = Vector2( 640, 452 )
+frames = ExtResource( 5 )
+animation = "A static"
+script = ExtResource( 6 )
+
+[node name="ScrollTypeShit" type="Label" parent="."]
+visible = false
+margin_top = 56.0
+margin_right = 1280.0
+margin_bottom = 99.0
+custom_fonts/font = SubResource( 2 )
+text = " Scroll Types"
+
+[node name="Label2" type="Label" parent="ScrollTypeShit"]
+margin_left = 28.0
+margin_top = 62.0
+margin_right = 392.0
+margin_bottom = 187.0
+custom_fonts/font = SubResource( 3 )
+text = "Click the checkboxes below to enable Downscroll or Centered Notes."
+autowrap = true
+
+[node name="Opponent" parent="ScrollTypeShit" instance=ExtResource( 9 )]
+position = Vector2( -640, 52 )
+
+[node name="Player" parent="ScrollTypeShit" instance=ExtResource( 9 )]
+position = Vector2( 640, 52 )
+
+[node name="Downscroll" type="CheckBox" parent="ScrollTypeShit"]
+margin_left = 29.0
+margin_top = 202.0
+margin_right = 247.0
+margin_bottom = 239.0
+focus_mode = 0
+custom_fonts/font = SubResource( 5 )
+enabled_focus_mode = 0
+text = "Downscroll"
+
+[node name="CenteredNotes" type="CheckBox" parent="ScrollTypeShit"]
+margin_left = 29.0
+margin_top = 234.0
+margin_right = 253.0
+margin_bottom = 271.0
+focus_mode = 0
+custom_fonts/font = SubResource( 5 )
+enabled_focus_mode = 0
+text = "Centered Notes"
+
+[node name="Next" type="Button" parent="ScrollTypeShit"]
+margin_left = 32.0
+margin_top = 295.0
+margin_right = 222.0
+margin_bottom = 334.0
+custom_fonts/font = SubResource( 4 )
+text = "Next"
+
+[node name="Photosensitive" type="Label" parent="."]
+margin_top = 240.0
+margin_right = 1280.0
+margin_bottom = 283.0
+custom_fonts/font = SubResource( 2 )
+text = "Photosensitive Mode"
+align = 1
+
+[node name="Label2" type="Label" parent="Photosensitive"]
+margin_left = 25.0
+margin_top = 62.0
+margin_right = 1255.0
+margin_bottom = 123.0
+custom_fonts/font = SubResource( 3 )
+text = "Would you like to enable Photosensitive Mode? It disables things like flashing lights and intense visual effects. (Might not work for some mods)"
+align = 1
+autowrap = true
+
+[node name="PhotoYes" type="Button" parent="Photosensitive"]
+margin_left = 440.0
+margin_top = 191.0
+margin_right = 630.0
+margin_bottom = 230.0
+custom_fonts/font = SubResource( 4 )
+text = "Yes"
+
+[node name="PhotoNo" type="Button" parent="Photosensitive"]
+margin_left = 648.0
+margin_top = 191.0
+margin_right = 838.0
+margin_bottom = 230.0
+custom_fonts/font = SubResource( 4 )
+text = "No"
+
+[node name="Fade" type="ColorRect" parent="."]
+visible = false
+modulate = Color( 1, 1, 1, 0 )
+margin_right = 1280.0
+margin_bottom = 720.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="KeybindsMenu" parent="." instance=ExtResource( 3 )]
+visible = false
+
+[node name="AudioOffsetTest" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+
+[connection signal="pressed" from="Initial/Yes" to="." method="_on_StartSetup_pressed"]
+[connection signal="pressed" from="Initial/No" to="." method="_on_CancelSetup_pressed"]
+[connection signal="pressed" from="WannaDoYourMom/ArrowsOffset" to="." method="_on_ArrowsOffset_pressed"]
+[connection signal="pressed" from="WannaDoYourMom/TapOffset" to="." method="_on_TapOffset_pressed"]
+[connection signal="pressed" from="WannaDoYourMom/FuckYouOffset" to="." method="_on_FuckYouOffset_pressed"]
+[connection signal="pressed" from="DoNoTapOffsetShit/Continue" to="." method="_on_ArrowOffsetContinue_pressed"]
+[connection signal="pressed" from="ScrollTypeShit/Downscroll" to="." method="_on_Downscroll_pressed"]
+[connection signal="pressed" from="ScrollTypeShit/CenteredNotes" to="." method="_on_CenteredNotes_pressed"]
+[connection signal="pressed" from="ScrollTypeShit/Next" to="." method="_on_Done_pressed"]
+[connection signal="pressed" from="Photosensitive/PhotoYes" to="." method="_on_PhotoYes_pressed"]
+[connection signal="pressed" from="Photosensitive/PhotoNo" to="." method="_on_PhotoNo_pressed"]

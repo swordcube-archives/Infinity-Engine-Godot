@@ -15,8 +15,12 @@ var curWacky = ["???", "???"]
 
 var tween = Tween.new()
 
-func _ready():	
+func _ready():
 	get_tree().paused = false
+	
+	if Preferences.getOption("first-time-setup"):
+		Scenes.switchScene("FirstTimeSetup", false)
+		return
 	
 	randomize()
 	var txt = CoolUtil.getTXT(Paths.txt("data/introText"))
@@ -88,7 +92,8 @@ func _process(delta):
 		else:
 			if not confirmed:
 				confirmed = true
-				titleText.play("pressed")
+				if not Preferences.getOption("photosensitive"):
+					titleText.play("pressed")
 				AudioHandler.playSFX("confirmMenu")
 				if not tween.is_active():
 					cover.visible = true

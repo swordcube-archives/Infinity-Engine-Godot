@@ -20,6 +20,8 @@ func _ready():
 var selectingKey:bool = false
 	
 func _input(event):
+	if not visible: return
+	
 	if event is InputEventMouseButton and event.pressed and event.button_index == BUTTON_LEFT:
 		if selectingKey: return
 		var i:int = 0
@@ -54,6 +56,8 @@ func _input(event):
 			AudioHandler.playSFX("confirmMenu")
 	
 func _process(delta):
+	if not visible: return
+	
 	if Input.is_action_just_pressed("ui_back"):
 		AudioHandler.playSFX("cancelMenu")
 		exit()

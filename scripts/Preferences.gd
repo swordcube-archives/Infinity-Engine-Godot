@@ -2,6 +2,9 @@ extends Node
 
 # MODIFY THIS! DON'T TOUCH ANYTHING ELSE!!
 var defaultSaveData:Dictionary = {
+	# Basically a thing to indicate "Hey! you have no save data! Let's allow you to setup your shit!"
+	"first-time-setup": true,
+	
 	# Gameplay Modifiers
 	"botplay": false,
 	"play-as-opponent": false,
@@ -28,6 +31,7 @@ var defaultSaveData:Dictionary = {
 	"mods": {},
 	"volume": 9,
 	"muted": false,
+	"photosensitive": false,
 	"downscroll": false,
 	"centered-notes": false,
 	"ghost-tapping": true,
